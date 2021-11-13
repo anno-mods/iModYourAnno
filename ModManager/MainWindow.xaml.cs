@@ -22,6 +22,7 @@ namespace ModManager
     {
         public MainWindow()
         {
+            Console.WriteLine("Modders Are gonna take over the World!!!");
             InitializeComponent();
         }
     }
