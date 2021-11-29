@@ -16,22 +16,18 @@ using System.Windows.Shapes;
 namespace ModManager_Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaktionslogik für Console.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ConsoleLog : UserControl
     {
-        public MainWindow()
+        public ConsoleLog()
         {
             InitializeComponent();
-
-            SetUpEmbeddedConsole();
-
-            Console.WriteLine("Modders Are gonna take over the World!!!");
         }
 
-        public void SetUpEmbeddedConsole()
+        private void ConsoleLog_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.ConsoleOut, this));
+            ScrollPane.ScrollToBottom();
         }
     }
 }
