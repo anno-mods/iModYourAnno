@@ -16,20 +16,13 @@ using System.Windows.Shapes;
 namespace ModManager_Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaktionslogik für UserControl1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TestPage : UserControl
     {
-        public MainWindow()
+        public TestPage()
         {
             InitializeComponent();
-            SetUpEmbeddedConsole();
-            Console.WriteLine("Modders Are gonna take over the World!!!");
-        }
-
-        public void SetUpEmbeddedConsole()
-        {
-            Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.ConsoleOut, this));
         }
     }
 }

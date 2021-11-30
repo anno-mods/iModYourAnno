@@ -16,24 +16,25 @@ namespace ModManager_Views
         public override Encoding Encoding => Encoding.Unicode;
 
         public EmbeddedConsole(TextBox t, MainWindow m)
-        { 
+        {
             TargetTextBox = t;
             Parent = m; 
         }
 
         public override void Write(char c)
         {
-            TargetTextBox.Text += c;
+            TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}] [LOG]: " + c;
         }
 
         public override void Write(String? s)
         {
-            TargetTextBox.Text += s;
+            TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}]: " + s;
         }
 
         public override void WriteLine(String? s)
         {
-            TargetTextBox.Text += s + Environment.NewLine;
+            Write(s);
+            TargetTextBox.Text += Environment.NewLine;
         }
     }
 }

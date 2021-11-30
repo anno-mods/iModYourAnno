@@ -7,17 +7,17 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       TextElement.Foreground="#FFFFFF">
 
-    <Grid Background="#FF252525">
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="75"/>
             <RowDefinition />
         </Grid.RowDefinitions>
         <!-- Headline Dashboard -->
         <DockPanel HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top">
             <materialDesign:PackIcon 
-                Kind="Home"  
-                Height="24"
-                Width="24"
+                Style="{StaticResource IMYA_ICON}"
+                Kind="Home" 
                 DockPanel.Dock="Left"
                 HorizontalAlignment="Left" 
                 Foreground="LightGray"/>
@@ -27,58 +27,115 @@
                 Margin="10,0,0,0" 
                 Foreground="LightGray"/>
         </DockPanel>
-        
-        <!-- Stackpanel for the Navigation Buttons -->
-        <StackPanel 
-            HorizontalAlignment="Left" 
-            Margin="0,0,0,0" 
-            Grid.Row ="1" 
-            VerticalAlignment="Top">
-            
+        <!-- Play Button -->
+
+        <StackPanel Grid.Row="1">
             <Button 
+                Style="{StaticResource IMYA_BUTTON}"
                 Margin ="0,0,0,2" 
-                Background="Transparent" 
-                BorderThickness="0" 
-                HorizontalContentAlignment ="Left" 
                 MinWidth="200" 
-                MinHeight="32" 
-                Opacity="1" 
-                HorizontalAlignment="Stretch">
+                MinHeight="32">
                 <DockPanel 
                     Margin="10,0,0,0" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Stretch">
                     <materialDesign:PackIcon 
-                        Kind="Pen"
-                        Height="24"
-                        Width="24"
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="ControllerClassicOutline"
                         DockPanel.Dock="Left" 
                         Foreground="LightGray" />
                     <TextBlock 
                         Foreground="LightGray"
                         Margin ="10,0,0,0" 
-                        Text="Mods" 
+                        Text="Start Anno 1800" 
                         VerticalAlignment="Center" />
                 </DockPanel>
             </Button>
+        </StackPanel>
+        
 
+        <!-- Stackpanel for the Navigation Buttons -->
+        <StackPanel 
+            HorizontalAlignment="Left" 
+            Margin="0,0,0,0" 
+            Grid.Row ="2" 
+            VerticalAlignment="Top">
+    
             <Button 
+                Style="{StaticResource IMYA_BUTTON}"
                 Margin ="0,0,0,2" 
-                Background="Transparent" 
-                BorderThickness="0" 
-                HorizontalContentAlignment ="Left" 
                 MinWidth="200" 
-                MinHeight="32" 
-                Opacity="1" 
-                HorizontalAlignment="Stretch">
+                MinHeight="32">
                 <DockPanel 
                     Margin="10,0,0,0" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Stretch">
                     <materialDesign:PackIcon 
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="Pen"
+                        DockPanel.Dock="Left" 
+                        Foreground="LightGray" />
+                    <TextBlock 
+                        Foreground="LightGray"
+                        Margin ="10,0,0,0" 
+                        Text="Mod Activation" 
+                        VerticalAlignment="Center" />
+                </DockPanel>
+            </Button>
+            <Button 
+                Style="{StaticResource IMYA_BUTTON}"
+                Margin ="0,0,0,2" 
+                MinWidth="200" 
+                MinHeight="32">
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon 
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="DataUsage"
+                        DockPanel.Dock="Left"
+                        Foreground="LightGray"/>
+                    <TextBlock 
+                        Margin ="10,0,0,0" 
+                        Text="Game Setup" 
+                        VerticalAlignment="Center"
+                        Foreground="LightGray"/>
+                </DockPanel>
+            </Button>
+            <Button 
+                Style="{StaticResource IMYA_BUTTON}"
+                Margin ="0,0,0,2" 
+                MinWidth="200" 
+                MinHeight="32" >
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon 
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="FolderZipOutline"
+                        DockPanel.Dock="Left"
+                        Foreground="LightGray"/>
+                    <TextBlock 
+                        Margin ="10,0,0,0" 
+                        Text="Mod Installation" 
+                        VerticalAlignment="Center"
+                        Foreground="LightGray"/>
+                </DockPanel>
+            </Button>
+            <Button 
+                Style="{StaticResource IMYA_BUTTON}"
+                Margin ="0,0,0,2" 
+                MinWidth="200" 
+                MinHeight="32">
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon
+                        Style="{StaticResource IMYA_ICON}"
                         Kind="GearOutline"
-                        Height="24"
-                        Width="24"
                         DockPanel.Dock="Left"
                         Foreground="LightGray"/>
                     <TextBlock 
@@ -86,11 +143,8 @@
                         Text="Settings" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
-
                 </DockPanel>
             </Button>
         </StackPanel>
-        
-
     </Grid>
 </UserControl>
