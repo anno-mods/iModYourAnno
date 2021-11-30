@@ -16,7 +16,7 @@ namespace ModManager_Classes.src.Models
         private string _path;
         private string _name;
         private string _category;
-        private bool _activated;
+        private bool _active;
         private bool _selected;
         private string _description;
         private string _b64_Image;
@@ -26,7 +26,7 @@ namespace ModManager_Classes.src.Models
         public string Path { get => _path; set => _path = value; }
         public string Name { get => _name; set => _name = value; }
         public string Category { get => _category; set => _category = value; }
-        public bool Activated { get => _activated; set => _activated = value; }
+        public bool Active { get => _active; set => _active = value; }
         public bool Selected { get => _selected; set => _selected = value; }
         public string Description { get => _description; set => _description = value; }
         //add a default image here
@@ -43,7 +43,9 @@ namespace ModManager_Classes.src.Models
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
         public Mod(String DirectoryName)
         {
-            Path = DirectoryName;
+            //if we need to trim the start dash, the mod should become inactive.
+            Active = TryTrimStart(DirectoryName, out String ModName);
+            Path = ModName;
 
             if (TrySerializeMetadata(System.IO.Path.Combine(DirectoryName, "modinfo.json"), out var metadata))
             {
@@ -75,13 +77,25 @@ namespace ModManager_Classes.src.Models
             return false;
         }
 
-        private String CleanName(String s)
+        /// <summary>
+        /// Checks if a directory name starts with any '-' chars.
+        /// </summary>
+        /// <param name="s">input name</param>
+        /// <param name="result">out trimmed name</param>
+        /// <returns>true, if there is no dash at the start (mod is active), false, if there is one.</returns>
+        private bool TryTrimStart(String s, out String result)
         {
+            if (!s.StartsWith('-'))
+            {
+                result = s;
+                return true;
+            }
             while (s.StartsWith('-'))
             {
                 s = s.Substring(1);
             }
-            return s; 
+            result = s;
+            return false;
         }
     }
 }
