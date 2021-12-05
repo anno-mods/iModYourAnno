@@ -11,7 +11,7 @@ namespace ModManager_Classes.src.Handlers
 {
     public class TextManager
     {
-        public static TextManager Instance;
+        public static TextManager Instance { get; private set; }
         private Dictionary<string, LocalizedText> Texts;
 
         public TextManager(String Sourcefile)

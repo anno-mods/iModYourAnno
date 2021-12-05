@@ -10,7 +10,7 @@ namespace ModManager_Classes.src.Handlers
 {
     public class LanguageManager
     {
-        public static LanguageManager Instance { get; set; }
+        public static LanguageManager Instance { get; private set; }
 
         public ApplicationLanguage ApplicationLanguage { get; private set; }
 
