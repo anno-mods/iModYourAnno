@@ -135,12 +135,34 @@
                     VerticalAlignment="Stretch">
                     <materialDesign:PackIcon
                         Style="{StaticResource IMYA_ICON}"
+                        Kind="ProgressStar"
+                        DockPanel.Dock="Left"
+                        Foreground="LightGray"/>
+                    <TextBlock 
+                        Margin ="10,0,0,0" 
+                        Text="Mod Tweaking" 
+                        VerticalAlignment="Center"
+                        Foreground="LightGray"/>
+                </DockPanel>
+            </Button>
+            <Button 
+                Style="{StaticResource IMYA_BUTTON}"
+                Margin ="0,0,0,2" 
+                MinWidth="200" 
+                MinHeight="32"
+                Click="OnClick">
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon
+                        Style="{StaticResource IMYA_ICON}"
                         Kind="GearOutline"
                         DockPanel.Dock="Left"
                         Foreground="LightGray"/>
                     <TextBlock 
                         Margin ="10,0,0,0" 
-                        Text="Settings" 
+                        Text="{Binding SettingsText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
                 </DockPanel>

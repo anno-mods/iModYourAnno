@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ModManager_Classes\ModManager_Classes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="resources\background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

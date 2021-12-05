@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ModManager_Classes.src.Enums;
+using ModManager_Classes.src.Handlers;
+using ModManager_Classes.src.Models;
 
 namespace ModManager_Views
 {
@@ -20,9 +23,23 @@ namespace ModManager_Views
     /// </summary>
     public partial class Dashboard : UserControl
     {
+        public LocalizedText SettingsText { get; set; }
+
         public Dashboard()
         {
             InitializeComponent();
+            DataContext = this;
+
+            //set texts
+            SettingsText = TextManager.Instance.GetText("SETTINGS_TEXT");
+        }
+
+        public void OnClick(object sender, RoutedEventArgs e)
+        {
+            if(LanguageManager.Instance.ApplicationLanguage == ApplicationLanguage.English)
+                LanguageManager.Instance.ChangeLanguage(ApplicationLanguage.German);
+            else
+                LanguageManager.Instance.ChangeLanguage(ApplicationLanguage.English);
         }
     }
 }

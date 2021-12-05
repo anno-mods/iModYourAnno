@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModManager_Classes.src.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,10 +12,10 @@ namespace ModManager_Classes.src.Metadata
         public String? ModID { get; set; }
         public String[]? IncompatibleIds { get; set; }
         public String[]? ModDependencies { get; set; }
-        public Localized? Category { get; set; }
-        public Localized? ModName { get; set; }
-        public Localized? Description { get; set; }
-        public Localized[]? KnownIssues { get; set; }
+        public LocalizedText? Category { get; set; }
+        public LocalizedText? ModName { get; set; }
+        public LocalizedText? Description { get; set; }
+        public LocalizedText[]? KnownIssues { get; set; }
         public Dlc[]? DLCDependencies { get; set; }
         public String? CreatorName { get; set; }
         public String? CreatorContact { get; set; }

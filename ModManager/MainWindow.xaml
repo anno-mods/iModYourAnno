@@ -34,7 +34,7 @@
             <TabControl x:Name="WindowViewControl" BorderBrush="#00000000">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
-                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Setter Property="Visibility" Value="Hidden" />
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                 </TabControl.ItemContainerStyle>

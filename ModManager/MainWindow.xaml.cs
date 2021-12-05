@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ModManager_Classes.src.Handlers;
+using ModManager_Classes.src.Enums;
 
 namespace ModManager_Views
 {
@@ -25,6 +27,7 @@ namespace ModManager_Views
             InitializeComponent();
             SetUpEmbeddedConsole();
             Console.WriteLine("Modders Are gonna take over the World!!!");
+
         }
 
         public void SetUpEmbeddedConsole()
