@@ -22,7 +22,7 @@
                 HorizontalAlignment="Left" 
                 Foreground="LightGray"/>
             <TextBlock 
-                Text="Dashboard" 
+                Text="{Binding DashboardText.Text, UpdateSourceTrigger=PropertyChanged}"  
                 VerticalAlignment="Center" 
                 Margin="10,0,0,0" 
                 Foreground="LightGray"/>
@@ -47,7 +47,7 @@
                     <TextBlock 
                         Foreground="LightGray"
                         Margin ="10,0,0,0" 
-                        Text="Start Anno 1800" 
+                        Text="{Binding PlayText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center" />
                 </DockPanel>
             </Button>
@@ -78,7 +78,7 @@
                     <TextBlock 
                         Foreground="LightGray"
                         Margin ="10,0,0,0" 
-                        Text="Mod Activation" 
+                        Text="{Binding ModActivationText.Text, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Center" />
                 </DockPanel>
             </Button>
@@ -98,7 +98,7 @@
                         Foreground="LightGray"/>
                     <TextBlock 
                         Margin ="10,0,0,0" 
-                        Text="Game Setup" 
+                        Text="{Binding GameSetupText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
                 </DockPanel>
@@ -119,7 +119,7 @@
                         Foreground="LightGray"/>
                     <TextBlock 
                         Margin ="10,0,0,0" 
-                        Text="Mod Installation" 
+                        Text="{Binding ModInstallationText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
                 </DockPanel>
@@ -140,7 +140,7 @@
                         Foreground="LightGray"/>
                     <TextBlock 
                         Margin ="10,0,0,0" 
-                        Text="Mod Tweaking" 
+                        Text="{Binding ModTweakingText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
                 </DockPanel>

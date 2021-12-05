@@ -23,17 +23,21 @@ namespace ModManager_Views
     /// </summary>
     public partial class Dashboard : UserControl
     {
-        public LocalizedText SettingsText { get; set; }
+        public LocalizedText SettingsText { get; } = TextManager.Instance.GetText("DASHBOARD_SETTINGS");
+        public LocalizedText ModTweakingText { get; } = TextManager.Instance.GetText("DASHBOARD_MOD_TWEAKING");
+        public LocalizedText ModInstallationText { get; } = TextManager.Instance.GetText("DASHBOARD_MOD_INSTALLATION");
+        public LocalizedText GameSetupText { get; } = TextManager.Instance.GetText("DASHBOARD_GAME_SETUP");
+        public LocalizedText ModActivationText { get; } = TextManager.Instance.GetText("DASHBOARD_MOD_ACTIVATION");
+        public LocalizedText PlayText { get; } = TextManager.Instance.GetText("DASHBOARD_PLAY");
+        public LocalizedText DashboardText { get; } = TextManager.Instance.GetText("DASHBOARD_DASHBOARD");
 
         public Dashboard()
         {
             InitializeComponent();
             DataContext = this;
-
-            //set texts
-            SettingsText = TextManager.Instance.GetText("SETTINGS_TEXT");
         }
 
+        //This is just a placeholder that changes languages on Settings Button Click.
         public void OnClick(object sender, RoutedEventArgs e)
         {
             if(LanguageManager.Instance.ApplicationLanguage == ApplicationLanguage.English)

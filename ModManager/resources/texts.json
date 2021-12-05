@@ -1,0 +1,107 @@
+﻿{
+  "DASHBOARD_SETTINGS": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Settings",
+      "French": null,
+      "German": "Einstellungen",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_MOD_TWEAKING": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Mod Tweaking",
+      "French": null,
+      "German": "Mods verändern",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_MOD_INSTALLATION": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Mod Installation",
+      "French": null,
+      "German": "Mods installieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_GAME_SETUP": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Game Setup",
+      "French": null,
+      "German": "Spielverzeichnis-Setup",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_MOD_ACTIVATION": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Mod Activation",
+      "French": null,
+      "German": "Mods aktivieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_PLAY": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Start Anno 1800",
+      "French": null,
+      "German": "Anno 1800 starten",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "DASHBOARD_DASHBOARD": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Dashboard",
+      "French": null,
+      "German": "Startseite",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  }
+}
