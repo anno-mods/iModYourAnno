@@ -4,30 +4,38 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ModManager_Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListBox 
-            x:Name="ListBox_ModList"
-            ItemsSource="{Binding DisplayedMods, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="SelectionChanged" SelectionMode="Extended">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox
+        <DockPanel>
+            <StackPanel x:Name="UpperControls" DockPanel.Dock="Top" Orientation="Horizontal">
+                <TextBlock Text="{Binding ActiveText.Text, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding ModManager.ActiveMods}" Margin="0,0,10,0"/>
+                <TextBlock Text="{Binding InactiveText.Text, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding ModManager.InactiveMods}"/>
+            </StackPanel>
+            <ListBox 
+                x:Name="ListBox_ModList"
+                ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="SelectionChanged" SelectionMode="Extended">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox
                             IsChecked="{Binding Selected}"
-                            Margin="0,0,5,0"
-                            />
-                        <TextBlock Text="{Binding Category}" Margin="0,0,5,0"/>
-                        <TextBlock Text="{Binding Name}" />
-
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="IsSelected" Value="{Binding Selected}"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-        </ListBox>
+                            Margin="0,0,5,0" />
+                            <TextBlock Text="{Binding Category.Text}" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Name.Text}" />
+                        </StackPanel>
+                        
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected" Value="{Binding Selected}"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </DockPanel>
     </Grid>
 </UserControl>

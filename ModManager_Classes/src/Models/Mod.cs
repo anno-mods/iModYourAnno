@@ -16,19 +16,19 @@ namespace ModManager_Classes.src.Models
     {
         #region fields_backing
         private string _directory_name;
-        private string _name;
-        private string _category;
+        private LocalizedText _name;
+        private LocalizedText _category;
         private bool _active;
         private bool _selected;
-        private string _description;
+        private LocalizedText _description;
         private string? _b64_Image;
         private ObservableCollection<ExposedModValue>? _exposedValues;
         #endregion
 
         //Mod filepath
         public string DirectoryName { get => _directory_name; set => _directory_name = value; }
-        public string Name { get => _name; set => _name = value; }
-        public string Category { get => _category; set => _category = value; }
+        public LocalizedText Name { get => _name; set => _name = value; }
+        public LocalizedText Category { get => _category; set => _category = value; }
         public bool Active 
         { 
             get => _active;
@@ -49,7 +49,7 @@ namespace ModManager_Classes.src.Models
             }
         }
 
-        public string Description { get => _description; set => _description = value; }
+        public LocalizedText Description { get => _description; set => _description = value; }
         //add a default image here!!!
         public string? B64_Image { get => _b64_Image; set => _b64_Image = value; }
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
@@ -71,18 +71,18 @@ namespace ModManager_Classes.src.Models
             if (metadata is Modinfo)
             {
                 Metadata = metadata;
-                Category = Metadata?.Category?.getText() ?? "NoCategory";
-                Name = Metadata?.ModName?.getText() ?? ModName;
-                Description = Metadata?.Description?.getText() ?? String.Empty;
+                Category = new LocalizedText(Metadata?.Category ?? new Localized("NoCategory"));
+                Name = new LocalizedText(Metadata?.ModName ?? new Localized(ModName));
+                Description = new LocalizedText(Metadata?.Description ?? new Localized("No Description provided"));
                 B64_Image = Metadata?.Image;
             }
             //mod without Metadata
             else
             {
                 bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
-                Category = matches ? _category : "NoCategory";
-                Name = matches ? _name : DirectoryName;
-                Description = String.Empty;
+                Category = new LocalizedText(new Localized(matches ? _category : "NoCategory"));
+                Name = new LocalizedText(new Localized(matches ? _name : DirectoryName));
+                Description = new LocalizedText(new Localized(String.Empty));
                 B64_Image = null;
             }
         }
@@ -97,7 +97,6 @@ namespace ModManager_Classes.src.Models
 
             return !Name.Equals("") && !Category.Equals("");
         }
-
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };

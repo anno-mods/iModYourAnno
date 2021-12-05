@@ -29,11 +29,16 @@ namespace ModManager_Classes.src.Models
         
         public LocalizedText()
         {
-            
+
         }
 
-        [OnDeserialized]
-        private void OnSerialized(StreamingContext context)
+        public LocalizedText(Localized l)
+        {
+            Texts = l;
+            OnSerialized(); 
+        }
+
+        private void OnSerialized()
         {
             if (Texts is Localized)
             {
@@ -44,6 +49,12 @@ namespace ModManager_Classes.src.Models
                 Text = String.Empty;
             }
             LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+        }
+
+        [OnDeserialized]
+        private void OnSerialized(StreamingContext context)
+        {
+            OnSerialized();
         }
 
         public void OnLanguageChanged(ApplicationLanguage lang)

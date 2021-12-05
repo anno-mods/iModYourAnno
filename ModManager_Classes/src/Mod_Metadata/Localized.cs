@@ -8,7 +8,6 @@ namespace ModManager_Classes.src.Models
 {
     public class Localized
     {
-        public Localized() { }
         public String? Chinese { get; set; }
         public String? English { get; set; }
         public String? French { get; set; }
@@ -20,6 +19,23 @@ namespace ModManager_Classes.src.Models
         public String? Russian { get; set; }
         public String? Spanish { get; set; }
         public String? Taiwanese { get; set; }
+
+        public Localized() { }
+
+        public Localized(String s)
+        {
+            English = s;
+            German = s;
+            Chinese = s;
+            French = s;
+            Italian = s;
+            Japanese = s;
+            Korean = s;
+            Polish = s;
+            Russian = s;
+            Spanish = s;
+            Taiwanese = s;
+        }
 
         public String getText(ApplicationLanguage appLang)
         {

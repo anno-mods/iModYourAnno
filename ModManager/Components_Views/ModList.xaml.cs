@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ModManager_Classes;
 using ModManager_Classes.src.Handlers;
-using System.Linq;
 using ModManager_Classes.src.Models;
 
 namespace ModManager_Views
@@ -24,13 +23,17 @@ namespace ModManager_Views
     /// </summary>
     public partial class ModList : UserControl
     {
+        public LocalizedText InactiveText { get; } = TextManager.Instance.GetText("MODLIST_INACTIVE");
+        public LocalizedText ActiveText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVE");
 
         public Mod? CurrentlyDisplayedMod { get; private set; } = null;
 
+        public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
+
         public ModList()
         {
-            DataContext = ModDirectoryManager.Instance;
             InitializeComponent();
+            DataContext = this;
         }
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -14,6 +14,7 @@ namespace ModManager_Classes.src.Handlers
     public class ModDirectoryManager : INotifyPropertyChanged
     {
         public static ModDirectoryManager Instance { get; private set; }
+
         #region Fields 
 
         public ObservableCollection<Mod> DisplayedMods
@@ -73,7 +74,7 @@ namespace ModManager_Classes.src.Handlers
 
         public void OrderDisplayed()
         {
-            _displayedMods = new ObservableCollection<Mod>(DisplayedMods.OrderBy(x => x.Name).OrderBy(x => x.Category).OrderByDescending(x => x.Active).ToList());
+            _displayedMods = new ObservableCollection<Mod>(DisplayedMods.OrderBy(x => x.Name.Text).OrderBy(x => x.Category.Text).OrderByDescending(x => x.Active).ToList());
         }
 
         public void LoadModsFromModDirectory()
@@ -85,7 +86,7 @@ namespace ModManager_Classes.src.Handlers
                     .Select(
                         x => InitMod(x)
                     )
-                    .Where(x => x.Name != ".cache")
+                    .Where(x => x.DirectoryName != ".cache")
                     .ToList()
                 );
             }
@@ -148,7 +149,6 @@ namespace ModManager_Classes.src.Handlers
             return false;
         }
 
-
         public bool TrySerializeMetadata(String MetadataFile, out Modinfo? metadata)
         {
             try
@@ -168,7 +168,6 @@ namespace ModManager_Classes.src.Handlers
             }
             return false;
         }
-
 
         /// <summary>
         /// Initializes a Mod from a Mod Folder Root path. If the Name of the folder does not comply with the naming scheme, it renames it to:
@@ -196,14 +195,15 @@ namespace ModManager_Classes.src.Handlers
             TrySerializeMetadata(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
             return new Mod(active, Name, metadata);
         }
+        #endregion
 
+        #region ModListFilter
 
         public delegate bool ModListFilter(Mod m);
         public void FilterMods(ModListFilter filter)
         {
             DisplayedMods = new ObservableCollection<Mod>(ModList.Where(x => filter(x)).ToList());
         }
-
         #endregion
 
         #region INotifyPropertyChangedMembers
