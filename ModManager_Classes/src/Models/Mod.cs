@@ -8,10 +8,11 @@ using ModManager_Classes.src.Metadata;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 
 namespace ModManager_Classes.src.Models
 {
-    public class Mod
+    public class Mod : INotifyPropertyChanged
     {
         #region fields_backing
         private string _directory_name;
@@ -28,8 +29,26 @@ namespace ModManager_Classes.src.Models
         public string DirectoryName { get => _directory_name; set => _directory_name = value; }
         public string Name { get => _name; set => _name = value; }
         public string Category { get => _category; set => _category = value; }
-        public bool Active { get => _active; set => _active = value; }
-        public bool Selected { get => _selected; set => _selected = value; }
+        public bool Active 
+        { 
+            get => _active;
+            set
+            {
+                _active = value;
+                OnPropertyChanged("Active");
+            }
+        
+        }
+        public bool Selected 
+        { 
+            get => _selected; 
+            set
+            { 
+                _selected = value;
+                OnPropertyChanged("Selected");
+            }
+        }
+
         public string Description { get => _description; set => _description = value; }
         //add a default image here!!!
         public string? B64_Image { get => _b64_Image; set => _b64_Image = value; }
@@ -42,14 +61,14 @@ namespace ModManager_Classes.src.Models
         private Modinfo? Metadata;
 
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
-        public Mod(bool active, String ModName)
+        public Mod (bool active, String ModName, Modinfo? metadata)
         {
             //if we need to trim the start dash, the mod should become inactive.
             Active = active;
             this.DirectoryName = ModName;
 
             //mod with Metadata
-            if (TrySerializeMetadata(System.IO.Path.Combine(DirectoryName, "modinfo.json"), out var metadata))
+            if (metadata is Modinfo)
             {
                 Metadata = metadata;
                 Category = Metadata?.Category?.getText() ?? "NoCategory";
@@ -60,32 +79,36 @@ namespace ModManager_Classes.src.Models
             //mod without Metadata
             else
             {
-                Category = "NoCategory";
-                Name = DirectoryName;
+                bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
+                Category = matches ? _category : "NoCategory";
+                Name = matches ? _name : DirectoryName;
                 Description = String.Empty;
                 B64_Image = null;
             }
         }
 
-        public bool TrySerializeMetadata(String MetadataFile, out Modinfo? metadata)
+        private bool TryMatchToNamingPattern(String DirectoryName, out String Category, out String Name)
         {
-            try
-            {
-                metadata = JsonConvert.DeserializeObject<Modinfo>(File.ReadAllText(MetadataFile));
-                return true;
-            }
-            catch (JsonSerializationException e)
-            {
-                metadata = null;
-                Console.WriteLine("Json Serialization failed: {0}", MetadataFile);
-            }
-            catch (IOException e)
-            {
-                metadata = null;
-                Console.WriteLine("File not found: {0}", MetadataFile);
-            }
-            return false;
+            String CategoryPattern = @"[[][a-z]+[]]";
+            Category = Regex.Match(DirectoryName, CategoryPattern, RegexOptions.IgnoreCase).Value.TrimStart('[').TrimEnd(']');
+
+            String NamePattern = @"[^]]*";
+            Name = Regex.Match(DirectoryName, NamePattern, RegexOptions.RightToLeft).Value.TrimStart(' ');
+
+            return !Name.Equals("") && !Category.Equals("");
         }
 
+
+        #region INotifyPropertyChangedMembers
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler is PropertyChangedEventHandler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
     }
 }

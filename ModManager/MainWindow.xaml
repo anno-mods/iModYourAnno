@@ -40,7 +40,7 @@
                 </TabControl.ItemContainerStyle>
                 
                 <TabItem>
-                    <Components:TestPage />
+                    <Components:ModList />
                 </TabItem>
             </TabControl>
         </DockPanel>
