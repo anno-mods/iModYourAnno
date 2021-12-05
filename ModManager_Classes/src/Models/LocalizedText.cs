@@ -22,6 +22,7 @@ namespace ModManager_Classes.src.Models
                 OnPropertyChanged("Text");
             }
         }
+        [JsonIgnore]
         private String _text;
 
         public Localized? Texts { get; set; }
@@ -53,11 +54,11 @@ namespace ModManager_Classes.src.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler is PropertyChangedEventHandler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));

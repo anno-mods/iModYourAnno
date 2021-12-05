@@ -11,7 +11,7 @@ using System.Collections.ObjectModel;
 
 namespace ModManager_Classes.src.Models
 {
-    internal class Mod
+    public class Mod
     {
         #region fields_backing
         private string _directory_name;
@@ -19,7 +19,7 @@ namespace ModManager_Classes.src.Models
         private string _category;
         private bool _active;
         private bool _selected;
-        private string? _description;
+        private string _description;
         private string? _b64_Image;
         private ObservableCollection<ExposedModValue>? _exposedValues;
         #endregion
@@ -30,7 +30,7 @@ namespace ModManager_Classes.src.Models
         public string Category { get => _category; set => _category = value; }
         public bool Active { get => _active; set => _active = value; }
         public bool Selected { get => _selected; set => _selected = value; }
-        public string? Description { get => _description; set => _description = value; }
+        public string Description { get => _description; set => _description = value; }
         //add a default image here!!!
         public string? B64_Image { get => _b64_Image; set => _b64_Image = value; }
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
@@ -42,21 +42,27 @@ namespace ModManager_Classes.src.Models
         private Modinfo? Metadata;
 
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
-        public Mod(String DirectoryName)
+        public Mod(bool active, String ModName)
         {
             //if we need to trim the start dash, the mod should become inactive.
-            Active = TryTrimStart(DirectoryName, out String ModName);
+            Active = active;
             this.DirectoryName = ModName;
 
+            //mod with Metadata
             if (TrySerializeMetadata(System.IO.Path.Combine(DirectoryName, "modinfo.json"), out var metadata))
             {
                 Metadata = metadata;
+                Category = Metadata?.Category?.getText() ?? "NoCategory";
+                Name = Metadata?.ModName?.getText() ?? ModName;
+                Description = Metadata?.Description?.getText() ?? String.Empty;
+                B64_Image = Metadata?.Image;
             }
             //mod without Metadata
             else
             {
                 Category = "NoCategory";
                 Name = DirectoryName;
+                Description = String.Empty;
                 B64_Image = null;
             }
         }
@@ -65,7 +71,7 @@ namespace ModManager_Classes.src.Models
         {
             try
             {
-                metadata = JsonConvert.DeserializeObject<Modinfo>(MetadataFile);
+                metadata = JsonConvert.DeserializeObject<Modinfo>(File.ReadAllText(MetadataFile));
                 return true;
             }
             catch (JsonSerializationException e)
@@ -81,25 +87,5 @@ namespace ModManager_Classes.src.Models
             return false;
         }
 
-        /// <summary>
-        /// Checks if a directory name starts with any '-' chars.
-        /// </summary>
-        /// <param name="s">input name</param>
-        /// <param name="result">out trimmed name</param>
-        /// <returns>true, if there is no dash at the start (mod is active), false, if there is one.</returns>
-        private bool TryTrimStart(String s, out String result)
-        {
-            if (!s.StartsWith('-'))
-            {
-                result = s;
-                return true;
-            }
-            while (s.StartsWith('-'))
-            {
-                s = s.Substring(1);
-            }
-            result = s;
-            return false;
-        }
     }
 }

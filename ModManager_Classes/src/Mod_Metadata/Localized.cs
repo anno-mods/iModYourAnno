@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using ModManager_Classes.src.Enums;
+using ModManager_Classes.src.Handlers;
 
 namespace ModManager_Classes.src.Models
 {
@@ -33,7 +34,7 @@ namespace ModManager_Classes.src.Models
 
         public String getText()
         {
-            return getText(ApplicationLanguage.English);
+            return getText(LanguageManager.Instance.ApplicationLanguage);
         }
     }
 }

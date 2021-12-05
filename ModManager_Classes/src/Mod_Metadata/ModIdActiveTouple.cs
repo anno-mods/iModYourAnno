@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ModManager_Classes.src.Metadata
 {
-    class ModIdActiveTouple
+    public class ModIdActiveTouple
     {
         public ModIdActiveTouple() { }
         public String? ModID { get; set; }
