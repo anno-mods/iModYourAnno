@@ -6,29 +6,37 @@ using System.Text;
 using System.Threading.Tasks;
 using ModManager_Classes.src.Models;
 
-namespace ModManager_Classes.src
+namespace ModManager_Classes.src.Handlers
 {
     internal class ModDirectoryManager
     {
-        #region Bindables 
+        #region Fields 
         public ObservableCollection<Mod> DisplayedMods { get => _displayedMods; set => _displayedMods = value; }
         public int ActiveMods { get => _activeMods; set => _activeMods = value; }
         public int InactiveMods { get => _inactiveMods; set => _inactiveMods = value; }
+        private String ModPath { get; }
         #endregion
 
+        #region Properties
+
         private ObservableCollection<Mod> ModList;
+
+        #endregion
+
+        #region BackgroundFields
+
         private ObservableCollection<Mod> _displayedMods;
         private int _activeMods = 0;
         private int _inactiveMods = 0;
 
-        private String ModPath { get; }
-
-        
+        #endregion
 
         #region Constructors 
 
         public ModDirectoryManager()
         {
+            ModPath = Properties.Resources.MOD_DIRECTORY_PATH;
+
             ModList = new ObservableCollection<Mod>();
             DisplayedMods = ModList;
 
@@ -39,7 +47,7 @@ namespace ModManager_Classes.src
 
         #region MemberFunctions
 
-        private void ModListChanged()
+        private void OnModListChanged()
         {
             UpdateModCounts();
             OrderDisplayed();
@@ -68,7 +76,7 @@ namespace ModManager_Classes.src
                     .Where(x => x.Name != ".cache")
                     .ToList()
                 );
-                ModListChanged();
+                OnModListChanged();
             }
             else
             {
@@ -80,7 +88,7 @@ namespace ModManager_Classes.src
         public void FilterMods(ModListFilter filter)
         {
             DisplayedMods = new ObservableCollection<Mod>(ModList.Where(x => filter(x)).ToList());
-            ModListChanged();
+            OnModListChanged();
         }
                 
         #endregion

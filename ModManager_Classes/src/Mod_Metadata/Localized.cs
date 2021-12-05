@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using ModManager_Classes.src.Enums;
 
-namespace ModManager_Classes.src.Metadata
+namespace ModManager_Classes.src.Models
 {
-    class Localized
+    public class Localized
     {
         public Localized() { }
         public String? Chinese { get; set; }
