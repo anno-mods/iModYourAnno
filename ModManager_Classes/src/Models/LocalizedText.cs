@@ -76,5 +76,10 @@ namespace ModManager_Classes.src.Models
             }
         }
 
+        public override string ToString()
+        {
+            return Text;
+        }
+
     }
 }

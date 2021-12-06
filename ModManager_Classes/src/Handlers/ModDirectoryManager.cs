@@ -28,8 +28,31 @@ namespace ModManager_Classes.src.Handlers
             }
         }
 
-        public int ActiveMods { get => _activeMods; set => _activeMods = value; }
-        public int InactiveMods { get => _inactiveMods; set => _inactiveMods = value; }
+        public int ActiveMods 
+        { 
+            get
+            { 
+                return _activeMods; 
+            }
+            set 
+            { 
+                _activeMods = value;
+                OnPropertyChanged("ActiveMods");
+            } 
+        }
+        public int InactiveMods 
+        { 
+            get
+            { 
+                return _inactiveMods; 
+            }
+            set 
+            { 
+                _inactiveMods = value;
+                OnPropertyChanged("InactiveMods");
+            } 
+        }
+
         private String ModPath { get; }
         private ObservableCollection<Mod> ModList;
         #endregion
@@ -37,8 +60,8 @@ namespace ModManager_Classes.src.Handlers
         #region BackgroundFields
 
         private ObservableCollection<Mod> _displayedMods;
-        private int _activeMods = 0;
-        private int _inactiveMods = 0;
+        private int _activeMods;
+        private int _inactiveMods;
 
         #endregion
 
@@ -109,20 +132,21 @@ namespace ModManager_Classes.src.Handlers
         public bool TrySetModActivationStatus(Mod mod, bool Active)
         {
             //get Mod Path for mod 
-            String SourcePath = $"{ModPath}\\{(mod.Active ? "" : "-")}{mod.DirectoryName}\\";
-            String TargetPath = $"{ModPath}\\{(Active ? "" : "-")}{mod.DirectoryName}\\";
+            String SourcePath = Path.Combine($"{ModPath}", $"{(mod.Active ? "" : "-")}{mod.DirectoryName}", "");
+            String TargetPath = Path.Combine($"{ModPath}", $"{(Active ? "" : "-")}{mod.DirectoryName}", "");
             try
             {
-                if (!TargetPath.Equals(SourcePath))
+                if (mod.Active != Active)
                 {
                     Directory.Move(SourcePath, TargetPath);
-                    Console.WriteLine($"{(Active ? "Activated" : "Deactivated")} {mod.Name}. Directory renamed from {SourcePath} to {TargetPath}");
+                    Console.WriteLine($"{(Active ? "Activated" : "Deactivated")} {mod.Category} {mod.Name}. Directory renamed from {SourcePath} to {TargetPath}");
                 }                
                 mod.Active = Active;
+                UpdateModCounts();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Failed to Activate Mod: {mod.Name}. Cause: {e.Message} Source: {SourcePath} Target: {TargetPath}");
+                Console.WriteLine($"Failed to Activate Mod: {mod.Category} {mod.Name}. Cause: {e.Message} Source: {SourcePath} Target: {TargetPath}");
                 return false;
             }
             return true;

@@ -133,5 +133,35 @@
       "Spanish": null,
       "Taiwanese": null
     }
+  },
+  "MODLIST_ACTIVATE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Activate",
+      "French": null,
+      "German": "Aktivieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "MODLIST_DEACTIVATE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Deactivate",
+      "French": null,
+      "German": "Deaktivieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
   }
 }
