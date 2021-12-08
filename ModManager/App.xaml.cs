@@ -1,10 +1,10 @@
 ﻿using System.Windows;
 using Imya.Utils;
 using Imya.Models;
-using Imya_UI.Properties;
+using Imya.UI.Properties;
 using Imya.Enums;
 
-namespace Imya_UI
+namespace Imya.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml

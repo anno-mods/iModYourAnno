@@ -17,7 +17,7 @@ using Imya.Models;
 using Imya.Models.ModMetadata;
 using Imya.Utils;
 
-namespace Imya_UI.Components
+namespace Imya.UI.Components
 {
     /// <summary>
     /// Interaktionslogik für ModDescriptionDisplay.xaml
@@ -36,11 +36,17 @@ namespace Imya_UI.Components
 
         private Mod _mod;
 
-        public String? Version { get; private set; }
-        public bool StringVisible { get => Version is String; }
-
-        public String? Description { get; private set; }
-        private bool HasDescription { get => Description is String; }
+        public String? Version 
+        { 
+            get => _version;
+            set
+            {
+                _version = value;
+                OnPropertyChanged("Version");
+            }
+        }
+        private String? _version;
+        public LocalizedText? Description { get; private set; }
 
         //Texts 
         private LocalizedText NoVersion = TextManager.Instance.GetText("MODDISPLAY_NO_VERSION");
@@ -48,12 +54,22 @@ namespace Imya_UI.Components
 
         public ModDescriptionDisplay()
         {
+            DataContext = this;
             InitializeComponent();
+            Version = "1.1.1.1.1.1";
         }
 
-        private void GenerateDescription(Modinfo metadata)
+        //This assumes the mod has a modinfo atm.
+        private void GenerateDescription(Mod mod)
         {
-            Version = metadata.Version is String ? metadata.Version : NoVersion.Text;
+            Version = mod.Metadata?.Version is String ? mod.Metadata.Version : NoVersion.Text;
+            Description = mod.Description is LocalizedText ? mod.Description : NoDescription;
+        }
+
+        private void Reset()
+        {
+            Version = null;
+            Description = null;
         }
 
         #region INotifyPropertyChangedMembers

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Imya_UI
+namespace Imya.UI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

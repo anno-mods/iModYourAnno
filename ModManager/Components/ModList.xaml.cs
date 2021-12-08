@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Imya_UI.Components
+namespace Imya.UI.Components
 {
     /// <summary>
     /// Interaktionslogik für ModList.xaml

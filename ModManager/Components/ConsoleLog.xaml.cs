@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Imya_UI.Components
+namespace Imya.UI.Components
 {
     /// <summary>
     /// Interaktionslogik für Console.xaml

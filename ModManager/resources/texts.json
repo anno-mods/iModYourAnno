@@ -141,5 +141,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "MODDISPLAY_NO_DESCRIPTION": {
+    "Chinese": null,
+    "English": "No description provided.",
+    "French": null,
+    "German": "Keine Beschreibung vorhanden.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODDISPLAY_NO_VERSION": {
+    "Chinese": null,
+    "English": "No version provided.",
+    "French": null,
+    "German": "Keine Versionsinfo vorhanden.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

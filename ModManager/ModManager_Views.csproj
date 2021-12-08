@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <PackageId>ModManager</PackageId>
-    <RootNamespace>Imya_UI</RootNamespace>
+    <RootNamespace>Imya.UI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
