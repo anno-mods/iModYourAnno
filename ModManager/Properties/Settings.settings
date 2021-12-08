@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ModManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="MOD_DIRECTORY_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F://Spiele/Anno 1800/mods</Value>
+    </Setting>
+    <Setting Name="LANGUAGE_FILE_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)">resources/texts.json</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

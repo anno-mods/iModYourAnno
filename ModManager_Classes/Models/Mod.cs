@@ -13,6 +13,8 @@ namespace Imya.Models
         private LocalizedText _category;
         private bool _active;
         private bool _selected;
+        private LocalizedText _description;
+        private string? _b64_Image;
         private ObservableCollection<ExposedModValue>? _exposedValues;
         #endregion
 
@@ -75,6 +77,8 @@ namespace Imya.Models
                 bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
                 Category = new LocalizedText(matches ? _category : "NoCategory");
                 Name = new LocalizedText(matches ? _name : DirectoryName);
+                Description = new LocalizedText(String.Empty);
+                B64_Image = null;
             }
         }
 

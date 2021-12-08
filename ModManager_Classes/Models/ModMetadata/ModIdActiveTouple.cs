@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModManager_Classes.src.Metadata
+﻿namespace Imya.Models.ModMetadata
 {
-    class ModIdActiveTouple
+    public class ModIdActiveTouple
     {
         public ModIdActiveTouple() { }
         public String? ModID { get; set; }

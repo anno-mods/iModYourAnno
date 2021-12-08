@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModManager_Classes.src.Metadata
+﻿namespace Imya.Models.ModMetadata
 {
-    class Modinfo
+    public class Modinfo
     {
         public Modinfo() { }
         public String? Version { get; set; }

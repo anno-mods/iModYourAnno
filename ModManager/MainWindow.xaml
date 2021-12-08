@@ -1,9 +1,9 @@
-﻿<Window x:Class="ModManager_Views.MainWindow"
+﻿<Window x:Class="Imya.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Components="clr-namespace:ModManager_Views"
+        xmlns:Components="clr-namespace:Imya.UI.Components"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="#FFFFFF"
@@ -30,17 +30,17 @@
         <Components:Dashboard Grid.RowSpan="2"/>
         <Components:ConsoleLog Grid.Column="1" Grid.Row="1" x:Name="ConsoleLogTextBox" />
 
-        <DockPanel Grid.Row="0" Grid.Column="1">
-            <TabControl x:Name="WindowViewControl" BorderBrush="#00000000">
+        <DockPanel Grid.Row="0" Grid.Column="1" Background="#FF252525">
+            <TabControl x:Name="WindowViewControl" BorderBrush="#FF252525" Background="#FF252525" BorderThickness="0">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
-                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Setter Property="Visibility" Value="Hidden" />
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                 </TabControl.ItemContainerStyle>
                 
-                <TabItem>
-                    <Components:TestPage />
+                <TabItem Background="#FF252525">
+                    <Components:ModDescriptionDisplay />
                 </TabItem>
             </TabControl>
         </DockPanel>
