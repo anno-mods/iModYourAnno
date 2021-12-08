@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Imya.Enums;
 
 namespace Imya.Models.ModMetadata
 {

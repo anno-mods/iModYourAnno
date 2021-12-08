@@ -3,6 +3,7 @@ using Imya.Utils;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Imya.Enums;
 
 namespace Imya.Models
 {

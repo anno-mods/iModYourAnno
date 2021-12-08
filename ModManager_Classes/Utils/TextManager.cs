@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Newtonsoft.Json;
+using Imya.Enums;
 
 namespace Imya.Utils
 {

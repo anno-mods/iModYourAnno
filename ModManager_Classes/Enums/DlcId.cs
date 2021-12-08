@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Imya.Models
+namespace Imya.Enums
 {
     public enum DlcId
     {
@@ -20,18 +20,5 @@ namespace Imya.Models
         [EnumMember] VehicleSkins,
         [EnumMember] VibrantCity,
         [EnumMember] PedestrianZone
-    }
-
-    public enum DlcRequirement
-    {
-        [EnumMember] required,
-        [EnumMember] partly,
-        [EnumMember] atLeastOneRequired
-    }
-
-    public enum ApplicationLanguage
-    { 
-        [EnumMember] English, 
-        [EnumMember] German
     }
 }
