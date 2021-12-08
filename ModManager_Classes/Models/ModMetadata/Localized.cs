@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ModManager_Classes.src.Enums;
-using ModManager_Classes.src.Handlers;
+﻿using Imya.Utils;
 
-namespace ModManager_Classes.src.Models
+namespace Imya.Models.ModMetadata
 {
     public class Localized
     {

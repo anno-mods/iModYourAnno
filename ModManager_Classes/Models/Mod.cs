@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModManager_Classes.src.Metadata;
-using Newtonsoft.Json;
-using System.IO;
+﻿using Imya.Models.ModMetadata;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
-namespace ModManager_Classes.src.Models
+namespace Imya.Models
 {
     public class Mod : INotifyPropertyChanged
     {

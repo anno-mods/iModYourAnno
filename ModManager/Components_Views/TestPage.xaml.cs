@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ModManager_Views
+namespace Imya_UI
 {
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml

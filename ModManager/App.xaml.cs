@@ -1,13 +1,9 @@
-﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using ModManager_Classes.src.Handlers;
-using ModManager_Classes.src.Enums;
-using ModManager.Properties;
-namespace ModManager
+﻿using System.Windows;
+using Imya.Utils;
+using Imya_UI.Properties;
+using Imya.Models;
+
+namespace Imya_UI
 {
     /// <summary>
     /// Interaction logic for App.xaml

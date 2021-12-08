@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using ModManager_Classes.src.Enums;
-using ModManager_Classes.src.Handlers;
+﻿using Imya.Models.ModMetadata;
+using Imya.Utils;
 using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
-namespace ModManager_Classes.src.Models
+namespace Imya.Models
 {
     public class LocalizedText: INotifyPropertyChanged
     {

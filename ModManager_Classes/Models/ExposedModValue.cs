@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Collections.ObjectModel;
+﻿using System.Xml;
 
-namespace ModManager_Classes.src.Models
+namespace Imya.Models
 {
     public class ExposedModValue
     {

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Imya.Models;
+using Imya.Models.ModMetadata;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModManager_Classes.src.Metadata;
-using ModManager_Classes.src.Models;
-using Newtonsoft.Json;
 
-namespace ModManager_Classes.src.Handlers
+namespace Imya.Utils
 {
     public class ModDirectoryManager : INotifyPropertyChanged
     {
