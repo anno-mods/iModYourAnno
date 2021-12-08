@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using Imya.Utils;
-using Imya_UI.Properties;
 using Imya.Models;
+using Imya_UI.Properties;
 
 namespace Imya_UI
 {
@@ -15,6 +15,8 @@ namespace Imya_UI
             //Setup Managers
             TextManager TextManager = new TextManager(Settings.Default.LANGUAGE_FILE_PATH);
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager(Settings.Default.MOD_DIRECTORY_PATH);
+
+            //Set App Language
             TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
         }
     }
