@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Imya_UI
+namespace Imya_UI.Views
 {
     /// <summary>
     /// Interaktionslogik für UserControl1.xaml

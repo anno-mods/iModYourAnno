@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Imya_UI
+namespace Imya_UI.Components
 {
     /// <summary>
     /// Interaktionslogik für ModList.xaml
@@ -129,7 +129,7 @@ namespace Imya_UI
         public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
             string strValue = value as string;
-            return strValue.Equals("Green") ? true : false;
+            return strValue.Equals("Green");
         }
     }
 }

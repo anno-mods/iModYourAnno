@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Imya.Enums;
 
-namespace Imya_UI
+namespace Imya_UI.Components
 {
     /// <summary>
     /// Interaktionslogik für Dashboard.xaml
