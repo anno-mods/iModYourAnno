@@ -2,6 +2,7 @@
 using Imya.Utils;
 using System.Windows;
 using System.Windows.Controls;
+using Imya.Enums;
 
 namespace Imya_UI
 {
