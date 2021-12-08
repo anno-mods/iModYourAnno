@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModManager_Classes.src.Metadata;
-using Newtonsoft.Json;
-using System.IO;
+﻿using Imya.Models.ModMetadata;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 
-namespace ModManager_Classes.src.Models
+namespace Imya.Models
 {
     public class Mod : INotifyPropertyChanged
     {
@@ -65,24 +58,24 @@ namespace ModManager_Classes.src.Models
         {
             //if we need to trim the start dash, the mod should become inactive.
             Active = active;
-            this.DirectoryName = ModName;
+            DirectoryName = ModName;
 
             //mod with Metadata
             if (metadata is Modinfo)
             {
                 Metadata = metadata;
-                Category = new LocalizedText(Metadata?.Category ?? new Localized("NoCategory"));
-                Name = new LocalizedText(Metadata?.ModName ?? new Localized(ModName));
-                Description = new LocalizedText(Metadata?.Description ?? new Localized("No Description provided"));
+                Category = (Metadata.Category is Localized) ? new LocalizedText(Metadata.Category) : new LocalizedText("NoCategory");
+                Name = (Metadata.ModName is Localized) ? new LocalizedText(Metadata.ModName) : new LocalizedText(ModName);
+                Description = (Metadata.Description is Localized) ? new LocalizedText(Metadata.Description) : new LocalizedText("No Description provided!");
                 B64_Image = Metadata?.Image;
             }
             //mod without Metadata
             else
             {
                 bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
-                Category = new LocalizedText(new Localized(matches ? _category : "NoCategory"));
-                Name = new LocalizedText(new Localized(matches ? _name : DirectoryName));
-                Description = new LocalizedText(new Localized(String.Empty));
+                Category = new LocalizedText(matches ? _category : "NoCategory");
+                Name = new LocalizedText(matches ? _name : DirectoryName);
+                Description = new LocalizedText(String.Empty);
                 B64_Image = null;
             }
         }

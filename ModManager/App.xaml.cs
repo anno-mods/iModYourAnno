@@ -1,13 +1,10 @@
-﻿using System;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using ModManager_Classes.src.Handlers;
-using ModManager_Classes.src.Enums;
-using ModManager.Properties;
-namespace ModManager
+﻿using System.Windows;
+using Imya.Utils;
+using Imya.Models;
+using Imya.UI.Properties;
+using Imya.Enums;
+
+namespace Imya.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -19,6 +16,8 @@ namespace ModManager
             //Setup Managers
             TextManager TextManager = new TextManager(Settings.Default.LANGUAGE_FILE_PATH);
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager(Settings.Default.MOD_DIRECTORY_PATH);
+
+            //Set App Language
             TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
         }
     }

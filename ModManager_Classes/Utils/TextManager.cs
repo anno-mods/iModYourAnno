@@ -1,13 +1,8 @@
-﻿using ModManager_Classes.src.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Imya.Models;
 using Newtonsoft.Json;
-using ModManager_Classes.src.Enums;
+using Imya.Enums;
 
-namespace ModManager_Classes.src.Handlers
+namespace Imya.Utils
 {
     public class TextManager
     {

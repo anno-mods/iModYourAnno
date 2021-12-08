@@ -13,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ModManager_Views
+namespace Imya.UI.Views
 {
     /// <summary>
-    /// Interaktionslogik für Console.xaml
+    /// Interaktionslogik für UserControl1.xaml
     /// </summary>
-    public partial class ConsoleLog : UserControl
+    public partial class TestPage : UserControl
     {
-        public ConsoleLog()
+        public TestPage()
         {
             InitializeComponent();
-        }
-
-        private void ConsoleLog_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ScrollPane.ScrollToBottom();
         }
     }
 }

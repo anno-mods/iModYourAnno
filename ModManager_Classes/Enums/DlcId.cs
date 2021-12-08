@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+﻿using System.Runtime.Serialization;
 
-namespace ModManager_Classes.src.Enums
+namespace Imya.Enums
 {
     public enum DlcId
     {
@@ -25,18 +20,5 @@ namespace ModManager_Classes.src.Enums
         [EnumMember] VehicleSkins,
         [EnumMember] VibrantCity,
         [EnumMember] PedestrianZone
-    }
-
-    public enum DlcRequirement
-    {
-        [EnumMember] required,
-        [EnumMember] partly,
-        [EnumMember] atLeastOneRequired
-    }
-
-    public enum ApplicationLanguage
-    { 
-        [EnumMember] English, 
-        [EnumMember] German
     }
 }

@@ -1,9 +1,4 @@
-﻿using ModManager_Classes.src.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ModManager_Classes.src.Metadata
+﻿namespace Imya.Models.ModMetadata
 {
     public class Modinfo
     {
