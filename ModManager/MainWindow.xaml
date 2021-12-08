@@ -30,8 +30,8 @@
         <Components:Dashboard Grid.RowSpan="2"/>
         <Components:ConsoleLog Grid.Column="1" Grid.Row="1" x:Name="ConsoleLogTextBox" />
 
-        <DockPanel Grid.Row="0" Grid.Column="1">
-            <TabControl x:Name="WindowViewControl" BorderBrush="#00000000">
+        <DockPanel Grid.Row="0" Grid.Column="1" Background="#FF252525">
+            <TabControl x:Name="WindowViewControl" BorderBrush="#FF252525" Background="#FF252525" BorderThickness="0">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Setter Property="Visibility" Value="Hidden" />
@@ -39,8 +39,8 @@
                     </Style>
                 </TabControl.ItemContainerStyle>
                 
-                <TabItem>
-                    <Components:TestPage />
+                <TabItem Background="#FF252525">
+                    <Components:ModList/>
                 </TabItem>
             </TabControl>
         </DockPanel>

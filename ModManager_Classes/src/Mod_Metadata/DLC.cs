@@ -8,7 +8,7 @@ using ModManager_Classes.src.Enums;
 
 namespace ModManager_Classes.src.Metadata
 {
-    class Dlc
+    public class Dlc
     {
         public Dlc() { }
 

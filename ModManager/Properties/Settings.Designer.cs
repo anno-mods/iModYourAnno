@@ -25,7 +25,7 @@ namespace ModManager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("testmods")]
+        [global::System.Configuration.DefaultSettingValueAttribute("F://Spiele/Anno 1800/mods")]
         public string MOD_DIRECTORY_PATH {
             get {
                 return ((string)(this["MOD_DIRECTORY_PATH"]));

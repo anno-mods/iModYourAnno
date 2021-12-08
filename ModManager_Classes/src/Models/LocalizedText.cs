@@ -22,17 +22,23 @@ namespace ModManager_Classes.src.Models
                 OnPropertyChanged("Text");
             }
         }
+        [JsonIgnore]
         private String _text;
 
         public Localized? Texts { get; set; }
         
         public LocalizedText()
         {
-            
+
         }
 
-        [OnDeserialized]
-        private void OnSerialized(StreamingContext context)
+        public LocalizedText(Localized l)
+        {
+            Texts = l;
+            OnSerialized(); 
+        }
+
+        private void OnSerialized()
         {
             if (Texts is Localized)
             {
@@ -42,7 +48,13 @@ namespace ModManager_Classes.src.Models
             {
                 Text = String.Empty;
             }
-            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+            TextManager.Instance.LanguageChanged += OnLanguageChanged;
+        }
+
+        [OnDeserialized]
+        private void OnSerialized(StreamingContext context)
+        {
+            OnSerialized();
         }
 
         public void OnLanguageChanged(ApplicationLanguage lang)
@@ -53,15 +65,20 @@ namespace ModManager_Classes.src.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
         private void OnPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler is PropertyChangedEventHandler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        public override string ToString()
+        {
+            return Text;
         }
 
     }

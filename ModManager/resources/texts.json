@@ -103,5 +103,65 @@
       "Spanish": null,
       "Taiwanese": null
     }
+  },
+  "MODLIST_ACTIVE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Active: ",
+      "French": null,
+      "German": "Aktiviert: ",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "MODLIST_INACTIVE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Inactive: ",
+      "French": null,
+      "German": "Deaktiviert: ",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "MODLIST_ACTIVATE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Activate",
+      "French": null,
+      "German": "Aktivieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
+  },
+  "MODLIST_DEACTIVATE": {
+    "Texts": {
+      "Chinese": null,
+      "English": "Deactivate",
+      "French": null,
+      "German": "Deaktivieren",
+      "Italian": null,
+      "Japanese": null,
+      "Korean": null,
+      "Polish": null,
+      "Russian": null,
+      "Spanish": null,
+      "Taiwanese": null
+    }
   }
 }

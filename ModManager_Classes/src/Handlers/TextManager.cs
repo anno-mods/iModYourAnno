@@ -5,14 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-
+using ModManager_Classes.src.Enums;
 
 namespace ModManager_Classes.src.Handlers
 {
     public class TextManager
     {
-        public static TextManager Instance;
-        private Dictionary<string, LocalizedText> Texts;
+        public static TextManager Instance { get; private set; }
+        private Dictionary<string, LocalizedText> Texts; 
+        public ApplicationLanguage ApplicationLanguage { get; private set; }
+
+        public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
+        public event LanguageChangedEventHandler LanguageChanged = delegate { };
+
 
         public TextManager(String Sourcefile)
         {
@@ -56,6 +61,13 @@ namespace ModManager_Classes.src.Handlers
         public void SetVariable(ref String variable, String Key)
         {
             variable = this.GetText(Key).Text;
+        }
+
+        public void ChangeLanguage(ApplicationLanguage lang)
+        {
+            Console.WriteLine($"Changed App Language to: {lang}");
+            ApplicationLanguage = lang;
+            LanguageChanged(lang);
         }
     }
 }

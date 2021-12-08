@@ -1,0 +1,112 @@
+﻿<UserControl x:Class="ModManager_Views.ModList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ModManager_Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#FF252525">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <local:IconConverter x:Key="ModIconConverter"/>
+            <local:IconColorConverter x:Key="ModIconColorConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        </Grid.Resources>
+        <StackPanel 
+                x:Name="UpperControls" 
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+            Grid.ColumnSpan="2">
+            <TextBlock Text="{Binding ActiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock Text="{Binding ModManager.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock Text="{Binding InactiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock Text="{Binding ModManager.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+        </StackPanel>
+        <ListBox
+                Grid.Row="1"
+            Grid.ColumnSpan="2"
+                x:Name="ListBox_ModList"
+                ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}" 
+                SelectionChanged="SelectionChanged" 
+                SelectionMode="Extended"
+                Background="#FF252525">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" 
+                                    Margin="0,3,0,3">
+                        <CheckBox IsChecked="{Binding Selected}"
+                                      Margin="0,0,5,0" />
+                        <materialDesign:PackIcon Margin ="0,0,5,0"
+                                                     Kind="{Binding Active, Converter={StaticResource ModIconConverter}}"
+                                                     Foreground="{Binding Active, Converter={StaticResource ModIconColorConverter}}"/>
+                        <TextBlock Text="{Binding Category.Text}" 
+                                       Style="{StaticResource IMYA_TEXT}"
+                                       Margin="0,0,5,0"/>
+                        <TextBlock Text="{Binding Name.Text}"
+                                       Style="{StaticResource IMYA_TEXT}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsSelected" Value="{Binding Selected}"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button x:Name="ActivateButton"
+                Style="{StaticResource IMYA_BUTTON}"
+                MinWidth="150" 
+                MinHeight="32"
+                Click="ActivateButton_OnClick"
+                IsEnabled="{Binding ShowActivateButton}">
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon 
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="PlusBox"
+                        DockPanel.Dock="Left" 
+                        Foreground="LightGray" />
+                    <TextBlock 
+                        Foreground="LightGray"
+                        Margin ="10,0,0,0" 
+                        Text="{Binding ActivateText.Text, UpdateSourceTrigger=PropertyChanged}" 
+                        VerticalAlignment="Center" />
+                </DockPanel>
+            </Button>
+            <Button 
+            x:Name="DeactivateButton"
+            Style="{StaticResource IMYA_BUTTON}"
+            MinWidth="150" 
+            MinHeight="32"
+            Click="DeactivateButton_OnClick"
+            IsEnabled="{Binding ShowDeactivateButton}">
+                <DockPanel 
+                    Margin="10,0,0,0" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon 
+                        Style="{StaticResource IMYA_ICON}"
+                        Kind="MinusBox"
+                        DockPanel.Dock="Left" 
+                        Foreground="LightGray" />
+                    <TextBlock 
+                        Foreground="LightGray"
+                        Margin ="10,0,0,0" 
+                        Text="{Binding DeactivateText.Text, UpdateSourceTrigger=PropertyChanged}" 
+                        VerticalAlignment="Center" />
+                </DockPanel>
+            </Button>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MOD_DIRECTORY_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">testmods</Value>
+      <Value Profile="(Default)">F://Spiele/Anno 1800/mods</Value>
     </Setting>
     <Setting Name="LANGUAGE_FILE_PATH" Type="System.String" Scope="User">
       <Value Profile="(Default)">resources/texts.json</Value>
