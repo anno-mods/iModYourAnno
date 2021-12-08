@@ -17,10 +17,9 @@ namespace ModManager
         public App()
         {
             //Setup Managers
-            LanguageManager LanguageManager = new LanguageManager();
             TextManager TextManager = new TextManager(Settings.Default.LANGUAGE_FILE_PATH);
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager(Settings.Default.MOD_DIRECTORY_PATH);
-            LanguageManager.Instance.ChangeLanguage(ApplicationLanguage.English);
+            TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
         }
     }
 }

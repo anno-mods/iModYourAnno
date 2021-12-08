@@ -40,10 +40,10 @@ namespace ModManager_Views
         //This is just a placeholder that changes languages on Settings Button Click.
         public void OnClick(object sender, RoutedEventArgs e)
         {
-            if(LanguageManager.Instance.ApplicationLanguage == ApplicationLanguage.English)
-                LanguageManager.Instance.ChangeLanguage(ApplicationLanguage.German);
+            if(TextManager.Instance.ApplicationLanguage == ApplicationLanguage.English)
+                TextManager.Instance.ChangeLanguage(ApplicationLanguage.German);
             else
-                LanguageManager.Instance.ChangeLanguage(ApplicationLanguage.English);
+                TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
         }
     }
 }

@@ -12,12 +12,10 @@ namespace ModManager_Classes.src.Handlers
     {
         public static LanguageManager Instance { get; private set; }
 
-        public ApplicationLanguage ApplicationLanguage { get; private set; }
-
+        
         #region ApplicationLanguage_Event
 
-        public delegate void LanguageChangedEventHandler (ApplicationLanguage language);
-        public event LanguageChangedEventHandler LanguageChanged = delegate { };
+        
 
         #endregion
 
@@ -26,11 +24,6 @@ namespace ModManager_Classes.src.Handlers
             Instance = Instance ?? this; 
         }
 
-        public void ChangeLanguage(ApplicationLanguage lang)
-        {
-            Console.WriteLine($"Changed App Language to: {lang}");
-            ApplicationLanguage = lang;
-            LanguageChanged(lang);
-        }
+        
     }
 }

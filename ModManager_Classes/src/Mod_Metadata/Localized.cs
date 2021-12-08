@@ -50,7 +50,7 @@ namespace ModManager_Classes.src.Models
 
         public String getText()
         {
-            return getText(LanguageManager.Instance.ApplicationLanguage);
+            return getText(TextManager.Instance.ApplicationLanguage);
         }
     }
 }

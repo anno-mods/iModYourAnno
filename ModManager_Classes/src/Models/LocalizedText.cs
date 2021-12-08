@@ -48,7 +48,7 @@ namespace ModManager_Classes.src.Models
             {
                 Text = String.Empty;
             }
-            LanguageManager.Instance.LanguageChanged += OnLanguageChanged;
+            TextManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
         [OnDeserialized]
