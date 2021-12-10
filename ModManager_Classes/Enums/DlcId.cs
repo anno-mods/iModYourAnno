@@ -5,7 +5,7 @@ namespace Imya.Enums
     public enum DlcId
     {
         [EnumMember] Anarchist,
-        [EnumMember] SunkenTreasure,
+        [EnumMember] SunkenTreasures,
         [EnumMember] Botanica,
         [EnumMember] ThePassage,
         [EnumMember] SeatOfPower,
