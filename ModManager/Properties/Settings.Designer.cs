@@ -46,5 +46,29 @@ namespace Imya.UI.Properties {
                 this["LANGUAGE_FILE_PATH"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        public double MIN_WINDOW_WIDTH {
+            get {
+                return ((double)(this["MIN_WINDOW_WIDTH"]));
+            }
+            set {
+                this["MIN_WINDOW_WIDTH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        public double MIN_WINDOW_HEIGHT {
+            get {
+                return ((double)(this["MIN_WINDOW_HEIGHT"]));
+            }
+            set {
+                this["MIN_WINDOW_HEIGHT"] = value;
+            }
+        }
     }
 }
