@@ -15,8 +15,6 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModList : UserControl, INotifyPropertyChanged
     {
-        public LocalizedText InactiveText { get; } = TextManager.Instance.GetText("MODLIST_INACTIVE");
-        public LocalizedText ActiveText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVE");
         public LocalizedText ActivateText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVATE");
         public LocalizedText DeactivateText { get; } = TextManager.Instance.GetText("MODLIST_DEACTIVATE");
 
@@ -63,7 +61,8 @@ namespace Imya.UI.Components
             ShowActivateButton = selectedItems.Any(x => !x.Active);
             ShowDeactivateButton = selectedItems.Any(x => x.Active);
 
-            CurrentlyDisplayedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count - 1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            CurrentlyDisplayedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            ModList_SelectionChanged(CurrentlyDisplayedMod);
         }
 
         private void ActivateButton_OnClick(object sender, RoutedEventArgs e)
@@ -84,6 +83,8 @@ namespace Imya.UI.Components
             OnSelectionChanged();
         }
 
+        public event ModListSelectionChangedHandler ModList_SelectionChanged = delegate { };
+        public delegate void ModListSelectionChangedHandler(Mod mod);
 
         #region INotifyPropertyChangedMembers
 

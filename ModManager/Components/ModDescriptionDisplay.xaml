@@ -4,9 +4,88 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Components"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock FontSize="25"  Text="{Binding Version}" Foreground="AntiqueWhite"/>
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             SizeChanged="OnSizeChanged">
+
+    <Grid x:Name="BaseGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        </Grid.Resources>
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" 
+                      Margin="2,2,2,2">
+
+            <StackPanel Orientation="Vertical">
+                <!-- Version-->
+                <StackPanel Orientation="Horizontal" 
+                            Margin="2,8,2,8" >
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               TextWrapping="Wrap" Text="Version: " 
+                               Foreground="White"/>
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding Mod.Version, UpdateSourceTrigger=PropertyChanged}" 
+                               Foreground="White"/>
+                </StackPanel>
+
+                <Separator />
+                
+                <!-- Description -->
+                <TextBlock Text="Description: "
+                           Foreground="White"
+                           Margin="2,8,2,8" />
+                <StackPanel Orientation="Horizontal" 
+                            Margin="2,8,2,8" >
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               MaxWidth="{Binding DescriptionTextWidth}" 
+                               TextWrapping="Wrap" 
+                               Text="{Binding Mod.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+
+                <Separator />
+                
+                <!-- Known Issues -->
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="Known Issues: " 
+                           Margin="2,5,2,5" 
+                           Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"/>
+
+                <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" 
+                                        Margin="0,0,0,5"
+                                        Visibility="{Binding DataContext.ShowKnownIssues, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
+                                <materialDesign:PackIcon 
+                                    Style="{StaticResource IMYA_ICON}"
+                                    Kind="ExclamationBold"
+                                    Foreground="White"/>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           TextWrapping="Wrap" 
+                                           Margin="0,3,0,0" 
+                                           Text="{Binding Text}" 
+                                           MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Separator Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"/>
+
+                <!-- Creator Information -->
+                
+                <StackPanel Orientation="Horizontal" 
+                            Margin="2,8,2,8" >
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="Creator: " />
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding Mod.CreatorName, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
     </Grid>
 </UserControl>

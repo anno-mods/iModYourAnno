@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Models;
-using Imya.Models.ModMetadata;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -24,29 +23,55 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModDescriptionDisplay : UserControl, INotifyPropertyChanged
     {
+        #region FieldBacking
+        private Mod _mod;
+        private bool _showKnownIssues;
+        private double _descriptionTextWidth;
+        private double _knownIssueTextWidth;
+        #endregion
+
+        #region Fields
         public Mod Mod
         {
             get => _mod;
-            set
+            private set
             {
                 _mod = value;
-                OnPropertyChanged("Mod");
+                OnPropertyChanged(nameof(Mod));
             }
         }
+        
 
-        private Mod _mod;
-
-        public String? Version 
-        { 
-            get => _version;
+        public bool ShowKnownIssues {
+            get => _showKnownIssues;
             set
             {
-                _version = value;
-                OnPropertyChanged("Version");
+                _showKnownIssues = value;
+                OnPropertyChanged(nameof(ShowKnownIssues));
             }
         }
-        private String? _version;
-        public LocalizedText? Description { get; private set; }
+        
+
+        public double DescriptionTextWidth {
+            get => _descriptionTextWidth;
+            set
+            { 
+                _descriptionTextWidth = value;
+                OnPropertyChanged(nameof(DescriptionTextWidth));
+            }
+        }
+        
+
+        public double KnownIssueTextWidth {
+            get => _knownIssueTextWidth;
+            set
+            {
+                _knownIssueTextWidth = value;
+                OnPropertyChanged(nameof(KnownIssueTextWidth));
+            }
+        }
+
+        #endregion
 
         //Texts 
         private LocalizedText NoVersion = TextManager.Instance.GetText("MODDISPLAY_NO_VERSION");
@@ -54,22 +79,14 @@ namespace Imya.UI.Components
 
         public ModDescriptionDisplay()
         {
-            DataContext = this;
             InitializeComponent();
-            Version = "1.1.1.1.1.1";
+            DataContext = this;
         }
 
-        //This assumes the mod has a modinfo atm.
-        private void GenerateDescription(Mod mod)
+        public void SetDisplayedMod(Mod m)
         {
-            Version = mod.Metadata?.Version is String ? mod.Metadata.Version : NoVersion.Text;
-            Description = mod.Description is LocalizedText ? mod.Description : NoDescription;
-        }
-
-        private void Reset()
-        {
-            Version = null;
-            Description = null;
+            Mod = m;
+            ShowKnownIssues = m?.KnownIssues is LocalizedText[];
         }
 
         #region INotifyPropertyChangedMembers
@@ -83,6 +100,17 @@ namespace Imya.UI.Components
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs s)
+        {
+            UpdateTextboxWidths();
+        }
+
+        private void UpdateTextboxWidths()
+        {
+            DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
+            KnownIssueTextWidth = BaseGrid.ActualWidth > 36 ? BaseGrid.ActualWidth - 36 : 36;
         }
         #endregion
     }

@@ -167,5 +167,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "SETTINGS_LANG_ENGLISH": {
+    "Chinese": null,
+    "English": "English",
+    "French": null,
+    "German": "Englisch",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_LANG_GERMAN": {
+    "Chinese": null,
+    "English": "German",
+    "French": null,
+    "German": "Deutsch",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

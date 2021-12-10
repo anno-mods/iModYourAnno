@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Imya.UI.Views.ModActivationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Imya.UI.Views"
+             xmlns:Components="clr-namespace:Imya.UI.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel 
+                x:Name="UpperControls" 
+                Orientation="Horizontal"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+            Grid.ColumnSpan="2">
+            <TextBlock FontSize="15" Text="{Binding ActiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding ModManager.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding InactiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding ModManager.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+        </StackPanel>
+        
+        <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList"></Components:ModList>
+        <Components:ModDescriptionDisplay Margin="5,5,5,0" Grid.Row="1" Grid.Column="1" x:Name="ModDescription"/>
+    </Grid>
+</UserControl>
