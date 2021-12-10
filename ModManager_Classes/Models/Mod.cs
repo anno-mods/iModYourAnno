@@ -22,6 +22,7 @@ namespace Imya.Models
         public string DirectoryName { get => _directory_name; set => _directory_name = value; }
         public LocalizedText Name { get => _name; set => _name = value; }
         public LocalizedText Category { get => _category; set => _category = value; }
+
         public bool Active 
         { 
             get => _active;
@@ -44,6 +45,8 @@ namespace Imya.Models
 
         public LocalizedText? Description { get; private set; }
         public LocalizedText[]? KnownIssues { get; private set; }
+        public String? Version { get; private set; }
+        public String? CreatorName { get; private set; }
 
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
 
@@ -70,6 +73,8 @@ namespace Imya.Models
                 Name = (Metadata.ModName is Localized) ? new LocalizedText(Metadata.ModName) : new LocalizedText(ModName);
                 Description = (Metadata.Description is Localized) ? new LocalizedText(Metadata.Description) : null;
                 KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => new LocalizedText(x)).ToArray() : null;
+                Version =  metadata.Version;
+                CreatorName = metadata.CreatorName;
             }
             //mod without Metadata
             else
@@ -78,7 +83,6 @@ namespace Imya.Models
                 Category = new LocalizedText(matches ? _category : "NoCategory");
                 Name = new LocalizedText(matches ? _name : DirectoryName);
                 Description = new LocalizedText(String.Empty);
-                B64_Image = null;
             }
         }
 
