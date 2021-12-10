@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:local="clr-namespace:Imya.UI.Components"
       mc:Ignorable="d" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       TextElement.Foreground="#FFFFFF">
@@ -30,7 +31,7 @@
         <!-- Play Button -->
 
         <StackPanel Grid.Row="1">
-            <Button 
+            <Button
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
                 MinHeight="32">
@@ -59,35 +60,39 @@
             Margin="0,0,0,0" 
             Grid.Row ="2" 
             VerticalAlignment="Top">
-    
             <Button 
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
-                MinHeight="32">
-                <DockPanel 
-                    Margin="10,0,0,0" 
+                MinHeight="32"
+                Click="ModManagementClick"
+                x:Name="ModManagementButton">
+                <StackPanel 
+                    Orientation="Horizontal"
+                    Margin="5,0,0,0" 
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Stretch">
+                    <Rectangle x:Name ="ModManagementSelectionRect" Fill="Green" Width="3" Margin="0,0,10,0"></Rectangle>
                     <materialDesign:PackIcon 
                         Style="{StaticResource IMYA_ICON}"
-                        Kind="Pen"
-                        DockPanel.Dock="Left" 
+                        Kind="Pen" 
                         Foreground="LightGray" />
                     <TextBlock 
                         Foreground="LightGray"
                         Margin ="10,0,0,0" 
                         Text="{Binding ModActivationText.Text, UpdateSourceTrigger=PropertyChanged}"
                         VerticalAlignment="Center" />
-                </DockPanel>
+                </StackPanel>
             </Button>
             <Button 
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
                 MinHeight="32">
-                <DockPanel 
-                    Margin="10,0,0,0" 
+                <StackPanel 
+                    Margin="5,0,0,0" 
                     HorizontalAlignment="Left" 
+                    Orientation="Horizontal"
                     VerticalAlignment="Stretch">
+                    <Rectangle x:Name ="GameSetupSelectionRect" Fill="Green" Width="3" Margin="0,0,10,0"></Rectangle>
                     <materialDesign:PackIcon 
                         Style="{StaticResource IMYA_ICON}"
                         Kind="DataUsage"
@@ -98,16 +103,18 @@
                         Text="{Binding GameSetupText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
-                </DockPanel>
+                </StackPanel>
             </Button>
             <Button 
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
                 MinHeight="32" >
-                <DockPanel 
-                    Margin="10,0,0,0" 
+                <StackPanel 
+                    Margin="5,0,0,0" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Stretch">
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+                    <Rectangle x:Name ="ModInstallSelectionRect" Fill="Green" Width="3" Margin="0,0,10,0"></Rectangle>
                     <materialDesign:PackIcon 
                         Style="{StaticResource IMYA_ICON}"
                         Kind="FolderZipOutline"
@@ -118,16 +125,18 @@
                         Text="{Binding ModInstallationText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
-                </DockPanel>
+                </StackPanel>
             </Button>
             <Button 
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
                 MinHeight="32">
-                <DockPanel 
-                    Margin="10,0,0,0" 
+                <StackPanel 
+                    Margin="5,0,0,0" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Stretch">
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+                    <Rectangle x:Name ="ModTweakerSelectionRect" Fill="Green" Width="3" Margin="0,0,10,0"></Rectangle>
                     <materialDesign:PackIcon
                         Style="{StaticResource IMYA_ICON}"
                         Kind="ProgressStar"
@@ -138,17 +147,19 @@
                         Text="{Binding ModTweakingText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
-                </DockPanel>
+                </StackPanel>
             </Button>
             <Button 
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="200" 
                 MinHeight="32"
-                Click="OnClick">
-                <DockPanel 
-                    Margin="10,0,0,0" 
+                Click="SettingsClick">
+                <StackPanel 
+                    Margin="5,0,0,0" 
                     HorizontalAlignment="Left" 
-                    VerticalAlignment="Stretch">
+                    VerticalAlignment="Stretch"
+                    Orientation="Horizontal">
+                    <Rectangle x:Name ="SettingsSelectionRect" Fill="Green" Width="3" Margin="0,0,10,0"></Rectangle>
                     <materialDesign:PackIcon
                         Style="{StaticResource IMYA_ICON}"
                         Kind="GearOutline"
@@ -159,7 +170,7 @@
                         Text="{Binding SettingsText.Text, UpdateSourceTrigger=PropertyChanged}" 
                         VerticalAlignment="Center"
                         Foreground="LightGray"/>
-                </DockPanel>
+                </StackPanel>
             </Button>
         </StackPanel>
     </Grid>
