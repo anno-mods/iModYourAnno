@@ -83,6 +83,30 @@ namespace Imya.UI.Components
             OnSelectionChanged();
         }
 
+        private void OnSearchRequest(object sender, TextChangedEventArgs e)
+        {
+            string filterText = SearchTextBox.Text;
+            ModDirectoryManager.Instance.FilterMods(x => FilterByKeywords(x, filterText));
+        }
+
+        //returns whether the category or the name of a mod contain the current filter text.
+        private bool FilterByNameOrCategory(Mod m, String filterText)
+        {
+            return m.Name.Text.ToLower().Contains(filterText.ToLower()) || m.Category.Text.ToLower().Contains(filterText.ToLower());
+        }
+
+        //Filters whether a mod name+category contains all keywords provided in a search
+        private bool FilterByKeywords(Mod m, String filterText)
+        {
+            String[] keywords = filterText.Split(" ");
+            bool IsMatch = true;
+            foreach (String s in keywords)
+            {
+                IsMatch = IsMatch ? FilterByNameOrCategory(m, s) : false;
+            }
+            return IsMatch;
+        }
+
         public event ModListSelectionChangedHandler ModList_SelectionChanged = delegate { };
         public delegate void ModListSelectionChangedHandler(Mod mod);
 

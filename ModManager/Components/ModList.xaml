@@ -9,6 +9,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="#FF252525">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
@@ -17,8 +18,20 @@
             <local:IconColorConverter x:Key="ModIconColorConverter"/>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         </Grid.Resources>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBox MinWidth="300" MinHeight="25" Margin="2,2,2,2" TextChanged="OnSearchRequest" x:Name="SearchTextBox">
+                
+            </TextBox>
+            <materialDesign:PackIcon
+                VerticalAlignment="Center"
+                Kind="Search"
+                Style="{StaticResource IMYA_ICON}"
+                Foreground="White"
+                Margin="0,0,5,0">
+            </materialDesign:PackIcon>
+        </StackPanel>
         <ListBox
-            Grid.ColumnSpan="2"
+            Grid.Row="1"
                 x:Name="ListBox_ModList"
                 ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}" 
                 SelectionChanged="SelectionChanged" 
@@ -47,7 +60,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button x:Name="ActivateButton"
                 Style="{StaticResource IMYA_BUTTON}"
                 MinWidth="150" 
