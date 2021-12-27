@@ -13,6 +13,10 @@ namespace Imya.Utils
         public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
         public event LanguageChangedEventHandler LanguageChanged = delegate { };
 
+        public LocalizedText this[String Key]
+        {
+            get { return Instance.GetText(Key); }
+        }
 
         public TextManager(String Sourcefile)
         {

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using Imya.Utils;
 
 namespace Imya.Models
 {
@@ -80,9 +81,8 @@ namespace Imya.Models
             else
             {
                 bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
-                Category = new LocalizedText(matches ? _category : "NoCategory");
+                Category = matches ? new LocalizedText(_category ) : TextManager.Instance.GetText("MODDISPLAY_NO_CATEGORY");
                 Name = new LocalizedText(matches ? _name : DirectoryName);
-                Description = new LocalizedText(String.Empty);
             }
         }
 
