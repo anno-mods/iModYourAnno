@@ -89,13 +89,22 @@ namespace Imya.UI.Components
             ModDirectoryManager.Instance.FilterMods(x => FilterByKeywords(x, filterText));
         }
 
-        //returns whether the category or the name of a mod contain the current filter text.
+        /// <summary>
+        /// Determines whether the category or name of a mod contain the current filter text.
+        /// </summary>
+        /// <param name="m">Mod to check</param>
+        /// <param name="filterText">The boolean result</param>
+        /// <returns></returns>
         private bool FilterByNameOrCategory(Mod m, String filterText)
         {
             return m.Name.Text.ToLower().Contains(filterText.ToLower()) || m.Category.Text.ToLower().Contains(filterText.ToLower());
         }
 
-        //Filters whether a mod name+category contains all keywords provided in a search
+        /// <summary>
+        /// Determines whether a mod name+category contains all keywords provided in a search.
+        /// </summary>
+        /// <param name="m">Mod to check</param>
+        /// <param name="filterText">The boolean result</param>
         private bool FilterByKeywords(Mod m, String filterText)
         {
             String[] keywords = filterText.Split(" ");
@@ -123,38 +132,5 @@ namespace Imya.UI.Components
             }
         }
         #endregion
-    }
-
-
-    [ValueConversion(typeof(bool), typeof(String))]
-    internal class IconConverter : IValueConverter
-    {
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            bool b = (bool)value;
-            return b ? "CheckBold" : "HighlightOff";
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            string strValue = value as string;
-            return strValue.Equals("CheckBold") ? true : false;
-        }
-    }
-
-    [ValueConversion(typeof(bool), typeof(String))]
-    internal class IconColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            bool b = (bool)value;
-            return b ? "Green" : "Red";
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            string strValue = value as string;
-            return strValue.Equals("Green");
-        }
-    }
+    }    
 }

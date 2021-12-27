@@ -30,7 +30,7 @@ namespace Imya.UI.Components
         {
             InitializeComponent();
             DataContext = this;
-            ClearButtonRects();
+            //ClearButtonRects();
         }
 
         //This is just a placeholder that changes languages on Settings Button Click.
@@ -44,29 +44,29 @@ namespace Imya.UI.Components
 
         public void SettingsClick(object sender, RoutedEventArgs e)
         {
-            ClearButtonRects();
+            //ClearButtonRects();
             MainViewChanged(1);
-            SettingsSelectionRect.Visibility = Visibility.Visible;
+            //SettingsSelectionRect.Visibility = Visibility.Visible;
         }
 
         public void ModManagementClick(object sender, RoutedEventArgs e)
         {
-            ClearButtonRects();
+            //ClearButtonRects();
             MainViewChanged(0);
-            ModManagementSelectionRect.Visibility = Visibility.Visible;
+            //ModManagementSelectionRect.Visibility = Visibility.Visible;
         }
 
         //look, I know this is completely retarded code.
         //I just gave up trying to create my own Control for this dashboard.
 
-        private void ClearButtonRects()
+        /*private void ClearButtonRects()
         { 
             ModManagementSelectionRect.Visibility = Visibility.Hidden;
             GameSetupSelectionRect.Visibility=Visibility.Hidden;
             ModInstallSelectionRect.Visibility=Visibility.Hidden;
             ModTweakerSelectionRect.Visibility = Visibility.Hidden;
             SettingsSelectionRect.Visibility = Visibility.Hidden;
-        }
+        }*/
     }
 
     
