@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Imya.Enums;
 using Imya.Models;
 using Imya.Utils;
 
@@ -26,6 +27,9 @@ namespace Imya.UI.Components
         #region FieldBacking
         private Mod _mod;
         private bool _showKnownIssues;
+        private bool _showDescription;
+        private bool _showCreatorName;
+        private bool _showVersion;
         private double _descriptionTextWidth;
         private double _knownIssueTextWidth;
         #endregion
@@ -50,7 +54,36 @@ namespace Imya.UI.Components
                 OnPropertyChanged(nameof(ShowKnownIssues));
             }
         }
-        
+
+        public bool ShowDescription
+        {
+            get => _showDescription;
+            set 
+            {
+                _showDescription = value;
+                OnPropertyChanged(nameof(ShowDescription));
+            }
+        }
+
+        public bool ShowCreatorName
+        {
+            get => _showCreatorName;
+            set 
+            {
+                _showCreatorName = value;
+                OnPropertyChanged(nameof(ShowCreatorName));
+            }
+        }
+
+        public bool ShowVersion
+        {
+            get => _showVersion;
+            set
+            { 
+                _showVersion = value;
+                OnPropertyChanged(nameof(ShowVersion));
+            }
+        }
 
         public double DescriptionTextWidth {
             get => _descriptionTextWidth;
@@ -73,6 +106,7 @@ namespace Imya.UI.Components
 
         #endregion
 
+
         //Texts 
         private LocalizedText NoVersion = TextManager.Instance.GetText("MODDISPLAY_NO_VERSION");
         private LocalizedText NoDescription = TextManager.Instance.GetText("MODDISPLAY_NO_DESCRIPTION");
@@ -83,10 +117,27 @@ namespace Imya.UI.Components
             DataContext = this;
         }
 
+        private LocalizedText GetDlcText(DlcId dlc)
+        {
+            switch (dlc)
+            {
+                case DlcId.SunkenTreasures: return TextManager.Instance.GetText("DLC_SUNKENTREASURES");
+                case DlcId.Botanica: return TextManager.Instance.GetText("DLC_BOTANICA");
+                case DlcId.ThePassage : return TextManager.Instance.GetText("DLC_PASSAGE");
+                case DlcId.SeatOfPower: return TextManager.Instance.GetText("DLC_SEATOFPOWER");
+                case DlcId.BrightHarvest: return TextManager.Instance.GetText("DLC_BRIGHTHARVEST");
+                case DlcId.LandOfLions: return TextManager.Instance.GetText("DLC_LANDOFLIONS");
+                default: return new LocalizedText("ID unset");
+            }
+        }
+
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
             ShowKnownIssues = m?.KnownIssues is LocalizedText[];
+            ShowDescription = m?.Description is LocalizedText;
+            ShowCreatorName = m?.CreatorName is String;
+            ShowVersion = m?.Version is String; 
         }
 
         #region INotifyPropertyChangedMembers
@@ -110,7 +161,7 @@ namespace Imya.UI.Components
         private void UpdateTextboxWidths()
         {
             DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
-            KnownIssueTextWidth = BaseGrid.ActualWidth > 36 ? BaseGrid.ActualWidth - 36 : 36;
+            KnownIssueTextWidth = BaseGrid.ActualWidth > 50 ? BaseGrid.ActualWidth - 50 : 50;
         }
         #endregion
     }

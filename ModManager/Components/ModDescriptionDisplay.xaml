@@ -11,19 +11,37 @@
 
     <Grid x:Name="BaseGrid">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         </Grid.Resources>
-        <ScrollViewer HorizontalScrollBarVisibility="Hidden" 
-                      Margin="2,2,2,2">
+        <Border Background="#303030" CornerRadius="3" Margin="0,5,0,5">
+            <StackPanel HorizontalAlignment="Center"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
 
-            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Mod.Category.Text, UpdateSourceTrigger=PropertyChanged}"
+                           Margin="0,0,5,0"
+                           Style="{StaticResource IMYA_TEXT}"
+                           FontWeight="ExtraBold"/>
+                <TextBlock Text="{Binding Mod.Name.Text, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource IMYA_TEXT}" />
+            </StackPanel>
+        </Border>
+        
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" 
+                      Margin="2,2,2,2"
+                      Style="{StaticResource IMYA_SCROLLVIEWER}"
+                      Grid.Row="1">
+
+            <StackPanel Orientation="Vertical" Margin="2,0,0,0">
                 <!-- Version-->
-                <StackPanel Orientation="Horizontal" 
-                            Margin="2,8,2,8" >
+                <StackPanel Orientation="Horizontal"
+                            Margin="2,8,2,8"
+                            Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}">
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
                                TextWrapping="Wrap" Text="Version: " 
                                Foreground="White"/>
@@ -32,21 +50,23 @@
                                Foreground="White"/>
                 </StackPanel>
 
-                <Separator />
+                <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}"/>
                 
                 <!-- Description -->
                 <TextBlock Text="Description: "
                            Foreground="White"
-                           Margin="2,8,2,8" />
-                <StackPanel Orientation="Horizontal" 
-                            Margin="2,8,2,8" >
+                           Margin="2,8,2,8"
+                           Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel Orientation="Horizontal"
+                            Margin="2,8,2,8"
+                            Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
                                MaxWidth="{Binding DescriptionTextWidth}" 
                                TextWrapping="Wrap" 
                                Text="{Binding Mod.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
-                <Separator />
+                <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"/>
                 
                 <!-- Known Issues -->
                 <TextBlock Style="{StaticResource IMYA_TEXT}"
@@ -77,8 +97,9 @@
 
                 <!-- Creator Information -->
                 
-                <StackPanel Orientation="Horizontal" 
-                            Margin="2,8,2,8" >
+                <StackPanel Orientation="Horizontal"
+                            Margin="2,8,2,8"
+                            Visibility="{Binding ShowCreatorName, Converter={StaticResource BoolToVis}}">
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
                                Text="Creator: " />
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
