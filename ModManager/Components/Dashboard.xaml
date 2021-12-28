@@ -59,7 +59,8 @@
                          MinHeight="32"
                          Click="ModManagementClick"
                          x:Name="ModManagementButton"
-                         Margin="5,4,4,0">
+                         Margin="5,4,4,0"
+                         IsChecked="True">
                 <StackPanel Orientation="Horizontal"
                             Margin="5,0,0,0"
                             HorizontalAlignment="Left"
