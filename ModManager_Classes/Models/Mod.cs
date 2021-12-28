@@ -48,6 +48,7 @@ namespace Imya.Models
         public LocalizedText[]? KnownIssues { get; private set; }
         public String? Version { get; private set; }
         public String? CreatorName { get; private set; }
+        public Dlc[]? DlcDependencies { get; private set; }
 
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
 
@@ -55,7 +56,8 @@ namespace Imya.Models
         public bool HasMetadata { get => Metadata is Modinfo; }
         public bool HasDescription { get => Description is LocalizedText; }
         public bool HasKnownIssues { get => KnownIssues is LocalizedText[]; }
-        
+        public bool HasDlcDependencies { get => DlcDependencies is Dlc[]; }
+
         //store the Modinfo data for whatever we need it later on.
         public Modinfo? Metadata;
 
@@ -76,6 +78,7 @@ namespace Imya.Models
                 KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => new LocalizedText(x)).ToArray() : null;
                 Version =  metadata.Version;
                 CreatorName = metadata.CreatorName;
+                DlcDependencies = metadata.DLCDependencies;
             }
             //mod without Metadata
             else
