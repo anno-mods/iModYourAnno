@@ -8,7 +8,8 @@
              d:DesignWidth="800">
     <Grid>
         <ScrollViewer x:Name="ScrollPane"
-                      Style="{StaticResource IMYA_SCROLLVIEWER}">
+                      Style="{StaticResource IMYA_SCROLLVIEWER}"
+                      Background="{DynamicResource ComponentColorBrush}">
             <TextBox x:Name="ConsoleOut"
                      Padding="3"
                      AcceptsReturn="True"
@@ -18,7 +19,9 @@
                      FontSize="12"
                      FontFamily="Consolas"
                      TextChanged="ConsoleLog_TextChanged"
-                     Background="DarkGray" />
+                     Background="Transparent"
+                     Foreground="{DynamicResource TextColorBrush}"
+                     BorderThickness="0"/>
         </ScrollViewer>
     </Grid>
 </UserControl>

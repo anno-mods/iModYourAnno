@@ -11,7 +11,7 @@ namespace Imya.UI
     /// </summary>
     public partial class App : Application
     {
-        public App()
+       public App()
         {
             //Setup Managers
             TextManager TextManager = new TextManager(Settings.Default.LANGUAGE_FILE_PATH);

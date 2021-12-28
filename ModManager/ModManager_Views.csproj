@@ -20,6 +20,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="resources\background.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\background.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
   </ItemGroup>
 
@@ -31,9 +41,6 @@
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Update="resources\background.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="resources\texts.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

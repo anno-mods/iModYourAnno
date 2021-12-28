@@ -5,10 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Imya.UI.Components"
              mc:Ignorable="d"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             TextElement.Foreground="#FFFFFF">
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
-    <Grid>
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="75" />
             <RowDefinition Height="75" />
@@ -22,11 +21,10 @@
                                      Kind="Home"
                                      DockPanel.Dock="Left"
                                      HorizontalAlignment="Left"
-                                     Foreground="LightGray" />
+                                     Foreground="{DynamicResource TextColorBrush}" />
             <TextBlock Text="{Binding DashboardText.Text, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        Margin="10,0,0,0"
-                       Foreground="LightGray"
                        Style="{StaticResource IMYA_TEXT}"/>
         </DockPanel>
         <!-- Play Button -->
@@ -42,9 +40,8 @@
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="ControllerClassicOutline"
                                              DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
+                                             Foreground="{DynamicResource TextColorBrush}" />
+                    <TextBlock Margin="10,0,0,0"
                                Text="{Binding PlayText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
@@ -67,9 +64,8 @@
                             VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="Pen"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
+                                             Foreground="{DynamicResource TextColorBrush}" />
+                    <TextBlock Margin="10,0,0,0"
                                Text="{Binding ModActivationText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center" 
                                Style="{StaticResource IMYA_TEXT}"/>
@@ -85,11 +81,10 @@
                             VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="DataUsage"
-                                             Foreground="LightGray" />
+                                             Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
                                Text="{Binding GameSetupText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
-                               Foreground="LightGray"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
             </RadioButton>
@@ -103,12 +98,11 @@
                             Orientation="Horizontal">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="FolderZipOutline"
-                                             Foreground="LightGray" />
+                                             Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
                                Text="{Binding ModInstallationText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
-                               Style="{StaticResource IMYA_TEXT}"
-                               Foreground="LightGray" />
+                               Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
             </RadioButton>
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
@@ -122,11 +116,10 @@
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="ProgressStar"
                                              DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
+                                             Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
                                Text="{Binding ModTweakingText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
-                               Foreground="LightGray"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
             </RadioButton>
@@ -142,11 +135,10 @@
                             Orientation="Horizontal">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="GearOutline"
-                                             Foreground="LightGray" />
+                                             Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
                                Text="{Binding SettingsText.Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
-                               Foreground="LightGray"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
             </RadioButton>
