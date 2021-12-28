@@ -151,12 +151,14 @@ namespace Imya.UI.Components
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
-            ShowKnownIssues = m.KnownIssues is LocalizedText[];
-            ShowDescription = m.Description is LocalizedText;
-            ShowCreatorName = m.CreatorName is String;
-            ShowVersion = m.Version is String;
-            ShowDlcDeps = m.HasDlcDependencies;
-            DlcIds = GetDlcDependencies(m.DlcDependencies);
+            if (m is Mod)
+                
+            ShowKnownIssues = m?.KnownIssues is LocalizedText[];
+            ShowDescription = m?.Description is LocalizedText;
+            ShowCreatorName = m?.CreatorName is String;
+            ShowVersion = m?.Version is String;
+            ShowDlcDeps = m?.DlcDependencies is Dlc[];
+            DlcIds = GetDlcDependencies(m?.DlcDependencies);
         }
 
         #region INotifyPropertyChangedMembers
