@@ -492,5 +492,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "SETTINGS_LANGUAGE": {
+    "Chinese": null,
+    "English": "Language: ",
+    "French": null,
+    "German": "Sprache: ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_SHOWCONSOLE": {
+    "Chinese": null,
+    "English": "Show Console: ",
+    "French": null,
+    "German": "Konsole anzeigen: ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

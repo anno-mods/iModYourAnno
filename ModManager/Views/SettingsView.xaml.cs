@@ -40,7 +40,9 @@ namespace Imya.UI.Views
                 OnPropertyChanged("Languages");
             }
         }
-        private TextLanguagePair[] _languages; 
+        private TextLanguagePair[] _languages;
+
+        public TextManager TextManager { get; } = TextManager.Instance;
 
         public SettingsView()
         {
