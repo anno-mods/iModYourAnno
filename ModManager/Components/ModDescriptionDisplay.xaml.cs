@@ -32,6 +32,7 @@ namespace Imya.UI.Components
         private bool _showCreatorName;
         private bool _showVersion;
         private bool _showDlcDeps;
+        private bool _showImage;
         private double _descriptionTextWidth;
         private double _knownIssueTextWidth;
 
@@ -58,7 +59,6 @@ namespace Imya.UI.Components
                 OnPropertyChanged(nameof(Mod));
             }
         }
-
 
         public bool ShowKnownIssues {
             get => _showKnownIssues;
@@ -109,6 +109,15 @@ namespace Imya.UI.Components
             }
         }
 
+        public bool ShowImage { 
+            get=> _showImage;
+            set
+            { 
+                _showImage = value;
+                OnPropertyChanged(nameof(ShowImage));
+            }
+        }
+
         public double DescriptionTextWidth {
             get => _descriptionTextWidth;
             set
@@ -117,7 +126,6 @@ namespace Imya.UI.Components
                 OnPropertyChanged(nameof(DescriptionTextWidth));
             }
         }
-
 
         public double KnownIssueTextWidth {
             get => _knownIssueTextWidth;
@@ -136,6 +144,7 @@ namespace Imya.UI.Components
         {
             InitializeComponent();
             DataContext = this;
+            //TextManager.Instance.LanguageChanged += UpdateTextBoxes;
         }
 
         private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
@@ -151,14 +160,16 @@ namespace Imya.UI.Components
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
-            if (m is Mod)
-                
             ShowKnownIssues = m?.KnownIssues is LocalizedText[];
             ShowDescription = m?.Description is LocalizedText;
             ShowCreatorName = m?.CreatorName is String;
             ShowVersion = m?.Version is String;
             ShowDlcDeps = m?.DlcDependencies is Dlc[];
             DlcIds = GetDlcDependencies(m?.DlcDependencies);
+
+            //the default behavior for images is different: If the mod does not have an image, it will show a placeholder. 
+            //Only hide the image in case there is no displayed mod.
+            ShowImage = m is not null;
         }
 
         #region INotifyPropertyChangedMembers
@@ -183,6 +194,18 @@ namespace Imya.UI.Components
         {
             DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
             KnownIssueTextWidth = BaseGrid.ActualWidth > 50 ? BaseGrid.ActualWidth - 50 : 50;
+        }
+
+        private void UpdateTextBoxes(ApplicationLanguage lang)
+        {
+            foreach (var item in DLC_Dependencies.Items)
+            {
+                ContentPresenter uiElement = (ContentPresenter)DLC_Dependencies.ItemContainerGenerator.ContainerFromItem(item);
+                uiElement.ApplyTemplate();
+                var Textblock = (TextBlock)uiElement.ContentTemplate.FindName("DLC_Dependency_TextboxTemplate", uiElement);
+                BindingExpression bindingExpression = Textblock.GetBindingExpression(TextBlock.TextProperty);
+                bindingExpression.UpdateSource();
+            }
         }
         #endregion
     }

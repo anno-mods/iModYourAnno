@@ -15,7 +15,6 @@ namespace Imya.Models
         private bool _active;
         private bool _selected;
         private LocalizedText _description;
-        private string? _b64_Image;
         private ObservableCollection<ExposedModValue>? _exposedValues;
         #endregion
 
@@ -24,21 +23,21 @@ namespace Imya.Models
         public LocalizedText Name { get => _name; set => _name = value; }
         public LocalizedText Category { get => _category; set => _category = value; }
 
-        public bool Active 
-        { 
+        public bool Active
+        {
             get => _active;
             set
             {
                 _active = value;
                 OnPropertyChanged("Active");
             }
-        
+
         }
-        public bool Selected 
-        { 
-            get => _selected; 
+        public bool Selected
+        {
+            get => _selected;
             set
-            { 
+            {
                 _selected = value;
                 OnPropertyChanged("Selected");
             }
@@ -49,6 +48,7 @@ namespace Imya.Models
         public String? Version { get; private set; }
         public String? CreatorName { get; private set; }
         public Dlc[]? DlcDependencies { get; private set; }
+        public String? Image { get; private set; }
 
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
 
@@ -79,6 +79,7 @@ namespace Imya.Models
                 Version =  metadata.Version;
                 CreatorName = metadata.CreatorName;
                 DlcDependencies = metadata.DLCDependencies;
+                Image = metadata.Image;
             }
             //mod without Metadata
             else
