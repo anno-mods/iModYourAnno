@@ -160,7 +160,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border CornerRadius="3"
-                                Background="#353535">
+                                Background="{TemplateBinding Background}">
                             <Grid>
                                 <Rectangle Margin="1"
                                            StrokeThickness="1" />
@@ -173,27 +173,6 @@
                                          Foreground="White"
                                          x:Name="SearchBox">
                                 </TextBox>
-
-                                <TextBlock IsHitTestVisible="False"
-                                           Text="Type to search"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Left"
-                                           Margin="10,0,0,0">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock"
-                                               BasedOn="{StaticResource IMYA_TEXT}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
-                                                             Value="">
-                                                    <Setter Property="Visibility"
-                                                            Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                            <Setter Property="Visibility"
-                                                    Value="Hidden" />
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
                             </Grid>
                         </Border>
                     </ControlTemplate>

@@ -22,6 +22,8 @@ namespace Imya.UI.Components
 
         public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
 
+        public TextManager TextManager { get; } = TextManager.Instance;
+
         public bool ShowActivateButton {
             get { return _showActivateButton; }
             private set

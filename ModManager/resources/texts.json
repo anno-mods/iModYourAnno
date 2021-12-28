@@ -479,5 +479,18 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "MODLIST_SEARCHBAR": {
+    "Chinese": null,
+    "English": "Type to Search ",
+    "French": null,
+    "German": "Suchbegriffe eingeben ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

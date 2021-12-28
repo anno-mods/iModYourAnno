@@ -27,7 +27,54 @@
                      Margin="0,2,0,2"
                      TextChanged="OnSearchRequest"
                      x:Name="SearchTextBox"
-                     Style="{StaticResource IMYA_TEXTBOX}">
+                     Background="#303030">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource IMYA_TEXTBOX}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TextBox">
+                                    <Border CornerRadius="3"
+                                            Background="{TemplateBinding Background}">
+                                        <Grid>
+                                            <Rectangle Margin="1"
+                                                       StrokeThickness="1" />
+                                            <TextBox Margin="1"
+                                                     Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     BorderThickness="0"
+                                                     Background="Transparent"
+                                                     VerticalContentAlignment="Center"
+                                                     Padding="5"
+                                                     Foreground="White"
+                                                     x:Name="SearchBox">
+                                            </TextBox>
+
+                                            <TextBlock IsHitTestVisible="False"
+                                                       Text="{Binding TextManager[MODLIST_SEARCHBAR].Text}"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Left"
+                                                       Margin="10,0,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock"
+                                                           BasedOn="{StaticResource IMYA_TEXT}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}"
+                                                                         Value="">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                        <Setter Property="Visibility"
+                                                                Value="Hidden" />
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TextBox.Style>
             </TextBox>
             <materialDesign:PackIcon VerticalAlignment="Center"
                                      Kind="Search"
