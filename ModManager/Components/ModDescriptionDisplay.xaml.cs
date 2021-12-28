@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Enums;
 using Imya.Models;
+using Imya.Models.ModMetadata;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -30,11 +31,24 @@ namespace Imya.UI.Components
         private bool _showDescription;
         private bool _showCreatorName;
         private bool _showVersion;
+        private bool _showDlcDeps;
         private double _descriptionTextWidth;
         private double _knownIssueTextWidth;
+
+        private DlcId[] _DlcIds;
         #endregion
 
         #region Fields
+
+        public DlcId[] DlcIds
+        {
+            get => _DlcIds;
+            set
+            {
+                _DlcIds = value;
+                OnPropertyChanged(nameof(DlcIds));
+            }
+        }
         public Mod Mod
         {
             get => _mod;
@@ -44,7 +58,7 @@ namespace Imya.UI.Components
                 OnPropertyChanged(nameof(Mod));
             }
         }
-        
+
 
         public bool ShowKnownIssues {
             get => _showKnownIssues;
@@ -58,7 +72,7 @@ namespace Imya.UI.Components
         public bool ShowDescription
         {
             get => _showDescription;
-            set 
+            set
             {
                 _showDescription = value;
                 OnPropertyChanged(nameof(ShowDescription));
@@ -68,7 +82,7 @@ namespace Imya.UI.Components
         public bool ShowCreatorName
         {
             get => _showCreatorName;
-            set 
+            set
             {
                 _showCreatorName = value;
                 OnPropertyChanged(nameof(ShowCreatorName));
@@ -79,21 +93,31 @@ namespace Imya.UI.Components
         {
             get => _showVersion;
             set
-            { 
+            {
                 _showVersion = value;
                 OnPropertyChanged(nameof(ShowVersion));
+            }
+        }
+
+        public bool ShowDlcDeps
+        {
+            get => _showDlcDeps;
+            set
+            {
+                _showDlcDeps = value;
+                OnPropertyChanged(nameof(ShowDlcDeps));
             }
         }
 
         public double DescriptionTextWidth {
             get => _descriptionTextWidth;
             set
-            { 
+            {
                 _descriptionTextWidth = value;
                 OnPropertyChanged(nameof(DescriptionTextWidth));
             }
         }
-        
+
 
         public double KnownIssueTextWidth {
             get => _knownIssueTextWidth;
@@ -106,10 +130,7 @@ namespace Imya.UI.Components
 
         #endregion
 
-
-        //Texts 
-        private LocalizedText NoVersion = TextManager.Instance.GetText("MODDISPLAY_NO_VERSION");
-        private LocalizedText NoDescription = TextManager.Instance.GetText("MODDISPLAY_NO_DESCRIPTION");
+        public TextManager TextManager { get; } = TextManager.Instance;
 
         public ModDescriptionDisplay()
         {
@@ -117,27 +138,25 @@ namespace Imya.UI.Components
             DataContext = this;
         }
 
-        private LocalizedText GetDlcText(DlcId dlc)
+        private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
         {
-            switch (dlc)
+            if (dependencies is not null)
             {
-                case DlcId.SunkenTreasures: return TextManager.Instance.GetText("DLC_SUNKENTREASURES");
-                case DlcId.Botanica: return TextManager.Instance.GetText("DLC_BOTANICA");
-                case DlcId.ThePassage : return TextManager.Instance.GetText("DLC_PASSAGE");
-                case DlcId.SeatOfPower: return TextManager.Instance.GetText("DLC_SEATOFPOWER");
-                case DlcId.BrightHarvest: return TextManager.Instance.GetText("DLC_BRIGHTHARVEST");
-                case DlcId.LandOfLions: return TextManager.Instance.GetText("DLC_LANDOFLIONS");
-                default: return new LocalizedText("ID unset");
+                return dependencies.Select(x => x.DLC).Where(x => x is DlcId).Select(x => (DlcId)x).OrderBy(x => x).ToArray();
             }
+            else return new DlcId[0];
         }
+
 
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
-            ShowKnownIssues = m?.KnownIssues is LocalizedText[];
-            ShowDescription = m?.Description is LocalizedText;
-            ShowCreatorName = m?.CreatorName is String;
-            ShowVersion = m?.Version is String; 
+            ShowKnownIssues = m.KnownIssues is LocalizedText[];
+            ShowDescription = m.Description is LocalizedText;
+            ShowCreatorName = m.CreatorName is String;
+            ShowVersion = m.Version is String;
+            ShowDlcDeps = m.HasDlcDependencies;
+            DlcIds = GetDlcDependencies(m.DlcDependencies);
         }
 
         #region INotifyPropertyChangedMembers
