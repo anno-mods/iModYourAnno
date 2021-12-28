@@ -406,7 +406,7 @@
                                 Width="14"
                                 Height="14"
                                 BorderThickness="0"
-                                BorderBrush="{DynamicResource AccentColorBrush_Dark}">
+                                BorderBrush="{TemplateBinding Foreground}">
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked"
@@ -433,6 +433,128 @@
             </Setter>
         </Style>
 
+        
+
+        <ControlTemplate x:Key="ComboBoxToggleButton"
+                         TargetType="{x:Type ToggleButton}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border"
+                        Grid.ColumnSpan="2"
+                        CornerRadius="3"
+                        BorderThickness="0"
+                        Background="{DynamicResource InteractiveComponentColorBrush}">
+                </Border>
+                <Border Grid.Column="0"
+                        CornerRadius="2,0,0,2"
+                        Margin="0"
+                        Background="{DynamicResource InteractiveComponentColorBrush_Light}"
+                        BorderThickness="0">
+                </Border>
+                <Path x:Name="Arrow"
+                      Grid.Column="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 4 4 L 8 0 Z"
+                      Fill="{DynamicResource AccentColorBrush}">
+                </Path>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="IMYA_COMBOBOX"
+               TargetType="ComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Border Name="Border"
+                                MinWidth="{TemplateBinding MinWidth}"
+                                MinHeight="{TemplateBinding MinHeight}"
+                                CornerRadius="3"
+                                Background="{DynamicResource InteractiveComponentColorBrush}"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}">
+                            <Grid>
+                                <ToggleButton x:Name="ToggleButton"
+                                              Template="{StaticResource ComboBoxToggleButton}"
+                                              Grid.Column="2"
+                                              Focusable="false"
+                                              ClickMode="Press"
+                                              IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, 
+                                    RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ContentPresenter x:Name="ContentSite"
+                                                  IsHitTestVisible="False"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                  Margin="10,3,23,3"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left">
+                                </ContentPresenter>
+                                <Popup x:Name="Popup"
+                                       Placement="Bottom"
+                                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                                       AllowsTransparency="True"
+                                       Focusable="False"
+                                       PopupAnimation="Slide">
+                                    <Grid x:Name="DropDown"
+                                          SnapsToDevicePixels="True"
+                                          MinWidth="{TemplateBinding ActualWidth}"
+                                          MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border x:Name="DropDownBorder"
+                                                BorderThickness="0"
+                                                CornerRadius="3"
+                                                Background="{DynamicResource InteractiveComponentColorBrush}">
+                                        </Border>
+                                        <ScrollViewer 
+                                            Style="{StaticResource IMYA_SCROLLVIEWER}"
+                                            Margin="2,2,2,2"
+                                            SnapsToDevicePixels="True"
+                                            Background="{DynamicResource InteractiveComponentColorBrush}">
+                                            <StackPanel IsItemsHost="True"
+                                                        KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="{x:Type ComboBoxItem}"
+               TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="SnapsToDevicePixels"
+                    Value="true" />
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="Background"
+                    Value="#01FFFFFF" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBoxItem}">
+                        <Border x:Name="Border"
+                                Padding="2"
+                                CornerRadius="3"
+                                SnapsToDevicePixels="true"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter Margin="10,0,0,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted"
+                         Value="True">
+                    <Setter Property="Background"
+                            Value="{DynamicResource AccentColorBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Styleguide: 
             Components that display something -> ComponentColorBrush
             Components that are clickable -> InteractiveComponentColorBrush
@@ -440,8 +562,8 @@
         <SolidColorBrush x:Key="ComponentColorBrush">#303030</SolidColorBrush>
         <SolidColorBrush x:Key="ComponentColorBrush_Light">#353535</SolidColorBrush>
 
-        <SolidColorBrush x:Key="InteractiveComponentColorBrush">#303030</SolidColorBrush>
-        <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#353535</SolidColorBrush>
+        <SolidColorBrush x:Key="InteractiveComponentColorBrush">#404040</SolidColorBrush>
+        <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#454545</SolidColorBrush>
 
         <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
         <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#656565</SolidColorBrush>
@@ -449,7 +571,7 @@
         <SolidColorBrush x:Key="AccentColorBrush">DarkCyan</SolidColorBrush>
         <SolidColorBrush x:Key="AccentColorBrush_Dark">DarkSlateGray</SolidColorBrush>
         
-        <SolidColorBrush x:Key="BackgroundColorBrush">#C0252525</SolidColorBrush>
+        <SolidColorBrush x:Key="BackgroundColorBrush">#252525</SolidColorBrush>
         <SolidColorBrush x:Key="TextColorBrush">LightGray</SolidColorBrush>
     </Application.Resources>
 </Application>
