@@ -100,12 +100,12 @@
                                FontWeight="SemiBold"
                                Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
 
-                    <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}">
+                    <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
+                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
-                                            Margin="0,0,0,5"
-                                            Visibility="{Binding DataContext.ShowKnownIssues, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
+                                            Margin="0,0,0,5">
                                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                              Kind="ExclamationBold"
                                                              Foreground="{DynamicResource TextColorBrush}" />

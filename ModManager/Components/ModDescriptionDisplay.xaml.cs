@@ -160,16 +160,19 @@ namespace Imya.UI.Components
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
-            ShowKnownIssues = m?.KnownIssues is LocalizedText[];
-            ShowDescription = m?.Description is LocalizedText;
-            ShowCreatorName = m?.CreatorName is String;
-            ShowVersion = m?.Version is String;
-            ShowDlcDeps = m?.DlcDependencies is Dlc[];
+
+            bool Exists = m is not null; 
+
+            ShowKnownIssues = Exists ? m.HasKnownIssues : false ;
+            ShowDescription = Exists ? m.HasDescription : false ;
+            ShowCreatorName = Exists ? m.HasCreator : false ;
+            ShowVersion = Exists ? m.HasVersion : false ;
+            ShowDlcDeps = Exists ? m.HasDlcDependencies : false ;
             DlcIds = GetDlcDependencies(m?.DlcDependencies);
 
             //the default behavior for images is different: If the mod does not have an image, it will show a placeholder. 
             //Only hide the image in case there is no displayed mod.
-            ShowImage = m is not null;
+            ShowImage = Exists;
         }
 
         #region INotifyPropertyChangedMembers

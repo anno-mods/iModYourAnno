@@ -53,12 +53,20 @@ namespace Imya.Models
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
 
         public bool HasExposedValues { get => ExposedValues is ObservableCollection<ExposedModValue>; }
+
+        [Obsolete]
         public bool HasMetadata { get => Metadata is Modinfo; }
+
+        public bool HasVersion { get => Version is String; }
         public bool HasDescription { get => Description is LocalizedText; }
         public bool HasKnownIssues { get => KnownIssues is LocalizedText[]; }
         public bool HasDlcDependencies { get => DlcDependencies is Dlc[]; }
+        public bool HasCreator { get => CreatorName is String; }
+        public bool HasImage { get => Image is String; }
 
         //store the Modinfo data for whatever we need it later on.
+        //This should be removed, and the mods should hold all this information by themselves.
+        [Obsolete]
         public Modinfo? Metadata;
 
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
@@ -71,10 +79,9 @@ namespace Imya.Models
             //mod with Metadata
             if (metadata is Modinfo)
             {
-                Metadata = metadata;
-                Category = (Metadata.Category is Localized) ? new LocalizedText(Metadata.Category) : new LocalizedText("NoCategory");
-                Name = (Metadata.ModName is Localized) ? new LocalizedText(Metadata.ModName) : new LocalizedText(ModName);
-                Description = (Metadata.Description is Localized) ? new LocalizedText(Metadata.Description) : null;
+                Category = (metadata.Category is Localized) ? new LocalizedText(metadata.Category) : new LocalizedText("NoCategory");
+                Name = (metadata.ModName is Localized) ? new LocalizedText(metadata.ModName) : new LocalizedText(ModName);
+                Description = (metadata.Description is Localized) ? new LocalizedText(metadata.Description) : null;
                 KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => new LocalizedText(x)).ToArray() : null;
                 Version =  metadata.Version;
                 CreatorName = metadata.CreatorName;
