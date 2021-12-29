@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Components="clr-namespace:Imya.UI.Components"
+        xmlns:Views="clr-namespace:Imya.UI.Views"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="#FFFFFF"
@@ -27,7 +28,7 @@
             <RowDefinition Height="100" />
         </Grid.RowDefinitions>
 
-        <Components:Dashboard Grid.RowSpan="2"/>
+        <Components:Dashboard Grid.RowSpan="2" x:Name="Dashboard"/>
         <Components:ConsoleLog Grid.Column="1" Grid.Row="1" x:Name="ConsoleLogTextBox" />
 
         <DockPanel Grid.Row="0" Grid.Column="1" Background="#FF252525">
@@ -40,7 +41,10 @@
                 </TabControl.ItemContainerStyle>
                 
                 <TabItem Background="#FF252525">
-                    <Components:ModDescriptionDisplay />
+                    <Views:ModActivationView/>
+                </TabItem>
+                <TabItem Background="#FF252525">
+                    <Views:SettingsView/>
                 </TabItem>
             </TabControl>
         </DockPanel>

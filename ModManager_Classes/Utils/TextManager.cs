@@ -13,6 +13,10 @@ namespace Imya.Utils
         public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
         public event LanguageChangedEventHandler LanguageChanged = delegate { };
 
+        public LocalizedText this[String Key]
+        {
+            get { return Instance.GetText(Key); }
+        }
 
         public TextManager(String Sourcefile)
         {
@@ -21,10 +25,10 @@ namespace Imya.Utils
             {
                 Texts = JsonConvert.DeserializeObject<Dictionary<String, LocalizedText>>(File.ReadAllText(Sourcefile)) ?? new Dictionary<string, LocalizedText>();
             }
-            catch
+            catch (Exception e)
             {
                 Texts = new Dictionary<string, LocalizedText>();
-                Console.WriteLine($"Error loading Text file: {Sourcefile}");
+                Console.WriteLine($"Error loading Text file: {Sourcefile} due to Exception: {e.Message}");
             }
         }
 

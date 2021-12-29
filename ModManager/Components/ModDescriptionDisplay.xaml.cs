@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Imya.Enums;
 using Imya.Models;
 using Imya.Models.ModMetadata;
 using Imya.Utils;
@@ -24,52 +25,140 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModDescriptionDisplay : UserControl, INotifyPropertyChanged
     {
+        #region FieldBacking
+        private Mod _mod;
+        private bool _showKnownIssues;
+        private bool _showDescription;
+        private bool _showCreatorName;
+        private bool _showVersion;
+        private bool _showDlcDeps;
+        private double _descriptionTextWidth;
+        private double _knownIssueTextWidth;
+
+        private DlcId[] _DlcIds;
+        #endregion
+
+        #region Fields
+
+        public DlcId[] DlcIds
+        {
+            get => _DlcIds;
+            set
+            {
+                _DlcIds = value;
+                OnPropertyChanged(nameof(DlcIds));
+            }
+        }
         public Mod Mod
         {
             get => _mod;
-            set
+            private set
             {
                 _mod = value;
-                OnPropertyChanged("Mod");
+                OnPropertyChanged(nameof(Mod));
             }
         }
 
-        private Mod _mod;
 
-        public String? Version 
-        { 
-            get => _version;
+        public bool ShowKnownIssues {
+            get => _showKnownIssues;
             set
             {
-                _version = value;
-                OnPropertyChanged("Version");
+                _showKnownIssues = value;
+                OnPropertyChanged(nameof(ShowKnownIssues));
             }
         }
-        private String? _version;
-        public LocalizedText? Description { get; private set; }
 
-        //Texts 
-        private LocalizedText NoVersion = TextManager.Instance.GetText("MODDISPLAY_NO_VERSION");
-        private LocalizedText NoDescription = TextManager.Instance.GetText("MODDISPLAY_NO_DESCRIPTION");
+        public bool ShowDescription
+        {
+            get => _showDescription;
+            set
+            {
+                _showDescription = value;
+                OnPropertyChanged(nameof(ShowDescription));
+            }
+        }
+
+        public bool ShowCreatorName
+        {
+            get => _showCreatorName;
+            set
+            {
+                _showCreatorName = value;
+                OnPropertyChanged(nameof(ShowCreatorName));
+            }
+        }
+
+        public bool ShowVersion
+        {
+            get => _showVersion;
+            set
+            {
+                _showVersion = value;
+                OnPropertyChanged(nameof(ShowVersion));
+            }
+        }
+
+        public bool ShowDlcDeps
+        {
+            get => _showDlcDeps;
+            set
+            {
+                _showDlcDeps = value;
+                OnPropertyChanged(nameof(ShowDlcDeps));
+            }
+        }
+
+        public double DescriptionTextWidth {
+            get => _descriptionTextWidth;
+            set
+            {
+                _descriptionTextWidth = value;
+                OnPropertyChanged(nameof(DescriptionTextWidth));
+            }
+        }
+
+
+        public double KnownIssueTextWidth {
+            get => _knownIssueTextWidth;
+            set
+            {
+                _knownIssueTextWidth = value;
+                OnPropertyChanged(nameof(KnownIssueTextWidth));
+            }
+        }
+
+        #endregion
+
+        public TextManager TextManager { get; } = TextManager.Instance;
 
         public ModDescriptionDisplay()
         {
-            DataContext = this;
             InitializeComponent();
-            Version = "1.1.1.1.1.1";
+            DataContext = this;
         }
 
-        //This assumes the mod has a modinfo atm.
-        private void GenerateDescription(Mod mod)
+        private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
         {
-            Version = mod.Metadata?.Version is String ? mod.Metadata.Version : NoVersion.Text;
-            Description = mod.Description is LocalizedText ? mod.Description : NoDescription;
+            if (dependencies is not null)
+            {
+                return dependencies.Select(x => x.DLC).Where(x => x is DlcId).Select(x => (DlcId)x).OrderBy(x => x).ToArray();
+            }
+            else return new DlcId[0];
         }
 
-        private void Reset()
+
+        public void SetDisplayedMod(Mod m)
         {
-            Version = null;
-            Description = null;
+            Mod = m;
+            if (m is Mod)
+                
+            ShowKnownIssues = m?.KnownIssues is LocalizedText[];
+            ShowDescription = m?.Description is LocalizedText;
+            ShowCreatorName = m?.CreatorName is String;
+            ShowVersion = m?.Version is String;
+            ShowDlcDeps = m?.DlcDependencies is Dlc[];
+            DlcIds = GetDlcDependencies(m?.DlcDependencies);
         }
 
         #region INotifyPropertyChangedMembers
@@ -83,6 +172,17 @@ namespace Imya.UI.Components
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs s)
+        {
+            UpdateTextboxWidths();
+        }
+
+        private void UpdateTextboxWidths()
+        {
+            DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
+            KnownIssueTextWidth = BaseGrid.ActualWidth > 50 ? BaseGrid.ActualWidth - 50 : 50;
         }
         #endregion
     }

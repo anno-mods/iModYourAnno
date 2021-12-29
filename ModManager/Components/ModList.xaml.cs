@@ -15,14 +15,14 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModList : UserControl, INotifyPropertyChanged
     {
-        public LocalizedText InactiveText { get; } = TextManager.Instance.GetText("MODLIST_INACTIVE");
-        public LocalizedText ActiveText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVE");
         public LocalizedText ActivateText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVATE");
         public LocalizedText DeactivateText { get; } = TextManager.Instance.GetText("MODLIST_DEACTIVATE");
 
         public Mod? CurrentlyDisplayedMod { get; private set; } = null;
 
         public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
+
+        public TextManager TextManager { get; } = TextManager.Instance;
 
         public bool ShowActivateButton {
             get { return _showActivateButton; }
@@ -63,7 +63,8 @@ namespace Imya.UI.Components
             ShowActivateButton = selectedItems.Any(x => !x.Active);
             ShowDeactivateButton = selectedItems.Any(x => x.Active);
 
-            CurrentlyDisplayedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count - 1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            CurrentlyDisplayedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            ModList_SelectionChanged(CurrentlyDisplayedMod);
         }
 
         private void ActivateButton_OnClick(object sender, RoutedEventArgs e)
@@ -84,6 +85,41 @@ namespace Imya.UI.Components
             OnSelectionChanged();
         }
 
+        private void OnSearchRequest(object sender, TextChangedEventArgs e)
+        {
+            string filterText = SearchTextBox.Text;
+            ModDirectoryManager.Instance.FilterMods(x => FilterByKeywords(x, filterText));
+        }
+
+        /// <summary>
+        /// Determines whether the category or name of a mod contain the current filter text.
+        /// </summary>
+        /// <param name="m">Mod to check</param>
+        /// <param name="filterText">The boolean result</param>
+        /// <returns></returns>
+        private bool FilterByNameOrCategory(Mod m, String filterText)
+        {
+            return m.Name.Text.ToLower().Contains(filterText.ToLower()) || m.Category.Text.ToLower().Contains(filterText.ToLower());
+        }
+
+        /// <summary>
+        /// Determines whether a mod name+category contains all keywords provided in a search.
+        /// </summary>
+        /// <param name="m">Mod to check</param>
+        /// <param name="filterText">The boolean result</param>
+        private bool FilterByKeywords(Mod m, String filterText)
+        {
+            String[] keywords = filterText.Split(" ");
+            bool IsMatch = true;
+            foreach (String s in keywords)
+            {
+                IsMatch = IsMatch ? FilterByNameOrCategory(m, s) : false;
+            }
+            return IsMatch;
+        }
+
+        public event ModListSelectionChangedHandler ModList_SelectionChanged = delegate { };
+        public delegate void ModListSelectionChangedHandler(Mod mod);
 
         #region INotifyPropertyChangedMembers
 
@@ -98,38 +134,5 @@ namespace Imya.UI.Components
             }
         }
         #endregion
-    }
-
-
-    [ValueConversion(typeof(bool), typeof(String))]
-    internal class IconConverter : IValueConverter
-    {
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            bool b = (bool)value;
-            return b ? "CheckBold" : "HighlightOff";
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            string strValue = value as string;
-            return strValue.Equals("CheckBold") ? true : false;
-        }
-    }
-
-    [ValueConversion(typeof(bool), typeof(String))]
-    internal class IconColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            bool b = (bool)value;
-            return b ? "Green" : "Red";
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            string strValue = value as string;
-            return strValue.Equals("Green");
-        }
-    }
+    }    
 }
