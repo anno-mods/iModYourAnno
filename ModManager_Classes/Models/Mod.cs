@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
+using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Models
 {
-    public class Mod : INotifyPropertyChanged
+    public class Mod : PropertyChangedNotifier
     {
         #region fields_backing
         private string _directory_name;
@@ -107,17 +108,5 @@ namespace Imya.Models
 
             return !Name.Equals("") && !Category.Equals("");
         }
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Imya.Models;
 using Imya.Models.ModMetadata;
+using Imya.Models.NotifyPropertyChanged;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Imya.Utils
 {
-    public class ModDirectoryManager : INotifyPropertyChanged
+    public class ModDirectoryManager : PropertyChangedNotifier
     {
         public static ModDirectoryManager Instance { get; private set; }
 
@@ -222,18 +223,6 @@ namespace Imya.Utils
         public void FilterMods(ModListFilter filter)
         {
             DisplayedMods = new ObservableCollection<Mod>(ModList.Where(x => filter(x)).ToList());
-        }
-        #endregion
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
         #endregion
     }
