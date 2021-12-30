@@ -34,8 +34,8 @@
                                   Style="{StaticResource IMYA_COMBOBOX}"
                                   x:Name="LanguageSelection"
                                   VerticalAlignment="Top"
-                                  SelectionChanged="LanguageChanged"
-                                  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectionChanged="RequestLanguageChange"
+                                  ItemsSource="{Binding SettingsManager.Languages, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="3"
                                   MinHeight="30">
                             <ComboBox.ItemTemplate>
@@ -62,7 +62,8 @@
                                   HorizontalAlignment="Left"
                                   Grid.Column="1"
                                   Foreground="{DynamicResource AccentColorBrush}"
-                                  Style="{StaticResource IMYA_CHECKBOX}">
+                                  Style="{StaticResource IMYA_CHECKBOX}"
+                                  IsChecked="{Binding SettingsManager.ShowConsole, Mode=TwoWay}">
                         </CheckBox>
                     </Grid>
                 </StackPanel>
