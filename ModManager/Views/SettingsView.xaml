@@ -11,12 +11,64 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <ComboBox x:Name="LanguageSelection" VerticalAlignment="Top" MaxWidth="200" SelectionChanged="LanguageChanged" ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name.Text}"></TextBlock>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
+            <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[SETTINGS_LANGUAGE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource IMYA_COMBOBOX}"
+                                  x:Name="LanguageSelection"
+                                  VerticalAlignment="Top"
+                                  SelectionChanged="LanguageChanged"
+                                  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="3"
+                                  MinHeight="30">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name.Text}"
+                                               Style="{StaticResource IMYA_TEXT}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[SETTINGS_SHOWCONSOLE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                        <CheckBox Margin="5"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Left"
+                                  Grid.Column="1"
+                                  Foreground="{DynamicResource AccentColorBrush}"
+                                  Style="{StaticResource IMYA_CHECKBOX}">
+                        </CheckBox>
+                    </Grid>
+                </StackPanel>
+                
+            </Border>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

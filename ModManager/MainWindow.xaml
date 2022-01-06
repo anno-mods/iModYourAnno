@@ -9,15 +9,15 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="#FFFFFF"
         Title="MainWindow" Height="720" Width="1280">
-    <!-- I have no Idea why this does not work
-    <Window.Background>
-        <ImageBrush ImageSource="resources/background.jpg" Stretch="UniformToFill"/>
-    </Window.Background>-->
     
     <Window.Background>
-        <SolidColorBrush Color="#252525" />
+        <ImageBrush ImageSource="/resources/background.jpg" Stretch="UniformToFill"/>
     </Window.Background>
-    <Grid>
+    
+    <!--<Window.Background>
+        <SolidColorBrush Color="#252525" />
+    </Window.Background>-->
+    <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
@@ -31,8 +31,10 @@
         <Components:Dashboard Grid.RowSpan="2" x:Name="Dashboard"/>
         <Components:ConsoleLog Grid.Column="1" Grid.Row="1" x:Name="ConsoleLogTextBox" />
 
-        <DockPanel Grid.Row="0" Grid.Column="1" Background="#FF252525">
-            <TabControl x:Name="WindowViewControl" BorderBrush="#FF252525" Background="#FF252525" BorderThickness="0">
+        <DockPanel Grid.Row="0" Grid.Column="1">
+            <TabControl x:Name="WindowViewControl"
+                        Background="Transparent"
+                        BorderBrush="Transparent" BorderThickness="0">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Setter Property="Visibility" Value="Hidden" />
@@ -40,10 +42,10 @@
                     </Style>
                 </TabControl.ItemContainerStyle>
                 
-                <TabItem Background="#FF252525">
+                <TabItem Background="Transparent">
                     <Views:ModActivationView/>
                 </TabItem>
-                <TabItem Background="#FF252525">
+                <TabItem Background="Transparent">
                     <Views:SettingsView/>
                 </TabItem>
             </TabControl>

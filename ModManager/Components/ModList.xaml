@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
-    <Grid Background="#FF252525">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
@@ -24,10 +24,10 @@
                     VerticalAlignment="Center">
             <TextBox MinWidth="300"
                      MinHeight="25"
-                     Margin="0,2,0,2"
+                     Margin="0,2,10,2"
                      TextChanged="OnSearchRequest"
                      x:Name="SearchTextBox"
-                     Background="#303030">
+                     Background="{DynamicResource InteractiveComponentColorBrush}">
                 <TextBox.Style>
                     <Style TargetType="TextBox" BasedOn="{StaticResource IMYA_TEXTBOX}">
                         <Setter Property="Template">
@@ -88,7 +88,6 @@
                  ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
                  SelectionChanged="SelectionChanged"
                  SelectionMode="Extended"
-                 Background="#FF252525"
                  Style="{StaticResource IMYA_LISTBOX}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -96,7 +95,8 @@
                                 Margin="5,3,0,3">
                         <CheckBox IsChecked="{Binding Selected}"
                                   Margin="0,0,5,0"
-                                  Style="{StaticResource IMYA_CHECKBOX}"/>
+                                  Style="{StaticResource IMYA_CHECKBOX}"
+                                  Foreground="{DynamicResource AccentColorBrush_Dark}"/>
                         <materialDesign:PackIcon Margin="0,0,5,0"
                                                  Kind="{Binding Active, Converter={StaticResource ModIconConverter}}"
                                                  Foreground="{Binding Active, Converter={StaticResource ModIconColorConverter}}" />

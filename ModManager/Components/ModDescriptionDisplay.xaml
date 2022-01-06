@@ -20,8 +20,9 @@
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
+            <converters:Base64ImageConverter x:Key="Base64ToImage" />
         </Grid.Resources>
-        <Border Background="#303030" CornerRadius="3" Margin="0,5,0,5">
+        <Border Background="{DynamicResource ComponentColorBrush}" CornerRadius="3" Margin="0,5,0,5">
             <StackPanel HorizontalAlignment="Center"
                         Orientation="Horizontal"
                         VerticalAlignment="Center">
@@ -39,113 +40,133 @@
                       Style="{StaticResource IMYA_SCROLLVIEWER}"
                       Grid.Row="1"
                       Margin="0,0,0,5"
-                      Background="#303030">
+                      Background="{DynamicResource ComponentColorBrush}">
 
-            <StackPanel Orientation="Vertical" Margin="5,0,0,0">
-                <!-- Version-->
-                <StackPanel Orientation="Horizontal"
-                            Margin="2,8,2,8"
-                            Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}">
-                    <TextBlock TextWrapping="Wrap" Text="{Binding TextManager[HEADER_VERSION].Text}" 
-                               Foreground="White"
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="185"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="2" 
+                        Margin="5"
+                        CornerRadius="4"
+                        BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
+                        Visibility="{Binding ShowImage, Converter={StaticResource BoolToVis}}">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding Mod.Image, Converter={StaticResource Base64ToImage}}"
+                                    Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                
+                <StackPanel Orientation="Vertical"
+                            Margin="5,0,0,0"
+                            Grid.Row="1">
+                    <!-- Version-->
+                    <StackPanel Orientation="Horizontal"
+                                Margin="2,8,2,8"
+                                Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}">
+                        <TextBlock TextWrapping="Wrap"
+                                   Text="{Binding TextManager[HEADER_VERSION].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding Mod.Version, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}" />
+
+                    <!-- Description -->
+                    <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
+                               Margin="2,8,2,8"
                                Style="{StaticResource IMYA_TEXT}"
-                               FontWeight="SemiBold"/>
+                               FontWeight="SemiBold"
+                               Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
+                    <StackPanel Orientation="Horizontal"
+                                Margin="2,8,2,8"
+                                Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   MaxWidth="{Binding DescriptionTextWidth}"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding Mod.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!-- Known Issues -->
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding Mod.Version, UpdateSourceTrigger=PropertyChanged}" 
-                               Foreground="White"/>
+                               Text="{Binding TextManager[HEADER_KNOWNISSUES].Text}"
+                               Margin="2,5,2,5"
+                               FontWeight="SemiBold"
+                               Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
+
+                    <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
+                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,5">
+                                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                             Kind="ExclamationBold"
+                                                             Foreground="{DynamicResource TextColorBrush}" />
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,3,0,0"
+                                               Text="{Binding Text}"
+                                               MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Separator Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
+
+                    <!-- DLC DEPENDENCIES -->
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding TextManager[HEADER_DLCDEPENDENCY].Text, UpdateSourceTrigger=PropertyChanged}"
+                               Margin="2,5,2,5"
+                               FontWeight="SemiBold"
+                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
+
+                    <ItemsControl x:Name="DLC_Dependencies"
+                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0,0,0,5"
+                                            Visibility="{Binding DataContext.ShowDlcDeps, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
+                                    <Image VerticalAlignment="Center"
+                                           Source="{Binding Path=., Converter={StaticResource DlcIcon}}"
+                                           Width="28"
+                                           Height="28"
+                                           Margin="0,0,7,0" />
+
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,0,0,0"
+                                               x:Name="DLC_Dependency_TextboxTemplate"
+                                               Text="{Binding Path=., Converter={StaticResource DlcText}, UpdateSourceTrigger=Explicit}"
+                                               MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Separator Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
+
+                    <!-- Creator Information -->
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="2,8,2,8"
+                                Visibility="{Binding ShowCreatorName, Converter={StaticResource BoolToVis}}">
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[HEADER_CREATOR].Text}"
+                                   FontWeight="SemiBold" />
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding Mod.CreatorName, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
                 </StackPanel>
-
-                <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}"/>
-                
-                <!-- Description -->
-                <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
-                           Foreground="White"
-                           Margin="2,8,2,8"
-                           Style="{StaticResource IMYA_TEXT}"
-                           FontWeight="SemiBold"
-                           Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
-                <StackPanel Orientation="Horizontal"
-                            Margin="2,8,2,8"
-                            Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               MaxWidth="{Binding DescriptionTextWidth}" 
-                               TextWrapping="Wrap" 
-                               Text="{Binding Mod.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-
-                <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"/>
-                
-                <!-- Known Issues -->
-                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                           Text="{Binding TextManager[HEADER_KNOWNISSUES].Text}"
-                           Margin="2,5,2,5"
-                           FontWeight="SemiBold"
-                           Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"/>
-
-                <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" 
-                                        Margin="0,0,0,5"
-                                        Visibility="{Binding DataContext.ShowKnownIssues, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
-                                <materialDesign:PackIcon 
-                                    Style="{StaticResource IMYA_ICON}"
-                                    Kind="ExclamationBold"
-                                    Foreground="White"/>
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           TextWrapping="Wrap" 
-                                           Margin="0,3,0,0" 
-                                           Text="{Binding Text}" 
-                                           MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <Separator Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"/>
-
-                <!-- DLC DEPENDENCIES -->
-                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                           Text="{Binding TextManager[HEADER_DLCDEPENDENCY].Text, UpdateSourceTrigger=PropertyChanged}"
-                           Margin="2,5,2,5"
-                           FontWeight="SemiBold"
-                           Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
-
-                <ItemsControl ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="0,0,0,5"
-                                        Visibility="{Binding DataContext.ShowDlcDeps, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
-                                <Image VerticalAlignment="Center"
-                                       Source="{Binding Path=., Converter={StaticResource DlcIcon}}"
-                                       Width="28" 
-                                       Height="28"
-                                       Margin="0,0,7,0"/>
-
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,0,0,0"
-                                           Text="{Binding Path=., Converter={StaticResource DlcText}}"
-                                           MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <Separator Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
-
-                <!-- Creator Information -->
-                
-                <StackPanel Orientation="Horizontal"
-                            Margin="2,8,2,8"
-                            Visibility="{Binding ShowCreatorName, Converter={StaticResource BoolToVis}}">
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding TextManager[HEADER_CREATOR].Text}"
-                               FontWeight="SemiBold" />
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding Mod.CreatorName, UpdateSourceTrigger=PropertyChanged}"/>
-                </StackPanel>
-            </StackPanel>
+            </Grid>
+            
         </ScrollViewer>
 
     </Grid>
