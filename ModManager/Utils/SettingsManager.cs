@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Imya.UI
+namespace Imya.UI.Utils
 {
     public class TextLanguagePair
     {
