@@ -136,7 +136,7 @@ namespace Imya.Utils
                 {
                     Directory.Move(SourcePath, TargetPath);
                     Console.WriteLine($"{(Active ? "Activated" : "Deactivated")} {mod.Category} {mod.Name}. Directory renamed from {SourcePath} to {TargetPath}");
-                }                
+                }
                 mod.Active = Active;
                 UpdateModCounts();
             }
@@ -213,7 +213,14 @@ namespace Imya.Utils
                 }
             }
             TrySerializeMetadata(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
-            return new Mod(active, Name, metadata);
+            var Mod = new Mod(active, Name, metadata);
+
+            var imagepath = Path.Combine(inPath, "banner.png");
+            if (File.Exists(imagepath))
+            {
+                Mod.InitImageAsFilepath(Path.Combine(imagepath));            
+            }
+            return Mod;
         }
         #endregion
 
