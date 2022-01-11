@@ -1,5 +1,6 @@
 ﻿using Imya.Enums;
 using Imya.Models;
+using Imya.Models.PropertyChanged;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -81,11 +82,7 @@ namespace Imya.UI.Utils
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.NotifyPropertyChanged(PropertyChanged, propertyName);
         }
         #endregion
     }

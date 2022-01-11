@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Imya.Enums;
-using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.Models
 {

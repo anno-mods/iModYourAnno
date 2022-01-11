@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.UI.Components
 {
@@ -63,11 +64,7 @@ namespace Imya.UI.Components
 
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.NotifyPropertyChanged(PropertyChanged, propertyName);
         }
         #endregion
     }
