@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.Models
 {
-    public class Mod : INotifyPropertyChanged
+    public class Mod : PropertyChangedNotifier
     {
         #region fields_backing
         private string _directory_name;
@@ -48,7 +49,7 @@ namespace Imya.Models
         public String? Version { get; private set; }
         public String? CreatorName { get; private set; }
         public Dlc[]? DlcDependencies { get; private set; }
-        public String? Image { get; private set; }
+        public ImyaImageSource? Image { get; private set; }
 
         public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
 
@@ -62,7 +63,7 @@ namespace Imya.Models
         public bool HasKnownIssues { get => KnownIssues is LocalizedText[]; }
         public bool HasDlcDependencies { get => DlcDependencies is Dlc[]; }
         public bool HasCreator { get => CreatorName is String; }
-        public bool HasImage { get => Image is String; }
+        public bool HasImage { get => Image is ImyaImageSource; }
 
         //store the Modinfo data for whatever we need it later on.
         //This should be removed, and the mods should hold all this information by themselves.
@@ -86,7 +87,13 @@ namespace Imya.Models
                 Version =  metadata.Version;
                 CreatorName = metadata.CreatorName;
                 DlcDependencies = metadata.DLCDependencies;
-                Image = metadata.Image;
+
+                //Just construct as base64 for now. 
+                if (metadata.Image is String)
+                {
+                    Image = new ImyaImageSource();
+                    Image.ConstructAsBase64Image(metadata.Image);
+                }
             }
             //mod without Metadata
             else
@@ -95,6 +102,12 @@ namespace Imya.Models
                 Category = matches ? new LocalizedText(_category ) : TextManager.Instance.GetText("MODDISPLAY_NO_CATEGORY");
                 Name = new LocalizedText(matches ? _name : DirectoryName);
             }
+        }
+
+        public void InitImageAsFilepath(String ImagePath)
+        {
+            Image = new ImyaImageSource();
+            Image.ConstructAsFilepathImage(ImagePath);
         }
 
         private bool TryMatchToNamingPattern(String DirectoryName, out String Category, out String Name)
@@ -107,17 +120,5 @@ namespace Imya.Models
 
             return !Name.Equals("") && !Category.Equals("");
         }
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
     }
 }

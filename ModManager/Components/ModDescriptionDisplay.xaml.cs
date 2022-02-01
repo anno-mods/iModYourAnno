@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Imya.Enums;
 using Imya.Models;
 using Imya.Models.ModMetadata;
+using Imya.Models.PropertyChanged;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -144,7 +145,6 @@ namespace Imya.UI.Components
         {
             InitializeComponent();
             DataContext = this;
-            //TextManager.Instance.LanguageChanged += UpdateTextBoxes;
         }
 
         private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
@@ -155,7 +155,6 @@ namespace Imya.UI.Components
             }
             else return new DlcId[0];
         }
-
 
         public void SetDisplayedMod(Mod m)
         {
@@ -173,19 +172,6 @@ namespace Imya.UI.Components
             //the default behavior for images is different: If the mod does not have an image, it will show a placeholder. 
             //Only hide the image in case there is no displayed mod.
             ShowImage = Exists;
-        }
-
-        #region INotifyPropertyChangedMembers
-
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs s)
@@ -209,6 +195,13 @@ namespace Imya.UI.Components
                 BindingExpression bindingExpression = Textblock.GetBindingExpression(TextBlock.TextProperty);
                 bindingExpression.UpdateSource();
             }
+        }
+
+        #region INotifyPropertyChangedMembers
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        private void OnPropertyChanged(string propertyName)
+        {
+            this.NotifyPropertyChanged(PropertyChanged, propertyName);
         }
         #endregion
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Imya.UI.Properties;
+using Imya.UI.Utils;
 
 namespace Imya.UI
 {
@@ -9,29 +10,22 @@ namespace Imya.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
+
         public MainWindow()
         {
             InitializeComponent();
             SetUpEmbeddedConsole();
-            Dashboard.MainViewChanged += ChangeMainWindow;
             Console.WriteLine("Modders Are gonna take over the World!!!");
-
+            DataContext = this;
             MinHeight = Settings.Default.MIN_WINDOW_HEIGHT;
             MinWidth = Settings.Default.MIN_WINDOW_WIDTH;
+
         }
 
         public void SetUpEmbeddedConsole()
         {
             Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.ConsoleOut, this));
-            
-        }
-
-        private void ChangeMainWindow(int index)
-        {
-            if (index >= 0 && index <= 1)
-            {
-                WindowViewControl.SelectedIndex = index;
-            }
         }
     }
 }

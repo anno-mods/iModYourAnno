@@ -1,12 +1,13 @@
 ﻿using Imya.Models;
 using Imya.Models.ModMetadata;
+using Imya.Models.PropertyChanged;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Imya.Utils
 {
-    public class ModDirectoryManager : INotifyPropertyChanged
+    public class ModDirectoryManager : PropertyChangedNotifier
     {
         public static ModDirectoryManager Instance { get; private set; }
 
@@ -135,7 +136,7 @@ namespace Imya.Utils
                 {
                     Directory.Move(SourcePath, TargetPath);
                     Console.WriteLine($"{(Active ? "Activated" : "Deactivated")} {mod.Category} {mod.Name}. Directory renamed from {SourcePath} to {TargetPath}");
-                }                
+                }
                 mod.Active = Active;
                 UpdateModCounts();
             }
@@ -212,7 +213,14 @@ namespace Imya.Utils
                 }
             }
             TrySerializeMetadata(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
-            return new Mod(active, Name, metadata);
+            var Mod = new Mod(active, Name, metadata);
+
+            var imagepath = Path.Combine(inPath, "banner.png");
+            if (File.Exists(imagepath))
+            {
+                Mod.InitImageAsFilepath(Path.Combine(imagepath));            
+            }
+            return Mod;
         }
         #endregion
 
@@ -222,18 +230,6 @@ namespace Imya.Utils
         public void FilterMods(ModListFilter filter)
         {
             DisplayedMods = new ObservableCollection<Mod>(ModList.Where(x => filter(x)).ToList());
-        }
-        #endregion
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
         #endregion
     }

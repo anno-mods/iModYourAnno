@@ -57,11 +57,6 @@ namespace Imya.Utils
             }
         }
 
-        public void SetVariable(ref String variable, String Key)
-        {
-            variable = this.GetText(Key).Text;
-        }
-
         public void ChangeLanguage(ApplicationLanguage lang)
         {
             Console.WriteLine($"Changed App Language to: {lang}");

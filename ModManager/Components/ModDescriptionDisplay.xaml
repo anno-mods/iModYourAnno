@@ -20,7 +20,7 @@
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
-            <converters:Base64ImageConverter x:Key="Base64ToImage" />
+            <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
         </Grid.Resources>
         <Border Background="{DynamicResource ComponentColorBrush}" CornerRadius="3" Margin="0,5,0,5">
             <StackPanel HorizontalAlignment="Center"
@@ -54,7 +54,7 @@
                         BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
                         Visibility="{Binding ShowImage, Converter={StaticResource BoolToVis}}">
                     <Border.Background>
-                        <ImageBrush ImageSource="{Binding Mod.Image, Converter={StaticResource Base64ToImage}}"
+                        <ImageBrush ImageSource="{Binding Mod.Image, Converter={StaticResource ImageConverter}}"
                                     Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>

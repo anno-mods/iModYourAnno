@@ -7,13 +7,14 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.UI.Components
 {
     /// <summary>
     /// Interaktionslogik für Dashboard.xaml
     /// </summary>
-    public partial class Dashboard : UserControl
+    public partial class Dashboard : UserControl, INotifyPropertyChanged
     {
         public LocalizedText SettingsText { get; } = TextManager.Instance.GetText("DASHBOARD_SETTINGS");
         public LocalizedText ModTweakingText { get; } = TextManager.Instance.GetText("DASHBOARD_MOD_TWEAKING");
@@ -23,17 +24,22 @@ namespace Imya.UI.Components
         public LocalizedText PlayText { get; } = TextManager.Instance.GetText("DASHBOARD_PLAY");
         public LocalizedText DashboardText { get; } = TextManager.Instance.GetText("DASHBOARD_DASHBOARD");
 
-        public event MainViewChangedEventHandler MainViewChanged = delegate { };
-        public delegate void MainViewChangedEventHandler(int indexToShow);
+        private int _currentViewIndex;
+        public int CurrentViewIndex {
+            get => _currentViewIndex;
+            set
+            { 
+                _currentViewIndex = value;
+                OnPropertyChanged(nameof(CurrentViewIndex));
+            }
+        }
 
         public Dashboard()
         {
             InitializeComponent();
             DataContext = this;
-            //ClearButtonRects();
         }
 
-        //This is just a placeholder that changes languages on Settings Button Click.
         public void OnClick(object sender, RoutedEventArgs e)
         {
             if(TextManager.Instance.ApplicationLanguage == ApplicationLanguage.English)
@@ -44,30 +50,24 @@ namespace Imya.UI.Components
 
         public void SettingsClick(object sender, RoutedEventArgs e)
         {
-            //ClearButtonRects();
-            MainViewChanged(1);
-            //SettingsSelectionRect.Visibility = Visibility.Visible;
+            CurrentViewIndex = 1;
         }
 
         public void ModManagementClick(object sender, RoutedEventArgs e)
         {
-            //ClearButtonRects();
-            MainViewChanged(0);
-            //ModManagementSelectionRect.Visibility = Visibility.Visible;
+            CurrentViewIndex = 0;
         }
 
-        //look, I know this is completely retarded code.
-        //I just gave up trying to create my own Control for this dashboard.
+        #region INotifyPropertyChangedMembers
 
-        /*private void ClearButtonRects()
-        { 
-            ModManagementSelectionRect.Visibility = Visibility.Hidden;
-            GameSetupSelectionRect.Visibility=Visibility.Hidden;
-            ModInstallSelectionRect.Visibility=Visibility.Hidden;
-            ModTweakerSelectionRect.Visibility = Visibility.Hidden;
-            SettingsSelectionRect.Visibility = Visibility.Hidden;
-        }*/
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            this.NotifyPropertyChanged(PropertyChanged, propertyName);
+        }
+        #endregion
     }
 
-    
+
 }

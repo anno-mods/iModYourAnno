@@ -25,16 +25,24 @@
 
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        </Grid.Resources>
 
         <Components:Dashboard Grid.RowSpan="2" x:Name="Dashboard"/>
-        <Components:ConsoleLog Grid.Column="1" Grid.Row="1" x:Name="ConsoleLogTextBox" />
+        <Components:ConsoleLog Grid.Column="1" 
+                               Height ="100" 
+                               Visibility="{Binding SettingsManager.ShowConsole, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" 
+                               Grid.Row="1" 
+                               x:Name="ConsoleLogTextBox" />
 
         <DockPanel Grid.Row="0" Grid.Column="1">
             <TabControl x:Name="WindowViewControl"
                         Background="Transparent"
-                        BorderBrush="Transparent" BorderThickness="0">
+                        BorderBrush="Transparent" BorderThickness="0"
+                        SelectedIndex="{Binding CurrentViewIndex, ElementName=Dashboard, UpdateSourceTrigger=PropertyChanged}">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Setter Property="Visibility" Value="Hidden" />

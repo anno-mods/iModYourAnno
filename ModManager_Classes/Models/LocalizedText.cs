@@ -4,10 +4,11 @@ using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Imya.Enums;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.Models
 {
-    public class LocalizedText : INotifyPropertyChanged
+    public class LocalizedText : PropertyChangedNotifier
     {
         [JsonIgnore]
         public String Text
@@ -94,19 +95,6 @@ namespace Imya.Models
             }
             Text = String.Empty;
         }
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
 
         public override string ToString()
         {
