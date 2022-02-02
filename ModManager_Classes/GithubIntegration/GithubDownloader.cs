@@ -52,19 +52,19 @@ namespace Imya.GithubIntegration
 
             using (var DownloadClient = new HttpClient())
             {
-                var response = await DownloadClient.GetAsync(downloadURL);
+                var response = await DownloadClient.GetAsync(downloadURL, HttpCompletionOption.ResponseHeadersRead);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content;
 
                     //not cool tbh. Currently this is all a fucking memstream. Good Luck downloading new horizons with that.
-                    var ContentStream = await content.ReadAsStreamAsync();
-
-                    using (var fs = File.Create(TargetFilename))
+                    using (var ContentStream = await content.ReadAsStreamAsync())
                     {
-                        ContentStream.Position = 0;
-                        ContentStream.CopyTo(fs);
+                        using (Stream targetStream = File.Create(TargetFilename))
+                        {
+                            await ContentStream.CopyToAsync(targetStream);
+                        }
                     }
                 }
             }
