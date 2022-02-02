@@ -20,16 +20,19 @@
             <converters:IconColorConverter x:Key="ModIconColorConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </Grid.Resources>
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Center">
-            <TextBox MinWidth="300"
-                     MinHeight="25"
-                     Margin="0,2,10,2"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox MinHeight="25"
+                     Margin="0,5,10,5"
                      TextChanged="OnSearchRequest"
                      x:Name="SearchTextBox"
                      Background="{DynamicResource InteractiveComponentColorBrush}">
                 <TextBox.Style>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource IMYA_TEXTBOX}">
+                    <Style TargetType="TextBox"
+                           BasedOn="{StaticResource IMYA_TEXTBOX}">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TextBox">
@@ -77,12 +80,13 @@
                 </TextBox.Style>
             </TextBox>
             <materialDesign:PackIcon VerticalAlignment="Center"
+                                     Grid.Column="1"
                                      Kind="Search"
                                      Style="{StaticResource IMYA_ICON}"
                                      Foreground="White"
                                      Margin="0,0,5,0">
             </materialDesign:PackIcon>
-        </StackPanel>
+        </Grid>
         <ListBox Grid.Row="1"
                  x:Name="ListBox_ModList"
                  ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
