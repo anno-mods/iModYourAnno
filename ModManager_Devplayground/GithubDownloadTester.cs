@@ -8,7 +8,7 @@ internal class GithubDevTester
 
         File.Delete("fuck/loader.zip");
 
-        await Downloader.DownloadReleaseAsync(new GithubRepoInfo { Name = "anno1800-mod-loader", Owner = "xforce" }, "loader.zip");
+        await Downloader.DownloadReleaseAsync(new GithubRepoInfo { Name = "Spice-it-Up", Owner = "anno-mods" }, "Spice-it-Up-3-0-6.zip");
 
         var file = new FileInfo("fuck/loader.zip");
         Console.WriteLine($"Download Success: { file.Exists && file.Length != 0 }");

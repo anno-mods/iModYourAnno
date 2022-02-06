@@ -22,9 +22,9 @@
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
             Grid.ColumnSpan="2">
-            <TextBlock FontSize="15" Text="{Binding ActiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_ACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
             <TextBlock FontSize="15" Text="{Binding ModManager.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding InactiveText.Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_INACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
             <TextBlock FontSize="15" Text="{Binding ModManager.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
         </StackPanel>
         

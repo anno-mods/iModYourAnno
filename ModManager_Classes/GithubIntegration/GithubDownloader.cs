@@ -47,7 +47,6 @@ namespace Imya.GithubIntegration
         public async Task<String> DownloadReleaseAsync(Release release, String AssetName)
         {
             var downloadURL = release.Assets.First(x => x.Name.Equals(AssetName)).BrowserDownloadUrl;
-
             String TargetFilename = Path.Combine(DOWNLOAD_DIRECTORY, AssetName);
 
             using (var DownloadClient = new HttpClient())
@@ -57,7 +56,6 @@ namespace Imya.GithubIntegration
                 if (response.IsSuccessStatusCode)
                 {
                     var content = response.Content;
-
                     //not cool tbh. Currently this is all a fucking memstream. Good Luck downloading new horizons with that.
                     using (var ContentStream = await content.ReadAsStreamAsync())
                     {

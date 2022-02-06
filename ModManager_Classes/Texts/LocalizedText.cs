@@ -8,7 +8,7 @@ using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Models
 {
-    public class LocalizedText : PropertyChangedNotifier
+    public class LocalizedText : PropertyChangedNotifier, IText
     {
         [JsonIgnore]
         public String Text

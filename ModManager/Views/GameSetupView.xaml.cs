@@ -1,6 +1,4 @@
-﻿using Imya.Models;
-using Imya.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,19 +16,13 @@ using System.Windows.Shapes;
 namespace Imya.UI.Views
 {
     /// <summary>
-    /// Interaktionslogik für ModActivationView.xaml
+    /// Interaktionslogik für GameSetupView.xaml
     /// </summary>
-    public partial class ModActivationView : UserControl
+    public partial class GameSetupView : UserControl
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
-
-        public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
-
-        public ModActivationView()
+        public GameSetupView()
         {
             InitializeComponent();
-            DataContext = this;
-            ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
         }
     }
 }

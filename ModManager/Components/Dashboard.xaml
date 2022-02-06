@@ -22,7 +22,7 @@
                                      DockPanel.Dock="Left"
                                      HorizontalAlignment="Left"
                                      Foreground="{DynamicResource TextColorBrush}" />
-            <TextBlock Text="{Binding DashboardText.Text, UpdateSourceTrigger=PropertyChanged}"
+            <TextBlock Text="{Binding TextManager[DASHBOARD_SETTINGS].Text, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        Margin="10,0,0,0"
                        Style="{StaticResource IMYA_TEXT}"/>
@@ -118,7 +118,7 @@
                                              DockPanel.Dock="Left"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding ModTweakingText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_MOD_TWEAKING].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
@@ -137,7 +137,7 @@
                                              Kind="GearOutline"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding SettingsText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_SETTINGS].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
