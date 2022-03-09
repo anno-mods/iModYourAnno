@@ -33,9 +33,11 @@ namespace Imya.Utils
 
         private bool isLocked = false;
 
-        //File System Watchers
-        private FileSystemWatcher ModDirectoryWatcher;
-        private FileSystemWatcher ModLoaderWatcher;
+        // File System Watchers
+#pragma warning disable IDE0052 // Never used, but we want to keep them until GameSetupManager dies
+        private FileSystemWatcher? ModDirectoryWatcher;
+        // private FileSystemWatcher ModLoaderWatcher; // This is TODO
+#pragma warning restore IDE0052
 
         public GameSetupManager()
         {
@@ -164,8 +166,14 @@ namespace Imya.Utils
             return allExist; 
         }
 
-        private FileSystemWatcher CreateWatcher(string pathToWatch)
+        private FileSystemWatcher? CreateWatcher(string pathToWatch)
         {
+            if (!Directory.Exists(pathToWatch))
+            {
+                // There are many other things that can go wrong besides a non-existant path, but let's take this for now
+                return null;
+            }
+                
             return new FileSystemWatcher
             {
                 Path = pathToWatch,
