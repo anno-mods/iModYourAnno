@@ -1,10 +1,10 @@
 ﻿using Imya.Models.ModMetadata;
 using Imya.Utils;
 using Newtonsoft.Json;
-using System.ComponentModel;
 using System.Runtime.Serialization;
 using Imya.Enums;
 using Imya.Models.NotifyPropertyChanged;
+using System;
 
 namespace Imya.Models
 {
@@ -17,7 +17,7 @@ namespace Imya.Models
             private set
             {
                 _text = value;
-                OnPropertyChanged("Text");
+                OnPropertyChanged(nameof(Text));
             }
         }
         [JsonIgnore]
@@ -40,44 +40,9 @@ namespace Imya.Models
 
         }
 
-        public LocalizedText(Localized localized)
-        {
-            if (localized.Chinese is String) Chinese = localized.Chinese;
-            if (localized.English is String) English = localized.English;
-            if (localized.French is String) French = localized.French;
-            if (localized.German is String) German = localized.German;
-            if (localized.Italian is String) Italian = localized.Italian;
-            if (localized.Japanese is String) Japanese = localized.Japanese;
-            if (localized.Korean is String) Korean = localized.Korean;
-            if (localized.Polish is String) Polish = localized.Polish;
-            if (localized.Russian is String) Russian = localized.Russian;
-            if (localized.Spanish is String) Spanish = localized.Spanish;
-            if (localized.Taiwanese is String) Taiwanese = localized.Taiwanese;
-
-            OnSerialized();
-        }
-
-        public LocalizedText(String s)
-        { 
-            Chinese = s;
-            English = s;
-            French = s;
-            German = s;
-            Italian = s;
-            Japanese = s;
-            Korean = s;
-            Polish = s;
-            Russian = s;
-            Spanish = s;
-            Taiwanese = s;
-
-            OnSerialized();
-        }
-
         private void OnSerialized()
         {
-            UpdateText(TextManager.Instance.ApplicationLanguage);
-            TextManager.Instance.LanguageChanged += UpdateText;
+            //Update(TextManager.Instance.ApplicationLanguage);
         }
 
         [OnDeserialized]
@@ -86,7 +51,7 @@ namespace Imya.Models
             OnSerialized();
         }
 
-        public void UpdateText(ApplicationLanguage lang)
+        public void Update(ApplicationLanguage lang)
         {
             switch (lang)
             {

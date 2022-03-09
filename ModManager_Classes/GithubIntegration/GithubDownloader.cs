@@ -29,7 +29,6 @@ namespace Imya.GithubIntegration
             try
             {
                 release = await GithubClient.Repository.Release.GetLatest(repository.Owner, repository.Name).ConfigureAwait(false);
-                Console.WriteLine("Successfully fetched release");
             }
             catch (Exception e)
             {
@@ -71,11 +70,8 @@ namespace Imya.GithubIntegration
 
         public async Task<String> DownloadReleaseAsync(GithubRepoInfo mod, String AssetName)
         {
-            var FetchTask = Task.Run(async () => { return await FetchLatestRelease(mod).ConfigureAwait(false); });
-            var rel = FetchTask.Result;
-
-            var DownloadTask = Task.Run(async () => await DownloadReleaseAsync(rel, AssetName).ConfigureAwait(false));
-            return DownloadTask.Result;
+            var rel = await FetchLatestRelease(mod);
+            return await DownloadReleaseAsync(rel, AssetName);
         }
     }
 }

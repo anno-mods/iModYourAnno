@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Imya.UI.Popup;
+using Imya.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,22 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class GameSetupView : UserControl
     {
+        InstallationManager installationManager = InstallationManager.Instance; 
+
         public GameSetupView()
         {
             InitializeComponent();
+        }
+
+        public async void ModloaderInstalled_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Started installing Modloader");
+            ModloaderDownloadButton.IsEnabled = false;
+            await installationManager.InstallModLoaderAsync();
+            ModloaderDownloadButton.IsEnabled = true;
+
+            GenericOkayPopup inputDialog = new GenericOkayPopup();
+            inputDialog.ShowDialog();
         }
     }
 }

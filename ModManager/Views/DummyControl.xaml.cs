@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Imya.UI.Views
 {
     /// <summary>
-    /// Interaktionslogik für UserControl1.xaml
+    /// Interaktionslogik für DummyControl.xaml
     /// </summary>
-    public partial class TestPage : UserControl
+    public partial class DummyControl : UserControl
     {
-        public TestPage()
+        public DummyControl()
         {
             InitializeComponent();
         }

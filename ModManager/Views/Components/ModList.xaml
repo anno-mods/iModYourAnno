@@ -13,7 +13,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
-            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <converters:IconConverter x:Key="ModIconConverter" />
@@ -120,51 +119,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
-            <Button x:Name="ActivateButton"
-                    Style="{StaticResource IMYA_BUTTON}"
-                    MinWidth="150"
-                    MinHeight="32"
-                    Click="ActivateButton_OnClick"
-                    IsEnabled="{Binding ShowActivateButton}">
-                <DockPanel Margin="10,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Stretch">
-                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                             Kind="PlusBox"
-                                             DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
-                               Text="{Binding ActivateText.Text, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center"
-                               Style="{StaticResource IMYA_TEXT}"/>
-                </DockPanel>
-            </Button>
-            <Button x:Name="DeactivateButton"
-                    Style="{StaticResource IMYA_BUTTON}"
-                    MinWidth="150"
-                    MinHeight="32"
-                    Click="DeactivateButton_OnClick"
-                    IsEnabled="{Binding ShowDeactivateButton}">
-                <DockPanel Margin="10,0,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Stretch">
-                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                             Kind="MinusBox"
-                                             DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
-                               Text="{Binding DeactivateText.Text, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center"
-                               Style="{StaticResource IMYA_TEXT}"/>
-                </DockPanel>
-            </Button>
-        </StackPanel>
+        
 
     </Grid>
 </UserControl>

@@ -8,11 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Imya.UI.Properties;
+
 namespace Imya.UI.Utils
 {
     public class TextLanguagePair
     {
-        public LocalizedText Name { get; set; }
+        public IText Name { get; set; }
         public ApplicationLanguage Language { get; set; }
     }
 
@@ -23,16 +25,17 @@ namespace Imya.UI.Utils
         #region FieldBacking
         private bool _showConsole;
         private TextLanguagePair[] _languages;
-        private TextLanguagePair _currentLanguage; 
+        private TextLanguagePair _currentLanguage;
+        private bool _dev_mode;
         #endregion
 
         #region PublicFields
         public bool ShowConsole
         {
-            get => _showConsole;
+            get => Settings.Default.SHOW_CONSOLE;
             set
             { 
-                _showConsole = value;
+                Settings.Default.SHOW_CONSOLE = value;
                 OnPropertyChanged(nameof(ShowConsole));
             }
         }
@@ -52,6 +55,15 @@ namespace Imya.UI.Utils
             {
                 _languages = value;
                 OnPropertyChanged(nameof(Languages));
+            }
+        }
+        public bool DevMode
+        {
+            get => Settings.Default.ENABLE_DEV_FEATURES;
+            set
+            {
+                Settings.Default.ENABLE_DEV_FEATURES = value;
+                OnPropertyChanged(nameof(DevMode));
             }
         }
         #endregion

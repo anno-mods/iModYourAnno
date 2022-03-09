@@ -11,18 +11,19 @@ namespace Imya.Models
     {
         #region fields_backing
         private string _directory_name;
-        private LocalizedText _name;
-        private LocalizedText _category;
+        private IText _name;
+        private IText _category;
         private bool _active;
         private bool _selected;
-        private LocalizedText _description;
-        private ObservableCollection<ExposedModValue>? _exposedValues;
+        private IText _description;
         #endregion
 
         //Mod filepath
         public string DirectoryName { get => _directory_name; set => _directory_name = value; }
-        public LocalizedText Name { get => _name; set => _name = value; }
-        public LocalizedText Category { get => _category; set => _category = value; }
+        public IText Name { get => _name; set => _name = value; }
+        public IText Category { get => _category; set => _category = value; }
+
+        
 
         public bool Active
         {
@@ -44,31 +45,27 @@ namespace Imya.Models
             }
         }
 
-        public LocalizedText? Description { get; private set; }
-        public LocalizedText[]? KnownIssues { get; private set; }
+        public IText? Description { get; private set; }
+        public IText[]? KnownIssues { get; private set; }
         public String? Version { get; private set; }
         public String? CreatorName { get; private set; }
         public Dlc[]? DlcDependencies { get; private set; }
         public ImyaImageSource? Image { get; private set; }
-
-        public ObservableCollection<ExposedModValue>? ExposedValues { get => _exposedValues; private set => _exposedValues = value; }
-
-        public bool HasExposedValues { get => ExposedValues is ObservableCollection<ExposedModValue>; }
-
-        [Obsolete]
-        public bool HasMetadata { get => Metadata is Modinfo; }
+        public String? ModID { get; private set; }
+        public String[]? ModDependencies { get; private set; }
+        public String[]? IncompatibleModIDs { get; private set; }
 
         public bool HasVersion { get => Version is String; }
-        public bool HasDescription { get => Description is LocalizedText; }
-        public bool HasKnownIssues { get => KnownIssues is LocalizedText[]; }
+        public bool HasDescription { get => Description is IText; }
+        public bool HasKnownIssues { get => KnownIssues is IText[]; }
         public bool HasDlcDependencies { get => DlcDependencies is Dlc[]; }
         public bool HasCreator { get => CreatorName is String; }
         public bool HasImage { get => Image is ImyaImageSource; }
 
+        public bool HasModID { get => ModID is String; }
+
         //store the Modinfo data for whatever we need it later on.
         //This should be removed, and the mods should hold all this information by themselves.
-        [Obsolete]
-        public Modinfo? Metadata;
 
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
         public Mod (bool active, String ModName, Modinfo? metadata)
@@ -80,13 +77,17 @@ namespace Imya.Models
             //mod with Metadata
             if (metadata is Modinfo)
             {
-                Category = (metadata.Category is Localized) ? new LocalizedText(metadata.Category) : new LocalizedText("NoCategory");
-                Name = (metadata.ModName is Localized) ? new LocalizedText(metadata.ModName) : new LocalizedText(ModName);
-                Description = (metadata.Description is Localized) ? new LocalizedText(metadata.Description) : null;
-                KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => new LocalizedText(x)).ToArray() : null;
+                ModID = metadata.ModID;
+                Category = (metadata.Category is Localized) ? TextManager.CreateLocalizedText(metadata.Category) : new SimpleText("NoCategory");
+                Name = (metadata.ModName is Localized) ? TextManager.CreateLocalizedText(metadata.ModName) : new SimpleText(ModName);
+                Description = (metadata.Description is Localized) ? TextManager.CreateLocalizedText(metadata.Description) : null;
+                KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => TextManager.CreateLocalizedText(x)).ToArray() : null;
                 Version =  metadata.Version;
                 CreatorName = metadata.CreatorName;
                 DlcDependencies = metadata.DLCDependencies;
+
+                ModDependencies = metadata.ModDependencies;
+                IncompatibleModIDs = metadata.IncompatibleIds;
 
                 //Just construct as base64 for now. 
                 if (metadata.Image is String)
@@ -99,8 +100,8 @@ namespace Imya.Models
             else
             {
                 bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
-                Category = matches ? new LocalizedText(_category ) : TextManager.Instance.GetText("MODDISPLAY_NO_CATEGORY");
-                Name = new LocalizedText(matches ? _name : DirectoryName);
+                Category = matches ? new SimpleText(_category ) : TextManager.Instance.GetText("MODDISPLAY_NO_CATEGORY");
+                Name = new SimpleText(matches ? _name : DirectoryName);
             }
         }
 

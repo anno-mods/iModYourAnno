@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <PackageId>ModManager</PackageId>
     <RootNamespace>Imya.UI</RootNamespace>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CefSharp.Wpf.NETCore" Version="98.1.210" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
   </ItemGroup>
 

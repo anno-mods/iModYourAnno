@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.Utils;
 
 internal class GithubDevTester
 {
@@ -12,5 +13,11 @@ internal class GithubDevTester
 
         var file = new FileInfo("fuck/loader.zip");
         Console.WriteLine($"Download Success: { file.Exists && file.Length != 0 }");
+    }
+
+    internal static void DownloadModloader2()
+    {
+        InstallationManager installation = new InstallationManager("imya_temp");
+        installation.InstallModLoaderAsync();
     }
 }
