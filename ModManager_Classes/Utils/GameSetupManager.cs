@@ -53,6 +53,9 @@ namespace Imya.Utils
         }
         private String _game_root_path;
 
+        public String? ExecutablePath { get; private protected set; }
+        public String? ExecutableDir { get; private protected set; }
+
         public String MOD_DIRECTORY_NAME {
             get => _mod_directory_name;
             private set 
@@ -63,12 +66,14 @@ namespace Imya.Utils
         }
         private String _mod_directory_name;
 
-        #region DIRECTORY_PATH_REQUESTS
-
-        public String GetGameWin64Dir()
+        public bool IsValidSetup
         {
-            return Path.Combine(GAME_ROOT_PATH, "Bin", "Win64");
+           get { return _isValid; }
+           private set { _isValid = value; OnPropertyChanged(nameof(IsValidSetup)); }
         }
+        private bool _isValid;
+
+        #region DIRECTORY_PATH_REQUESTS
 
         public String GetModDirectory()
         {
@@ -79,10 +84,25 @@ namespace Imya.Utils
 
         #region REGISTERING_API
 
-        public void RegisterGameRootPath(String game_root_path)
+        public void SetGamePath(String gamePath)
         {
-            GAME_ROOT_PATH = game_root_path;
-            GameRootPathChanged(game_root_path);
+            GAME_ROOT_PATH = gamePath;
+
+            String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
+            if (File.Exists(executablePath))
+            {
+                ExecutablePath = executablePath;
+                ExecutableDir = Path.Combine(gamePath, "Bin\\Win64");
+                IsValidSetup = true;
+            }
+            else
+            {
+                ExecutablePath = null;
+                ExecutableDir = null;
+                IsValidSetup = false;
+            }
+            
+            GameRootPathChanged(gamePath);
             CreateWatchers();
         }
 
@@ -112,22 +132,6 @@ namespace Imya.Utils
         private void CreateWatchers()
         {
             ModDirectoryWatcher = CreateWatcher(Path.Combine(GAME_ROOT_PATH));
-        }
-
-        public String GetAnno1800ExePath()
-        {
-            return Path.Combine(GAME_ROOT_PATH, "Bin", "Win64", "Anno1800.exe");
-        }
-
-
-        public bool RootPathExists()
-        {
-            return Directory.Exists(GAME_ROOT_PATH);
-        }
-
-        public bool Anno1800ExeExists()
-        {
-            return File.Exists(GetAnno1800ExePath());
         }
 
         public bool MaindataIsValid()
@@ -196,24 +200,21 @@ namespace Imya.Utils
 
         public void StartGame()
         {
-            var Path = GetAnno1800ExePath();
-            if (File.Exists(Path))
-            {
-                using (Process process = new Process())
-                { 
-                    process.StartInfo.FileName = Path;
-                    process.EnableRaisingEvents = true;
-                    process.Exited += OnGameExit;
-                    process.Start();
+            if (ExecutablePath == null)
+                return;
 
-                    Console.WriteLine("Anno 1800 started.");
+            using Process process = new Process();
+            process.StartInfo.FileName = ExecutablePath;
+            process.EnableRaisingEvents = true;
+            process.Exited += OnGameExit;
+            process.Start();
 
-                    //This is worthless. 1800.exe starts uplay.exe (which starts 1800.exe again)
-                    //and commits suicide before the game window opening.
-                    //we can just as well do nothing, same result.
-                    process.WaitForExit();
-                }
-            }
+            Console.WriteLine("Anno 1800 started.");
+
+            //This is worthless. 1800.exe starts uplay.exe (which starts 1800.exe again)
+            //and commits suicide before the game window opening.
+            //we can just as well do nothing, same result.
+            process.WaitForExit();
         }
 
         private void OnGameExit(object sender, EventArgs e)

@@ -51,7 +51,7 @@ namespace Imya.UI.Views
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                GameSetupManager.RegisterGameRootPath(dialog.SelectedPath);
+                GameSetupManager.SetGamePath(dialog.SelectedPath);
             }
         }
 
