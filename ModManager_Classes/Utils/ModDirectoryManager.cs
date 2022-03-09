@@ -1,6 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.ModMetadata;
-using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.PropertyChanged;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

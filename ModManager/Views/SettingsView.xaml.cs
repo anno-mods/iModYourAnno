@@ -17,6 +17,7 @@ using Imya.Utils;
 using Imya.Models;
 using System.ComponentModel;
 using Imya.UI.Utils;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.UI.Views
 {
@@ -62,13 +63,10 @@ namespace Imya.UI.Views
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            this.NotifyPropertyChanged(PropertyChanged, propertyName);
         }
         #endregion
     }

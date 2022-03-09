@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
-using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.PropertyChanged;
 
 namespace Imya.Models
 {
