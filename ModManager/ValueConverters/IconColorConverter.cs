@@ -10,7 +10,7 @@ namespace Imya.UI.ValueConverters
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
             bool b = (bool)value;
-            return b ? "Green" : "Red";
+            return b ? "Green" : "Gray";
         }
 
         public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
