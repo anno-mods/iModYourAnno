@@ -1,9 +1,14 @@
-﻿namespace Imya.Models.ModMetadata
+﻿using Newtonsoft.Json;
+
+namespace Imya.Models.ModMetadata
 {
     public class Modinfo
     {
         public Modinfo() { }
-        public String? Version { get; set; }
+        public String? Version {
+            get;
+            set;
+        }
         public String? ModID { get; set; }
         public String[]? IncompatibleIds { get; set; }
         public String[]? ModDependencies { get; set; }

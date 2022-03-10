@@ -1,6 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.ModMetadata;
-using Imya.Models.PropertyChanged;
+using Imya.Models.NotifyPropertyChanged;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -24,32 +24,32 @@ namespace Imya.Utils
             }
         }
 
-        public int ActiveMods 
-        { 
+        public int ActiveMods
+        {
             get
-            { 
-                return _activeMods; 
+            {
+                return _activeMods;
             }
-            set 
-            { 
+            set
+            {
                 _activeMods = value;
                 OnPropertyChanged("ActiveMods");
-            } 
-        }
-        public int InactiveMods 
-        { 
-            get
-            { 
-                return _inactiveMods; 
             }
-            set 
-            { 
+        }
+        public int InactiveMods
+        {
+            get
+            {
+                return _inactiveMods;
+            }
+            set
+            {
                 _inactiveMods = value;
                 OnPropertyChanged("InactiveMods");
-            } 
+            }
         }
 
-        private String ModPath { get; }
+        private String ModPath { get; set; }
         private ObservableCollection<Mod> ModList;
         #endregion
 
@@ -63,20 +63,44 @@ namespace Imya.Utils
 
         #region Constructors 
 
-        public ModDirectoryManager(String ModDirectoryPath)
+        public ModDirectoryManager()
         {
-            Instance = Instance ?? this;
-            ModPath = ModDirectoryPath;
+            Instance ??= this;
+            ModPath = GameSetupManager.Instance.GetModDirectory();
 
             ModList = new ObservableCollection<Mod>();
             LoadModsFromModDirectory();
 
             DisplayedMods = ModList;
+
+            GameSetupManager.Instance.GameRootPathChanged += GameRootPathUpdated;
+            GameSetupManager.Instance.ModDirectoryNameChanged += ModDirectoryNameUpdated;
         }
 
         #endregion
 
         #region MemberFunctions
+
+        private void GameRootPathUpdated(String newPath)
+        {
+            ModPath = GameSetupManager.Instance.GetModDirectory();
+
+            LoadModsFromModDirectory();
+            DisplayedMods = ModList;
+        }
+
+        private void ModDirectoryNameUpdated(String newName)
+        {
+            ModPath = GameSetupManager.Instance.GetModDirectory();
+        }
+
+        internal IEnumerable<Mod> GetMods()
+        {
+            foreach (Mod m in ModList)
+            {
+                yield return m;
+            }
+        }
 
         private void OnDisplayedModListChanged()
         {
@@ -111,7 +135,8 @@ namespace Imya.Utils
             }
             else
             {
-                Console.WriteLine("Mod Directory not found!");
+                ModList.Clear();
+                Console.WriteLine("Loading failed: Mod Directory not found!");
             }
         }
 
@@ -169,26 +194,6 @@ namespace Imya.Utils
             return false;
         }
 
-        public bool TrySerializeMetadata(String MetadataFile, out Modinfo? metadata)
-        {
-            try
-            {
-                metadata = JsonConvert.DeserializeObject<Modinfo>(File.ReadAllText(MetadataFile));
-                return true;
-            }
-            catch (JsonSerializationException e)
-            {
-                metadata = null;
-                Console.WriteLine("Json Serialization failed: {0}", MetadataFile);
-            }
-            catch (IOException e)
-            {
-                metadata = null;
-                Console.WriteLine("File not found: {0}", MetadataFile);
-            }
-            return false;
-        }
-
         /// <summary>
         /// Initializes a Mod from a Mod Folder Root path. If the Name of the folder does not comply with the naming scheme, it renames it to:
         /// "-{ModName}" if inactive.
@@ -212,16 +217,24 @@ namespace Imya.Utils
                     Console.WriteLine(e.Message);
                 }
             }
-            TrySerializeMetadata(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
+
+            ModinfoLoader.TryLoadFromFile(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
+
             var Mod = new Mod(active, Name, metadata);
 
             var imagepath = Path.Combine(inPath, "banner.png");
             if (File.Exists(imagepath))
             {
-                Mod.InitImageAsFilepath(Path.Combine(imagepath));            
+                Mod.InitImageAsFilepath(Path.Combine(imagepath));
             }
             return Mod;
         }
+
+        public void LoadProfile(ModActivationProfile profile)
+        {
+            FilterMods(x => profile.ContainsID(x.DirectoryName));
+        }
+
         #endregion
 
         #region ModListFilter

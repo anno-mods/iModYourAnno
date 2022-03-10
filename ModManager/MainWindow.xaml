@@ -19,7 +19,7 @@
     </Window.Background>-->
     <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -32,13 +32,22 @@
         </Grid.Resources>
 
         <Components:Dashboard Grid.RowSpan="2" x:Name="Dashboard"/>
+        
         <Components:ConsoleLog Grid.Column="1" 
                                Height ="100" 
                                Visibility="{Binding SettingsManager.ShowConsole, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" 
                                Grid.Row="1" 
-                               x:Name="ConsoleLogTextBox" />
+                               x:Name="ConsoleLogTextBox" 
+                               Margin="0,0,5,5"/>
+        
 
-        <DockPanel Grid.Row="0" Grid.Column="1">
+        <ContentControl Grid.Row="0"
+                        Grid.Column="1"
+                        Content="{Binding CurrentView, ElementName=Dashboard, UpdateSourceTrigger=PropertyChanged}">
+        </ContentControl>
+
+        <!--<DockPanel Grid.Row="0" Grid.Column="1">
+            
             <TabControl x:Name="WindowViewControl"
                         Background="Transparent"
                         BorderBrush="Transparent" BorderThickness="0"
@@ -54,9 +63,15 @@
                     <Views:ModActivationView/>
                 </TabItem>
                 <TabItem Background="Transparent">
-                    <Views:SettingsView/>
+                    <Views:SettingsView />
+                </TabItem>
+                <TabItem Background="Transparent">
+                    <Views:GameSetupView />
+                </TabItem>
+                <TabItem Background="Transparent">
+                    <Views:ModTweakerView />
                 </TabItem>
             </TabControl>
-        </DockPanel>
+        </DockPanel>-->
     </Grid>
 </Window>

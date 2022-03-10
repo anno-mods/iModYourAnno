@@ -25,13 +25,13 @@ namespace Imya.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("F://Spiele/Anno 1800/mods")]
-        public string MOD_DIRECTORY_PATH {
+        [global::System.Configuration.DefaultSettingValueAttribute("mods")]
+        public string MOD_DIRECTORY_NAME {
             get {
-                return ((string)(this["MOD_DIRECTORY_PATH"]));
+                return ((string)(this["MOD_DIRECTORY_NAME"]));
             }
             set {
-                this["MOD_DIRECTORY_PATH"] = value;
+                this["MOD_DIRECTORY_NAME"] = value;
             }
         }
         
@@ -68,6 +68,54 @@ namespace Imya.UI.Properties {
             }
             set {
                 this["MIN_WINDOW_HEIGHT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("F:\\Spiele\\Anno 1800")]
+        public string GAME_ROOT_PATH {
+            get {
+                return ((string)(this["GAME_ROOT_PATH"]));
+            }
+            set {
+                this["GAME_ROOT_PATH"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("imya_tmp")]
+        public string DOWNLOAD_DIR {
+            get {
+                return ((string)(this["DOWNLOAD_DIR"]));
+            }
+            set {
+                this["DOWNLOAD_DIR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SHOW_CONSOLE {
+            get {
+                return ((bool)(this["SHOW_CONSOLE"]));
+            }
+            set {
+                this["SHOW_CONSOLE"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ENABLE_DEV_FEATURES {
+            get {
+                return ((bool)(this["ENABLE_DEV_FEATURES"]));
+            }
+            set {
+                this["ENABLE_DEV_FEATURES"] = value;
             }
         }
     }

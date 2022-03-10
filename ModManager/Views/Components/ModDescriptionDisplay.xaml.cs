@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using Imya.Enums;
 using Imya.Models;
 using Imya.Models.ModMetadata;
-using Imya.Models.PropertyChanged;
+using Imya.UI.Utils;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -34,6 +34,7 @@ namespace Imya.UI.Components
         private bool _showVersion;
         private bool _showDlcDeps;
         private bool _showImage;
+        private bool _showModID;
         private double _descriptionTextWidth;
         private double _knownIssueTextWidth;
 
@@ -119,6 +120,16 @@ namespace Imya.UI.Components
             }
         }
 
+        public bool ShowModID
+        {
+            get => _showModID;
+            set
+            {
+                _showModID = value;
+                OnPropertyChanged(nameof(ShowModID));
+            }
+        }
+
         public double DescriptionTextWidth {
             get => _descriptionTextWidth;
             set
@@ -145,6 +156,7 @@ namespace Imya.UI.Components
         {
             InitializeComponent();
             DataContext = this;
+            //TextManager.Instance.LanguageChanged += UpdateTextBoxes;
         }
 
         private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
@@ -156,22 +168,50 @@ namespace Imya.UI.Components
             else return new DlcId[0];
         }
 
+
         public void SetDisplayedMod(Mod m)
         {
             Mod = m;
 
-            bool Exists = m is not null; 
+            bool Exists = m is not null;
 
-            ShowKnownIssues = Exists ? m.HasKnownIssues : false ;
-            ShowDescription = Exists ? m.HasDescription : false ;
-            ShowCreatorName = Exists ? m.HasCreator : false ;
-            ShowVersion = Exists ? m.HasVersion : false ;
-            ShowDlcDeps = Exists ? m.HasDlcDependencies : false ;
+            ShowKnownIssues = Exists && m.HasKnownIssues;
+            ShowDescription = Exists && m.HasDescription ;
+            ShowCreatorName = Exists && m.HasCreator ;
+            ShowVersion = Exists && m.HasVersion ;
+            ShowDlcDeps = Exists && m.HasDlcDependencies;
+            ShowModID = Exists && SettingsManager.Instance.DevMode && m.HasModID;
+
             DlcIds = GetDlcDependencies(m?.DlcDependencies);
 
             //the default behavior for images is different: If the mod does not have an image, it will show a placeholder. 
             //Only hide the image in case there is no displayed mod.
             ShowImage = Exists;
+        }
+
+        public void OnCopyModIDClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(Mod.ModID);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not access windows clipboard.");
+            }
+        }
+
+        #region INotifyPropertyChangedMembers
+
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            var handler = PropertyChanged;
+            if (handler is PropertyChangedEventHandler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs s)
@@ -195,13 +235,6 @@ namespace Imya.UI.Components
                 BindingExpression bindingExpression = Textblock.GetBindingExpression(TextBlock.TextProperty);
                 bindingExpression.UpdateSource();
             }
-        }
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
-        {
-            this.NotifyPropertyChanged(PropertyChanged, propertyName);
         }
         #endregion
     }

@@ -378,7 +378,7 @@
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border Margin="0"
                                 x:Name="Border"
-                                CornerRadius="2,0,0,2"
+                                CornerRadius="2,2,2,2"
                                 Background="{TemplateBinding Background}"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter />
@@ -568,8 +568,8 @@
         <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
         <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#656565</SolidColorBrush>
 
-        <SolidColorBrush x:Key="AccentColorBrush">DarkCyan</SolidColorBrush>
-        <SolidColorBrush x:Key="AccentColorBrush_Dark">DarkSlateGray</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColorBrush">Green</SolidColorBrush>
+        <SolidColorBrush x:Key="AccentColorBrush_Dark">DarkGreen</SolidColorBrush>
         
         <SolidColorBrush x:Key="BackgroundColorBrush">#252525</SolidColorBrush>
         <SolidColorBrush x:Key="TextColorBrush">LightGray</SolidColorBrush>

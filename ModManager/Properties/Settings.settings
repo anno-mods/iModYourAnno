@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Imya.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MOD_DIRECTORY_PATH" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F://Spiele/Anno 1800/mods</Value>
+    <Setting Name="MOD_DIRECTORY_NAME" Type="System.String" Scope="User">
+      <Value Profile="(Default)">testmods</Value>
     </Setting>
     <Setting Name="LANGUAGE_FILE_PATH" Type="System.String" Scope="User">
       <Value Profile="(Default)">resources/texts.json</Value>
@@ -13,6 +13,18 @@
     </Setting>
     <Setting Name="MIN_WINDOW_HEIGHT" Type="System.Double" Scope="User">
       <Value Profile="(Default)">400</Value>
+    </Setting>
+    <Setting Name="GAME_ROOT_PATH" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F:\Spiele\Anno 1800</Value>
+    </Setting>
+    <Setting Name="DOWNLOAD_DIR" Type="System.String" Scope="User">
+      <Value Profile="(Default)">imya_tmp</Value>
+    </Setting>
+    <Setting Name="SHOW_CONSOLE" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ENABLE_DEV_FEATURES" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -14,14 +14,28 @@ namespace Imya.UI
     {
        public App()
         {
-            //Setup Managers
-            TextManager TextManager = new TextManager(Settings.Default.LANGUAGE_FILE_PATH);
-            ModDirectoryManager ModDirectoryManager = new ModDirectoryManager(Settings.Default.MOD_DIRECTORY_PATH);
+            //Load Texts asap.
+            TextManager TextManager = new TextManager();
+            TextManager.LoadLanguageFile(Settings.Default.LANGUAGE_FILE_PATH);
 
-            SettingsManager settingsManager = new SettingsManager(); 
+            GameSetupManager GameSetupManager = new GameSetupManager(); 
+            GameSetupManager.RegisterGameRootPath(Settings.Default.GAME_ROOT_PATH);
+            GameSetupManager.RegisterModDirectoryName(Settings.Default.MOD_DIRECTORY_NAME);
+
+            ModTweakingManager modTweakingManager = new ModTweakingManager();
+
+            InstallationManager InstallationManager = new InstallationManager(Settings.Default.DOWNLOAD_DIR);
+
+            //Setup Managers
+            ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();
+
+            //init the settings manager for reasons
+            SettingsManager settingsManager = new SettingsManager();
 
             //Set App Language
             TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
+
+            ModinfoCreationManager modInfoCreationManager = new ModinfoCreationManager();
         }
     }
 }

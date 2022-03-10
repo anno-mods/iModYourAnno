@@ -1,7 +1,7 @@
 ﻿using Imya.Models;
-using Imya.Models.PropertyChanged;
 using Imya.Utils;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -16,35 +16,18 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModList : UserControl, INotifyPropertyChanged
     {
-        public LocalizedText ActivateText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVATE");
-        public LocalizedText DeactivateText { get; } = TextManager.Instance.GetText("MODLIST_DEACTIVATE");
+        public IText ActivateText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVATE");
+        public IText DeactivateText { get; } = TextManager.Instance.GetText("MODLIST_DEACTIVATE");
 
-        public Mod? CurrentlyDisplayedMod { get; private set; } = null;
+        /// <summary>
+        /// Either the only or the first mod in the current selection
+        /// </summary>
+        public Mod? CurrentlySelectedMod { get; private set; } = null;
+        public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
 
         public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
 
         public TextManager TextManager { get; } = TextManager.Instance;
-
-        public bool ShowActivateButton {
-            get { return _showActivateButton; }
-            private set
-            {
-                _showActivateButton = value;
-                OnPropertyChanged("ShowActivateButton");
-            }
-        }
-        private bool _showActivateButton;
-
-        public bool ShowDeactivateButton
-        {
-            get { return _showDeactivateButton; }
-            private set
-            {
-                _showDeactivateButton = value;
-                OnPropertyChanged("ShowDeactivateButton");
-            }
-        }
-        private bool _showDeactivateButton;
 
         public ModList()
         {
@@ -61,14 +44,13 @@ namespace Imya.UI.Components
         private void OnSelectionChanged()
         {
             var selectedItems = ListBox_ModList.SelectedItems.Cast<Mod>().ToList();
-            ShowActivateButton = selectedItems.Any(x => !x.Active);
-            ShowDeactivateButton = selectedItems.Any(x => x.Active);
-
-            CurrentlyDisplayedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
-            ModList_SelectionChanged(CurrentlyDisplayedMod);
+            
+            CurrentlySelectedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            CurrentlySelectedMods = selectedItems;
+            ModList_SelectionChanged(CurrentlySelectedMod);
         }
 
-        private void ActivateButton_OnClick(object sender, RoutedEventArgs e)
+        public void ActivateSelection()
         {
             foreach (Mod m in ListBox_ModList.SelectedItems)
             {
@@ -77,7 +59,7 @@ namespace Imya.UI.Components
             OnSelectionChanged(); 
         }
 
-        private void DeactivateButton_OnClick(object sender, RoutedEventArgs e)
+        public void DeactivateSelection()
         {
             foreach (Mod m in ListBox_ModList.SelectedItems)
             {
@@ -86,10 +68,30 @@ namespace Imya.UI.Components
             OnSelectionChanged();
         }
 
+        public void ForceSingleSelection()
+        { 
+            ListBox_ModList.SelectionMode = SelectionMode.Single;
+        }
+
+        public void EnableExtendedSelection()
+        {
+            ListBox_ModList.SelectionMode = SelectionMode.Extended;
+        }
+
         private void OnSearchRequest(object sender, TextChangedEventArgs e)
         {
             string filterText = SearchTextBox.Text;
             ModDirectoryManager.Instance.FilterMods(x => FilterByKeywords(x, filterText));
+        }
+
+        public bool AnyActiveSelected()
+        {
+            return CurrentlySelectedMods.Any(x => x.Active);
+        }
+
+        public bool AnyInactiveSelected()
+        {
+            return CurrentlySelectedMods.Any(x => !x.Active);
         }
 
         /// <summary>
@@ -123,11 +125,16 @@ namespace Imya.UI.Components
         public delegate void ModListSelectionChangedHandler(Mod mod);
 
         #region INotifyPropertyChangedMembers
+
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
         private void OnPropertyChanged(string propertyName)
         {
-            this.NotifyPropertyChanged(PropertyChanged, propertyName);
+            var handler = PropertyChanged;
+            if (handler is PropertyChangedEventHandler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
         #endregion
     }    

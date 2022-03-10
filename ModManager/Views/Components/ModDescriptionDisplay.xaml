@@ -13,8 +13,7 @@
     <Grid x:Name="BaseGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition/>
-            <RowDefinition Height="40"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -40,9 +39,8 @@
                       Style="{StaticResource IMYA_SCROLLVIEWER}"
                       Grid.Row="1"
                       Margin="0,0,0,5"
-                      Background="{DynamicResource ComponentColorBrush}">
-
-
+                      Background="{DynamicResource ComponentColorBrush}"
+                      >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="185"/>
@@ -73,8 +71,40 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Text="{Binding Mod.Version, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
-
                     <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}" />
+
+                    <!-- Mod ID-->
+                    <StackPanel Orientation="Horizontal"
+                                Margin="2,8,2,8"
+                                Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}">
+                        <TextBlock TextWrapping="Wrap"
+                                   Text="{Binding TextManager[HEADER_MODID].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding Mod.ModID, UpdateSourceTrigger=PropertyChanged}"
+                                   VerticalAlignment="Center" Padding="10" />
+                        <Button Style="{StaticResource IMYA_BUTTON}"
+                                Click="OnCopyModIDClick" MinHeight="32"
+                                VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="3" >
+                                <materialDesign:PackIcon Kind="ClipboardOutline" 
+                                                         Foreground="{DynamicResource TextColorBrush}"
+                                                         Style="{StaticResource IMYA_ICON}" 
+                                                         Padding="10"
+                                                         VerticalAlignment="Center"/>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="Copy"
+                                           VerticalAlignment="Center">
+                                    
+                                </TextBlock>
+                            </StackPanel>
+                            
+                        </Button>
+                    </StackPanel>
+                    <Separator Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Description -->
                     <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"

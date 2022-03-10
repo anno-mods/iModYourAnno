@@ -17,12 +17,9 @@ using Imya.Utils;
 using Imya.Models;
 using System.ComponentModel;
 using Imya.UI.Utils;
-using Imya.Models.PropertyChanged;
 
 namespace Imya.UI.Views
 {
-    
-
     /// <summary>
     /// Interaktionslogik für SettingsView.xaml
     /// </summary>
@@ -31,13 +28,16 @@ namespace Imya.UI.Views
         public TextManager TextManager { get; } = TextManager.Instance;
         public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
 
+        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+
         public SettingsView()
         {
             InitializeComponent();
             DataContext = this;
 
-
             LanguageSelection.SelectedItem = SettingsManager.Languages.First(x => x.Language == TextManager.Instance.ApplicationLanguage);
+
+            GameSetupManager.GameRootPathChanged += UpdateGameRootPathSetting;
         }
 
         public void RequestLanguageChange(object sender, RoutedEventArgs e)
@@ -45,12 +45,30 @@ namespace Imya.UI.Views
             SettingsManager.UpdateLanguage(((ComboBox)sender).SelectedItem);
         }
 
+        public void GameRootPath_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                GameSetupManager.RegisterGameRootPath(dialog.SelectedPath);
+            }
+        }
+
+        public void UpdateGameRootPathSetting(String newPath)
+        {
+            Properties.Settings.Default.LANGUAGE_FILE_PATH = newPath;
+        }
+
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
         private void OnPropertyChanged(string propertyName)
         {
-            this.NotifyPropertyChanged(PropertyChanged, propertyName);
+            var handler = PropertyChanged;
+            if (handler is PropertyChangedEventHandler)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
         #endregion
     }

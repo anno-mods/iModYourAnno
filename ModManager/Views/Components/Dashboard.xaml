@@ -9,10 +9,13 @@
 
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="75" />
-            <RowDefinition Height="75" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="60" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        </Grid.Resources>
         <!-- Headline Dashboard -->
         <DockPanel HorizontalAlignment="Left"
                    Margin="10,10,10,10"
@@ -22,7 +25,7 @@
                                      DockPanel.Dock="Left"
                                      HorizontalAlignment="Left"
                                      Foreground="{DynamicResource TextColorBrush}" />
-            <TextBlock Text="{Binding DashboardText.Text, UpdateSourceTrigger=PropertyChanged}"
+            <TextBlock Text="{Binding TextManager[DASHBOARD_SETTINGS].Text, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        Margin="10,0,0,0"
                        Style="{StaticResource IMYA_TEXT}"/>
@@ -33,7 +36,8 @@
             <Button Style="{StaticResource IMYA_BUTTON}"
                     MinWidth="200"
                     MinHeight="32"
-                    Margin="5,4,4,0">
+                    Margin="5,4,4,0"
+                    Click="StartGameClick">
                 <DockPanel Margin="10,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Stretch">
@@ -42,7 +46,7 @@
                                              DockPanel.Dock="Left"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding PlayText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_PLAY].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </DockPanel>
@@ -66,7 +70,7 @@
                                              Kind="Pen"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding ModActivationText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_MOD_ACTIVATION].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center" 
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
@@ -74,7 +78,8 @@
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
-                         Margin="5,4,4,0">
+                         Margin="5,4,4,0"
+                         Click="GameSetupClick">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             Orientation="Horizontal"
@@ -83,7 +88,7 @@
                                              Kind="DataUsage"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding GameSetupText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_GAME_SETUP].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
@@ -91,7 +96,8 @@
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
-                         Margin="5,4,4,0">
+                         Margin="5,4,4,0"
+                         Click="ModInstallationClick">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
@@ -100,7 +106,7 @@
                                              Kind="FolderZipOutline"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding ModInstallationText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_MOD_INSTALLATION].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
@@ -108,7 +114,8 @@
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
-                         Margin="5,4,4,0">
+                         Margin="5,4,4,0"
+                         Click="ModTweakerClick">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
@@ -118,7 +125,7 @@
                                              DockPanel.Dock="Left"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding ModTweakingText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_MOD_TWEAKING].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
@@ -137,11 +144,61 @@
                                              Kind="GearOutline"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding SettingsText.Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="{Binding TextManager[DASHBOARD_SETTINGS].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
             </RadioButton>
+            <RadioButton MinWidth="200"
+                         MinHeight="32"
+                         Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
+                         VerticalContentAlignment="Center"
+                         Click="MetadataClick"
+                         Margin="5,4,4,0"
+                         Visibility="{Binding SettingsManager.DevMode, Converter={StaticResource BoolToVis}}">
+                <StackPanel Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Orientation="Horizontal">
+                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                             Kind="Meteor"
+                                             Foreground="{DynamicResource TextColorBrush}" />
+                    <TextBlock Margin="10,0,0,0"
+                               Text="{Binding TextManager[DASHBOARD_METADATA].Text, UpdateSourceTrigger=PropertyChanged}"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource IMYA_TEXT}" />
+                </StackPanel>
+            </RadioButton>
         </StackPanel>
+
+        <!-- <ItemsControl ItemsSource="{Binding Views, UpdateSourceTrigger=PropertyChanged}"
+                      HorizontalAlignment="Left"
+                      Grid.Row="2"
+                      VerticalAlignment="Top"
+                      x:Name="ViewSelection">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton MinWidth="200"
+                                 MinHeight="32"
+                                 Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
+                                 VerticalContentAlignment="Center"
+                                 Margin="5,4,4,0"
+                                 Click="OnViewSelectionClick">
+                        <StackPanel Margin="5,0,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Stretch"
+                                    Orientation="Horizontal">
+                            <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                     Kind="{Binding Icon}"
+                                                     Foreground="{DynamicResource TextColorBrush}" />
+                            <TextBlock Margin="10,0,0,0"
+                                       Text="{Binding Title.Text, UpdateSourceTrigger=PropertyChanged}"
+                                       VerticalAlignment="Center"
+                                       Style="{StaticResource IMYA_TEXT}" />
+                        </StackPanel>
+                    </RadioButton>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>-->
     </Grid>
 </UserControl>

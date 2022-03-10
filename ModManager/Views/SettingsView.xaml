@@ -36,7 +36,7 @@
                                   VerticalAlignment="Top"
                                   SelectionChanged="RequestLanguageChange"
                                   ItemsSource="{Binding SettingsManager.Languages, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="3"
+                                  Margin="5"
                                   MinHeight="30">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
@@ -45,6 +45,36 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Margin="5"
+                                   VerticalAlignment="Center" />
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                                     Background="{DynamicResource InteractiveComponentColorBrush}"
+                                     Text="{Binding GameSetupManager.GAME_ROOT_PATH, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Margin="0,0,10,0"
+                                     IsReadOnly="True" />
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource IMYA_BUTTON}"
+                                    Foreground="{DynamicResource TextColorBrush}"
+                                    Content=". . ."
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0"
+                                    Click="GameRootPath_ButtonClick">
+                            </Button>
+                        </Grid>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -64,6 +94,27 @@
                                   Foreground="{DynamicResource AccentColorBrush}"
                                   Style="{StaticResource IMYA_CHECKBOX}"
                                   IsChecked="{Binding SettingsManager.ShowConsole, Mode=TwoWay}">
+                        </CheckBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[SETTINGS_DEVMODE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5"
+                                   TextWrapping="Wrap">
+                        </TextBlock>
+                        <CheckBox Margin="5"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Left"
+                                  Grid.Column="1"
+                                  Foreground="{DynamicResource AccentColorBrush}"
+                                  Style="{StaticResource IMYA_CHECKBOX}"
+                                  IsChecked="{Binding SettingsManager.DevMode, Mode=TwoWay}">
                         </CheckBox>
                     </Grid>
                 </StackPanel>
