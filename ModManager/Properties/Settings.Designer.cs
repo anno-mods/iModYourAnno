@@ -25,7 +25,7 @@ namespace Imya.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("testmods")]
+        [global::System.Configuration.DefaultSettingValueAttribute("mods")]
         public string MOD_DIRECTORY_NAME {
             get {
                 return ((string)(this["MOD_DIRECTORY_NAME"]));
