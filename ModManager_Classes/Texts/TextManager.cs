@@ -1,20 +1,28 @@
-﻿using Imya.Models;
+﻿using System.Runtime.Serialization;
+using Imya.Models;
 using Newtonsoft.Json;
 using Imya.Enums;
 using Imya.Models.ModMetadata;
 
+// TODO move all text/language related code under Imya.Text or Imya.Language
 namespace Imya.Utils
 {
+    public class TextLanguagePair
+    {
+        public IText Name { get; set; }
+        public ApplicationLanguage Language { get; set; }
+    }
+
     public class TextManager
     {
         public static TextManager Instance { get; private set; }
 
-        public ApplicationLanguage ApplicationLanguage { get; private set; }
+        public ApplicationLanguage ApplicationLanguage { get; private set; } = ApplicationLanguage.English;
+        public TextLanguagePair[] Languages { get; private set; } = Array.Empty<TextLanguagePair>();
 
-        private Dictionary<string, IText> KeyedTexts;
-        private List<IText> UnkeyedTexts;
+        private readonly Dictionary<string, IText> KeyedTexts = new();
+        private readonly List<IText> UnkeyedTexts = new();
 
-        
         [Obsolete]
         public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
         [Obsolete]
@@ -28,8 +36,6 @@ namespace Imya.Utils
         public TextManager()
         {
             Instance ??= this;
-            KeyedTexts = new Dictionary<string, IText>();
-            UnkeyedTexts = new List<IText>();
         }
 
         public void AddText(String Key, IText t)
@@ -62,6 +68,11 @@ namespace Imya.Utils
                 Console.WriteLine($"Could not find Text: {Key}");
                 return IText.Empty;
             }
+        }
+
+        public void ChangeLanguage(string language)
+        {
+            ChangeLanguage(Languages.First(x => x.Language.ToString() == language)?.Language ?? ApplicationLanguage.English);
         }
 
         public void ChangeLanguage(ApplicationLanguage lang)
@@ -105,6 +116,12 @@ namespace Imya.Utils
             {
                 Console.WriteLine($"Error while parsing file \"{Sourcefile}\": {e.Message}");
             }
+
+            Languages = new TextLanguagePair[]
+            {
+                new TextLanguagePair() { Name = GetText("SETTINGS_LANG_ENGLISH"), Language = ApplicationLanguage.English },
+                new TextLanguagePair() { Name = GetText("SETTINGS_LANG_GERMAN"), Language = ApplicationLanguage.German }
+            };
         }
 
         public static LocalizedText CreateLocalizedText(Localized localized)

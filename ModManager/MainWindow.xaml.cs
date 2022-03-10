@@ -12,7 +12,7 @@ namespace Imya.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
+        public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
         public MainWindow()
         {

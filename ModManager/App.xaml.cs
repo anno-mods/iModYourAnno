@@ -29,11 +29,7 @@ namespace Imya.UI
             //Setup Managers
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();
 
-            //init the settings manager for reasons
-            SettingsManager settingsManager = new SettingsManager();
-
-            //Set App Language
-            TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
+            TextManager.Instance.ChangeLanguage(Settings.Default.Language);
 
             ModinfoCreationManager modInfoCreationManager = new ModinfoCreationManager();
         }

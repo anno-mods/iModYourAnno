@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MOD_DIRECTORY_NAME" Type="System.String" Scope="User">
-      <Value Profile="(Default)">testmods</Value>
+      <Value Profile="(Default)">mods</Value>
     </Setting>
     <Setting Name="LANGUAGE_FILE_PATH" Type="System.String" Scope="User">
       <Value Profile="(Default)">resources/texts.json</Value>
@@ -20,11 +20,14 @@
     <Setting Name="DOWNLOAD_DIR" Type="System.String" Scope="User">
       <Value Profile="(Default)">imya_tmp</Value>
     </Setting>
-    <Setting Name="SHOW_CONSOLE" Type="System.Boolean" Scope="User">
+    <Setting Name="ShowConsole" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ENABLE_DEV_FEATURES" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+    <Setting Name="DeveloperMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Language" Type="System.String" Scope="User">
+      <Value Profile="(Default)">English</Value>
     </Setting>
   </Settings>
 </SettingsFile>
