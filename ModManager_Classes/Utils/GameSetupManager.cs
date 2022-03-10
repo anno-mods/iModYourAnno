@@ -84,11 +84,19 @@ namespace Imya.Utils
 
         #region REGISTERING_API
 
-        public void SetGamePath(String gamePath)
+        public void SetGamePath(String gamePath, bool autoSearchIfInvalid = false)
         {
+            String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
+            if (!File.Exists(executablePath) && autoSearchIfInvalid)
+            {
+                var foundGamePath = GamePathFinder.GetInstallDirFromRegistry() ?? "";
+                executablePath = Path.Combine(foundGamePath, "Bin\\Win64\\Anno1800.exe");
+                if (File.Exists(executablePath))
+                    gamePath = foundGamePath; // only replace if found, otherwise keep "wrong" path in the settings.
+            }
+
             GAME_ROOT_PATH = gamePath;
 
-            String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
             if (File.Exists(executablePath))
             {
                 ExecutablePath = executablePath;
