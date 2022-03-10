@@ -173,6 +173,28 @@ namespace Imya.Utils
             return true;
         }
 
+        public String GetModPath(Mod mod)
+        {
+            return Path.Combine($"{ModPath}", $"{(mod.Active ? "" : "-")}{mod.DirectoryName}");
+        }
+
+        public void Delete(Mod mod)
+        {
+            try
+            {
+                //delete the directory
+                Directory.Delete(GetModPath(mod));
+
+                //remove from the mod lists to prevent access.
+                ModList.Remove(mod);
+                DisplayedMods.Remove(mod);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
+            }
+        }
+
         /// <summary>
         /// Checks if a directory name starts with any '-' chars.
         /// </summary>
