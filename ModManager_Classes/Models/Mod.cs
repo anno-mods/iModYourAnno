@@ -111,6 +111,23 @@ namespace Imya.Models
             Image.ConstructAsFilepathImage(ImagePath);
         }
 
+        /// <summary>
+        /// Check if mod name, category and creator fields contain all keywords.
+        /// </summary>
+        public bool HasKeywords(string spaceSeparatedKeywords)
+        {
+            var keywords = spaceSeparatedKeywords.Split(" ");
+            return keywords.Aggregate(true, (isMatch, keyword) => isMatch &= HasKeyword(keyword));
+        }
+
+        private bool HasKeyword(string keyword)
+        {
+            var k = keyword.ToLower();
+            return Name.Text.ToLower().Contains(k) ||
+                Category.Text.ToLower().Contains(k) ||
+                (CreatorName?.ToLower().Contains(k) ?? false);
+        }
+
         private bool TryMatchToNamingPattern(String DirectoryName, out String Category, out String Name)
         {
             String CategoryPattern = @"[[][a-z]+[]]";

@@ -110,9 +110,14 @@ namespace Imya.Utils
 
         private void UpdateModCounts()
         {
-            ActiveMods = ModList.Count(x => x.Active);
-            InactiveMods = ModList.Count(x => !x.Active);
-            Console.WriteLine($"Found: {ModList.Count}, Active: {ActiveMods}, Inactive: {InactiveMods}");
+            var newActive = ModList.Count(x => x.Active);
+            var newInactive = ModList.Count - newActive;
+            if (newActive != ActiveMods || newInactive != InactiveMods)
+            {
+                ActiveMods = newActive;
+                InactiveMods = newInactive;
+                Console.WriteLine($"Found: {ModList.Count}, Active: {ActiveMods}, Inactive: {InactiveMods}");
+            }
         }
 
         public void OrderDisplayed()
