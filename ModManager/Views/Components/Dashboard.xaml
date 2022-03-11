@@ -156,7 +156,7 @@
                          VerticalContentAlignment="Center"
                          Click="MetadataClick"
                          Margin="5,4,4,0"
-                         Visibility="{Binding Settings.DeveloperMode, Converter={StaticResource BoolToVis}}">
+                         Visibility="{Binding Settings.ModCreatorMode, Converter={StaticResource BoolToVis}}">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"

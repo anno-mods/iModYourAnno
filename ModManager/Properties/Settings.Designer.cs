@@ -26,96 +26,72 @@ namespace Imya.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("mods")]
-        public string MOD_DIRECTORY_NAME {
+        public string ModDirectoryName {
             get {
-                return ((string)(this["MOD_DIRECTORY_NAME"]));
+                return ((string)(this["ModDirectoryName"]));
             }
             set {
-                this["MOD_DIRECTORY_NAME"] = value;
+                this["ModDirectoryName"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("resources/texts.json")]
-        public string LANGUAGE_FILE_PATH {
+        public string LanguageFilePath {
             get {
-                return ((string)(this["LANGUAGE_FILE_PATH"]));
+                return ((string)(this["LanguageFilePath"]));
             }
             set {
-                this["LANGUAGE_FILE_PATH"] = value;
+                this["LanguageFilePath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("800")]
-        public double MIN_WINDOW_WIDTH {
+        public double MinWindowWidth {
             get {
-                return ((double)(this["MIN_WINDOW_WIDTH"]));
+                return ((double)(this["MinWindowWidth"]));
             }
             set {
-                this["MIN_WINDOW_WIDTH"] = value;
+                this["MinWindowWidth"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("400")]
-        public double MIN_WINDOW_HEIGHT {
+        public double MinWindowHeight {
             get {
-                return ((double)(this["MIN_WINDOW_HEIGHT"]));
+                return ((double)(this["MinWindowHeight"]));
             }
             set {
-                this["MIN_WINDOW_HEIGHT"] = value;
+                this["MinWindowHeight"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("F:\\Spiele\\Anno 1800")]
-        public string GAME_ROOT_PATH {
+        public string GameRootPath {
             get {
-                return ((string)(this["GAME_ROOT_PATH"]));
+                return ((string)(this["GameRootPath"]));
             }
             set {
-                this["GAME_ROOT_PATH"] = value;
+                this["GameRootPath"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("imya_tmp")]
-        public string DOWNLOAD_DIR {
+        public string DownloadDir {
             get {
-                return ((string)(this["DOWNLOAD_DIR"]));
+                return ((string)(this["DownloadDir"]));
             }
             set {
-                this["DOWNLOAD_DIR"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowConsole {
-            get {
-                return ((bool)(this["ShowConsole"]));
-            }
-            set {
-                this["ShowConsole"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool DeveloperMode {
-            get {
-                return ((bool)(this["DeveloperMode"]));
-            }
-            set {
-                this["DeveloperMode"] = value;
+                this["DownloadDir"] = value;
             }
         }
         
@@ -128,6 +104,30 @@ namespace Imya.UI.Properties {
             }
             set {
                 this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ModCreatorMode {
+            get {
+                return ((bool)(this["ModCreatorMode"]));
+            }
+            set {
+                this["ModCreatorMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ConsoleVisibility {
+            get {
+                return ((bool)(this["ConsoleVisibility"]));
+            }
+            set {
+                this["ConsoleVisibility"] = value;
             }
         }
     }

@@ -20,8 +20,8 @@ namespace Imya.UI
 
             Console.WriteLine("Modders gonna take over the world!!!");
             DataContext = this;
-            MinHeight = Settings.Default.MIN_WINDOW_HEIGHT;
-            MinWidth = Settings.Default.MIN_WINDOW_WIDTH;
+            MinHeight = Settings.Default.MinWindowHeight;
+            MinWidth = Settings.Default.MinWindowWidth;
 
             Title = "iModYourAnno - Anno 1800 Mod Manager";
 

@@ -39,10 +39,10 @@ namespace Imya.UI.Views
 
         public bool DeveloperMode
         { 
-            get { return Properties.Settings.Default.DeveloperMode; }
+            get { return Properties.Settings.Default.ModCreatorMode; }
             set
             {
-                Properties.Settings.Default.DeveloperMode = value;
+                Properties.Settings.Default.ModCreatorMode = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(DeveloperMode));    
             }
@@ -50,10 +50,10 @@ namespace Imya.UI.Views
 
         public bool ShowConsole
         {
-            get { return Properties.Settings.Default.ShowConsole; }
+            get { return Properties.Settings.Default.ConsoleVisibility; }
             set
             {
-                Properties.Settings.Default.ShowConsole = value;
+                Properties.Settings.Default.ConsoleVisibility = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(ShowConsole));
             }
@@ -77,7 +77,7 @@ namespace Imya.UI.Views
             {
                 GameSetupManager.SetGamePath(dialog.SelectedPath);
                 // TODO validity feedback?
-                Properties.Settings.Default.GAME_ROOT_PATH = dialog.SelectedPath;
+                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
                 Properties.Settings.Default.Save();
             }
         }
