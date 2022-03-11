@@ -14,7 +14,8 @@ namespace Imya.Models
         private enum ImyaImageSourceType { Undefined, Base64, Path }
         private ImyaImageSourceType ImageType;
 
-        public String Data { get; private set; }
+        private String Filepath { get; set; }
+        private byte[] Base64Data { get; set; }
 
         public ImyaImageSource()
         {
@@ -25,19 +26,27 @@ namespace Imya.Models
         /// Constructs this ImageSource as an Image loaded from Base64.
         /// </summary>
         /// <param name="ImageData"></param>
-        public void ConstructAsBase64Image(String ImageData)
+        public void ConstructAsBase64Image(String _image_data_base64)
         {
-            Data = ImageData;
-            ImageType = ImyaImageSourceType.Base64; 
+            //convert to raw bytes to save some space in memory.
+            try
+            {
+                Base64Data = System.Convert.FromBase64String(_image_data_base64);
+                ImageType = ImyaImageSourceType.Base64;
+            }
+            catch (FormatException fe)
+            {
+                Console.WriteLine("Could not load image: invalid or corrupted Base64 data");
+            }
         }
 
         /// <summary>
         /// Constructs this ImageSource as a Filepath Image.
         /// </summary>
-        /// <param name="Filepath"></param>
-        public void ConstructAsFilepathImage(String Filepath)
+        /// <param name="_filepath"></param>
+        public void ConstructAsFilepathImage(String _filepath)
         {
-            Data = Filepath;
+            Filepath = _filepath;
             ImageType = ImyaImageSourceType.Path;
         }
 
@@ -66,6 +75,24 @@ namespace Imya.Models
         public bool IsFilepathImageSource()
         {
             return ImageType == ImyaImageSourceType.Path;
+        }
+
+        public byte[] GetImageData()
+        {
+            if (IsFilepathImageSource())
+            {
+                throw new InvalidOperationException("Tried to access byte data on a filepath image source");
+            }
+            return Base64Data;
+        }
+
+        public String GetImageFilepath()
+        {
+            if (IsBase64ImageSource())
+            {
+                throw new InvalidOperationException("Tried to access filepath on base64 image source");
+            }
+            return Filepath;
         }
     }
 }

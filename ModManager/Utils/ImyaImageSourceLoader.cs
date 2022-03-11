@@ -27,7 +27,7 @@ namespace Imya.UI.Utils
         {
             if (source.IsBase64ImageSource())
             {
-                if (TryConvertImageFromBase64(source.Data, out var image))
+                if (TryConvertImageFromBase64(source.GetImageData(), out var image))
                 {
                     resultimage = image;
                     return true;
@@ -36,7 +36,7 @@ namespace Imya.UI.Utils
 
             else if (source.IsFilepathImageSource())
             {
-                if (TryLoadImageFromFile(source.Data, out var image))
+                if (TryLoadImageFromFile(source.GetImageFilepath(), out var image))
                 {
                     resultimage = image;
                     return true;
@@ -49,11 +49,11 @@ namespace Imya.UI.Utils
 
         #region Base64ImageLoading
 
-        private bool TryConvertImageFromBase64(String Base64, out ImageSource? image)
+        private bool TryConvertImageFromBase64(byte[] ImageBytes, out ImageSource? image)
         {
             try
             {
-                image = ConvertImageFromBase64(Base64);
+                image = ConvertImageFromBase64(ImageBytes);
                 return true;
             }
             catch (Exception e)
@@ -74,10 +74,9 @@ namespace Imya.UI.Utils
             return bitmap;
         }
 
-        private ImageSource ConvertImageFromBase64(String Base64)
+        private ImageSource ConvertImageFromBase64(byte[] ImageBytes)
         {
-            var bytes = System.Convert.FromBase64String(Base64);
-            return BitmapFromStream(new MemoryStream(bytes));
+            return BitmapFromStream(new MemoryStream(ImageBytes));
         }
 
         #endregion
