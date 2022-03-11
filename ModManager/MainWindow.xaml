@@ -35,7 +35,7 @@
         
         <Components:ConsoleLog Grid.Column="1" 
                                Height ="100" 
-                               Visibility="{Binding SettingsManager.ShowConsole, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" 
+                               Visibility="{Binding Settings.ShowConsole, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" 
                                Grid.Row="1" 
                                x:Name="ConsoleLogTextBox" 
                                Margin="0,0,5,5"/>

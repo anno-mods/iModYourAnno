@@ -23,6 +23,13 @@ namespace Imya.Utils
 
         public async Task InstallModLoaderAsync()
         {
+            if (GameSetupManager.ExecutableDir == null)
+            {
+                // TODO properly tell'em
+                Console.WriteLine($"Game path is not set yet.");
+                return;
+            }
+
             GithubRepoInfo modloaderRepo = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce" };
             String DownloadResult = await GithubDownloader.DownloadReleaseAsync(modloaderRepo, "loader.zip");
 
@@ -30,7 +37,7 @@ namespace Imya.Utils
             target = target.Substring(0, target.Length - 1);
 
             //move the files to bin/win64 
-            String Win64Dir = GameSetupManager.GetGameWin64Dir();
+            String Win64Dir = GameSetupManager.ExecutableDir;
 
             ZipFile.ExtractToDirectory(DownloadResult, target, true);
            

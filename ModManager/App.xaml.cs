@@ -19,7 +19,7 @@ namespace Imya.UI
             TextManager.LoadLanguageFile(Settings.Default.LANGUAGE_FILE_PATH);
 
             GameSetupManager GameSetupManager = new GameSetupManager(); 
-            GameSetupManager.RegisterGameRootPath(Settings.Default.GAME_ROOT_PATH);
+            GameSetupManager.SetGamePath(Settings.Default.GAME_ROOT_PATH, true);
             GameSetupManager.RegisterModDirectoryName(Settings.Default.MOD_DIRECTORY_NAME);
 
             ModTweakingManager modTweakingManager = new ModTweakingManager();
@@ -29,11 +29,7 @@ namespace Imya.UI
             //Setup Managers
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();
 
-            //init the settings manager for reasons
-            SettingsManager settingsManager = new SettingsManager();
-
-            //Set App Language
-            TextManager.Instance.ChangeLanguage(ApplicationLanguage.English);
+            TextManager.Instance.ChangeLanguage(Settings.Default.Language);
 
             ModinfoCreationManager modInfoCreationManager = new ModinfoCreationManager();
         }

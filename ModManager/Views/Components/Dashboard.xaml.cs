@@ -18,7 +18,8 @@ namespace Imya.UI.Components
     public partial class Dashboard : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
-        public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
+        public Properties.Settings Settings { get; } = Properties.Settings.Default;
+        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
 
         static ModActivationView ModActivationView = new ModActivationView();
         static SettingsView SettingsView = new SettingsView();

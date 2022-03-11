@@ -129,7 +129,7 @@ namespace Imya.Utils
                     .Select(
                         x => InitMod(x)
                     )
-                    .Where(x => x.DirectoryName != ".cache")
+                    .Where(x => !x.DirectoryName.StartsWith("."))
                     .ToList()
                 );
             }

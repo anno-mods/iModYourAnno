@@ -8,6 +8,8 @@
     <PackageId>ModManager</PackageId>
     <RootNamespace>Imya.UI</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>resources\icon.ico</ApplicationIcon>
+    <AssemblyName>iModYourAnno</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,13 +31,13 @@
     <Content Include="resources\background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="resources\icon.ico" />
     <Content Include="resources\modbanner_placeholder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.Wpf.NETCore" Version="98.1.210" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
   </ItemGroup>
 

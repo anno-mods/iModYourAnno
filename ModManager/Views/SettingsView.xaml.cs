@@ -26,7 +26,6 @@ namespace Imya.UI.Views
     public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
-        public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
 
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
 
@@ -35,14 +34,39 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            LanguageSelection.SelectedItem = SettingsManager.Languages.First(x => x.Language == TextManager.Instance.ApplicationLanguage);
+            LanguageSelection.SelectedItem = TextManager.Instance.Languages.First(x => x.Language == TextManager.Instance.ApplicationLanguage);
+        }
 
-            GameSetupManager.GameRootPathChanged += UpdateGameRootPathSetting;
+        public bool DeveloperMode
+        { 
+            get { return Properties.Settings.Default.DeveloperMode; }
+            set
+            {
+                Properties.Settings.Default.DeveloperMode = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged(nameof(DeveloperMode));    
+            }
+        }
+
+        public bool ShowConsole
+        {
+            get { return Properties.Settings.Default.ShowConsole; }
+            set
+            {
+                Properties.Settings.Default.ShowConsole = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged(nameof(ShowConsole));
+            }
         }
 
         public void RequestLanguageChange(object sender, RoutedEventArgs e)
         {
-            SettingsManager.UpdateLanguage(((ComboBox)sender).SelectedItem);
+            var box = sender as ComboBox;
+            if (box?.SelectedItem is not TextLanguagePair pair) return;
+
+            TextManager.Instance.ChangeLanguage(pair.Language);
+            Properties.Settings.Default.Language = pair.Language.ToString();
+            Properties.Settings.Default.Save();
         }
 
         public void GameRootPath_ButtonClick(object sender, RoutedEventArgs e)
@@ -51,13 +75,11 @@ namespace Imya.UI.Views
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                GameSetupManager.RegisterGameRootPath(dialog.SelectedPath);
+                GameSetupManager.SetGamePath(dialog.SelectedPath);
+                // TODO validity feedback?
+                Properties.Settings.Default.GAME_ROOT_PATH = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
             }
-        }
-
-        public void UpdateGameRootPathSetting(String newPath)
-        {
-            Properties.Settings.Default.LANGUAGE_FILE_PATH = newPath;
         }
 
         #region INotifyPropertyChangedMembers

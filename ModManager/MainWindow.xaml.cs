@@ -12,19 +12,19 @@ namespace Imya.UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public SettingsManager SettingsManager { get; } = SettingsManager.Instance;
+        public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
         public MainWindow()
         {
             InitializeComponent();
             SetUpEmbeddedConsole();
 
-            Console.WriteLine("Modders Are gonna take over the World!!!");
+            Console.WriteLine("Modders gonna take over the world!!!");
             DataContext = this;
             MinHeight = Settings.Default.MIN_WINDOW_HEIGHT;
             MinWidth = Settings.Default.MIN_WINDOW_WIDTH;
 
-            Title = "iMYA";
+            Title = "iModYourAnno - Anno 1800 Mod Manager";
         }
 
         public void SetUpEmbeddedConsole()
