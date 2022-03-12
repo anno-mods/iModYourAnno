@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,7 +39,6 @@ namespace Imya.UI.Components
         }
         private Mod? _currentMod;
 
-        // TODO set asynchronously by worker thread
         public ModTweaks Tweaks
         {
             get => _tweaks;
@@ -71,20 +71,35 @@ namespace Imya.UI.Components
 
         public void UpdateCurrentDisplay(Mod mod)
         {
-            ModTweaks tweaks = new();
-            if (IsVisible)
-            {
-                Tweaks.Save();
-                if (mod is not null)
-                    tweaks.Load(mod);
-            }
-            Tweaks = tweaks;
+            // make sure everything is secure from access from other threads
+            var currentTweaks = Tweaks;
+            Tweaks = new();
+
+            ThreadPool.QueueUserWorkItem(o =>
+                {
+                    ModTweaks tweaks = new();
+                    if (IsVisible)
+                    {
+                        currentTweaks.Save();
+                        if (mod is not null)
+                            tweaks.Load(mod);
+                    }
+
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        Tweaks = tweaks;
+                    });
+                });
         }
 
         public void OnLeave()
         {
-            Tweaks.Save();
+            var tweaks = Tweaks;
             Tweaks = new();
+            ThreadPool.QueueUserWorkItem(o =>
+                {
+                    tweaks.Save();
+                });   
         }
 
         #region INotifyPropertyChangedMembers
