@@ -43,7 +43,7 @@
 
         <ContentControl Grid.Row="0"
                         Grid.Column="1"
-                        Content="{Binding CurrentView, ElementName=Dashboard, UpdateSourceTrigger=PropertyChanged}">
+                        Content="{Binding MainViewController.CurrentView, UpdateSourceTrigger=PropertyChanged}">
         </ContentControl>
 
         <!--<DockPanel Grid.Row="0" Grid.Column="1">
