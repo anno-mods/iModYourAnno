@@ -1,5 +1,4 @@
-﻿using Imya.Models.ModTweaker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Models;
+using Imya.Models.ModTweaker;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -25,39 +25,35 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModTweaker : UserControl, INotifyPropertyChanged
     {
-        public bool ShowDefaultMessage
-        {
-            get => _showDefaultMessage;
-            set
-            {
-                _showDefaultMessage = value;
-                OnPropertyChanged(nameof(ShowDefaultMessage));
-            }
-        }
-        private bool _showDefaultMessage;
+        public TextManager TextManager { get; } = TextManager.Instance;
 
-        public Mod CurrentMod 
-        { 
+        public Mod? CurrentMod
+        {
             get => _currentMod;
-            set 
+            set
             {
                 _currentMod = value;
                 OnPropertyChanged(nameof(CurrentMod));
-            } 
+            }
         }
-        private Mod _currentMod;
+        private Mod? _currentMod;
 
-        private GameSetupManager GameSetupManager = GameSetupManager.Instance;
-
-        public ModTweakingManager TweakingManager { get; set; } = ModTweakingManager.Instance;
-        public TextManager TextManager { get; } = TextManager.Instance;
+        // TODO set asynchronously by worker thread
+        public ModTweaks Tweaks
+        {
+            get => _tweaks;
+            private set
+            {
+                _tweaks = value;
+                OnPropertyChanged(nameof(Tweaks));
+            }
+        }
+        private ModTweaks _tweaks = new();
 
         public ModTweaker()
         {
             InitializeComponent();
-            
             DataContext = this;
-
             IsVisibleChanged += OnVisibleChanged;
         }
 
@@ -73,32 +69,25 @@ namespace Imya.UI.Components
             }
         }
 
-        public void UpdateCurrentDisplay(Mod m)
+        public void UpdateCurrentDisplay(Mod mod)
         {
-            CurrentMod = m;
+            ModTweaks tweaks = new();
             if (IsVisible)
             {
-                TweakingManager.Save();
-                TweakingManager.Clear();
-                if (m is not null)
-                {
-                    TweakingManager.RegisterFiles(GameSetupManager.getFilesWithExtension(m, "xml"));
-                }
+                Tweaks.Save();
+                if (mod is not null)
+                    tweaks.Load(mod);
             }
-            ShowDefaultMessage = TweakingManager.HasElements();
+            Tweaks = tweaks;
         }
 
         public void OnLeave()
         {
-            TweakingManager.Save();
-            TweakingManager.Clear();
+            Tweaks.Save();
+            Tweaks = new();
         }
 
-        private void UpdateCurrentDisplay()
-        { 
-            
-        }
-
+        #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
         private void OnPropertyChanged(string propertyName)
@@ -109,5 +98,6 @@ namespace Imya.UI.Components
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+        #endregion
     }
 }

@@ -191,17 +191,6 @@ namespace Imya.Utils
             };
         }
 
-        public IEnumerable<String> getFilesWithExtension(Mod m, String Extension)
-        {
-            String ModDir = Path.Combine(GetModDirectory(), (m.Active ? "" : "-") + m.DirectoryName);
-            var files = Directory.EnumerateFiles(ModDir, $"*.{Extension}", SearchOption.AllDirectories);
-            foreach (string file in files)
-            {
-                Console.WriteLine(file);
-                yield return file;
-            }
-        }
-
         public void StartGame()
         {
             if (ExecutablePath == null)
