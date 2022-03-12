@@ -26,6 +26,9 @@ namespace Imya.UI
             Title = "iModYourAnno - Anno 1800 Mod Manager";
 
             MainViewController.SetView(View.MOD_ACTIVATION);
+#if DEBUG
+            Properties.Settings.Default.DevMode = true;
+#endif
         }
 
         public void SetUpEmbeddedConsole()

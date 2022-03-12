@@ -130,5 +130,17 @@ namespace Imya.UI.Properties {
                 this["ConsoleVisibility"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DevMode {
+            get {
+                return ((bool)(this["DevMode"]));
+            }
+            set {
+                this["DevMode"] = value;
+            }
+        }
     }
 }

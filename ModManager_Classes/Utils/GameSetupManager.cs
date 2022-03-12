@@ -1,11 +1,5 @@
-﻿using Imya.Models.NotifyPropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Imya.GithubIntegration;
-using Imya.Models;
+﻿using Imya.Models;
+using Imya.Models.NotifyPropertyChanged;
 using System.Diagnostics;
 
 namespace Imya.Utils
@@ -114,10 +108,12 @@ namespace Imya.Utils
             CreateWatchers();
         }
 
-        public void RegisterModDirectoryName(String ModDirectoryName)
+        public void SetModDirectoryName(String ModDirectoryName)
         { 
             this.ModDirectoryName = ModDirectoryName;
             ModDirectoryNameChanged(ModDirectoryName);
+
+            Console.WriteLine($"Changed Mod Directory Name to {ModDirectoryName}");
         }
 
         #endregion

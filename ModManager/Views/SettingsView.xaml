@@ -16,6 +16,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        </Grid.Resources>
+
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
             <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
@@ -114,13 +118,57 @@
                                   Grid.Column="1"
                                   Foreground="{DynamicResource AccentColorBrush}"
                                   Style="{StaticResource IMYA_CHECKBOX}"
-                                  IsChecked="{Binding DeveloperMode, Mode=TwoWay}">
+                                  IsChecked="{Binding ModCreatorMode, Mode=TwoWay}">
                         </CheckBox>
                     </Grid>
                 </StackPanel>
                 
             </Border>
         </StackPanel>
-        
+
+        <StackPanel Orientation="Vertical"
+                    Margin="5"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Visibility="{Binding DevMode, Converter={StaticResource BoolToVis}}">
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding TextManager[DEV_SETTING_MODDIRECTORYNAME].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Margin="5"
+                                   VerticalAlignment="Center" />
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                                     Background="{DynamicResource InteractiveComponentColorBrush}"
+                                     Text="{Binding GameSetupManager.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Margin="0,0,10,0"
+                                     IsReadOnly="False"
+                                     x:Name="ModDirectoryNameBox" />
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource IMYA_BUTTON}"
+                                    Foreground="{DynamicResource TextColorBrush}"
+                                    Content="Apply"
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0"
+                                    Click="GameModDirectory_ButtonClick" />
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+
+            </Border>
+        </StackPanel>
+
     </Grid>
 </UserControl>
