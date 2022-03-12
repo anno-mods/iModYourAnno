@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Imya.Enums;
+using System.Collections.Generic;
 using Imya.Utils;
+using Imya.UI.Popup;
 using Imya.Models;
-using System.ComponentModel;
-using Imya.UI.Utils;
-using System.IO;
 
 namespace Imya.UI.Views
 {
@@ -187,6 +177,19 @@ namespace Imya.UI.Views
 
             Properties.Settings.Default.Theme = theme.ThemeID;
             Properties.Settings.Default.Save();
+        }
+        
+        public async void OnInstallModLoader(object sender, RoutedEventArgs e)
+        {
+            InstallationManager installationManager = InstallationManager.Instance;
+
+            Console.WriteLine("Started installing Modloader");
+            ModloaderDownloadButton.IsEnabled = false;
+            await installationManager.InstallModLoaderAsync();
+            ModloaderDownloadButton.IsEnabled = true;
+
+            GenericOkayPopup inputDialog = new GenericOkayPopup();
+            inputDialog.ShowDialog();
         }
 
         #region INotifyPropertyChangedMembers

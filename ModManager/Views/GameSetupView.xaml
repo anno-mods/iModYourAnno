@@ -16,12 +16,5 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Button Style="{StaticResource IMYA_BUTTON}"
-                Content="Reinstall Modloader"
-                Foreground="{DynamicResource TextColorBrush}"
-                Click="ModloaderInstalled_Click"
-                x:Name="ModloaderDownloadButton">
-            
-        </Button>
     </Grid>
 </UserControl>
