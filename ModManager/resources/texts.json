@@ -168,6 +168,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "MODLIST_LOAD_PROFILE": {
+    "Chinese": null,
+    "English": "Load Profile",
+    "French": null,
+    "German": "Profil laden",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLIST_SAVE_PROFILE": {
+    "Chinese": null,
+    "English": "Save Profile",
+    "French": null,
+    "German": "Profil speichern",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "MODDISPLAY_NO_DESCRIPTION": {
     "Chinese": null,
     "English": "No description provided.",
