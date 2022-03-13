@@ -22,7 +22,7 @@ using Imya.Utils;
 namespace Imya.UI.Components
 {
     /// <summary>
-    /// Interaktionslogik für ModDescriptionDisplay.xaml
+    /// Displays mod readme and some meta data.
     /// </summary>
     public partial class ModDescriptionDisplay : UserControl, INotifyPropertyChanged
     {
@@ -38,11 +38,12 @@ namespace Imya.UI.Components
         private double _descriptionTextWidth;
         private double _knownIssueTextWidth;
 
-        private DlcId[] _DlcIds;
+        private DlcId[] _DlcIds = Array.Empty<DlcId>();
         #endregion
 
         #region Fields
 
+        // Needs retrigger of OnPropertyChanged on language change
         public DlcId[] DlcIds
         {
             get => _DlcIds;
@@ -156,7 +157,7 @@ namespace Imya.UI.Components
         {
             InitializeComponent();
             DataContext = this;
-            //TextManager.Instance.LanguageChanged += UpdateTextBoxes;
+            TextManager.Instance.LanguageChanged += OnLanguageChanged;
         }
 
         private DlcId[] GetDlcDependencies(Dlc[]? dependencies)
@@ -201,40 +202,20 @@ namespace Imya.UI.Components
             }
         }
 
+        private void OnLanguageChanged(ApplicationLanguage language)
+        {
+            // force update of DLC ids
+            DlcIds = DlcIds.ToArray();
+        }
+
         #region INotifyPropertyChangedMembers
-
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs s)
-        {
-            UpdateTextboxWidths();
-        }
-
-        private void UpdateTextboxWidths()
+        private void OnSizeChanged(object sender, SizeChangedEventArgs s) 
         {
             DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
             KnownIssueTextWidth = BaseGrid.ActualWidth > 50 ? BaseGrid.ActualWidth - 50 : 50;
-        }
-
-        private void UpdateTextBoxes(ApplicationLanguage lang)
-        {
-            foreach (var item in DLC_Dependencies.Items)
-            {
-                ContentPresenter uiElement = (ContentPresenter)DLC_Dependencies.ItemContainerGenerator.ContainerFromItem(item);
-                uiElement.ApplyTemplate();
-                var Textblock = (TextBlock)uiElement.ContentTemplate.FindName("DLC_Dependency_TextboxTemplate", uiElement);
-                BindingExpression bindingExpression = Textblock.GetBindingExpression(TextBlock.TextProperty);
-                bindingExpression.UpdateSource();
-            }
         }
         #endregion
     }
