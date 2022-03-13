@@ -51,6 +51,33 @@
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="5*" />
                         </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="Theme:"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                        <ComboBox Grid.Column="1"
+                                  Style="{StaticResource IMYA_COMBOBOX}"
+                                  x:Name="ThemeSelection"
+                                  VerticalAlignment="Top"
+                                  SelectionChanged="ThemeChange"
+                                  ItemsSource="{Binding Themes, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="5"
+                                  MinHeight="30">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ThemeName.Text}"
+                                               Style="{StaticResource IMYA_TEXT}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Margin="5"

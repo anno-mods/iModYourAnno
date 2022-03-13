@@ -20,21 +20,42 @@ using Imya.UI.Utils;
 
 namespace Imya.UI.Views
 {
+    public struct Theme
+    {
+        public IText ThemeName { get; private set; }
+        public Uri ThemePath { get; private set; }
+
+        public Theme(IText name, String path)
+        {
+            ThemeName = name;
+            ThemePath = new Uri(path, UriKind.RelativeOrAbsolute);
+        }
+    }
+
     /// <summary>
     /// Interaktionslogik für SettingsView.xaml
     /// </summary>
     public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
-
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+
+        //painfully horrible tbh, this lookup should get better.
+        private ResourceDictionary ThemeDictionary = Application.Current.Resources.MergedDictionaries[0];
+
+        public List<Theme> Themes { get; set; } = new List<Theme>();
 
         public SettingsView()
         {
             InitializeComponent();
+            Theme Default = new Theme(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml");
+            Themes.Add(Default);
+            Themes.Add(new Theme(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml"));
+
             DataContext = this;
 
             LanguageSelection.SelectedItem = TextManager.Instance.Languages.First(x => x.Language == TextManager.Instance.ApplicationLanguage);
+            ThemeSelection.SelectedItem = Default;
         }
 
         public bool DeveloperMode
@@ -69,6 +90,18 @@ namespace Imya.UI.Views
             Properties.Settings.Default.Save();
         }
 
+        public void ThemeChange(object sender, RoutedEventArgs e)
+        {
+            var box = sender as ComboBox;
+            if (box?.SelectedItem is not Theme pair) return;
+
+            ChangeColorTheme(pair);
+            
+            //TODO replace with new setting laterz
+            //Properties.Settings.Default.Language = pair.Language.ToString();
+            //Properties.Settings.Default.Save();
+        }
+
         public void GameRootPath_ButtonClick(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -79,6 +112,16 @@ namespace Imya.UI.Views
                 // TODO validity feedback?
                 Properties.Settings.Default.GAME_ROOT_PATH = dialog.SelectedPath;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        public void ChangeColorTheme(Theme theme)
+        {
+            ResourceDictionary NewTheme = new ResourceDictionary() { Source = theme.ThemePath };
+
+            foreach (var key in NewTheme.Keys)
+            {
+                ThemeDictionary[key] = NewTheme[key];
             }
         }
 

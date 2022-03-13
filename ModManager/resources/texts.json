@@ -622,5 +622,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "THEME_CYAN": {
+    "Chinese": null,
+    "English": "Dark/Cyan",
+    "French": null,
+    "German": "Dunkel/Cyan",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "THEME_GREEN": {
+    "Chinese": null,
+    "English": "Dark/Green",
+    "French": null,
+    "German": "Dunkel/Grün",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }
