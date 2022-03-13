@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ComponentColorBrush">#303030</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush_Light">#353535</SolidColorBrush>
+
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#404040</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#454545</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#656565</SolidColorBrush>
+
+    <SolidColorBrush x:Key="AccentColorBrush">DarkCyan</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorBrush_Dark">DarkSlateGray</SolidColorBrush>
+
+    <SolidColorBrush x:Key="BackgroundColorBrush">#252525</SolidColorBrush>
+    <SolidColorBrush x:Key="TextColorBrush">LightGray</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ModActiveColorBrush">LightGray</SolidColorBrush>
+    <SolidColorBrush x:Key="ModInactiveColorBrush">Red</SolidColorBrush>
+</ResourceDictionary>
