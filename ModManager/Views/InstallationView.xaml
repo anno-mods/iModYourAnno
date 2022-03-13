@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="Imya.UI.Views.DummyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Imya.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
+            <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <!--<StackPanel Orientation="Horizontal">
+                        <RadioButton Margin="5"
+                                     GroupName="installMode"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Foreground="{DynamicResource TextColorBrush}"
+                                     Content="Only update existing mods"
+                                     IsChecked="False">
+                        </RadioButton>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton Margin="5"
+                                     GroupName="installMode"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Foreground="{DynamicResource TextColorBrush}"
+                                     Content="Only add new mods"
+                                     IsEnabled="False"
+                                     IsChecked="False">
+                        </RadioButton>
+                    </StackPanel>-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Margin="5"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                Content="Install from Zip"
+                                Click="OnInstallFromZip">
+                        </Button>
+                        <!--<Button Grid.Column="1"
+                                Margin="5"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                Content="Install from GitHub"
+                                IsEnabled="False"
+                                Click="OnInstallFromZip">
+                        </Button>-->
+                    </Grid>
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="Existing mods will be deleted first and then added."
+                               VerticalAlignment="Center"
+                               Margin="5">
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
