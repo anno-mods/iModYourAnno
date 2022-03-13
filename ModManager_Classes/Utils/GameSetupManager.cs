@@ -1,11 +1,5 @@
-﻿using Imya.Models.NotifyPropertyChanged;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Imya.GithubIntegration;
-using Imya.Models;
+﻿using Imya.Models;
+using Imya.Models.NotifyPropertyChanged;
 using System.Diagnostics;
 
 namespace Imya.Utils
@@ -44,27 +38,27 @@ namespace Imya.Utils
             Instance ??= this;
         }
 
-        public String GAME_ROOT_PATH { get => _game_root_path;
+        public String GameRootPath { get => _gameRootPath;
             private set
             {
-                _game_root_path = value;
-                OnPropertyChanged(nameof(GAME_ROOT_PATH));
+                _gameRootPath = value;
+                OnPropertyChanged(nameof(GameRootPath));
             }
         }
-        private String _game_root_path;
+        private String _gameRootPath;
 
         public String? ExecutablePath { get; private protected set; }
         public String? ExecutableDir { get; private protected set; }
 
-        public String MOD_DIRECTORY_NAME {
-            get => _mod_directory_name;
+        public String ModDirectoryName {
+            get => _modDirectoryName;
             private set 
             { 
-                _mod_directory_name = value;
-                OnPropertyChanged(nameof(MOD_DIRECTORY_NAME));
+                _modDirectoryName = value;
+                OnPropertyChanged(nameof(ModDirectoryName));
             }
         }
-        private String _mod_directory_name;
+        private String _modDirectoryName;
 
         public bool IsValidSetup
         {
@@ -77,7 +71,7 @@ namespace Imya.Utils
 
         public String GetModDirectory()
         {
-            return Path.Combine(GAME_ROOT_PATH, MOD_DIRECTORY_NAME);
+            return Path.Combine(GameRootPath, ModDirectoryName);
         }
 
         #endregion
@@ -95,7 +89,7 @@ namespace Imya.Utils
                     gamePath = foundGamePath; // only replace if found, otherwise keep "wrong" path in the settings.
             }
 
-            GAME_ROOT_PATH = gamePath;
+            GameRootPath = gamePath;
 
             if (File.Exists(executablePath))
             {
@@ -114,10 +108,12 @@ namespace Imya.Utils
             CreateWatchers();
         }
 
-        public void RegisterModDirectoryName(String ModDirectoryName)
+        public void SetModDirectoryName(String ModDirectoryName)
         { 
-            MOD_DIRECTORY_NAME = ModDirectoryName;
+            this.ModDirectoryName = ModDirectoryName;
             ModDirectoryNameChanged(ModDirectoryName);
+
+            Console.WriteLine($"Changed Mod Directory Name to {ModDirectoryName}");
         }
 
         #endregion
@@ -139,12 +135,12 @@ namespace Imya.Utils
 
         private void CreateWatchers()
         {
-            ModDirectoryWatcher = CreateWatcher(Path.Combine(GAME_ROOT_PATH));
+            ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
         }
 
         public bool MaindataIsValid()
         {
-            String MaindataPath = Path.Combine(GAME_ROOT_PATH, "maindata");
+            String MaindataPath = Path.Combine(GameRootPath, "maindata");
             return 
                 Directory.Exists(MaindataPath) &&
                 CheckMaindata(MaindataPath);
@@ -153,8 +149,8 @@ namespace Imya.Utils
         public bool ModLoaderIsInstalled()
         {
             return 
-                File.Exists(Path.Combine(GAME_ROOT_PATH, "Bin", "Win64", "python35.dll")) &&
-                File.Exists(Path.Combine(GAME_ROOT_PATH, "Bin", "Win64", "python35_ubi.dll"));
+                File.Exists(Path.Combine(GameRootPath, "Bin", "Win64", "python35.dll")) &&
+                File.Exists(Path.Combine(GameRootPath, "Bin", "Win64", "python35_ubi.dll"));
         }
 
         private bool CheckMaindata(String MaindataPath)
@@ -169,7 +165,7 @@ namespace Imya.Utils
             bool allExist = true;
             foreach (String s in BuildPaths)
             {
-                if (!Directory.Exists(Path.Combine(GAME_ROOT_PATH, MaindataPath, s)))
+                if (!Directory.Exists(Path.Combine(GameRootPath, MaindataPath, s)))
                 {
                     allExist = false;
                 }

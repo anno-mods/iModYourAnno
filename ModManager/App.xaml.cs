@@ -16,15 +16,15 @@ namespace Imya.UI
         {
             //Load Texts asap.
             TextManager TextManager = new TextManager();
-            TextManager.LoadLanguageFile(Settings.Default.LANGUAGE_FILE_PATH);
+            TextManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
             GameSetupManager GameSetupManager = new GameSetupManager(); 
-            GameSetupManager.SetGamePath(Settings.Default.GAME_ROOT_PATH, true);
-            GameSetupManager.RegisterModDirectoryName(Settings.Default.MOD_DIRECTORY_NAME);
+            GameSetupManager.SetGamePath(Settings.Default.GameRootPath, true);
+            GameSetupManager.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
             ModTweakingManager modTweakingManager = new ModTweakingManager();
 
-            InstallationManager InstallationManager = new InstallationManager(Settings.Default.DOWNLOAD_DIR);
+            InstallationManager InstallationManager = new InstallationManager(Settings.Default.DownloadDir);
 
             //Setup Managers
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();

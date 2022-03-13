@@ -92,6 +92,9 @@ namespace Imya.Utils
         private void ModDirectoryNameUpdated(String newName)
         {
             ModPath = GameSetupManager.Instance.GetModDirectory();
+
+            LoadModsFromModDirectory();
+            DisplayedMods = ModList;
         }
 
         internal IEnumerable<Mod> GetMods()

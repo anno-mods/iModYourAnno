@@ -2,32 +2,35 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Imya.UI.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="MOD_DIRECTORY_NAME" Type="System.String" Scope="User">
+    <Setting Name="ModDirectoryName" Type="System.String" Scope="User">
       <Value Profile="(Default)">mods</Value>
     </Setting>
-    <Setting Name="LANGUAGE_FILE_PATH" Type="System.String" Scope="User">
+    <Setting Name="LanguageFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">resources/texts.json</Value>
     </Setting>
-    <Setting Name="MIN_WINDOW_WIDTH" Type="System.Double" Scope="User">
+    <Setting Name="MinWindowWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">800</Value>
     </Setting>
-    <Setting Name="MIN_WINDOW_HEIGHT" Type="System.Double" Scope="User">
+    <Setting Name="MinWindowHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">400</Value>
     </Setting>
-    <Setting Name="GAME_ROOT_PATH" Type="System.String" Scope="User">
+    <Setting Name="GameRootPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">F:\Spiele\Anno 1800</Value>
     </Setting>
-    <Setting Name="DOWNLOAD_DIR" Type="System.String" Scope="User">
+    <Setting Name="DownloadDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">imya_tmp</Value>
-    </Setting>
-    <Setting Name="ShowConsole" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
-    <Setting Name="DeveloperMode" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="Language" Type="System.String" Scope="User">
       <Value Profile="(Default)">English</Value>
+    </Setting>
+    <Setting Name="ModCreatorMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ConsoleVisibility" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DevMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>
