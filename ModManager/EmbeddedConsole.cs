@@ -23,18 +23,26 @@ namespace Imya.UI
 
         public override void Write(char c)
         {
-            TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}] [LOG]: " + c;
+            TargetTextBox.Dispatcher.BeginInvoke(() =>
+                TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}] [LOG]: " + c
+            );
         }
 
         public override void Write(String? s)
         {
-            TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}]: " + s;
+            TargetTextBox.Dispatcher.BeginInvoke(() =>
+                TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}]: " + s
+            );
         }
 
         public override void WriteLine(String? s)
         {
-            Write(s);
-            TargetTextBox.Text += Environment.NewLine;
+            TargetTextBox.Dispatcher.BeginInvoke(() =>
+                {
+                    Write(s);
+                    TargetTextBox.Text += Environment.NewLine;
+                }
+            );
         }
     }
 }

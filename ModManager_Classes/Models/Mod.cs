@@ -19,11 +19,11 @@ namespace Imya.Models
         #endregion
 
         //Mod filepath
-        public string DirectoryName { get => _directory_name; set => _directory_name = value; }
-        public IText Name { get => _name; set => _name = value; }
-        public IText Category { get => _category; set => _category = value; }
-
-        
+        public string DirectoryName { get; private set; }
+        public IText Name { get; private set; }
+        public IText Category { get; private set; }
+        public string FullModPath => Path.Combine(BasePath, (Active ? "" : "-") + DirectoryName );
+        public string BasePath { get; private set; } // TODO use ModDirectory as parent and retrieve it from there as soon as it's not a global manager anymore
 
         public bool Active
         {
@@ -68,18 +68,19 @@ namespace Imya.Models
         //This should be removed, and the mods should hold all this information by themselves.
 
         //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
-        public Mod (bool active, String ModName, Modinfo? metadata)
+        public Mod (bool active, String modName, Modinfo? metadata, string basePath)
         {
             //if we need to trim the start dash, the mod should become inactive.
             Active = active;
-            DirectoryName = ModName;
+            DirectoryName = modName;
+            BasePath = basePath;
 
             //mod with Metadata
             if (metadata is Modinfo)
             {
                 ModID = metadata.ModID;
                 Category = (metadata.Category is Localized) ? TextManager.CreateLocalizedText(metadata.Category) : new SimpleText("NoCategory");
-                Name = (metadata.ModName is Localized) ? TextManager.CreateLocalizedText(metadata.ModName) : new SimpleText(ModName);
+                Name = (metadata.ModName is Localized) ? TextManager.CreateLocalizedText(metadata.ModName) : new SimpleText(modName);
                 Description = (metadata.Description is Localized) ? TextManager.CreateLocalizedText(metadata.Description) : null;
                 KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => TextManager.CreateLocalizedText(x)).ToArray() : null;
                 Version =  metadata.Version;
@@ -126,6 +127,14 @@ namespace Imya.Models
             return Name.Text.ToLower().Contains(k) ||
                 Category.Text.ToLower().Contains(k) ||
                 (CreatorName?.ToLower().Contains(k) ?? false);
+        }
+
+        /// <summary>
+        /// Return all files with a specific extension.
+        /// </summary>
+        public IEnumerable<String> GetFilesWithExtension(string extension)
+        {
+            return Directory.EnumerateFiles(FullModPath, $"*.{extension}", SearchOption.AllDirectories);
         }
 
         private bool TryMatchToNamingPattern(String DirectoryName, out String Category, out String Name)

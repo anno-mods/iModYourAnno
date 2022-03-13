@@ -17,6 +17,7 @@ using Imya.Utils;
 using Imya.Models;
 using System.ComponentModel;
 using Imya.UI.Utils;
+using System.IO;
 
 namespace Imya.UI.Views
 {
@@ -58,23 +59,34 @@ namespace Imya.UI.Views
             ThemeSelection.SelectedItem = Default;
         }
 
-        public bool DeveloperMode
-        { 
-            get { return Properties.Settings.Default.DeveloperMode; }
+        public bool DevMode
+        {
+            get { return Properties.Settings.Default.DevMode; }
             set
             {
-                Properties.Settings.Default.DeveloperMode = value;
+                Properties.Settings.Default.DevMode = value;
                 Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(DeveloperMode));    
+                OnPropertyChanged(nameof(DevMode));
+            }
+        }
+
+        public bool ModCreatorMode
+        { 
+            get { return Properties.Settings.Default.ModCreatorMode; }
+            set
+            {
+                Properties.Settings.Default.ModCreatorMode = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged(nameof(ModCreatorMode));    
             }
         }
 
         public bool ShowConsole
         {
-            get { return Properties.Settings.Default.ShowConsole; }
+            get { return Properties.Settings.Default.ConsoleVisibility; }
             set
             {
-                Properties.Settings.Default.ShowConsole = value;
+                Properties.Settings.Default.ConsoleVisibility = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(ShowConsole));
             }
@@ -110,7 +122,7 @@ namespace Imya.UI.Views
             {
                 GameSetupManager.SetGamePath(dialog.SelectedPath);
                 // TODO validity feedback?
-                Properties.Settings.Default.GAME_ROOT_PATH = dialog.SelectedPath;
+                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
                 Properties.Settings.Default.Save();
             }
         }
@@ -124,6 +136,22 @@ namespace Imya.UI.Views
                 ThemeDictionary[key] = NewTheme[key];
             }
         }
+        
+        //Apply new Mod Directory Name
+        public void GameModDirectory_ButtonClick(object sender, RoutedEventArgs e)
+        {
+            String NewName = ModDirectoryNameBox.Text;
+
+            //filter invalid directory names.
+            if(NewName.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0) return;
+
+            //filter if nothing changed
+            if (NewName.Equals(Properties.Settings.Default.ModDirectoryName)) return;
+
+            GameSetupManager.SetModDirectoryName(NewName);
+            Properties.Settings.Default.ModDirectoryName = NewName;
+            Properties.Settings.Default.Save();
+        }
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -136,5 +164,10 @@ namespace Imya.UI.Views
             }
         }
         #endregion
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -180,7 +180,7 @@ namespace Imya.UI.Components
             ShowCreatorName = Exists && m.HasCreator ;
             ShowVersion = Exists && m.HasVersion ;
             ShowDlcDeps = Exists && m.HasDlcDependencies;
-            ShowModID = Exists && Properties.Settings.Default.DeveloperMode && m.HasModID;
+            ShowModID = Exists && Properties.Settings.Default.ModCreatorMode && m.HasModID;
 
             DlcIds = GetDlcDependencies(m?.DlcDependencies);
 
