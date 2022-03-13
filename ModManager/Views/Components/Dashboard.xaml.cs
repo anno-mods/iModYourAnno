@@ -15,88 +15,53 @@ namespace Imya.UI.Components
     /// <summary>
     /// Interaktionslogik für Dashboard.xaml
     /// </summary>
-    public partial class Dashboard : UserControl, INotifyPropertyChanged
+    public partial class Dashboard : UserControl
     {
         public TextManager TextManager { get; } = TextManager.Instance;
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+        public MainViewController MainViewController { get; } = MainViewController.Instance;
 
-        static ModActivationView ModActivationView = new ModActivationView();
-        static SettingsView SettingsView = new SettingsView();
-        static ModTweakerView TweakerView = new ModTweakerView();
-        static GameSetupView GameSetupView = new GameSetupView();
-        static ModinfoCreatorView ModinfoCreatorView = new ModinfoCreatorView();
-
-        private static UserControl DummyControl = new DummyControl();
-
-
-        private UserControl _currentView;
-        public UserControl CurrentView {
-            get => _currentView;
-            set
-            {
-                _currentView = value;
-                OnPropertyChanged(nameof(CurrentView));
-            }
-        }
 
         public Dashboard()
         {
             InitializeComponent();
             DataContext = this;
-
-            CurrentView = ModActivationView;
         }
 
         public void SettingsClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = SettingsView;
+            MainViewController.SetView(View.SETTINGS);
         }
 
         public void ModManagementClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = ModActivationView;
+            MainViewController.SetView(View.MOD_ACTIVATION);
         }
 
         public void GameSetupClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = GameSetupView;
+            MainViewController.SetView(View.GAME_SETUP);
         }
 
         public void ModTweakerClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = TweakerView;
+            MainViewController.SetView(View.TWEAKER);
         }
 
         public void MetadataClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = ModinfoCreatorView;
+            MainViewController.SetView(View.MODINFO_CREATOR);
         }
 
         public void ModInstallationClick(object sender, RoutedEventArgs e)
         {
-            CurrentView = DummyControl;
+            MainViewController.SetView(View.DUMMY);
         }
 
         public void StartGameClick(object sender, RoutedEventArgs e)
         {
             GameSetupManager.Instance.StartGame();
         }
-
-        #region INotifyPropertyChangedMembers
-
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
     }
-
-
 }

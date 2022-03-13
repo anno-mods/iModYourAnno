@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Imya.UI.Popup;
 using Imya.UI.Properties;
-using Imya.UI.Utils;
-using Imya.UI.Views;
 
 namespace Imya.UI
 {
@@ -13,6 +10,8 @@ namespace Imya.UI
     public partial class MainWindow : Window
     {
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
+
+        public MainViewController MainViewController { get; set; } = new MainViewController();
 
         public MainWindow()
         {
@@ -25,6 +24,8 @@ namespace Imya.UI
             MinWidth = Settings.Default.MIN_WINDOW_WIDTH;
 
             Title = "iModYourAnno - Anno 1800 Mod Manager";
+
+            MainViewController.SetView(View.MOD_ACTIVATION);
         }
 
         public void SetUpEmbeddedConsole()
