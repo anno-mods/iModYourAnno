@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Imya.UI.Utils
+namespace Imya.UI
 {
     public enum View { 
         MOD_ACTIVATION,

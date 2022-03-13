@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Imya.UI.Popup;
 using Imya.UI.Properties;
-using Imya.UI.Utils;
-using Imya.UI.Views;
 
 namespace Imya.UI
 {
