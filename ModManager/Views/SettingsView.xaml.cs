@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Generic;
 using Imya.Utils;
-using Imya.UI.Popup;
 using Imya.Models;
 
 namespace Imya.UI.Views
@@ -51,12 +50,27 @@ namespace Imya.UI.Views
     }
 
     /// <summary>
-    /// Interaktionslogik für SettingsView.xaml
+    /// Mod loader installation, game path, etc.
     /// </summary>
     public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
-        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
+
+        #region Notifiable Properties
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new(propertyName));
+        public ModLoaderStatus InstallStatus
+        {
+            get => _installStatus;
+            private set
+            {
+                _installStatus = value;
+                OnPropertyChanged(nameof(InstallStatus));
+            }
+        }
+        private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
+        #endregion
 
         //painfully horrible tbh, this lookup should get better.
         private ResourceDictionary ThemeDictionary = Application.Current.Resources.MergedDictionaries[0];
@@ -78,6 +92,14 @@ namespace Imya.UI.Views
             ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));
 
             DataContext = this;
+            TextManager.LanguageChanged += OnLanguageChanged;
+
+            if (GameSetup.ModLoader.IsInstalled)
+            {
+                InstallStatus = ModLoaderStatus.Installed;
+                // TODO async update check
+                // InstallStatusText = "checking...";
+            }
         }
 
         public bool DevMode
@@ -136,7 +158,7 @@ namespace Imya.UI.Views
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                GameSetupManager.SetGamePath(dialog.SelectedPath);
+                GameSetup.SetGamePath(dialog.SelectedPath);
                 // TODO validity feedback?
                 Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
                 Properties.Settings.Default.Save();
@@ -154,7 +176,7 @@ namespace Imya.UI.Views
             //filter if nothing changed
             if (NewName.Equals(Properties.Settings.Default.ModDirectoryName)) return;
 
-            GameSetupManager.SetModDirectoryName(NewName);
+            GameSetup.SetModDirectoryName(NewName);
             Properties.Settings.Default.ModDirectoryName = NewName;
             Properties.Settings.Default.Save();
         }
@@ -181,32 +203,41 @@ namespace Imya.UI.Views
         
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
         {
-            InstallationManager installationManager = InstallationManager.Instance;
-
-            Console.WriteLine("Started installing Modloader");
+            Console.WriteLine("Installing Modloader");
             ModloaderDownloadButton.IsEnabled = false;
-            await installationManager.InstallModLoaderAsync();
+            InstallStatus = ModLoaderStatus.Installing;
+
+            await GameSetup.ModLoader.InstallAsync();
+
             ModloaderDownloadButton.IsEnabled = true;
-
-            GenericOkayPopup inputDialog = new GenericOkayPopup();
-            inputDialog.ShowDialog();
+            if (GameSetup.ModLoader.IsInstalled)
+                InstallStatus = ModLoaderStatus.Installed;
         }
 
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        private void OnPropertyChanged(string propertyName)
+        private void OnLanguageChanged(ApplicationLanguage language)
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            // trigger property changes to update text
+            OnPropertyChanged(nameof(InstallStatus));
         }
-        #endregion
+    }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+    /// <summary>
+    /// Enum with overwritten ToString to provide localized text.
+    /// </summary>
+    public class ModLoaderStatus
+    {
+        public static readonly ModLoaderStatus NotInstalled = new("MODLOADER_NOT_INSTALLED");
+        public static readonly ModLoaderStatus Checking = new("MODLOADER_CHECKING");
+        public static readonly ModLoaderStatus Installing = new("MODLOADER_INSTALLING");
+        public static readonly ModLoaderStatus UpdateAvailable = new("MODLOADER_UPDATE_AVAILABLE");
+        public static readonly ModLoaderStatus Installed = new("MODLOADER_INSTALLED");
+
+        private readonly string _value;
+        private ModLoaderStatus(string value)
         {
-
+            _value = value;
         }
+
+        public IText Localized => TextManager.Instance[_value];
     }
 }
