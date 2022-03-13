@@ -71,8 +71,21 @@
                                   MinHeight="30">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding ThemeName.Text}"
-                                               Style="{StaticResource IMYA_TEXT}"></TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Margin="2"
+                                                Background="{Binding ThemePrimaryColorBrush}"
+                                                BorderBrush="{Binding ThemePrimaryColorDarkBrush}"
+                                                BorderThickness="2"
+                                                Width="18"
+                                                Height="18"
+                                                VerticalAlignment="Center"
+                                                CornerRadius="2">
+                                        </Border>
+                                        <TextBlock Text="{Binding ThemeName.Text}"
+                                                   Style="{StaticResource IMYA_TEXT}"
+                                                   VerticalAlignment="Center"
+                                                   Padding="5"></TextBlock>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

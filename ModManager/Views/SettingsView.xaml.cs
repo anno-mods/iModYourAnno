@@ -25,14 +25,26 @@ namespace Imya.UI.Views
     {
         public IText ThemeName { get; private set; }
         public Uri ThemePath { get; private set; }
-        
+
         public String ThemeID { get; private set; }
 
-        public ThemeSetting(IText name, String path, String id)
+        public Brush ThemePrimaryColorBrush { get; private set; }
+
+        public Brush ThemePrimaryColorDarkBrush
+        {
+            get => new SolidColorBrush(Color.Multiply(_ThemePrimaryColor, 0.5f));
+        }
+
+        private Color _ThemePrimaryColor;
+
+        public ThemeSetting(IText name, String path, String id, Color c)
         {
             ThemeName = name;
             ThemePath = new Uri(path, UriKind.RelativeOrAbsolute);
-            ThemeID = id; 
+            ThemeID = id;
+
+            _ThemePrimaryColor = c;
+            ThemePrimaryColorBrush = new SolidColorBrush(_ThemePrimaryColor);
         }
     }
 
@@ -66,8 +78,8 @@ namespace Imya.UI.Views
         {
             InitializeComponent();
 
-            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen"));
-            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan"));
+            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
+            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
 
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
