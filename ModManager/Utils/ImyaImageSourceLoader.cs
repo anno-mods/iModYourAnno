@@ -100,7 +100,12 @@ namespace Imya.UI.Utils
         public static ImageSource LoadImageFromFile(String Filepath)
         {
             var uri = new Uri(Path.Combine(Environment.CurrentDirectory, Filepath));
-            return new BitmapImage(uri);
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = uri;
+            image.EndInit();
+            return image;
         }
 
         #endregion

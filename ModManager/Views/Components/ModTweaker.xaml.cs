@@ -1,10 +1,10 @@
-﻿using Imya.Models.ModTweaker;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Models;
+using Imya.Models.ModTweaker;
 using Imya.Utils;
 
 namespace Imya.UI.Components
@@ -25,39 +26,34 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModTweaker : UserControl, INotifyPropertyChanged
     {
-        public bool ShowDefaultMessage
-        {
-            get => _showDefaultMessage;
-            set
-            {
-                _showDefaultMessage = value;
-                OnPropertyChanged(nameof(ShowDefaultMessage));
-            }
-        }
-        private bool _showDefaultMessage;
+        public TextManager TextManager { get; } = TextManager.Instance;
 
-        public Mod CurrentMod 
-        { 
+        public Mod? CurrentMod
+        {
             get => _currentMod;
-            set 
+            set
             {
                 _currentMod = value;
                 OnPropertyChanged(nameof(CurrentMod));
-            } 
+            }
         }
-        private Mod _currentMod;
+        private Mod? _currentMod;
 
-        private GameSetupManager GameSetupManager = GameSetupManager.Instance;
-
-        public ModTweakingManager TweakingManager { get; set; } = ModTweakingManager.Instance;
-        public TextManager TextManager { get; } = TextManager.Instance;
+        public ModTweaks Tweaks
+        {
+            get => _tweaks;
+            private set
+            {
+                _tweaks = value;
+                OnPropertyChanged(nameof(Tweaks));
+            }
+        }
+        private ModTweaks _tweaks = new();
 
         public ModTweaker()
         {
             InitializeComponent();
-            
             DataContext = this;
-
             IsVisibleChanged += OnVisibleChanged;
         }
 
@@ -73,32 +69,40 @@ namespace Imya.UI.Components
             }
         }
 
-        public void UpdateCurrentDisplay(Mod m)
+        public void UpdateCurrentDisplay(Mod mod)
         {
-            CurrentMod = m;
-            if (IsVisible)
-            {
-                TweakingManager.Save();
-                TweakingManager.Clear();
-                if (m is not null)
+            // make sure everything is secure from access from other threads
+            var currentTweaks = Tweaks;
+            Tweaks = new();
+
+            ThreadPool.QueueUserWorkItem(o =>
                 {
-                    TweakingManager.RegisterFiles(GameSetupManager.getFilesWithExtension(m, "xml"));
-                }
-            }
-            ShowDefaultMessage = TweakingManager.HasElements();
+                    ModTweaks tweaks = new();
+                    if (IsVisible)
+                    {
+                        currentTweaks.Save();
+                        if (mod is not null)
+                            tweaks.Load(mod);
+                    }
+
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        Tweaks = tweaks;
+                    });
+                });
         }
 
         public void OnLeave()
         {
-            TweakingManager.Save();
-            TweakingManager.Clear();
+            var tweaks = Tweaks;
+            Tweaks = new();
+            ThreadPool.QueueUserWorkItem(o =>
+                {
+                    tweaks.Save();
+                });   
         }
 
-        private void UpdateCurrentDisplay()
-        { 
-            
-        }
-
+        #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
         private void OnPropertyChanged(string propertyName)
@@ -109,5 +113,6 @@ namespace Imya.UI.Components
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+        #endregion
     }
 }

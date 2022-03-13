@@ -250,7 +250,7 @@ namespace Imya.Utils
 
             ModinfoLoader.TryLoadFromFile(Path.Combine(TargetPath, "modinfo.json"), out var metadata);
 
-            var Mod = new Mod(active, Name, metadata);
+            var Mod = new Mod(active, Name, metadata, ModPath);
 
             var imagepath = Path.Combine(inPath, "banner.png");
             if (File.Exists(imagepath))

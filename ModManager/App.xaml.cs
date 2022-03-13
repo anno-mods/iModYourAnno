@@ -22,8 +22,6 @@ namespace Imya.UI
             GameSetupManager.SetGamePath(Settings.Default.GameRootPath, true);
             GameSetupManager.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
-            ModTweakingManager modTweakingManager = new ModTweakingManager();
-
             InstallationManager InstallationManager = new InstallationManager(Settings.Default.DownloadDir);
 
             //Setup Managers

@@ -10,9 +10,9 @@
     <Grid>
         <Grid.Resources>
             <Converters:FileNameConverter x:Key="FileNameConverter" />
-            <Converters:ExtendedBoolToVisibilityConverter x:Key="BoolToVis"
-                                                          TrueValue="Hidden"
-                                                          FalseValue="Visible" />
+            <Converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue"
+                                                          TrueValue="Visible"
+                                                          FalseValue="Hidden" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -42,11 +42,10 @@
                          VerticalAlignment="Top"
                          Margin="0,20,0,0"
                          Style="{StaticResource IMYA_TEXT}"
-                           Text="{Binding TextManager[TWEAKER_NO_FILES].Text}"
-                         
-                         Visibility="{Binding ShowDefaultMessage, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                         Text="{Binding TextManager[TWEAKER_NO_FILES].Text}"
+                         Visibility="{Binding Tweaks.IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
                 </TextBlock>
-                <ItemsControl ItemsSource="{Binding TweakingManager.TweakerFiles, UpdateSourceTrigger=PropertyChanged}"
+                <ItemsControl ItemsSource="{Binding Tweaks.TweakerFiles, UpdateSourceTrigger=PropertyChanged}"
                               Margin="10"
                               x:Name="TweakFilesList">
                     <ItemsControl.ItemTemplate>
@@ -54,7 +53,7 @@
                             <Expander IsExpanded="True">
                                 <Expander.Header>
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding Filename, Converter={StaticResource FileNameConverter}}"
+                                               Text="{Binding FilePath, Converter={StaticResource FileNameConverter}}"
                                                Margin="5">
                                     </TextBlock>
                                 </Expander.Header>

@@ -11,7 +11,7 @@ namespace Imya.Models.ModTweaker
 {
     public class TweakerFile : PropertyChangedNotifier
     {
-        public String Filename { get; private set; }
+        public string FilePath { get; private set; }
         public ObservableCollection<ExposedModValue> EditableValues 
         {
             get => _editableValues;
@@ -31,72 +31,55 @@ namespace Imya.Models.ModTweaker
 
         }
 
-        public void Save()
+        public void Save(string basePath)
         {
             try
             {
-                OwnerDocument.Save(Filename);
+                OwnerDocument.Save(Path.Combine(basePath, FilePath));
             }
             catch (IOException e)
             {
-                Console.WriteLine($"Failed to save Document {Filename}. Cause: {e.Message}");
+                Console.WriteLine($"Failed to save Document {FilePath}. Cause: {e.Message}");
             }
         }
 
-        public static bool TryInit(String Filename, out TweakerFile tweakerFile)
+        public static bool TryInit(string basePath, string filePath, out TweakerFile tweakerFile)
         {
-            tweakerFile = new TweakerFile();
-            tweakerFile.setFilename(Filename);
+            tweakerFile = new();
+            tweakerFile.FilePath = filePath;
 
-            if (tweakerFile.TryLoadOwnerDocument(out var doc))
+            if (tweakerFile.TryLoadOwnerDocument(basePath, out var doc))
             {
-                tweakerFile.setOwnerDocument(doc);
+                tweakerFile.OwnerDocument = doc;
 
-
-                XmlPatchParser parser = new XmlPatchParser(doc);
-                var Editables = parser.FetchExposedValues();
-
-                if (Editables.Count() <= 0)
+                var parser = new XmlPatchParser(doc);
+                var editables = parser.FetchExposedValues();
+                if (!editables.Any())
                 {
                     return false;
                 }
 
-                tweakerFile.setEditableValues(Editables);
+                tweakerFile.EditableValues = new ObservableCollection<ExposedModValue>(editables);
                 return true;
             }
             else {
-                Console.WriteLine($"Could not load Document: {Filename}");
+                Console.WriteLine($"Could not load Document: {tweakerFile.FilePath}");
             }
             return false;
         }
 
-        private bool TryLoadOwnerDocument(out XmlDocument doc)
+        private bool TryLoadOwnerDocument(string basePath, out XmlDocument doc)
         {
             doc = new XmlDocument();
             try
             {
-                doc.Load(Filename);
+                doc.Load(Path.Combine(basePath, FilePath));
             }
             catch (XmlException e)
             {
                 return false;
             }
             return true;
-        }
-
-        private void setOwnerDocument(XmlDocument doc)
-        {
-            OwnerDocument = doc;
-        }
-
-        private void setEditableValues(IEnumerable<ExposedModValue> values)
-        {
-            EditableValues = new ObservableCollection<ExposedModValue>(values);
-        }
-
-        private void setFilename(String s)
-        {
-            Filename = s;
         }
     }
 }
