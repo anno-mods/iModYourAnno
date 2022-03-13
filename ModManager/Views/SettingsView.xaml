@@ -39,12 +39,12 @@
                                   x:Name="LanguageSelection"
                                   VerticalAlignment="Top"
                                   SelectionChanged="RequestLanguageChange"
-                                  ItemsSource="{Binding TextManager.Languages, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
                                   MinHeight="30">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name.Text}"
+                                    <TextBlock Text="{Binding LanguageName.Text}"
                                                Style="{StaticResource IMYA_TEXT}"></TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -57,7 +57,7 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="Theme:"
+                                   Text="{Binding TextManager[SETTINGS_THEME].Text}"
                                    VerticalAlignment="Center"
                                    Margin="5">
                         </TextBlock>
@@ -65,7 +65,7 @@
                                   Style="{StaticResource IMYA_COMBOBOX}"
                                   x:Name="ThemeSelection"
                                   VerticalAlignment="Top"
-                                  SelectionChanged="ThemeChange"
+                                  SelectionChanged="RequestThemeChange"
                                   ItemsSource="{Binding Themes, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
                                   MinHeight="30">

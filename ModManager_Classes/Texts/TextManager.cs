@@ -7,18 +7,11 @@ using Imya.Models.ModMetadata;
 // TODO move all text/language related code under Imya.Text or Imya.Language
 namespace Imya.Utils
 {
-    public class TextLanguagePair
-    {
-        public IText Name { get; set; }
-        public ApplicationLanguage Language { get; set; }
-    }
-
     public class TextManager
     {
         public static TextManager Instance { get; private set; }
 
         public ApplicationLanguage ApplicationLanguage { get; private set; } = ApplicationLanguage.English;
-        public TextLanguagePair[] Languages { get; private set; } = Array.Empty<TextLanguagePair>();
 
         private readonly Dictionary<string, IText> KeyedTexts = new();
         private readonly List<IText> UnkeyedTexts = new();
@@ -70,11 +63,6 @@ namespace Imya.Utils
             }
         }
 
-        public void ChangeLanguage(string language)
-        {
-            ChangeLanguage(Languages.First(x => x.Language.ToString() == language)?.Language ?? ApplicationLanguage.English);
-        }
-
         public void ChangeLanguage(ApplicationLanguage lang)
         {
             Console.WriteLine($"Changed App Language to: {lang}");
@@ -117,11 +105,6 @@ namespace Imya.Utils
                 Console.WriteLine($"Error while parsing file \"{Sourcefile}\": {e.Message}");
             }
 
-            Languages = new TextLanguagePair[]
-            {
-                new TextLanguagePair() { Name = GetText("SETTINGS_LANG_ENGLISH"), Language = ApplicationLanguage.English },
-                new TextLanguagePair() { Name = GetText("SETTINGS_LANG_GERMAN"), Language = ApplicationLanguage.German }
-            };
         }
 
         public static LocalizedText CreateLocalizedText(Localized localized)
