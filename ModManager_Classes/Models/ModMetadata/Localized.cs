@@ -18,4 +18,22 @@ namespace Imya.Models.ModMetadata
 
         public Localized() { }
     }
+
+    public class FakeLocalized : Localized
+    {
+        public FakeLocalized(string text)
+        {
+            Chinese = text;
+            English = text;
+            French = text;
+            German = text;
+            Italian = text;
+            Japanese = text;
+            Korean = text;
+            Polish = text;
+            Russian = text;
+            Spanish = text;
+            Taiwanese = text;
+        }
+    }
 }

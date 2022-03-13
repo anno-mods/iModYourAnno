@@ -97,8 +97,8 @@
                     <StackPanel Orientation="Horizontal"
                                 Margin="5,3,0,3">
                         <materialDesign:PackIcon Margin="0,0,5,0"
-                                                 Kind="{Binding Active, Converter={StaticResource ModIconConverter}}"
-                                                 Foreground="{Binding Active, Converter={StaticResource ModIconColorConverter}}" />
+                                                 Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
+                                                 Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}}" />
                         <TextBlock Text="{Binding Category.Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Margin="0,0,5,0"
@@ -111,7 +111,7 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource IMYA_LISTBOXITEM}">
                     <Setter Property="IsSelected"
-                            Value="{Binding Selected}" />
+                            Value="{Binding IsSelected}" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

@@ -115,7 +115,7 @@ namespace Imya.UI.Components
             ShowDlcDeps = mod?.HasDlcDependencies ?? false;
             ShowModID = Properties.Settings.Default.ModCreatorMode && (mod?.HasModID ?? false);
 
-            DlcIds = Mod?.DlcDependencies?.Where(x => x?.DLC != null).Select(x => (DlcId)x.DLC!).OrderBy(x => x).ToArray() ?? Array.Empty<DlcId>();
+            DlcIds = Mod?.Modinfo.DLCDependencies?.Where(x => x?.DLC != null).Select(x => (DlcId)x.DLC!).OrderBy(x => x).ToArray() ?? Array.Empty<DlcId>();
 
             // the default behavior for images is different:
             // If the mod does not have an image, it will show a placeholder. 
@@ -129,7 +129,7 @@ namespace Imya.UI.Components
 
             try
             {
-                Clipboard.SetText(Mod.ModID);
+                Clipboard.SetText(Mod.Modinfo.ModID);
             }
             catch (Exception)
             {

@@ -25,7 +25,7 @@ namespace Imya.UI.Components
         public Mod? CurrentlySelectedMod { get; private set; } = null;
         public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
 
-        public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
+        public ModCollection ModManager { get; private set; } = ModCollection.Global;
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
@@ -50,21 +50,17 @@ namespace Imya.UI.Components
             ModList_SelectionChanged(CurrentlySelectedMod);
         }
 
-        public void ActivateSelection()
+        public async void ActivateSelection()
         {
             foreach (Mod m in ListBox_ModList.SelectedItems)
-            {
-                ModManager.Activate(m);
-            }
+                await m.ChangeActivationAsync(true);
             OnSelectionChanged(); 
         }
 
-        public void DeactivateSelection()
+        public async void DeactivateSelection()
         {
             foreach (Mod m in ListBox_ModList.SelectedItems)
-            {
-                ModManager.Deactivate(m);
-            }
+                await m.ChangeActivationAsync(false);
             OnSelectionChanged();
         }
 
@@ -81,17 +77,17 @@ namespace Imya.UI.Components
         private void OnSearchRequest(object sender, TextChangedEventArgs e)
         {
             string filterText = SearchTextBox.Text;
-            ModDirectoryManager.Instance.FilterMods(x => x.HasKeywords(filterText));
+            ModCollection.Global?.FilterMods(x => x.HasKeywords(filterText));
         }
 
         public bool AnyActiveSelected()
         {
-            return CurrentlySelectedMods.Any(x => x.Active);
+            return CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
         }
 
         public bool AnyInactiveSelected()
         {
-            return CurrentlySelectedMods.Any(x => !x.Active);
+            return CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
         }
 
         public event ModListSelectionChangedHandler ModList_SelectionChanged = delegate { };
