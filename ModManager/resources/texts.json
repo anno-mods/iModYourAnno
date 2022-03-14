@@ -571,6 +571,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_THEME": {
+    "Chinese": null,
+    "English": "Appearance",
+    "French": null,
+    "German": "Aussehen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "MODINFO_NEW": {
     "Chinese": null,
     "English": "New ",
@@ -615,6 +628,32 @@
     "English": "No tweakable files found.",
     "French": null,
     "German": "Keine veränderbaren Dateien gefunden.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "THEME_CYAN": {
+    "Chinese": null,
+    "English": "Dark/Cyan",
+    "French": null,
+    "German": "Dunkel/Cyan",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "THEME_GREEN": {
+    "Chinese": null,
+    "English": "Dark/Green",
+    "French": null,
+    "German": "Dunkel/Grün",
     "Italian": null,
     "Japanese": null,
     "Korean": null,

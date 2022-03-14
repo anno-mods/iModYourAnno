@@ -21,21 +21,73 @@ using System.IO;
 
 namespace Imya.UI.Views
 {
+    public struct ThemeSetting
+    {
+        public IText ThemeName { get; private set; }
+        public Uri ThemePath { get; private set; }
+
+        public String ThemeID { get; private set; }
+
+        public Brush ThemePrimaryColorBrush { get; private set; }
+
+        public Brush ThemePrimaryColorDarkBrush
+        {
+            get => new SolidColorBrush(Color.Multiply(_ThemePrimaryColor, 0.5f));
+        }
+
+        private Color _ThemePrimaryColor;
+
+        public ThemeSetting(IText name, String path, String id, Color c)
+        {
+            ThemeName = name;
+            ThemePath = new Uri(path, UriKind.RelativeOrAbsolute);
+            ThemeID = id;
+
+            _ThemePrimaryColor = c;
+            ThemePrimaryColorBrush = new SolidColorBrush(_ThemePrimaryColor);
+        }
+    }
+
+    public struct LanguageSetting
+    {
+        public IText LanguageName { get; private set; }
+        public ApplicationLanguage Language { get; private set; }
+
+        public LanguageSetting(IText name, ApplicationLanguage lang)
+        {
+            LanguageName = name;
+            Language = lang;
+        }
+    }
+
     /// <summary>
     /// Interaktionslogik für SettingsView.xaml
     /// </summary>
     public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
-
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+
+        //painfully horrible tbh, this lookup should get better.
+        private ResourceDictionary ThemeDictionary = Application.Current.Resources.MergedDictionaries[0];
+
+        public List<ThemeSetting> Themes { get;  } = new List<ThemeSetting>();
+        public List<LanguageSetting> Languages { get; } = new List<LanguageSetting>();
 
         public SettingsView()
         {
             InitializeComponent();
-            DataContext = this;
 
-            LanguageSelection.SelectedItem = TextManager.Instance.Languages.First(x => x.Language == TextManager.Instance.ApplicationLanguage);
+            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
+            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
+
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
+
+            LanguageSelection.SelectedItem = Languages.First(x => x.Language.ToString().Equals(Properties.Settings.Default.Language));
+            ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));
+
+            DataContext = this;
         }
 
         public bool DevMode
@@ -74,11 +126,18 @@ namespace Imya.UI.Views
         public void RequestLanguageChange(object sender, RoutedEventArgs e)
         {
             var box = sender as ComboBox;
-            if (box?.SelectedItem is not TextLanguagePair pair) return;
+            if (box?.SelectedItem is not LanguageSetting pair) return;
 
-            TextManager.Instance.ChangeLanguage(pair.Language);
-            Properties.Settings.Default.Language = pair.Language.ToString();
-            Properties.Settings.Default.Save();
+            ChangeLanguage(pair);
+        }
+
+        public void RequestThemeChange(object sender, RoutedEventArgs e)
+        {
+            var box = sender as ComboBox;
+            if (box?.SelectedItem is not ThemeSetting pair) return;
+
+            ChangeColorTheme(pair);
+            
         }
 
         public void GameRootPath_ButtonClick(object sender, RoutedEventArgs e)
@@ -107,6 +166,26 @@ namespace Imya.UI.Views
 
             GameSetupManager.SetModDirectoryName(NewName);
             Properties.Settings.Default.ModDirectoryName = NewName;
+            Properties.Settings.Default.Save();
+        }
+
+        private void ChangeLanguage(LanguageSetting lang)
+        {
+            TextManager.Instance.ChangeLanguage(lang.Language);
+            Properties.Settings.Default.Language = lang.Language.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void ChangeColorTheme(ThemeSetting theme)
+        {
+            ResourceDictionary NewTheme = new ResourceDictionary() { Source = theme.ThemePath };
+
+            foreach (var key in NewTheme.Keys)
+            {
+                ThemeDictionary[key] = NewTheme[key];
+            }
+
+            Properties.Settings.Default.Theme = theme.ThemeID;
             Properties.Settings.Default.Save();
         }
 
