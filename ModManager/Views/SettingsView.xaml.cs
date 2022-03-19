@@ -5,8 +5,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Imya.Utils;
 using Imya.Models;
+using Imya.UI.Views.Components;
 
 namespace Imya.UI.Views
 {
@@ -52,22 +54,15 @@ namespace Imya.UI.Views
     /// <summary>
     /// Mod loader installation, game path, etc.
     /// </summary>
-    public partial class SettingsView : UserControl, INotifyPropertyChanged
-    {
-        public TextManager TextManager { get; } = TextManager.Instance;
+    public partial class SettingsView : BaseControl
+    {   
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
         #region Notifiable Properties
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new(propertyName));
         public ModLoaderStatus InstallStatus
         {
             get => _installStatus;
-            private set
-            {
-                _installStatus = value;
-                OnPropertyChanged(nameof(InstallStatus));
-            }
+            private set => SetProperty(ref _installStatus, value);
         }
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
         #endregion
@@ -82,8 +77,9 @@ namespace Imya.UI.Views
         {
             InitializeComponent();
 
-            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
-            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
+            var textManager = TextManager.Instance;
+            Themes.Add(new ThemeSetting(textManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
+            Themes.Add(new ThemeSetting(textManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
 
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
@@ -92,7 +88,7 @@ namespace Imya.UI.Views
             ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));
 
             DataContext = this;
-            TextManager.LanguageChanged += OnLanguageChanged;
+            textManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.ModLoader.IsInstalled)
             {
@@ -104,35 +100,27 @@ namespace Imya.UI.Views
 
         public bool DevMode
         {
-            get { return Properties.Settings.Default.DevMode; }
-            set
-            {
-                Properties.Settings.Default.DevMode = value;
-                Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(DevMode));
-            }
+            get => Properties.Settings.Default.DevMode;
+            set => SetSetting(value);
         }
 
         public bool ModCreatorMode
-        { 
-            get { return Properties.Settings.Default.ModCreatorMode; }
-            set
-            {
-                Properties.Settings.Default.ModCreatorMode = value;
-                Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(ModCreatorMode));    
-            }
+        {
+            get => Properties.Settings.Default.ModCreatorMode;
+            set => SetSetting(value);
         }
 
-        public bool ShowConsole
+        public bool ConsoleVisibility
         {
-            get { return Properties.Settings.Default.ConsoleVisibility; }
-            set
-            {
-                Properties.Settings.Default.ConsoleVisibility = value;
-                Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(ShowConsole));
-            }
+            get => Properties.Settings.Default.ConsoleVisibility;
+            set => SetSetting(value);
+        }
+
+        private void SetSetting<T>(T value, [CallerMemberName] string propertyName = "")
+        {
+            typeof(Properties.Settings).GetProperty(propertyName)?.SetValue(Properties.Settings.Default, value);
+            Properties.Settings.Default.Save();
+            OnPropertyChanged(propertyName);
         }
 
         public void RequestLanguageChange(object sender, RoutedEventArgs e)
