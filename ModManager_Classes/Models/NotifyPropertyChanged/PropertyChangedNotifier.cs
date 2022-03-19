@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Imya.Models.NotifyPropertyChanged
 {
     public abstract class PropertyChangedNotifier : INotifyPropertyChanged
     {
-        #region INotifyPropertyChangedMembers
-
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        public void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            property = value;
+            OnPropertyChanged(propertyName);
         }
-        #endregion
     }
 }

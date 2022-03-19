@@ -7,6 +7,16 @@ using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Models
 {
+    // TODO obsolete may be a different kind of state more similar to other compatibility issues.
+    //      Obsolete may also be detected on startup, not only after zip installation.
+    public enum ModStatus
+    {
+        Default,
+        New,
+        Updated,
+        Obsolete
+    }
+
     public class Mod : PropertyChangedNotifier
     {
         #region ModLoader info
@@ -73,13 +83,16 @@ namespace Imya.Models
         public bool IsSelected
         {
             get => _isSelected;
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged(nameof(IsSelected));
-            }
+            set => SetProperty(ref _isSelected, value);
         }
         private bool _isSelected;
+
+        public ModStatus Status
+        { 
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
+        private ModStatus _status = ModStatus.Default;
         #endregion
 
         public static Mod? TryFromFolder(string modFolderPath)
@@ -194,8 +207,8 @@ namespace Imya.Models
         /// </summary>
         public async Task MakeObsoleteAsync(string path)
         {
-            // TODO obsolete flag
             await ChangeActivationAsync(false);
+            Status = ModStatus.Obsolete;
         }
         #endregion
 

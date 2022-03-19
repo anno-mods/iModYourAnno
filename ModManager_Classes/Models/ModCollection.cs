@@ -67,7 +67,7 @@ namespace Imya.Models
         #endregion
 
         public string ModsPath { get; private set; }
-        public Mod[] Mods { get; private set; } = Array.Empty<Mod>();
+        public List<Mod> Mods { get; private set; } = new();
 
         public struct Options
         {
@@ -96,13 +96,16 @@ namespace Imya.Models
         /// </summary>
         public async Task LoadModsAsync()
         {
-            await Task.Run(() =>
-            {
-                Mods = Directory.EnumerateDirectories(ModsPath)
-                    .Where(x => !Path.GetFileName(x).StartsWith("."))
-                    .SelectNoNull(x => Mod.TryFromFolder(x))
-                    .ToArray();
-            });
+            Mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
+                .Where(x => !Path.GetFileName(x).StartsWith(".")));
+
+            // TODO option without UI related stuff? having UI classes on top of the model seems better
+            DisplayedMods = new ObservableCollection<Mod>(Mods);
+        }
+
+        private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
+        {
+            var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
             if (_options.Normalize)
             {
                 foreach (var mod in Mods)
@@ -118,9 +121,7 @@ namespace Imya.Models
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
             }
-
-            // TODO option without UI related stuff? having UI classes on top of the model seems better
-            DisplayedMods = new ObservableCollection<Mod>(Mods);
+            return mods;
         }
 
         #region MemberFunctions
@@ -145,12 +146,12 @@ namespace Imya.Models
         private void UpdateModCounts()
         {
             var newActive = Mods.Count(x => x.IsActive);
-            var newInactive = Mods.Length - newActive;
+            var newInactive = Mods.Count - newActive;
             if (newActive != ActiveMods || newInactive != InactiveMods)
             {
                 ActiveMods = newActive;
                 InactiveMods = newInactive;
-                Console.WriteLine($"Found: {Mods.Length}, Active: {ActiveMods}, Inactive: {InactiveMods}");
+                Console.WriteLine($"Found: {Mods.Count}, Active: {ActiveMods}, Inactive: {InactiveMods}");
             }
         }
 
@@ -162,12 +163,15 @@ namespace Imya.Models
         /// </summary>
         public async Task AddAsync(ModCollection source)
         {
+            // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
+
             // TODO issue handling
             // TODO mods without modid / modinfo.json
             foreach (var sourceMod in source.Mods)
             {
                 var targetMod = FirstByFolderName(sourceMod.FolderName);
-                var targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? sourceMod.FullFolderName);
+                string targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? sourceMod.FullFolderName);
+                sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
                 DirectoryEx.CleanMove(Path.Combine(source.ModsPath, sourceMod.FullFolderName), targetModPath);
 
                 // mark all duplicate id mods as obsolete
@@ -176,10 +180,22 @@ namespace Imya.Models
                     var sameModIDs = WhereByModID(sourceMod.Modinfo.ModID).Where(x => x != targetMod);
                     foreach (var mod in sameModIDs)
                         await mod.MakeObsoleteAsync(ModsPath);
+                    // mark mod as updated, since there was the same modid already there
+                    if (sameModIDs.Any())
+                        sourceMod.Status = ModStatus.Updated;
                 }
+
+                // only remove in case of same folder
+                if (targetMod is not null)
+                    Mods.Remove(targetMod);
+
+                var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
+                reparsed.Status = sourceMod.Status;
+                Mods.Add(reparsed);
             }
             // TODO individual load is faster, but optimization can be done later
-            await LoadModsAsync();
+            // await LoadModsAsync();
+            DisplayedMods = new ObservableCollection<Mod>(Mods);
         }
 
         private Mod? FirstByFolderName(string folderName, bool ignoreActivation = true)
