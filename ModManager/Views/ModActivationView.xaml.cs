@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.UI.Popup;
 using Imya.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -59,6 +60,20 @@ namespace Imya.UI.Views
         private void OnDelete(object sender, RoutedEventArgs e)
         {
             ModList.DeleteSelection();
+        }
+
+        private async void LoadProfileClick(object sender, RoutedEventArgs e)
+        {
+            if (Mods is null) return;
+
+            var Dialog = new ProfilesLoadPopup();
+
+            Dialog.ShowDialog();
+
+            if (Dialog.DialogResult is true)
+            {
+                await Mods.LoadProfileAsync(Dialog.SelectedProfile);
+            }
         }
 
         private void UpdateButtons(Mod? m)

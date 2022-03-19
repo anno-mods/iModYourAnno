@@ -272,11 +272,24 @@ namespace Imya.Models
             return Mods.Where(x => x.Modinfo.ModID == modID);
         }
 
-        public void LoadProfile(ModActivationProfile profile)
+        public async Task LoadProfileAsync(ModActivationProfile profile)
         {
-            FilterMods(x => profile.ContainsID(x.FolderName));
+            await DeactivateAllAsync();
+            
+            foreach (String ModDirectoryName in profile)
+            {
+                Mod? mod = Mods.FirstOrDefault(x => x.FolderName.Equals(ModDirectoryName));
+
+                if (mod is not null)
+                    await mod.ChangeActivationAsync(true);
+            }
         }
 
+        public async Task DeactivateAllAsync()
+        {
+            foreach (Mod mod in Mods)
+                await mod.ChangeActivationAsync(false);
+        }
         #endregion
 
         #region ModListFilter

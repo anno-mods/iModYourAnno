@@ -112,7 +112,8 @@
                 <Button x:Name="LoadProfileButton"
                         Style="{StaticResource IMYA_BUTTON}"
                         MinWidth="150"
-                        MinHeight="32">
+                        MinHeight="32"
+                        Click="LoadProfileClick">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
@@ -130,7 +131,8 @@
                 <Button x:Name="SaveProfileButton"
                         Style="{StaticResource IMYA_BUTTON}"
                         MinWidth="150"
-                        MinHeight="32">
+                        MinHeight="32"
+                        >
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">

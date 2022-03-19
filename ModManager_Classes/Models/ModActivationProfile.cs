@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,36 +7,58 @@ using System.Threading.Tasks;
 
 namespace Imya.Models
 {
-    public class ModActivationProfile
+    public class ModActivationProfile : IEnumerable<String>
     {
-        private IEnumerable<String> ModIDs;
+        private List<String> DirectoryNames;
+
+        public String Title { get; set; } = "DummyTitle";
 
         public ModActivationProfile()
         {
-
+            DirectoryNames = new List<String>();
         }
 
-        public bool ContainsID(String id)
+        public void LoadFromFile(String Filename)
         {
-            return ModIDs.Any( x => x.Equals(id));
+            try
+            {
+                FileStream fs = File.OpenRead(Filename);
+                LoadFromStream(fs);
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"Could not access File: {Filename}");
+            }
         }
 
         public void LoadFromStream(Stream s)
         {
-            ModIDs = ParseStream(s);
-        }
-
-        private IEnumerable<String> ParseStream(Stream s)
-        {
-            s.Position = 0;
             using (StreamReader reader = new StreamReader(s))
             {
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
-                    if(line is String) yield return line;
+
+                    //validation prettyplease?
+
+                    if(line is String) DirectoryNames.Add(line);
                 }
             }
+        }
+
+        public bool IsEmpty()
+        {
+            return !DirectoryNames.Any();
+        }
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            return DirectoryNames.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return DirectoryNames.GetEnumerator();
         }
     }
 }
