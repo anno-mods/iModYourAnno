@@ -19,10 +19,9 @@ namespace Imya.UI
             TextManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
             GameSetupManager GameSetupManager = new GameSetupManager(); 
+            GameSetupManager.SetDownloadDirectory(Settings.Default.DownloadDir);
             GameSetupManager.SetGamePath(Settings.Default.GameRootPath, true);
             GameSetupManager.SetModDirectoryName(Settings.Default.ModDirectoryName);
-
-            InstallationManager InstallationManager = new InstallationManager(Settings.Default.DownloadDir);
 
             //Setup Managers
             ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();

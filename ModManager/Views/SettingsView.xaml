@@ -2,8 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Imya.UI.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -23,6 +22,38 @@
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
             <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                            Text="{Binding TextManager[SETTINGS_MODLOADER].Text}"
+                            VerticalAlignment="Center"
+                            Margin="5">
+                        </TextBlock>
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                Text="{Binding InstallStatus.Localized.Text}"
+                                VerticalAlignment="Center"
+                                Margin="5">
+                            </TextBlock>
+                            <Button Grid.Column="1"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                HorizontalContentAlignment="Center"
+                                Content="{Binding TextManager[SETTINGS_INSTALL_MODLOADER].Text}"
+                                Foreground="{DynamicResource TextColorBrush}"
+                                Click="OnInstallModLoader"
+                                MinHeight="30"
+                                x:Name="ModloaderDownloadButton">
+                            </Button>
+                        </Grid>
+                    </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -107,7 +138,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                                      Background="{DynamicResource InteractiveComponentColorBrush}"
-                                     Text="{Binding GameSetupManager.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Text="{Binding GameSetup.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                      Margin="0,0,10,0"
                                      IsReadOnly="True" />
                             <Button Grid.Column="1"
@@ -192,7 +223,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                                      Background="{DynamicResource InteractiveComponentColorBrush}"
-                                     Text="{Binding GameSetupManager.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Text="{Binding GameSetup.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                      Margin="0,0,10,0"
                                      IsReadOnly="False"
                                      x:Name="ModDirectoryNameBox" />

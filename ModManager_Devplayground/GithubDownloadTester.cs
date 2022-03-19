@@ -17,7 +17,7 @@ internal class GithubDevTester
 
     internal static void DownloadModloader2()
     {
-        InstallationManager installation = new InstallationManager("imya_temp");
-        installation.InstallModLoaderAsync();
+        ModLoaderInstaller installation = new ModLoaderInstaller("", "imya_temp");
+        installation.InstallAsync();
     }
 }

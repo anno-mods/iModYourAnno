@@ -16,9 +16,7 @@ namespace Imya.Utils
         private readonly Dictionary<string, IText> KeyedTexts = new();
         private readonly List<IText> UnkeyedTexts = new();
 
-        [Obsolete]
         public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
-        [Obsolete]
         public event LanguageChangedEventHandler LanguageChanged = delegate { };
 
         public IText this[String Key]
@@ -69,6 +67,8 @@ namespace Imya.Utils
             ApplicationLanguage = lang;
 
             UpdateTexts();
+            // notify all who may not have the possibility to rely on PropertyChanged
+            LanguageChanged.Invoke(lang);
         }
 
         public void UpdateTexts()

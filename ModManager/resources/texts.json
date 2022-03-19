@@ -674,5 +674,70 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "SETTINGS_MODLOADER": {
+    "Chinese": null,
+    "English": "Mod Loader: ",
+    "French": null,
+    "German": "Mod Loader: ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_INSTALL_MODLOADER": {
+    "Chinese": null,
+    "English": "Install",
+    "French": null,
+    "German": "Installieren",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLOADER_NOT_INSTALLED": {
+    "Chinese": null,
+    "English": "not installed",
+    "French": null,
+    "German": "nicht installiert",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLOADER_INSTALLED": {
+    "Chinese": null,
+    "English": "installed",
+    "French": null,
+    "German": "installiert",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLOADER_INSTALLING": {
+    "Chinese": null,
+    "English": "installing...",
+    "French": null,
+    "German": "installiere...",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

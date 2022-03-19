@@ -18,6 +18,8 @@ namespace Imya.Utils
 
         public static GameSetupManager Instance { get; private set; }
 
+        public ModLoaderInstaller ModLoader { get; private set; }
+
         //event for Game Root Path
         public delegate void GameRootPathChangedEventHandler(String newPath);
         public event GameRootPathChangedEventHandler GameRootPathChanged = delegate { };
@@ -78,6 +80,14 @@ namespace Imya.Utils
 
         #region REGISTERING_API
 
+        /// <summary>
+        /// Set download directory. Relative to executable.
+        /// </summary>
+        public void SetDownloadDirectory(string downloadDirectory)
+        {
+            ModLoader = new (GameRootPath, downloadDirectory);
+        }
+
         public void SetGamePath(String gamePath, bool autoSearchIfInvalid = false)
         {
             String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
@@ -105,6 +115,8 @@ namespace Imya.Utils
             }
             
             GameRootPathChanged(gamePath);
+            if (ModLoader != null)
+                ModLoader = new(GameRootPath, ModLoader.DownloadDirectory);
             CreateWatchers();
         }
 
