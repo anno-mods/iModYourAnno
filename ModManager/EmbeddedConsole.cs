@@ -21,25 +21,35 @@ namespace Imya.UI
             Parent = m; 
         }
 
-        public override void Write(char c)
+        private void WriteTimestamp()
         {
             TargetTextBox.Dispatcher.BeginInvoke(() =>
-                TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}] [LOG]: " + c
+                TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}]: "
+            );
+        }
+
+        public override void Write(char c)
+        {
+            WriteTimestamp();
+            TargetTextBox.Dispatcher.BeginInvoke(() =>
+                TargetTextBox.Text += c
             );
         }
 
         public override void Write(String? s)
         {
+            WriteTimestamp();
             TargetTextBox.Dispatcher.BeginInvoke(() =>
-                TargetTextBox.Text += $"[LOG | { DateTime.Now.ToString("dd.MM.yy | hh:mm:ss")}]: " + s
+                TargetTextBox.Text += s
             );
         }
 
         public override void WriteLine(String? s)
         {
+            WriteTimestamp();
             TargetTextBox.Dispatcher.BeginInvoke(() =>
                 {
-                    Write(s);
+                    TargetTextBox.Text += s;
                     TargetTextBox.Text += Environment.NewLine;
                 }
             );
