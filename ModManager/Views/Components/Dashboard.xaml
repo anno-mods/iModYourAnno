@@ -77,7 +77,7 @@
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
             </RadioButton>
-            <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
+            <!--<RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
                          Margin="5,4,4,0"
@@ -94,7 +94,7 @@
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
                 </StackPanel>
-            </RadioButton>
+            </RadioButton>-->
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
