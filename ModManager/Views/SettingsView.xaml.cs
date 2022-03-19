@@ -39,12 +39,14 @@ namespace Imya.UI.Views
 
     public struct LanguageSetting
     {
-        public IText LanguageName { get; private set; }
-        public ApplicationLanguage Language { get; private set; }
+        public string LanguageName { get; private init; }
+        public ApplicationLanguage Language { get; private init; }
 
-        public LanguageSetting(IText name, ApplicationLanguage lang)
+        public LanguageSetting(string nameId, ApplicationLanguage lang)
         {
-            LanguageName = name;
+            var localizedName = TextManager.Instance[nameId];
+            localizedName.Update(lang); // this will globally update them, but it doesn't matter in this specific case
+            LanguageName = localizedName.Text;
             Language = lang;
         }
     }
@@ -85,8 +87,8 @@ namespace Imya.UI.Views
             Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
             Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
 
-            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
-            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
+            Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
+            Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));
 
             LanguageSelection.SelectedItem = Languages.First(x => x.Language.ToString().Equals(Properties.Settings.Default.Language));
             ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));

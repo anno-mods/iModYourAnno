@@ -75,7 +75,7 @@
                                   MinHeight="30">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding LanguageName.Text}"
+                                    <TextBlock Text="{Binding LanguageName}"
                                                Style="{StaticResource IMYA_TEXT}"></TextBlock>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
