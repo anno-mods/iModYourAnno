@@ -20,5 +20,5 @@
     <SolidColorBrush x:Key="TextColorBrush">LightGray</SolidColorBrush>
 
     <SolidColorBrush x:Key="ModActiveColorBrush">LightGray</SolidColorBrush>
-    <SolidColorBrush x:Key="ModInactiveColorBrush">Red</SolidColorBrush>
+    <SolidColorBrush x:Key="ModInactiveColorBrush">Gray</SolidColorBrush>
 </ResourceDictionary>
