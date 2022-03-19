@@ -94,14 +94,6 @@ namespace Imya.UI.Views
             ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));
 
             DataContext = this;
-            TextManager.LanguageChanged += OnLanguageChanged;
-
-            if (GameSetup.ModLoader.IsInstalled)
-            {
-                InstallStatus = ModLoaderStatus.Installed;
-                // TODO async update check
-                // InstallStatusText = "checking...";
-            }
         }
 
         public bool DevMode
@@ -154,19 +146,6 @@ namespace Imya.UI.Views
             
         }
 
-        public void GameRootPath_ButtonClick(object sender, RoutedEventArgs e)
-        {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                GameSetup.SetGamePath(dialog.SelectedPath);
-                // TODO validity feedback?
-                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         //Apply new Mod Directory Name
         public void GameModDirectory_ButtonClick(object sender, RoutedEventArgs e)
         {
@@ -202,44 +181,5 @@ namespace Imya.UI.Views
             Properties.Settings.Default.Theme = theme.ThemeID;
             Properties.Settings.Default.Save();
         }
-        
-        public async void OnInstallModLoader(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("Installing Modloader");
-            ModloaderDownloadButton.IsEnabled = false;
-            InstallStatus = ModLoaderStatus.Installing;
-
-            await GameSetup.ModLoader.InstallAsync();
-
-            ModloaderDownloadButton.IsEnabled = true;
-            if (GameSetup.ModLoader.IsInstalled)
-                InstallStatus = ModLoaderStatus.Installed;
-        }
-
-        private void OnLanguageChanged(ApplicationLanguage language)
-        {
-            // trigger property changes to update text
-            OnPropertyChanged(nameof(InstallStatus));
-        }
-    }
-
-    /// <summary>
-    /// Enum with overwritten ToString to provide localized text.
-    /// </summary>
-    public class ModLoaderStatus
-    {
-        public static readonly ModLoaderStatus NotInstalled = new("MODLOADER_NOT_INSTALLED");
-        public static readonly ModLoaderStatus Checking = new("MODLOADER_CHECKING");
-        public static readonly ModLoaderStatus Installing = new("MODLOADER_INSTALLING");
-        public static readonly ModLoaderStatus UpdateAvailable = new("MODLOADER_UPDATE_AVAILABLE");
-        public static readonly ModLoaderStatus Installed = new("MODLOADER_INSTALLED");
-
-        private readonly string _value;
-        private ModLoaderStatus(string value)
-        {
-            _value = value;
-        }
-
-        public IText Localized => TextManager.Instance[_value];
     }
 }
