@@ -82,7 +82,7 @@
                                      Grid.Column="1"
                                      Kind="Search"
                                      Style="{StaticResource IMYA_ICON}"
-                                     Foreground="White"
+                                     Foreground="{DynamicResource TextColorBrush}"
                                      Margin="0,0,5,0">
             </materialDesign:PackIcon>
         </Grid>
