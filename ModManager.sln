@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModManager_Views", "ModMana
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModManager_Classes", "ModManager_Classes\ModManager_Classes.csproj", "{1766FE54-A5FB-48D0-AFC3-608A9182965E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModManager_Devplayground", "ModManager_Devplayground\ModManager_Devplayground.csproj", "{64ACF7A5-C0DB-4F65-9AF3-F5F549FE3D38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModManager_Devplayground", "ModManager_Devplayground\ModManager_Devplayground.csproj", "{64ACF7A5-C0DB-4F65-9AF3-F5F549FE3D38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imya.UnitTests", "tests\Imya.UnitTests\Imya.UnitTests.csproj", "{24688521-C739-4686-8CB4-C2A73BBC44D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D81E8D5C-4D02-40BF-BA28-CB589896A0C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +30,16 @@ Global
 		{64ACF7A5-C0DB-4F65-9AF3-F5F549FE3D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64ACF7A5-C0DB-4F65-9AF3-F5F549FE3D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64ACF7A5-C0DB-4F65-9AF3-F5F549FE3D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24688521-C739-4686-8CB4-C2A73BBC44D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24688521-C739-4686-8CB4-C2A73BBC44D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24688521-C739-4686-8CB4-C2A73BBC44D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24688521-C739-4686-8CB4-C2A73BBC44D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{24688521-C739-4686-8CB4-C2A73BBC44D6} = {D81E8D5C-4D02-40BF-BA28-CB589896A0C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BADD8212-DDDB-4AFC-84EB-80610D21B4DC}
