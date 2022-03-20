@@ -4,6 +4,7 @@ using Imya.Models;
 using Imya.UI.Properties;
 using Imya.Enums;
 using Imya.UI.Utils;
+using System.Threading.Tasks;
 
 namespace Imya.UI
 {
@@ -13,20 +14,25 @@ namespace Imya.UI
     public partial class App : Application
     {
        public App()
-        {
-            //Load Texts asap.
-            TextManager TextManager = new TextManager();
-            TextManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
+       {
+            // load localized text first
+            var text = new TextManager();
+            text.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
-            GameSetupManager GameSetupManager = new GameSetupManager(); 
-            GameSetupManager.SetDownloadDirectory(Settings.Default.DownloadDir);
-            GameSetupManager.SetGamePath(Settings.Default.GameRootPath, true);
-            GameSetupManager.SetModDirectoryName(Settings.Default.ModDirectoryName);
+            var gameSetup = new GameSetupManager();
+            gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
+            gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
+            gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
-            //Setup Managers
-            ModDirectoryManager ModDirectoryManager = new ModDirectoryManager();
+            // init global mods
+            ModCollection.Global = new ModCollection(GameSetupManager.Instance.GetModDirectory(), new ModCollection.Options()
+            {
+                Normalize = true,
+                LoadImages = true
+            });
+            Task.Run(() => ModCollection.Global.LoadModsAsync());
 
-            ModinfoCreationManager modInfoCreationManager = new ModinfoCreationManager();
+            _ = new ModinfoCreationManager();
         }
     }
 }

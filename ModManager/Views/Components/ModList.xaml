@@ -17,6 +17,8 @@
         <Grid.Resources>
             <converters:IconConverter x:Key="ModIconConverter" />
             <converters:IconColorConverter x:Key="ModIconColorConverter" />
+            <local:ModStatusAsIcon x:Key="ModStatusAsIcon" />
+            <local:ModStatusAsColor x:Key="ModStatusAsColor" />
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </Grid.Resources>
         <Grid>
@@ -94,24 +96,36 @@
                  Style="{StaticResource IMYA_LISTBOX}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="5,3,0,3">
-                        <materialDesign:PackIcon Margin="0,0,5,0"
-                                                 Kind="{Binding Active, Converter={StaticResource ModIconConverter}}"
-                                                 Foreground="{Binding Active, Converter={StaticResource ModIconColorConverter}}" />
-                        <TextBlock Text="{Binding Category.Text}"
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="5,3,0,3">
+                            <materialDesign:PackIcon Margin="0,0,5,0"
+                                                 Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
+                                                 Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}}" />
+                            <TextBlock Text="{Binding Category.Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Margin="0,0,5,0"
                                    FontWeight="ExtraBold" />
-                        <TextBlock Text="{Binding Name.Text}"
+                            <TextBlock Text="{Binding Name.Text}"
                                    Style="{StaticResource IMYA_TEXT}" />
-                    </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
+                                    Margin="5,3,0,3">
+                            <materialDesign:PackIcon Margin="5,0,5,0"
+                                                     Kind="{Binding Status, Converter={StaticResource ModStatusAsIcon}}"
+                                                     Foreground="{Binding Status, Converter={StaticResource ModStatusAsColor}}" />
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource IMYA_LISTBOXITEM}">
                     <Setter Property="IsSelected"
-                            Value="{Binding Selected}" />
+                            Value="{Binding IsSelected}" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

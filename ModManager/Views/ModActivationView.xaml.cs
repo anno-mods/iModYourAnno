@@ -25,7 +25,7 @@ namespace Imya.UI.Views
     {
         public TextManager TextManager { get; } = TextManager.Instance;
 
-        public ModDirectoryManager ModManager { get; private set; } = ModDirectoryManager.Instance;
+        public ModCollection ModManager { get; private set; } = ModCollection.Global;
 
         public bool ShowActivateButton
         {

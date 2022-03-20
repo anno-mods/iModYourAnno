@@ -27,7 +27,7 @@ namespace Imya.UI
         private static GameSetupView GameSetupView = new GameSetupView();
         private static ModinfoCreatorView ModinfoCreatorView = new ModinfoCreatorView();
 
-        private static UserControl DummyControl = new DummyControl();
+        private static UserControl DummyControl = new InstallationView();
 
         public static MainViewController Instance { get; private set; }
 

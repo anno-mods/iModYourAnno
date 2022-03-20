@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Imya.Models;
+using Imya.Models.ModMetadata;
 
 namespace Imya.Utils
 {
@@ -20,19 +21,19 @@ namespace Imya.Utils
 
     public class ModCompabilityChecker
     {
-        private IEnumerable<Mod> mods;
+        private readonly IEnumerable<Mod> mods;
 
         public ModCompabilityChecker()
         {
-            mods = ModDirectoryManager.Instance.GetMods();
+            mods = ModCollection.Global?.Mods ?? new();
         }
 
         public IEnumerable<ModCompabilityResult> RunCompabilityCheck()
         {
             foreach (var mod in mods)
             {
-                var _unresolvedDependencies = GetUnresolvedDependencies(mod);
-                var _incompatibleMods = GetIncompatibleModIds(mod);
+                var _unresolvedDependencies = GetUnresolvedDependencies(mod.Modinfo);
+                var _incompatibleMods = GetIncompatibleModIds(mod.Modinfo);
 
                 bool hasUnr = _unresolvedDependencies.Count() > 0;
                 bool hasInc = _incompatibleMods.Count() > 0;
@@ -49,33 +50,26 @@ namespace Imya.Utils
             }
         }
 
-        public IEnumerable<String> GetUnresolvedDependencies(Mod mod)
+        public IEnumerable<String> GetUnresolvedDependencies(Modinfo modinfo)
         {
-            if (mod.ModDependencies is not null)
+            if (modinfo.ModDependencies is null) yield break;
+
+            foreach (var dep in modinfo.ModDependencies)
             {
-                foreach (var dep in mod.ModDependencies)
-                {
-                    if (!mods.Any(x => x.HasModID && x.ModID.Equals(dep)))
-                    {
-                        yield return dep;
-                    }
-                }
+                if (!mods.Any(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(dep)))
+                    yield return dep;
             }
         }
 
-        public IEnumerable<Mod> GetIncompatibleModIds(Mod mod)
+        public IEnumerable<Mod> GetIncompatibleModIds(Modinfo modinfo)
         {
-            if (mod.IncompatibleModIDs is not null && mod.HasModID )
+            if (modinfo.IncompatibleIds is null || modinfo.ModID is null) yield break;
+            foreach (var inc in modinfo.IncompatibleIds)
             {
-                foreach (var inc in mod.IncompatibleModIDs)
-                {
-                    var Incompatibles = mods.Where(x => x.HasModID && x.ModID.Equals(inc));
+                var Incompatibles = mods.Where(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(inc));
 
-                    foreach (var result in Incompatibles)
-                    {
-                        yield return result;
-                    }
-                }
+                foreach (var result in Incompatibles)
+                    yield return result;
             }
         }
     }

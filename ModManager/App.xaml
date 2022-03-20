@@ -89,11 +89,15 @@
                 <Setter Property="HorizontalAlignment"
                         Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment"
-                        Value="Left" />
+                        Value="Center" />
                 <Setter Property="Margin"
                         Value="2,2,2,2" />
+                <Setter Property="MinHeight"
+                        Value="30" />
                 <Setter Property="Background"
                         Value="{DynamicResource InteractiveComponentColorBrush}" />
+                <Setter Property="Foreground"
+                        Value="{DynamicResource TextColorBrush}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">

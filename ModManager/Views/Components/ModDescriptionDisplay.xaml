@@ -69,7 +69,7 @@
                                    Style="{StaticResource IMYA_TEXT}"
                                    FontWeight="SemiBold" />
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Version, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="{Binding Mod.Modinfo.Version, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                     <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}" />
 
@@ -83,7 +83,7 @@
                                    FontWeight="SemiBold"
                                    VerticalAlignment="Center" />
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.ModID, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding Mod.Modinfo.ModID, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center" Padding="10" />
                         <Button Style="{StaticResource IMYA_BUTTON}"
                                 Click="OnCopyModIDClick" MinHeight="32"
@@ -118,7 +118,7 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    MaxWidth="{Binding DescriptionTextWidth}"
                                    TextWrapping="Wrap"
-                                   Text="{Binding Mod.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
 
                     <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
@@ -130,7 +130,7 @@
                                FontWeight="SemiBold"
                                Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
 
-                    <ItemsControl ItemsSource="{Binding Mod.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
+                    <ItemsControl ItemsSource="{Binding Mod.Modinfo.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
                                   Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -192,7 +192,7 @@
                                    Text="{Binding TextManager[HEADER_CREATOR].Text}"
                                    FontWeight="SemiBold" />
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.CreatorName, UpdateSourceTrigger=PropertyChanged}" />
+                                   Text="{Binding Mod.Modinfo.CreatorName, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </StackPanel>
             </Grid>

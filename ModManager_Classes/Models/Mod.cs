@@ -7,102 +7,131 @@ using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Models
 {
+    // TODO obsolete may be a different kind of state more similar to other compatibility issues.
+    //      Obsolete may also be detected on startup, not only after zip installation.
+    public enum ModStatus
+    {
+        Default,
+        New,
+        Updated,
+        Obsolete
+    }
+
     public class Mod : PropertyChangedNotifier
     {
-        #region fields_backing
-        private string _directory_name;
-        private IText _name;
-        private IText _category;
-        private bool _active;
-        private bool _selected;
-        private IText _description;
+        #region ModLoader info
+        /// <summary>
+        /// Folder name including activation "-".
+        /// </summary>
+        public string FullFolderName => (IsActive ? "" : "-") + FolderName;
+
+        /// <summary>
+        /// Folder name excluding activation "-".
+        /// </summary>
+        public string FolderName { get; private set; }
+
+        /// <summary>
+        /// "-" activation.
+        /// </summary>
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                OnPropertyChanged(nameof(IsActive));
+            }
+
+        }
+        private bool _isActive;
+
+        /// <summary>
+        /// Full path to mod folder.
+        /// </summary>
+        public string FullModPath => Path.Combine(BasePath, FullFolderName);
+        public string BasePath { get; private set; } // TODO use ModDirectory as parent and retrieve it from there as soon as it's not a global manager anymore
         #endregion
 
-        //Mod filepath
-        public string DirectoryName { get; private set; }
-        public IText Name { get; private set; }
-        public IText Category { get; private set; }
-        public string FullModPath => Path.Combine(BasePath, (Active ? "" : "-") + DirectoryName );
-        public string BasePath { get; private set; } // TODO use ModDirectory as parent and retrieve it from there as soon as it's not a global manager anymore
+        #region Mandatory Mod Manager info (with defaults)
+        /// <summary>
+        /// Name without category.
+        /// </summary>
+        public IText Name => Modinfo.ModName;
 
-        public bool Active
-        {
-            get => _active;
-            set
-            {
-                _active = value;
-                OnPropertyChanged("Active");
-            }
+        /// <summary>
+        /// Category with default "NoCategory".
+        /// </summary>
+        public IText Category => Modinfo.Category;
+        #endregion
 
-        }
-        public bool Selected
-        {
-            get => _selected;
-            set
-            {
-                _selected = value;
-                OnPropertyChanged("Selected");
-            }
-        }
-
-        public IText? Description { get; private set; }
-        public IText[]? KnownIssues { get; private set; }
-        public String? Version { get; private set; }
-        public String? CreatorName { get; private set; }
-        public Dlc[]? DlcDependencies { get; private set; }
+        #region Optional Mod Manager info
+        public LocalizedModinfo Modinfo { get; private init; }
         public ImyaImageSource? Image { get; private set; }
-        public String? ModID { get; private set; }
-        public String[]? ModDependencies { get; private set; }
-        public String[]? IncompatibleModIDs { get; private set; }
 
-        public bool HasVersion { get => Version is String; }
-        public bool HasDescription { get => Description is IText; }
-        public bool HasKnownIssues { get => KnownIssues is IText[]; }
-        public bool HasDlcDependencies { get => DlcDependencies is Dlc[]; }
-        public bool HasCreator { get => CreatorName is String; }
-        public bool HasImage { get => Image is ImyaImageSource; }
+        public bool HasVersion { get => Modinfo.Version is not null; }
+        public bool HasDescription { get => Modinfo.Description is not null; }
+        public bool HasKnownIssues { get => Modinfo.KnownIssues is not null; }
+        public bool HasDlcDependencies { get => Modinfo.DLCDependencies is not null; }
+        public bool HasCreator { get => Modinfo.CreatorName is not null; }
+        public bool HasImage { get => Image is not null; }
 
-        public bool HasModID { get => ModID is String; }
+        public bool HasModID { get => Modinfo.ModID is not null; }
+        #endregion
 
-        //store the Modinfo data for whatever we need it later on.
-        //This should be removed, and the mods should hold all this information by themselves.
-
-        //this should only take in the last part (i.e. "[Gameplay] AI Shipyard" of the path.)
-        public Mod (bool active, String modName, Modinfo? metadata, string basePath)
+        #region UI info
+        // TODO selection is UI code. 
+        public bool IsSelected
         {
-            //if we need to trim the start dash, the mod should become inactive.
-            Active = active;
-            DirectoryName = modName;
+            get => _isSelected;
+            set => SetProperty(ref _isSelected, value);
+        }
+        private bool _isSelected;
+
+        public ModStatus Status
+        { 
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
+        private ModStatus _status = ModStatus.Default;
+        #endregion
+
+        public static Mod? TryFromFolder(string modFolderPath)
+        {
+            var basePath = Path.GetDirectoryName(modFolderPath);
+            if (basePath is null || !Directory.Exists(modFolderPath)) return null;
+
+            ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);
+            return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
+        }
+
+        #region loading
+        /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
+        /// <param name="basePath">absolute path without folderName</param>
+        public Mod (string folderName, Modinfo? modinfo, string basePath)
+        {
+            IsActive = !folderName.StartsWith("-");
+            FolderName = IsActive ? folderName : folderName[1..];
             BasePath = basePath;
 
-            //mod with Metadata
-            if (metadata is Modinfo)
+            // create metadata if needed
+            if (modinfo is null)
             {
-                ModID = metadata.ModID;
-                Category = (metadata.Category is Localized) ? TextManager.CreateLocalizedText(metadata.Category) : new SimpleText("NoCategory");
-                Name = (metadata.ModName is Localized) ? TextManager.CreateLocalizedText(metadata.ModName) : new SimpleText(modName);
-                Description = (metadata.Description is Localized) ? TextManager.CreateLocalizedText(metadata.Description) : null;
-                KnownIssues = (metadata.KnownIssues is Localized[]) ? metadata.KnownIssues.Where(x => x is Localized).Select(x => TextManager.CreateLocalizedText(x)).ToArray() : null;
-                Version =  metadata.Version;
-                CreatorName = metadata.CreatorName;
-                DlcDependencies = metadata.DLCDependencies;
-
-                ModDependencies = metadata.ModDependencies;
-                IncompatibleModIDs = metadata.IncompatibleIds;
-
-                //Just construct as base64 for now. 
-                if (metadata.Image is String)
+                bool matches = MatchNameCategory(FolderName, out var _category, out var _name);
+                modinfo = new Modinfo()
                 {
-                    Image = new ImyaImageSource();
-                    Image.ConstructAsBase64Image(metadata.Image);
-                }
+                    ModName = new FakeLocalized(matches ? _name : FolderName),
+                    Category = matches ? new FakeLocalized(_category) : null
+                };
             }
-            //mod without Metadata
-            else
+
+            Modinfo = modinfo.GetLocalized(FolderName);
+
+            // Just construct as base64 for now. 
+            // TODO move to separate async function
+            if (Modinfo.Image is not null)
             {
-                bool matches = TryMatchToNamingPattern(DirectoryName, out var _category, out var _name);
-                Category = matches ? new SimpleText(_category ) : TextManager.Instance.GetText("MODDISPLAY_NO_CATEGORY");
-                Name = new SimpleText(matches ? _name : DirectoryName);
+                Image = new ImyaImageSource();
+                Image.ConstructAsBase64Image(Modinfo.Image);
             }
         }
 
@@ -111,7 +140,79 @@ namespace Imya.Models
             Image = new ImyaImageSource();
             Image.ConstructAsFilepathImage(ImagePath);
         }
+        #endregion
 
+        #region modifying actions
+        /// <summary>
+        /// Remove duplicate "-" from folder name.
+        /// Will overwrite any existing folder.
+        /// Note: Modinfo will not be updated.
+        /// </summary>
+        /// <returns></returns>
+        public async Task NormalizeAsync()
+        {
+            if (!FolderName.StartsWith("-")) return;
+
+            var trimAllDash = FolderName;
+            while (trimAllDash.StartsWith("-"))
+                trimAllDash = trimAllDash[1..];
+
+            await Task.Run(() =>
+            {
+                string sourcePath = Path.Combine(BasePath, FullFolderName);
+                string targetPath = Path.Combine(BasePath, IsActive ? "" : "-" + trimAllDash);
+                try
+                {
+                    DirectoryEx.CleanMove(sourcePath, targetPath);
+                    Console.WriteLine($"Removed duplicate '-' from {FullFolderName}");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to remove duplicate '-' from {FullFolderName}. Cause: {e.Message}");
+                }
+            });
+
+            FolderName = trimAllDash;
+        }
+
+        /// <summary>
+        /// Change activation by renaming the mod folder.
+        /// Note: target folder will be overwritten if both active and inactive states are available.
+        /// </summary>
+        public async Task ChangeActivationAsync(bool active)
+        {
+            if (IsActive == active) return;
+
+            await Task.Run(() =>
+            {
+                string sourcePath = Path.Combine(BasePath, FullFolderName);
+                string targetPath = Path.Combine(BasePath, (active ? "" : "-") + FolderName);
+                try
+                {
+                    DirectoryEx.CleanMove(sourcePath, targetPath);
+                    IsActive = active;
+                    var verb = active ? "Activate" : "Deactivate";
+                    Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
+                }
+                catch (Exception e)
+                {
+                    var verb = active ? "activate" : "deactivate";
+                    Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
+                }
+            });
+        }
+
+        /// <summary>
+        /// Deactivate and give it a special flag as deletion candidate.
+        /// </summary>
+        public async Task MakeObsoleteAsync(string path)
+        {
+            await ChangeActivationAsync(false);
+            Status = ModStatus.Obsolete;
+        }
+        #endregion
+
+        #region readonly actions
         /// <summary>
         /// Check if mod name, category and creator fields contain all keywords.
         /// </summary>
@@ -124,28 +225,29 @@ namespace Imya.Models
         private bool HasKeyword(string keyword)
         {
             var k = keyword.ToLower();
-            return Name.Text.ToLower().Contains(k) ||
-                Category.Text.ToLower().Contains(k) ||
-                (CreatorName?.ToLower().Contains(k) ?? false);
+            return Modinfo.ModName.Text.ToLower().Contains(k) ||
+                (Modinfo.Category?.Text.ToLower().Contains(k) ?? false) ||
+                (Modinfo.CreatorName?.ToLower().Contains(k) ?? false);
         }
 
         /// <summary>
         /// Return all files with a specific extension.
         /// </summary>
-        public IEnumerable<String> GetFilesWithExtension(string extension)
+        public IEnumerable<string> GetFilesWithExtension(string extension)
         {
             return Directory.EnumerateFiles(FullModPath, $"*.{extension}", SearchOption.AllDirectories);
         }
 
-        private bool TryMatchToNamingPattern(String DirectoryName, out String Category, out String Name)
+        private static bool MatchNameCategory(string folderName, out string category, out string name)
         {
-            String CategoryPattern = @"[[][a-z]+[]]";
-            Category = Regex.Match(DirectoryName, CategoryPattern, RegexOptions.IgnoreCase).Value.TrimStart('[').TrimEnd(']');
+            string CategoryPattern = @"[[][a-z]+[]]";
+            category = Regex.Match(folderName, CategoryPattern, RegexOptions.IgnoreCase).Value.TrimStart('[').TrimEnd(']');
 
-            String NamePattern = @"[^]]*";
-            Name = Regex.Match(DirectoryName, NamePattern, RegexOptions.RightToLeft).Value.TrimStart(' ');
+            string NamePattern = @"[^]]*";
+            name = Regex.Match(folderName, NamePattern, RegexOptions.RightToLeft).Value.TrimStart(' ');
 
-            return !Name.Equals("") && !Category.Equals("");
+            return !name.Equals("") && !category.Equals("");
         }
+        #endregion
     }
 }
