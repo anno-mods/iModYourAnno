@@ -89,8 +89,8 @@ namespace Imya.UI.Views
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
 
-            LanguageSelection.SelectedItem = Languages.First(x => x.Language.ToString().Equals(Properties.Settings.Default.Language));
-            ThemeSelection.SelectedItem = Themes.First(x => x.ThemeID.Equals(Properties.Settings.Default.Theme));
+            LanguageSelection.SelectedItem = Languages.FirstOrDefault(x => x.Language.ToString().Equals(Properties.Settings.Default.Language), Languages[0]);
+            ThemeSelection.SelectedItem = Themes.FirstOrDefault(x => x.ThemeID.Equals(Properties.Settings.Default.Theme), Themes[0]);
 
             DataContext = this;
             TextManager.LanguageChanged += OnLanguageChanged;
