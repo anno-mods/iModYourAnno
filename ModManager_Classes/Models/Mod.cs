@@ -114,14 +114,12 @@ namespace Imya.Models
             BasePath = basePath;
 
             // create metadata if needed
-            if (modinfo is null)
+            modinfo ??= new ();
+            if (modinfo.ModName is null || !modinfo.ModName.HasAny())
             {
                 bool matches = MatchNameCategory(FolderName, out var _category, out var _name);
-                modinfo = new Modinfo()
-                {
-                    ModName = new FakeLocalized(matches ? _name : FolderName),
-                    Category = matches ? new FakeLocalized(_category) : null
-                };
+                modinfo.ModName = new FakeLocalized(matches ? _name : FolderName);
+                if (matches) modinfo.Category = new FakeLocalized(_category);
             }
 
             Modinfo = modinfo.GetLocalized(FolderName);

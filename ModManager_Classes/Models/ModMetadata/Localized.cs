@@ -17,6 +17,12 @@ namespace Imya.Models.ModMetadata
         public String? Taiwanese { get; set; }
 
         public Localized() { }
+
+        // keep most common languages on top
+        public bool HasAny() =>
+            English is not null || German is not null || 
+            French is not null || Italian is not null || Polish is not null || Russian is not null || Spanish is not null || 
+            Japanese is not null || Korean is not null || Taiwanese is not null;
     }
 
     public class FakeLocalized : Localized
