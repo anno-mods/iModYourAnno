@@ -25,7 +25,7 @@
                                      DockPanel.Dock="Left"
                                      HorizontalAlignment="Left"
                                      Foreground="{DynamicResource TextColorBrush}" />
-            <TextBlock Text="{Binding TextManager[DASHBOARD_SETTINGS].Text, UpdateSourceTrigger=PropertyChanged}"
+            <TextBlock Text="{Binding TextManager[DASHBOARD_DASHBOARD].Text, UpdateSourceTrigger=PropertyChanged}"
                        VerticalAlignment="Center"
                        Margin="10,0,0,0"
                        Style="{StaticResource IMYA_TEXT}"/>
