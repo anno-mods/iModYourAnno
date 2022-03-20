@@ -48,10 +48,8 @@
                            VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="PlusBox"
-                                             DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
+                                             DockPanel.Dock="Left" />
+                    <TextBlock Margin="10,0,0,0"
                                Text="{Binding TextManager[MODLIST_ACTIVATE].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
@@ -68,10 +66,8 @@
                            VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="MinusBox"
-                                             DockPanel.Dock="Left"
-                                             Foreground="LightGray" />
-                    <TextBlock Foreground="LightGray"
-                               Margin="10,0,0,0"
+                                             DockPanel.Dock="Left" />
+                    <TextBlock Margin="10,0,0,0"
                                Text="{Binding TextManager[MODLIST_DEACTIVATE].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}"/>
