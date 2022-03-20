@@ -59,4 +59,17 @@ namespace Imya.Utils
                 Directory.Delete(path, true);
         }
     }
+
+    public static class VersionEx
+    {
+        /// <summary>
+        /// Append ".0" in case of one number versions before parsing it.
+        /// </summary>
+        public static bool TryParse(string? input, out Version? result)
+        {
+            if (input is not null && !input.Contains('.'))
+                input += ".0";
+            return Version.TryParse(input, out result);
+        }
+    }
 }

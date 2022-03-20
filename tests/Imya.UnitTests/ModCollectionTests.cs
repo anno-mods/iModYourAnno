@@ -286,5 +286,82 @@ namespace Imya.UnitTests
             Assert.Equal("{\"ModID\": \"mod2\"}", File.ReadAllText($"{targetMod}-1\\modinfo.json"));
             Assert.Equal(ModStatus.New, target.Mods.First(x => x.Modinfo.ModID == "mod2").Status);
         }
+
+        /// <summary>
+        /// Don't update when source version is older or source is null and target not.
+        /// </summary>
+        [Fact]
+        public void MoveInto_SkipVersionPatterns()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create target
+            const string targetMod = "tmp\\target\\mod1";
+            Directory.CreateDirectory(targetMod);
+            File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // create source
+            const string sourceMod = "tmp\\source\\mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should not be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Default, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1.0.1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+
+            // create source without version
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": null}");
+            source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should not be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Default, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1.0.1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+        }
+
+        /// <summary>
+        /// Update when source version is newer.
+        /// </summary>
+        [Fact]
+        public void MoveInto_UpdateVersionPatterns()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create target
+            const string targetMod = "tmp\\target\\mod1";
+            Directory.CreateDirectory(targetMod);
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // create source
+            const string sourceMod = "tmp\\source\\mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+
+            // create source
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
+            source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1.0.1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+        }
     }
 }

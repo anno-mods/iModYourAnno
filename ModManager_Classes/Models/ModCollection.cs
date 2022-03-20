@@ -177,25 +177,18 @@ namespace Imya.Models
             // TODO external issue handling
             foreach (var sourceMod in source.Mods)
             {
-                // select target mod
-                var targetMod = FirstByFolderName(sourceMod.FolderName);
-                string targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? sourceMod.FullFolderName);
+                var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-                // re-select target mod when modids are different (safeguard after 9 tries)
-                var iteration = 1;
-                while (iteration < 10 && 
-                    sourceMod.Modinfo.ModID is not null && 
-                    targetMod?.Modinfo.ModID is not null && 
-                    sourceMod.Modinfo.ModID != targetMod.Modinfo.ModID)
+                if (IsSourceOutdated(sourceMod, targetMod))
                 {
-                    targetMod = FirstByFolderName($"{sourceMod.FolderName}-{iteration}");
-                    targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? $"{sourceMod.FullFolderName}-{iteration}");
-                    iteration++;
+                    Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
+                    continue;
                 }
 
                 // do it!
                 sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
                 DirectoryEx.CleanMove(Path.Combine(source.ModsPath, sourceMod.FullFolderName), targetModPath);
+                Console.WriteLine($"{sourceMod.Status}: {sourceMod.FolderName}");
 
                 // mark all duplicate id mods as obsolete
                 if (sourceMod.Modinfo.ModID != null)
@@ -218,6 +211,44 @@ namespace Imya.Models
 
             Directory.Delete(source.ModsPath, true);
             DisplayedMods = new ObservableCollection<Mod>(Mods);
+        }
+
+        private (Mod?, string) SelectTargetMod(Mod sourceMod)
+        {
+            // select target mod
+            var targetMod = FirstByFolderName(sourceMod.FolderName);
+            string targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? sourceMod.FullFolderName);
+
+            // re-select target mod when modids are different (safeguard after 9 tries)
+            var iteration = 1;
+            while (iteration < 10 &&
+                sourceMod.Modinfo.ModID is not null &&
+                targetMod?.Modinfo.ModID is not null &&
+                sourceMod.Modinfo.ModID != targetMod.Modinfo.ModID)
+            {
+                targetMod = FirstByFolderName($"{sourceMod.FolderName}-{iteration}");
+                targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? $"{sourceMod.FullFolderName}-{iteration}");
+                iteration++;
+            }
+
+            return (targetMod, targetModPath);
+        }
+
+        private static bool IsSourceOutdated(Mod sourceMod, Mod? targetMod)
+        {
+            if (targetMod is null || targetMod.Modinfo.Version is null)
+                return false;
+
+            if (sourceMod.Modinfo.Version is null && targetMod.Modinfo.Version is not null)
+                return true;
+
+            if (!VersionEx.TryParse(targetMod.Modinfo.Version, out var targetVersion))
+                return false;
+
+            if (!VersionEx.TryParse(sourceMod.Modinfo.Version, out var sourceVersion))
+                return true;
+
+            return sourceVersion < targetVersion;
         }
 
         /// <summary>
