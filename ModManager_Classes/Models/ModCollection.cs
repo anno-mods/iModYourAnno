@@ -96,6 +96,13 @@ namespace Imya.Models
         /// </summary>
         public async Task LoadModsAsync()
         {
+            if (!Directory.Exists(ModsPath))
+            {
+                Mods = new();
+                DisplayedMods = new();
+                return;
+            }
+
             Mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                 .Where(x => !Path.GetFileName(x).StartsWith(".")));
 
@@ -163,6 +170,8 @@ namespace Imya.Models
         /// </summary>
         public async Task MoveIntoAsync(ModCollection source)
         {
+            Directory.CreateDirectory(ModsPath);
+
             // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
 
             // TODO external issue handling

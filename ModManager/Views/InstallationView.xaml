@@ -25,7 +25,81 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
-            <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
+            <!-- game setup -->
+            <Border CornerRadius="3"
+                    Margin="0,0,0,8"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Margin="5"
+                                   VerticalAlignment="Center" />
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                                     Background="{DynamicResource InteractiveComponentColorBrush}"
+                                     Text="{Binding GameSetup.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Margin="0,0,10,0"
+                                     IsReadOnly="True" />
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource IMYA_BUTTON}"
+                                    Foreground="{DynamicResource TextColorBrush}"
+                                    Content=". . ."
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0"
+                                    Click="OnOpenGamePath">
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                            Text="{Binding TextManager[SETTINGS_MODLOADER].Text}"
+                            VerticalAlignment="Center"
+                            Margin="5">
+                        </TextBlock>
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                Text="{Binding InstallStatus.Localized.Text}"
+                                VerticalAlignment="Center"
+                                Margin="5">
+                            </TextBlock>
+                            <Button Grid.Column="1"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                HorizontalContentAlignment="Center"
+                                Content="{Binding TextManager[SETTINGS_INSTALL_MODLOADER].Text}"
+                                Foreground="{DynamicResource TextColorBrush}"
+                                Click="OnInstallModLoader"
+                                MinHeight="30"
+                                x:Name="ModloaderDownloadButton">
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            
+            <!-- install -->
+            <Border CornerRadius="3" 
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
                 <StackPanel Orientation="Vertical">
                     <!--<StackPanel Orientation="Horizontal">
                         <RadioButton Margin="5"

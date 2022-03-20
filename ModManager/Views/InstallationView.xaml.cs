@@ -16,6 +16,21 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class InstallationView : UserControl, INotifyPropertyChanged, IProgress<float>
     {
+        public TextManager TextManager { get; } = TextManager.Instance;
+        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
+
+        #region notifyable properties
+        public ModLoaderStatus InstallStatus
+        {
+            get => _installStatus;
+            private set
+            {
+                _installStatus = value;
+                OnPropertyChanged(nameof(InstallStatus));
+            }
+        }
+        private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
+
         public float Progress
         {
             get => _progress;
@@ -29,11 +44,21 @@ namespace Imya.UI.Views
             set => SetProperty(ref _isInstalling, value);
         }
         private bool _isInstalling = false;
+        #endregion
 
         public InstallationView()
         {
             InitializeComponent();
             DataContext = this;
+            
+            TextManager.LanguageChanged += OnLanguageChanged;
+
+            if (GameSetup.ModLoader.IsInstalled)
+            {
+                InstallStatus = ModLoaderStatus.Installed;
+                // TODO async update check
+                // InstallStatusText = "checking...";
+            }
         }
 
         public void Report(float value)
@@ -96,6 +121,38 @@ namespace Imya.UI.Views
             });
         }
 
+        public void OnOpenGamePath(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                GameSetup.SetGamePath(dialog.SelectedPath);
+                // TODO validity feedback?
+                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        public async void OnInstallModLoader(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Installing Modloader");
+            ModloaderDownloadButton.IsEnabled = false;
+            InstallStatus = ModLoaderStatus.Installing;
+
+            await GameSetup.ModLoader.InstallAsync();
+
+            ModloaderDownloadButton.IsEnabled = true;
+            if (GameSetup.ModLoader.IsInstalled)
+                InstallStatus = ModLoaderStatus.Installed;
+        }
+
+        private void OnLanguageChanged(ApplicationLanguage language)
+        {
+            // trigger property changes to update text
+            OnPropertyChanged(nameof(InstallStatus));
+        }
+
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -105,5 +162,25 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
+    }
+
+    /// <summary>
+    /// Enum with overwritten ToString to provide localized text.
+    /// </summary>
+    public class ModLoaderStatus
+    {
+        public static readonly ModLoaderStatus NotInstalled = new("MODLOADER_NOT_INSTALLED");
+        public static readonly ModLoaderStatus Checking = new("MODLOADER_CHECKING");
+        public static readonly ModLoaderStatus Installing = new("MODLOADER_INSTALLING");
+        public static readonly ModLoaderStatus UpdateAvailable = new("MODLOADER_UPDATE_AVAILABLE");
+        public static readonly ModLoaderStatus Installed = new("MODLOADER_INSTALLED");
+
+        private readonly string _value;
+        private ModLoaderStatus(string value)
+        {
+            _value = value;
+        }
+
+        public IText Localized => TextManager.Instance[_value];
     }
 }

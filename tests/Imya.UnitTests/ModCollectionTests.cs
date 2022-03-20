@@ -27,10 +27,49 @@ namespace Imya.UnitTests
         }
 
         /// <summary>
+        /// Loading of mods from a non-existant folder shall lead to empty collection.
+        /// </summary>
+        [Fact]
+        public void LoadMods_InvalidPath()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            Assert.False(Directory.Exists("tmp\\asdf"));
+            var col = new ModCollection("tmp\\asdf");
+            col.LoadModsAsync().Wait();
+            Assert.Empty(col.Mods);
+        }
+
+        /// <summary>
+        /// Create mod folder if it doesn't exist yet.
+        /// </summary>
+        [Fact]
+        public void MoveInto_CreateModFolder()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            Assert.False(Directory.Exists("tmp\\mods"));
+            var col = new ModCollection("tmp\\mods");
+            col.LoadModsAsync().Wait();
+            Assert.Empty(col.Mods);
+
+            Directory.CreateDirectory("tmp\\source");
+            var empty = new ModCollection("tmp\\source");
+            empty.LoadModsAsync().Wait();
+            col.MoveIntoAsync(empty).Wait();
+
+            // and another time to ensure double creation isn't a problem
+            Directory.CreateDirectory("tmp\\source");
+            empty = new ModCollection("tmp\\source");
+            empty.LoadModsAsync().Wait();
+            col.MoveIntoAsync(empty).Wait();
+        }
+
+        /// <summary>
         /// Add new mods.
         /// </summary>
         [Fact]
-        public void Add_NewMods()
+        public void MoveInto_NewMods()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -67,7 +106,7 @@ namespace Imya.UnitTests
         /// Overwrite mod. Delete old files.
         /// </summary>
         [Fact]
-        public void Add_OverwriteActiveMod()
+        public void MoveInto_OverwriteActiveMod()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -104,7 +143,7 @@ namespace Imya.UnitTests
         /// Overwrite mod but keep inactive state.
         /// </summary>
         [Fact]
-        public void Add_OverwriteInactive()
+        public void MoveInto_OverwriteInactive()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -141,7 +180,7 @@ namespace Imya.UnitTests
         /// Deactivate old folder name, place mod with new folder name.
         /// </summary>
         [Fact]
-        public void Add_UpdateWithDifferentFolder()
+        public void MoveInto_UpdateWithDifferentFolder()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -185,7 +224,7 @@ namespace Imya.UnitTests
         /// Overwrite active mod from inactive source.
         /// </summary>
         [Fact]
-        public void Add_OverwriteActiveModFromInactive()
+        public void MoveInto_OverwriteActiveModFromInactive()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -222,7 +261,7 @@ namespace Imya.UnitTests
         /// Same folder, different ModID: rename folder
         /// </summary>
         [Fact]
-        public void Add_SameFolderDifferentModID()
+        public void MoveInto_SameFolderDifferentModID()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
