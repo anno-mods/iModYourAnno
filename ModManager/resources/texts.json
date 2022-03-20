@@ -662,6 +662,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "THEME_LIGHT": {
+    "Chinese": null,
+    "English": "Light",
+    "French": null,
+    "German": "Hell",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "DEV_SETTING_MODDIRECTORYNAME": {
     "Chinese": null,
     "English": "Mod Directory Name:",
