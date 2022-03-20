@@ -212,6 +212,39 @@ namespace Imya.Models
         }
 
         /// <summary>
+        /// Permanently delete all mods from collection.
+        /// </summary>
+        public async Task DeleteAsync(IEnumerable<Mod> mods)
+        {
+            foreach (var mod in mods)
+                await DeleteAsync(mod);
+        }
+
+        /// <summary>
+        /// Permanently delete mod from collection.
+        /// </summary>
+        public async Task DeleteAsync(Mod mod)
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    Directory.Delete(mod.FullModPath, true);
+
+                    // remove from the mod lists to prevent access.
+                    Mods.Remove(mod);
+                    // remove on DisplayMods cannot be than from non-Dispatcher threads
+                    DisplayedMods = new ObservableCollection<Mod>(Mods);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
+                }
+            });
+        }
+        #endregion
+
+        /// <summary>
         /// Returns mod with given folder name. Activated mods come first.
         /// </summary>
         private Mod? FirstByFolderName(string folderName, bool ignoreActivation = true)
@@ -229,25 +262,6 @@ namespace Imya.Models
         {
             return Mods.Where(x => x.Modinfo.ModID == modID);
         }
-
-        // TODO
-        //public void Delete(Mod mod)
-        //{
-        //    try
-        //    {
-        //        //delete the directory
-        //        Directory.Delete(GetModPath(mod));
-
-        //        //remove from the mod lists to prevent access.
-        //        Mods.Remove(mod);
-        //        DisplayedMods.Remove(mod);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
-        //    }
-        //}
-        #endregion
 
         public void LoadProfile(ModActivationProfile profile)
         {
