@@ -56,7 +56,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.True(File.Exists($"{activeTargetMod}\\add.txt"));
             Assert.True(File.Exists($"{inactiveTargetMod}\\add.txt"));
             Assert.Equal(ModStatus.New, target.Mods[0].Status);
@@ -93,7 +93,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.True(File.Exists($"{targetMod}\\add.txt"));
             Assert.False(File.Exists($"{targetMod}\\remove.txt"));
             Assert.Equal("new text", File.ReadAllText($"{targetMod}\\update.txt"));
@@ -130,7 +130,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.True(File.Exists($"{targetMod}\\add.txt"));
             Assert.False(File.Exists($"{targetMod}\\remove.txt"));
             Assert.Equal("new text", File.ReadAllText($"{targetMod}\\update.txt"));
@@ -168,7 +168,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // verify results
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.True(File.Exists($"{targetMod}\\add.txt"));
             Assert.False(File.Exists($"{targetMod}\\remove.txt"));
             Assert.Equal("new text", File.ReadAllText($"{targetMod}\\update.txt"));
@@ -211,7 +211,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.True(File.Exists($"{targetMod}\\add.txt"));
             Assert.False(File.Exists($"{targetMod}\\remove.txt"));
             Assert.Equal("new text", File.ReadAllText($"{targetMod}\\update.txt"));
@@ -241,7 +241,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should be same, and new mod added with a different name
-            target.AddAsync(source).Wait();
+            target.MoveIntoAsync(source).Wait();
             Assert.Equal("{\"ModID\": \"mod1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
             Assert.Equal(ModStatus.Default, target.Mods.First(x => x.Modinfo.ModID == "mod1").Status);
             Assert.Equal("{\"ModID\": \"mod2\"}", File.ReadAllText($"{targetMod}-1\\modinfo.json"));

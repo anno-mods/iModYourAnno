@@ -4,9 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Views"
+             d:DataContext="{d:DesignInstance Type=local:InstallationView}"
+             xmlns:conv="clr-namespace:Imya.UI.ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.Resources>
+            <conv:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue"
+                                                    TrueValue="Visible"
+                                                    FalseValue="Hidden" />
+            <conv:NegateBoolConverter x:Key="NegateBool" />
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -49,8 +57,8 @@
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
                                 Content="Install from Zip"
-                                Click="OnInstallFromZip">
-                        </Button>
+                                Click="OnInstallFromZip"
+                                IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
                         <!--<Button Grid.Column="1"
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
@@ -64,6 +72,11 @@
                                VerticalAlignment="Center"
                                Margin="5">
                     </TextBlock>
+                    <ProgressBar Name="progress" Margin="6,6" Height ="15"
+                                 Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                                 Visibility="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}"
+                                 Minimum="0"
+                                 Maximum="1"/>
                 </StackPanel>
             </Border>
         </StackPanel>

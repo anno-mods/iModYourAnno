@@ -15,8 +15,10 @@ namespace Imya.Utils
             public string[] ModFolders { get; init; } = Array.Empty<string>();
         }
 
-        public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir)
+        public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir, IProgress<float>? progress = null)
         {
+            progress?.Report(0);
+
             // TODO issue handling
             if (!Directory.Exists(tempDir) || !File.Exists(zipFilePath)) return null;
 
@@ -25,10 +27,14 @@ namespace Imya.Utils
             if (Directory.Exists(extractTarget))
                 Directory.Delete(extractTarget, true);
 
+            // TODO ZipFile doesn't have progress
             ZipFile.ExtractToDirectory(zipFilePath, extractTarget, true);
+            progress?.Report(0.9f);
 
             var collection = new ModCollection(extractTarget);
             await collection.LoadModsAsync();
+
+            progress?.Report(1);
             return collection;
         }
     }

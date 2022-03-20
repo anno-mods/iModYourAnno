@@ -161,7 +161,7 @@ namespace Imya.Models
         /// Source collection folder will be deleted afterwards.
         /// Existing mods will be overwriten, old names with same mod id deactivated.
         /// </summary>
-        public async Task AddAsync(ModCollection source)
+        public async Task MoveIntoAsync(ModCollection source)
         {
             // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
 
@@ -207,6 +207,7 @@ namespace Imya.Models
                 Mods.Add(reparsed);
             }
 
+            Directory.Delete(source.ModsPath, true);
             DisplayedMods = new ObservableCollection<Mod>(Mods);
         }
 
