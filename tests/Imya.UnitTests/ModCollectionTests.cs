@@ -243,9 +243,9 @@ namespace Imya.UnitTests
             // target should be same, and new mod added with a different name
             target.AddAsync(source).Wait();
             Assert.Equal("{\"ModID\": \"mod1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
-            Assert.Equal(ModStatus.Updated, target.Mods.First(x => x.Modinfo.ModID == "mod1").Status);
+            Assert.Equal(ModStatus.Default, target.Mods.First(x => x.Modinfo.ModID == "mod1").Status);
             Assert.Equal("{\"ModID\": \"mod2\"}", File.ReadAllText($"{targetMod}-1\\modinfo.json"));
-            Assert.Equal(ModStatus.Updated, target.Mods.First(x => x.Modinfo.ModID == "mod2").Status);
+            Assert.Equal(ModStatus.New, target.Mods.First(x => x.Modinfo.ModID == "mod2").Status);
         }
     }
 }

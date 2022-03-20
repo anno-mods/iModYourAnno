@@ -165,12 +165,26 @@ namespace Imya.Models
         {
             // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
 
-            // TODO issue handling
-            // TODO mods without modid / modinfo.json
+            // TODO external issue handling
             foreach (var sourceMod in source.Mods)
             {
+                // select target mod
                 var targetMod = FirstByFolderName(sourceMod.FolderName);
                 string targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? sourceMod.FullFolderName);
+
+                // re-select target mod when modids are different (safeguard after 9 tries)
+                var iteration = 1;
+                while (iteration < 10 && 
+                    sourceMod.Modinfo.ModID is not null && 
+                    targetMod?.Modinfo.ModID is not null && 
+                    sourceMod.Modinfo.ModID != targetMod.Modinfo.ModID)
+                {
+                    targetMod = FirstByFolderName($"{sourceMod.FolderName}-{iteration}");
+                    targetModPath = Path.Combine(ModsPath, targetMod?.FullFolderName ?? $"{sourceMod.FullFolderName}-{iteration}");
+                    iteration++;
+                }
+
+                // do it!
                 sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
                 DirectoryEx.CleanMove(Path.Combine(source.ModsPath, sourceMod.FullFolderName), targetModPath);
 
@@ -185,19 +199,20 @@ namespace Imya.Models
                         sourceMod.Status = ModStatus.Updated;
                 }
 
-                // only remove in case of same folder
+                // update mod list, only remove in case of same folder
                 if (targetMod is not null)
                     Mods.Remove(targetMod);
-
                 var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
                 reparsed.Status = sourceMod.Status;
                 Mods.Add(reparsed);
             }
-            // TODO individual load is faster, but optimization can be done later
-            // await LoadModsAsync();
+
             DisplayedMods = new ObservableCollection<Mod>(Mods);
         }
 
+        /// <summary>
+        /// Returns mod with given folder name. Activated mods come first.
+        /// </summary>
         private Mod? FirstByFolderName(string folderName, bool ignoreActivation = true)
         {
             var match = Mods.Where(x => (ignoreActivation ? x.FolderName : x.FullFolderName) == folderName).ToArray();
