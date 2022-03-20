@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DataContext="{d:DesignInstance Type=local:ModList}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">
@@ -90,7 +91,7 @@
         </Grid>
         <ListBox Grid.Row="1"
                  x:Name="ListBox_ModList"
-                 ItemsSource="{Binding ModManager.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
+                 ItemsSource="{Binding Mods.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
                  SelectionChanged="SelectionChanged"
                  SelectionMode="Extended"
                  Style="{StaticResource IMYA_LISTBOX}">

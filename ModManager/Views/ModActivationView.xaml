@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Imya.UI.Views"
              xmlns:Components="clr-namespace:Imya.UI.Components"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DataContext="{d:DesignInstance Type=local:ModActivationView}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -25,26 +26,28 @@
                 HorizontalAlignment="Center"
             Grid.ColumnSpan="2">
             <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_ACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding ModManager.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding Mods.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
             <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_INACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding ModManager.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+            <TextBlock FontSize="15" Text="{Binding Mods.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
         </StackPanel>
+
+        <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList" />
+        <Components:ModDescriptionDisplay Margin="5,5,5,0" Grid.Row="1" Grid.Column="1" x:Name="ModDescription" />
         
-        <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList"></Components:ModList>
-        <Components:ModDescriptionDisplay Margin="5,5,5,0" Grid.Row="1" Grid.Column="1" x:Name="ModDescription"/>
-        
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center">
+        <Grid Grid.Row="2"
+              VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <Button x:Name="ActivateButton"
                     Style="{StaticResource IMYA_BUTTON}"
-                    MinWidth="150"
+                    Grid.Column="0"
                     MinHeight="32"
-                    Click="ActivateButton_OnClick"
-                    IsEnabled="{Binding ShowActivateButton}">
-                <DockPanel Margin="10,0,0,0"
-                           HorizontalAlignment="Left"
+                    Click="OnActivate"
+                    IsEnabled="{Binding CanActivate}">
+                <DockPanel HorizontalAlignment="Left"
                            VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="PlusBox"
@@ -57,12 +60,11 @@
             </Button>
             <Button x:Name="DeactivateButton"
                     Style="{StaticResource IMYA_BUTTON}"
-                    MinWidth="150"
+                    Grid.Column="1"
                     MinHeight="32"
-                    Click="DeactivateButton_OnClick"
-                    IsEnabled="{Binding ShowDeactivateButton}">
-                <DockPanel Margin="10,0,0,0"
-                           HorizontalAlignment="Left"
+                    Click="OnDeactivate"
+                    IsEnabled="{Binding CanDeactivate}">
+                <DockPanel HorizontalAlignment="Left"
                            VerticalAlignment="Stretch">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                              Kind="MinusBox"
@@ -73,6 +75,23 @@
                                Style="{StaticResource IMYA_TEXT}"/>
                 </DockPanel>
             </Button>
-        </StackPanel>
+            <Button x:Name="DeleteButton"
+                    Style="{StaticResource IMYA_BUTTON}"
+                    Grid.Column="2"
+                    MinHeight="32"
+                    Click="OnDelete"
+                    IsEnabled="{Binding CanDelete}">
+                <DockPanel HorizontalAlignment="Left"
+                           VerticalAlignment="Stretch">
+                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                             Kind="Delete"
+                                             DockPanel.Dock="Left" />
+                    <TextBlock Margin="10,0,0,0"
+                               Text="{Binding TextManager[MODLIST_DELETE].Text, UpdateSourceTrigger=PropertyChanged}"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource IMYA_TEXT}"/>
+                </DockPanel>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

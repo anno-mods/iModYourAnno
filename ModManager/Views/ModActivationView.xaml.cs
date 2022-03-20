@@ -1,20 +1,9 @@
 ﻿using Imya.Models;
 using Imya.Utils;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Imya.UI.Views
 {
@@ -24,30 +13,30 @@ namespace Imya.UI.Views
     public partial class ModActivationView : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
+        public ModCollection? Mods { get; private set; } = ModCollection.Global;
 
-        public ModCollection ModManager { get; private set; } = ModCollection.Global;
-
-        public bool ShowActivateButton
+        #region notifyable properties
+        public bool CanActivate
         {
-            get { return _showActivateButton; }
-            private set
-            {
-                _showActivateButton = value;
-                OnPropertyChanged("ShowActivateButton");
-            }
+            get => _canActivate;
+            private set => SetProperty(ref _canActivate, value);
         }
-        private bool _showActivateButton;
+        private bool _canActivate = false;
 
-        public bool ShowDeactivateButton
+        public bool CanDeactivate
         {
-            get { return _showDeactivateButton; }
-            private set
-            {
-                _showDeactivateButton = value;
-                OnPropertyChanged("ShowDeactivateButton");
-            }
+            get => _canDeactivate;
+            private set => SetProperty(ref _canDeactivate, value);
         }
-        private bool _showDeactivateButton;
+        private bool _canDeactivate = false;
+
+        public bool CanDelete
+        {
+            get => _canDelete;
+            private set => SetProperty(ref _canDelete, value);
+        }
+        private bool _canDelete = false;
+        #endregion
 
         public ModActivationView()
         {
@@ -57,33 +46,35 @@ namespace Imya.UI.Views
             ModList.ModList_SelectionChanged += UpdateButtons;
         }
 
-        private void ActivateButton_OnClick(object sender, RoutedEventArgs e)
+        private void OnActivate(object sender, RoutedEventArgs e)
         {
             ModList.ActivateSelection();
         }
 
-        private void DeactivateButton_OnClick(object sender, RoutedEventArgs e)
+        private void OnDeactivate(object sender, RoutedEventArgs e)
         {
             ModList.DeactivateSelection();
         }
 
-        private void UpdateButtons(Mod m)
+        private void OnDelete(object sender, RoutedEventArgs e)
         {
-            ShowActivateButton = ModList.AnyInactiveSelected();
-            ShowDeactivateButton = ModList.AnyActiveSelected();
+            ModList.DeleteSelection();
+        }
+
+        private void UpdateButtons(Mod? m)
+        {
+            CanActivate = ModList.AnyInactiveSelected();
+            CanDeactivate = ModList.AnyActiveSelected();
+            CanDelete = ModList.HasSelection;
         }
 
         #region INotifyPropertyChangedMembers
-
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            property = value;
+            OnPropertyChanged(propertyName);
         }
         #endregion
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -56,8 +57,9 @@ namespace Imya.UI.Components
         /// </summary>
         public Mod? CurrentlySelectedMod { get; private set; } = null;
         public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
+        public bool HasSelection => CurrentlySelectedMod is not null;
 
-        public ModCollection ModManager { get; private set; } = ModCollection.Global;
+        public ModCollection? Mods { get; private set; } = ModCollection.Global;
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
@@ -79,7 +81,7 @@ namespace Imya.UI.Components
             
             CurrentlySelectedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
             CurrentlySelectedMods = selectedItems;
-            ModList_SelectionChanged(CurrentlySelectedMod);
+            ModList_SelectionChanged?.Invoke(CurrentlySelectedMod);
         }
 
         public async void ActivateSelection()
@@ -93,6 +95,12 @@ namespace Imya.UI.Components
         {
             foreach (Mod m in ListBox_ModList.SelectedItems)
                 await m.ChangeActivationAsync(false);
+            OnSelectionChanged();
+        }
+
+        public async void DeleteSelection()
+        {
+            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>());
             OnSelectionChanged();
         }
 
@@ -122,21 +130,17 @@ namespace Imya.UI.Components
             return CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
         }
 
-        public event ModListSelectionChangedHandler ModList_SelectionChanged = delegate { };
-        public delegate void ModListSelectionChangedHandler(Mod mod);
+        public event ModListSelectionChangedHandler ModList_SelectionChanged;
+        public delegate void ModListSelectionChangedHandler(Mod? mod);
 
         #region INotifyPropertyChangedMembers
-
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
-        private void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            property = value;
+            OnPropertyChanged(propertyName);
         }
         #endregion
-    }    
+    }
 }

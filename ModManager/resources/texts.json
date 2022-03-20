@@ -155,6 +155,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "MODLIST_DELETE": {
+    "Chinese": null,
+    "English": "Delete",
+    "French": null,
+    "German": "Löschen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "MODDISPLAY_NO_DESCRIPTION": {
     "Chinese": null,
     "English": "No description provided.",
