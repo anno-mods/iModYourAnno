@@ -363,5 +363,44 @@ namespace Imya.UnitTests
             Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
             Assert.Equal("{\"Version\": \"1.0.1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
         }
+
+        /// <summary>
+        /// Force update when source version is older or source is null and target not.
+        /// </summary>
+        [Fact]
+        public void MoveInto_ForceVersionPatterns()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create target
+            const string targetMod = "tmp\\target\\mod1";
+            Directory.CreateDirectory(targetMod);
+            File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // create source
+            const string sourceMod = "tmp\\source\\mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should not be overwritten
+            target.MoveIntoAsync(source, AllowOldToOverwrite: true).Wait();
+            Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+
+            // create source without version
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": null}");
+            source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should not be overwritten
+            target.MoveIntoAsync(source, AllowOldToOverwrite: true).Wait();
+            Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": null}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+        }
     }
 }

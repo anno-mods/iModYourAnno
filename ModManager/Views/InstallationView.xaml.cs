@@ -44,6 +44,13 @@ namespace Imya.UI.Views
             set => SetProperty(ref _isInstalling, value);
         }
         private bool _isInstalling = false;
+
+        public bool AllowOldToOverwrite
+        {
+            get => _allowOldToOverwrite;
+            set => SetProperty(ref _allowOldToOverwrite, value);
+        }
+        private bool _allowOldToOverwrite = false;
         #endregion
 
         public InstallationView()
@@ -82,6 +89,7 @@ namespace Imya.UI.Views
 
             Progress = 0;
             IsInstalling = true;
+            var allowOldToOverwrite = AllowOldToOverwrite;
 
             _ = Task.Run(async () =>
             {
@@ -111,7 +119,8 @@ namespace Imya.UI.Views
                 foreach (var collection in modCollections)
                 {
                     Console.WriteLine($"Install zip: {collection.ModsPath}");
-                    await ModCollection.Global.MoveIntoAsync(collection);
+                    await ModCollection.Global.MoveIntoAsync(collection, 
+                        AllowOldToOverwrite: allowOldToOverwrite);
                 }
 
                 // TODO switching to activation view is not fun when the user already switched himself in the meantime

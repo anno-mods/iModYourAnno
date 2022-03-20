@@ -168,7 +168,7 @@ namespace Imya.Models
         /// Source collection folder will be deleted afterwards.
         /// Existing mods will be overwriten, old names with same mod id deactivated.
         /// </summary>
-        public async Task MoveIntoAsync(ModCollection source)
+        public async Task MoveIntoAsync(ModCollection source, bool AllowOldToOverwrite = false)
         {
             Directory.CreateDirectory(ModsPath);
 
@@ -179,7 +179,7 @@ namespace Imya.Models
             {
                 var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-                if (IsSourceOutdated(sourceMod, targetMod))
+                if (!AllowOldToOverwrite && IsSourceOutdated(sourceMod, targetMod))
                 {
                     Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
                     continue;

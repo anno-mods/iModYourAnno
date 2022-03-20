@@ -778,5 +778,18 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
+    "Chinese": null,
+    "English": "Allow old versions to overwrite new",
+    "French": null,
+    "German": "Alte Versionen können Neue überschreiben",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

@@ -101,6 +101,19 @@
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0">
                 <StackPanel Orientation="Vertical">
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
+                               VerticalAlignment="Center"
+                               Margin="5">
+                    </TextBlock>
+                    <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                              Margin="5"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Left"
+                              Grid.Column="1"
+                              Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                              Foreground="{DynamicResource AccentColorBrush}"
+                              IsChecked="{Binding AllowOldToOverwrite, Mode=TwoWay}" />
                     <!--<StackPanel Orientation="Horizontal">
                         <RadioButton Margin="5"
                                      GroupName="installMode"
@@ -141,11 +154,6 @@
                                 Click="OnInstallFromZip">
                         </Button>-->
                     </Grid>
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
-                               VerticalAlignment="Center"
-                               Margin="5">
-                    </TextBlock>
                     <ProgressBar Name="progress" Margin="6,6" Height ="15"
                                  Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
                                  Visibility="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}"
