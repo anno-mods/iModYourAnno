@@ -752,5 +752,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "INSTALL_CLEANMOVE_NOTE": {
+    "Chinese": null,
+    "English": "Outdated files will be deleted when updating.",
+    "French": null,
+    "German": "Veraltete Dateien werden beim Updaten von Mods gelöscht.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALL_FROM_ZIP": {
+    "Chinese": null,
+    "English": "Install from Zip",
+    "French": null,
+    "German": "Zip installieren",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

@@ -130,7 +130,7 @@
                         <Button Grid.Column="0"
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
-                                Content="Install from Zip"
+                                Content="{Binding TextManager[INSTALL_FROM_ZIP].Text}"
                                 Click="OnInstallFromZip"
                                 IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
                         <!--<Button Grid.Column="1"
@@ -142,7 +142,7 @@
                         </Button>-->
                     </Grid>
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="Existing mods will be deleted first and then added."
+                               Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
                                VerticalAlignment="Center"
                                Margin="5">
                     </TextBlock>
