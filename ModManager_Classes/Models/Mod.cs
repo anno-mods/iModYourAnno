@@ -209,6 +209,7 @@ namespace Imya.Models
         {
             await ChangeActivationAsync(false);
             Status = ModStatus.Obsolete;
+            Console.WriteLine($"{Status}: {FolderName}");
         }
         #endregion
 
