@@ -39,7 +39,7 @@ namespace Imya.Models.ModMetadata
             Image = modinfo?.Image;
 
             // localize
-            Category = (modinfo?.Category is not null) ? TextManager.CreateLocalizedText(modinfo.Category) : new SimpleText("NoCategory");
+            Category = (modinfo?.Category is not null) ? TextManager.CreateLocalizedText(modinfo.Category) : TextManager.Instance["MODLIST_NOCATEGORY"];
             ModName = (modinfo?.ModName is not null) ? TextManager.CreateLocalizedText(modinfo.ModName) : new SimpleText(name);
             Description = (modinfo?.Description is not null) ? TextManager.CreateLocalizedText(modinfo.Description) : null;
             KnownIssues = (modinfo?.KnownIssues is not null) ? modinfo.KnownIssues.Where(x => x is not null).Select(x => TextManager.CreateLocalizedText(x)).ToArray() : null;

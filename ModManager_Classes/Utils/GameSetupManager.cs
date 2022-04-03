@@ -62,6 +62,8 @@ namespace Imya.Utils
         }
         private String _modDirectoryName;
 
+        public String ProfilesDirectoryName = "profiles";
+
         public bool IsValidSetup
         {
            get { return _isValid; }
@@ -74,6 +76,11 @@ namespace Imya.Utils
         public String GetModDirectory()
         {
             return Path.Combine(GameRootPath, ModDirectoryName);
+        }
+
+        public String GetProfilesDirectory()
+        {
+            return Path.Combine(GameRootPath, ProfilesDirectoryName);
         }
 
         #endregion

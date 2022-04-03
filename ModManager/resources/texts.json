@@ -791,5 +791,18 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "MODLIST_NOCATEGORY": {
+    "Chinese": null,
+    "English": "No Category",
+    "French": null,
+    "German": "Ohne Kategorie",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

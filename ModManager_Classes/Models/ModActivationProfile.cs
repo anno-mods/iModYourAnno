@@ -18,16 +18,45 @@ namespace Imya.Models
             DirectoryNames = new List<String>();
         }
 
-        public void LoadFromFile(String Filename)
+        public static ModActivationProfile FromModCollection(ModCollection collection, Func<Mod, bool> SelectFunction)
+        {
+            ModActivationProfile profile = new ModActivationProfile();
+
+            foreach (Mod m in collection.Mods)
+            {
+                if(SelectFunction.Invoke(m)) profile.DirectoryNames.Add(m.FolderName);
+            }
+
+            return profile;
+        }
+
+        public bool LoadFromFile(String Filename)
         {
             try
             {
                 FileStream fs = File.OpenRead(Filename);
                 LoadFromStream(fs);
+                return true;
             }
             catch (IOException e)
             {
                 Console.WriteLine($"Could not access File: {Filename}");
+                return false;
+            }
+        }
+
+        public bool SaveToFile(String Filename)
+        {
+            try 
+            {
+                FileStream fs = File.Create(Filename);
+                SaveToStream(fs);
+                return true;
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine($"Could not create File: {Filename}");
+                return false;
             }
         }
 
@@ -42,6 +71,18 @@ namespace Imya.Models
                     //validation prettyplease?
 
                     if(line is String) DirectoryNames.Add(line);
+                }
+            }
+        }
+
+        public void SaveToStream(Stream s)
+        {
+            using (StreamWriter writer = new StreamWriter(s))
+            {
+                foreach (String dir_name in DirectoryNames)
+                {
+                    writer.WriteLine(dir_name);
+                    writer.Flush();
                 }
             }
         }

@@ -1,7 +1,9 @@
 ﻿using Imya.Models;
 using Imya.UI.Popup;
 using Imya.Utils;
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +61,13 @@ namespace Imya.UI.Views
 
         private void OnDelete(object sender, RoutedEventArgs e)
         {
-            ModList.DeleteSelection();
+            GenericOkayPopup dialog = new();
+            dialog.OK_TEXT = new SimpleText("Okay");
+            dialog.CANCEL_TEXT = new SimpleText("Cancel");
+            dialog.MESSAGE = new SimpleText("This will irreversibly delete all selected mods from the mods folder. Are you sure?");
+            dialog.ShowDialog();
+
+            if (dialog.DialogResult is true) ModList.DeleteSelection();
         }
 
         private async void LoadProfileClick(object sender, RoutedEventArgs e)
@@ -73,6 +81,29 @@ namespace Imya.UI.Views
             if (Dialog.DialogResult is true)
             {
                 await Mods.LoadProfileAsync(Dialog.SelectedProfile);
+            }
+        }
+
+        private void SaveProfileClick(object sender, RoutedEventArgs e)
+        {
+            if (Mods is null) return;
+
+            var dialog = new ProfilesSavePopup();
+
+            dialog.ShowDialog();
+
+            if(dialog.DialogResult is true )
+            {
+                var profile = ModActivationProfile.FromModCollection(ModCollection.Global!, x => x.IsActive);
+
+                if (profile.SaveToFile(dialog.FullFilename))
+                {
+                    Console.WriteLine($"Saved Profile to {dialog.ProfileFilename}.");
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to save profile {dialog.ProfileFilename}.");
+                }
             }
         }
 
