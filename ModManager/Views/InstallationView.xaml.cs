@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -14,8 +15,91 @@ namespace Imya.UI.Views
     /// <summary>
     /// Main view to install mods.
     /// </summary>
-    public partial class InstallationView : UserControl, INotifyPropertyChanged, IProgress<float>
+    /// 
+
+    public class ModInstallationTask : InstallationTask<ModCollection>
     {
+        public ModInstallationTask(String source_file_name) : base(source_file_name) { }
+
+        public override event InstallationTaskCompletedEventHandler InstallationTaskComplete = delegate { };
+
+        public override Task<ModCollection?> RunInstall()
+        {
+            IsInstalling = true;
+            var allowOldToOverwrite = AllowOldToOverwrite;
+
+            return Task.Run(async () =>
+            {
+                Console.WriteLine($"Extract zip: {SourceFilepath}");
+                var result = await ModInstaller.ExtractZipAsync(SourceFilepath,
+                    Path.Combine(Directory.GetCurrentDirectory(), Properties.Settings.Default.DownloadDir),
+                    this);
+
+                InstallationTaskComplete(this);
+                return result;
+            }
+            );
+        }
+
+        public bool AllowOldToOverwrite
+        {
+            get => _allowOldToOverwrite;
+            set => SetProperty(ref _allowOldToOverwrite, value);
+        }
+        private bool _allowOldToOverwrite = false;
+    }
+
+    public abstract  class InstallationTask<T> : IProgress<float>, INotifyPropertyChanged
+    {
+        protected String SourceFilepath { get; }
+
+        public abstract event InstallationTaskCompletedEventHandler InstallationTaskComplete;
+        public delegate void InstallationTaskCompletedEventHandler(InstallationTask<T> source);
+
+        public void Report(float value)
+        {
+            Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
+        }
+        protected (float, float) _progressRange = (0, 1);
+
+        #region NotifiableProperties
+        public float Progress
+        {
+            get => _progress;
+            set => SetProperty(ref _progress, value);
+        }
+        protected float _progress = 0.1f;
+
+        public bool IsInstalling
+        {
+            get => _isInstalling;
+            set => SetProperty(ref _isInstalling, value);
+        }
+        protected bool _isInstalling = false;
+
+        #endregion
+
+        public InstallationTask(String source_file_path)
+        {
+            SourceFilepath = source_file_path;
+        }
+
+        public abstract Task<T?> RunInstall();
+
+        #region INotifyPropertyChangedMembers
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
+        {
+            property = value;
+            OnPropertyChanged(propertyName);
+        }
+        #endregion
+    }
+    public partial class InstallationView : UserControl, INotifyPropertyChanged
+    {
+        public ObservableCollection<ModInstallationTask> Installations { get; } = new();
+
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
@@ -30,13 +114,6 @@ namespace Imya.UI.Views
             }
         }
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
-
-        public float Progress
-        {
-            get => _progress;
-            set => SetProperty(ref _progress, value);
-        }
-        private float _progress = 0.1f;
 
         public bool IsInstalling
         {
@@ -68,66 +145,69 @@ namespace Imya.UI.Views
             }
         }
 
-        public void Report(float value)
+        private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
         {
-            Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
-        }
-        private (float, float) _progressRange = (0, 1);
-
-        private void OnInstallFromZip(object sender, RoutedEventArgs e)
-        {
-            if (ModCollection.Global is null) return;
-
-            var dialog = new System.Windows.Forms.OpenFileDialog
+            return new System.Windows.Forms.OpenFileDialog
             {
                 Filter = "Zip Archives (*.zip)|*.zip",
                 RestoreDirectory = true, // TODO keep location separate from game path dialog, it's annoying!
                 Multiselect = true
             };
+        }
+
+        private void OnInstallFromZip(object sender, RoutedEventArgs e)
+        {
+            if (ModCollection.Global is null) return;
+
+            var dialog = CreateOpenFileDialog();
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            Progress = 0;
             IsInstalling = true;
-            var allowOldToOverwrite = AllowOldToOverwrite;
 
-            _ = Task.Run(async () =>
+            List<Task<ModCollection?>> InstallationTasks = new();
+
+            foreach (var Filename in dialog.FileNames)
             {
-                // TODO current progress assumes all zip files take similarily long
-                //      this can be improved by giving absolute progress vs MB size for example
-                //      but that's an update to be done when zip actually supports progress
-                var progressRangeOneItem = 0.9f / dialog.FileNames.Length;
+                ModInstallationTask InstallationTask = new ModInstallationTask(Filename);
+                //add to displayed list
+                Installations.Add(InstallationTask);
+                //add to list of tasks for parallel async
+                InstallationTasks.Add(InstallationTask.RunInstall());
 
-                var modCollections = new List<ModCollection>();
-                for (var (idx, iter) = (0, dialog.FileNames.GetEnumerator()); iter.MoveNext(); idx++)
+                //notify if extraction is finished
+                InstallationTask.InstallationTaskComplete += x => Installations.Remove((ModInstallationTask)x);
+            }
+
+            _ = Task.Run( async () =>
                 {
-                    var filePath = (string)iter.Current;
-                    _progressRange = (idx * progressRangeOneItem, (idx+1) * progressRangeOneItem);
+                    IEnumerable<ModCollection?> Extracted = await Task.WhenAll(InstallationTasks);
 
-                    Console.WriteLine($"Extract zip: {filePath}");
-                    var result = await ModInstaller.ExtractZipAsync(filePath, 
-                        Path.Combine(Directory.GetCurrentDirectory(), Properties.Settings.Default.DownloadDir),
-                        this);
-                    if (result != null)
-                        modCollections.Add(result);
+                    foreach (var collection in Extracted)
+                    {
+                        if (collection is not null)
+                        {
+                            Console.WriteLine($"Install zip: {collection.ModsPath}");
+
+                            // TODO progress for MoveIntoAsync should be done per mod 
+
+                            // taubes comment: I happily leave that cancer to you :D
+                            await ModCollection.Global.MoveIntoAsync(collection,
+                                AllowOldToOverwrite);
+                        }
+                    }
                 }
+            );
 
-                Progress = 0.9f;
+            IsInstalling = false;
+            MainViewController.Instance.SetView(View.MOD_ACTIVATION);
 
-                // TODO progress for MoveIntoAsync should be done per mod
+            //nuked comments (I am sorry jakob)
 
-                foreach (var collection in modCollections)
-                {
-                    Console.WriteLine($"Install zip: {collection.ModsPath}");
-                    await ModCollection.Global.MoveIntoAsync(collection, 
-                        AllowOldToOverwrite: allowOldToOverwrite);
-                }
+            // TODO current progress assumes all zip files take similarily long
+            //      this can be improved by giving absolute progress vs MB size for example
+            //      but that's an update to be done when zip actually supports progress
 
-                // TODO switching to activation view is not fun when the user already switched himself in the meantime
-                MainViewController.Instance.SetView(View.MOD_ACTIVATION);
-                Progress = 0;
-                IsInstalling = false;
-            });
         }
 
         public void OnOpenGamePath(object sender, RoutedEventArgs e)
