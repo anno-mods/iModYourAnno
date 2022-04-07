@@ -19,6 +19,12 @@ using System.Runtime.CompilerServices;
 
 namespace Imya.UI.Popup
 {
+    public enum FilenameValidation
+    { 
+        Valid, 
+        AlreadyExists,
+        Invalid
+    }
     /// <summary>
     /// Interaktionslogik für Window1.xaml
     /// </summary>
@@ -28,18 +34,29 @@ namespace Imya.UI.Popup
 
         private static String ProfilesDirectoryPath = GameSetupManager.Instance.GetProfilesDirectory();
 
-        public bool IsValidFilename 
+        public bool IsValidFilename
         {
             get => _isValidFilename;
-            set
+            private set
             {
                 _isValidFilename = value;
                 OnPropertyChanged(nameof(IsValidFilename));
             }
         }
-        private bool _isValidFilename; 
+        private bool _isValidFilename;
 
-        public String FullFilename { get => Path.Combine(ProfilesDirectoryPath, ProfileFilename + ".imyaprofile"); }
+        public FilenameValidation FilenameValidation { get => _filenameValidation;
+            set
+            {
+                IsValidFilename = value == FilenameValidation.Valid;
+                _filenameValidation = value;
+                OnPropertyChanged(nameof(FilenameValidation));
+            }
+        }
+        private FilenameValidation _filenameValidation;
+
+
+        public String FullFilename { get => Path.Combine(ProfilesDirectoryPath, ProfileFilename + "." + ModActivationProfile.ProfileExtension); }
 
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
@@ -52,13 +69,23 @@ namespace Imya.UI.Popup
             CANCEL_TEXT = new SimpleText("Cancel");
 
             DataContext = this;
+
+            NameTextbox.TextChanged += FilenameChanged;
         }
 
-        private bool ValidateFilename() => !File.Exists(FullFilename);
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private FilenameValidation ValidateFilename()
         {
-            IsValidFilename = ValidateFilename();
+            char[] Invalids = Path.GetInvalidFileNameChars();
+
+            if (ProfileFilename.Any(x => Invalids.Contains(x))) return FilenameValidation.Invalid;
+            if (File.Exists(FullFilename)) return FilenameValidation.AlreadyExists;
+
+            return FilenameValidation.Valid;
+        }
+
+        private void FilenameChanged(object sender, TextChangedEventArgs e)
+        {
+            FilenameValidation = ValidateFilename();
         }
 
         private void OkayButtonClick(object sender, RoutedEventArgs e)

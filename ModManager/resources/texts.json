@@ -804,5 +804,31 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "PROFILESAVE_ALREADYEXISTS": {
+    "Chinese": null,
+    "English": "A profile of that name already exists.",
+    "French": null,
+    "German": "Ein Profil mit diesem Namen existiert bereits.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "PROFILESAVE_INVALID": {
+    "Chinese": null,
+    "English": "The profile name is invalid.",
+    "French": null,
+    "German": "Der Name des Profils ist ungültig.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

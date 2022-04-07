@@ -17,6 +17,7 @@
     <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.Resources>
             <Converters:ExtendedBoolToVisibilityConverter x:Key="BoolToVis" TrueValue="Hidden" FalseValue="Visible" />
+            <Converters:FilenameValidationConverter x:Key="Validation" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -37,16 +38,16 @@
             
             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                      Text="{Binding ProfileFilename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     TextChanged="TextBox_TextChanged"
+                     TextChanged="FilenameChanged"
                      Width="200"
                      Height="32"
-                     Background="{DynamicResource InteractiveComponentColorBrush}">
+                     Background="{DynamicResource InteractiveComponentColorBrush}"
+                     x:Name="NameTextbox">
             </TextBox>
             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                       Text="A profile of this name already exists."
+                       Text="{Binding FilenameValidation, Converter={StaticResource Validation}}"
                        Grid.Row="1"
-                       TextAlignment="Center"
-                       Visibility="{Binding IsValidFilename, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource BoolToVis}}">
+                       TextAlignment="Center">
             </TextBlock>
         </Grid>
 

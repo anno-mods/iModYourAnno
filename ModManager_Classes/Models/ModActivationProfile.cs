@@ -9,9 +9,16 @@ namespace Imya.Models
 {
     public class ModActivationProfile : IEnumerable<String>
     {
-        private List<String> DirectoryNames;
+        public static String ProfileExtension { get; } = "imyaprofile";
 
+        private List<String> DirectoryNames;
         public String Title { get; set; } = "DummyTitle";
+
+        /// <summary>
+        /// Filename the profile was loaded from. This is only set if the profile was loaded from a file.
+        /// </summary>
+        public String? Filename { get; set; }
+        public bool HasFilename => Filename is not null;
 
         public ModActivationProfile()
         {
@@ -30,32 +37,36 @@ namespace Imya.Models
             return profile;
         }
 
-        public bool LoadFromFile(String Filename)
+        public bool LoadFromFile(String _filename)
         {
             try
             {
-                FileStream fs = File.OpenRead(Filename);
+                FileStream fs = File.OpenRead(_filename);
                 LoadFromStream(fs);
+
+                Title = Path.GetFileNameWithoutExtension(_filename);
+                Filename = _filename;
+
                 return true;
             }
             catch (IOException e)
             {
-                Console.WriteLine($"Could not access File: {Filename}");
+                Console.WriteLine($"Could not access File: {_filename}");
                 return false;
             }
         }
 
-        public bool SaveToFile(String Filename)
+        public bool SaveToFile(String _filename)
         {
             try 
             {
-                FileStream fs = File.Create(Filename);
+                FileStream fs = File.Create(_filename);
                 SaveToStream(fs);
                 return true;
             }
             catch (IOException e)
             {
-                Console.WriteLine($"Could not create File: {Filename}");
+                Console.WriteLine($"Could not create File: {_filename}");
                 return false;
             }
         }
