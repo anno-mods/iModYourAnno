@@ -406,17 +406,23 @@
 
             <Style x:Key="IMYA_CHECKBOX"
                    TargetType="CheckBox">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource TextColorBrush}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="CheckBox">
-                            <Border x:Name="Border"
+                            <StackPanel Orientation="Horizontal">
+                                <Border x:Name="Border"
                                     CornerRadius="3"
                                     Background="White"
                                     Width="14"
                                     Height="14"
                                     BorderThickness="0"
-                                    BorderBrush="{TemplateBinding Foreground}">
-                            </Border>
+                                    BorderBrush="{TemplateBinding Foreground}" />
+                                <TextBlock Style="{StaticResource IMYA_TEXT}" Margin="8,0,0,0">
+                                    <ContentPresenter />
+                                </TextBlock>
+                            </StackPanel>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsChecked"
                                          Value="True">
