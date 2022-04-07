@@ -111,7 +111,6 @@
                     <ColumnDefinition Width="0.25*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="0.25*" />
                 </Grid.ColumnDefinitions>
                 <Button x:Name="LoadProfileButton"
@@ -152,7 +151,7 @@
                                    Style="{StaticResource IMYA_TEXT}" />
                     </DockPanel>
                 </Button>
-                <Button x:Name="BackupZipButton"
+                <!--<Button x:Name="BackupZipButton"
                         Style="{StaticResource IMYA_BUTTON}"
                         MinHeight="32"
                         Grid.Column="3">
@@ -169,7 +168,7 @@
                                    VerticalAlignment="Center"
                                    Style="{StaticResource IMYA_TEXT}" />
                     </DockPanel>
-                </Button>
+                </Button>-->
             </Grid>
         </Border>
 
