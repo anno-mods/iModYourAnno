@@ -1,4 +1,5 @@
-﻿using Imya.Utils;
+﻿using Imya.Models.NotifyPropertyChanged;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,28 +15,37 @@ namespace Imya.Models.Installation
         public String SourceFilepath { get; }
         public String UnpackDirectoryName { get; private set; }
 
+
+        public ZipInstallationOptions Options { get; }
+
         #region NotifiableProperties
-        
-        public bool AllowOldToOverwrite
+
+        public new ZipInstallationStatus Status
         {
-            get => _allowOldToOverwrite;
-            set => SetProperty(ref _allowOldToOverwrite, value);
+            get => _status;
+            set
+            {
+                _status = value;
+                OnPropertyChanged(nameof(Status));
+            }
         }
-        private bool _allowOldToOverwrite = false;
+        private ZipInstallationStatus _status = ZipInstallationStatus.NotStarted;
 
         private ModCollection? result;
 
         #endregion
-        public ZipInstallation(String source_file_path, String download_directory_name)
+        public ZipInstallation(String source_file_path, String download_directory_name, ZipInstallationOptions options)
         {
             SourceFilepath = source_file_path;
             UnpackDirectoryName = download_directory_name;
+
+            Options = options;
         }
 
         public Task<ZipInstallation> RunUnpack()
         {
             IsInstalling = true;
-            var allowOldToOverwrite = AllowOldToOverwrite;
+            Status = ZipInstallationStatus.Unpacking;
 
             return Task.Run(async () =>
             {
@@ -54,25 +64,48 @@ namespace Imya.Models.Installation
             {
                 Console.WriteLine("No ModCollection to install");
                 return Task.CompletedTask;
-            } 
+            }
+
+            Status = ZipInstallationStatus.MovingFiles;
 
             Console.WriteLine($"Install zip: {result?.ModsPath}");
 
             return Task.Run(async () =>
             {
-                try
-                {
-                    await ModCollection.Global?.MoveIntoAsync(result, AllowOldToOverwrite);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Move Error: {e.Message}");
-                }
+                await ModCollection.Global?.MoveIntoAsync(result, Options.AllowOldToOverwrite);
             }
             );
         }
 
         public override string ToString() => $"InstallationTask of {SourceFilepath}";
+    }
+
+    public class ZipInstallationStatus : IInstallationStatus
+    {
+        public static readonly ZipInstallationStatus NotStarted = new("ZIP_NOTSTARTED");
+        public static readonly ZipInstallationStatus Unpacking = new("ZIP_UNPACKING");
+        public static readonly ZipInstallationStatus MovingFiles = new("ZIP_MOVING");
+
+        private readonly string _value;
+        private ZipInstallationStatus(string value)
+        {
+            _value = value;
+        }
+
+        public IText Localized => TextManager.Instance[_value];
+    }
+
+    public class ZipInstallationOptions : PropertyChangedNotifier
+    {
+        public bool AllowOldToOverwrite
+        {
+            get => _allowOldToOverwrite;
+            set {
+                _allowOldToOverwrite = value;
+                OnPropertyChanged(nameof(AllowOldToOverwrite));
+            }   
+        }
+        private bool _allowOldToOverwrite = false;
     }
 
 }

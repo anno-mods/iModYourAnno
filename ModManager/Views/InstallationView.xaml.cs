@@ -26,6 +26,8 @@ namespace Imya.UI.Views
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
+        public ZipInstallationOptions Options { get; } = new();
+
         #region notifyable properties
         public ModLoaderStatus InstallStatus
         {
@@ -45,12 +47,6 @@ namespace Imya.UI.Views
         }
         private bool _isInstalling = false;
 
-        public bool AllowOldToOverwrite
-        {
-            get => _allowOldToOverwrite;
-            set => SetProperty(ref _allowOldToOverwrite, value);
-        }
-        private bool _allowOldToOverwrite = false;
         #endregion
 
         public InstallationView()
@@ -59,8 +55,6 @@ namespace Imya.UI.Views
             DataContext = this;
 
             TextManager.LanguageChanged += OnLanguageChanged;
-
-            //RunningInstallations.CollectionChanged += (a, b) => RunningInstallationsDisplay.ItemsSource = RunningInstallations;
 
             if (GameSetup.ModLoader.IsInstalled)
             {
@@ -88,7 +82,7 @@ namespace Imya.UI.Views
             {
                 if (!IsRunningInstallation(Filename))
                 {
-                    var InstallationTask = new ZipInstallation(Filename, Properties.Settings.Default.DownloadDir);
+                    var InstallationTask = new ZipInstallation(Filename, Properties.Settings.Default.DownloadDir, Options);
                     //add to displayed list
                     RunningInstallations.Add(InstallationTask);
                     //add to list of tasks for parallel async
@@ -111,7 +105,7 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            IsInstalling = true;
+            //IsInstalling = true;
 
             var InstallationTasks = CreateInstallationTasks(dialog.FileNames);
 
@@ -123,10 +117,10 @@ namespace Imya.UI.Views
                 RemoveZipInstallation(_task);
             }
 
-            IsInstalling = false;
+            //IsInstalling = false;
             
             //disable this for now :) 
-            MainViewController.Instance.SetView(View.MOD_ACTIVATION);
+            //MainViewController.Instance.SetView(View.MOD_ACTIVATION);
 
             //nuked comments (I am sorry jakob)
 

@@ -817,5 +817,57 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "ZIP_NOTSTARTED": {
+    "Chinese": null,
+    "English": "Initializing Install",
+    "French": null,
+    "German": "Installation initialisieren",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "ZIP_UNPACKING": {
+    "Chinese": null,
+    "English": "Unpacking Files",
+    "French": null,
+    "German": "Dateien entpacken",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "ZIP_MOVING": {
+    "Chinese": null,
+    "English": "Moving Mods",
+    "French": null,
+    "German": "Mods verschieben",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "ZIP_INSTALLER_TITLE": {
+    "Chinese": null,
+    "English": "Install Mods from .zip",
+    "French": null,
+    "German": "Mods aus Archiv installieren",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }

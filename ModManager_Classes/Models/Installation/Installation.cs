@@ -23,7 +23,13 @@ namespace Imya.Models.Installation
         }
         protected bool _isInstalling = false;
 
-        public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
+        public IInstallationStatus Status { get; }
 
+        public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
+    }
+
+    public interface IInstallationStatus
+    {
+        public IText Localized { get; }
     }
 }

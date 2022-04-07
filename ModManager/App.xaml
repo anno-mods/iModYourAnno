@@ -11,7 +11,98 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/DarkGreen.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            
+
+            <Style x:Key="{x:Type ProgressBar}"
+                   TargetType="{x:Type ProgressBar}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ProgressBar}">
+                            <Grid MinHeight="14"
+                                  MinWidth="200"
+                                  Background="{TemplateBinding Background}">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Determinate" />
+                                        <VisualState x:Name="Indeterminate">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Duration="00:00:00"
+                                                                               Storyboard.TargetName="PART_Indicator"
+                                                                               Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="00:00:00">
+                                                        <DiscreteObjectKeyFrame.Value>
+                                                            <SolidColorBrush>Transparent</SolidColorBrush>
+                                                        </DiscreteObjectKeyFrame.Value>
+                                                    </DiscreteObjectKeyFrame>
+                                                </ObjectAnimationUsingKeyFrames>
+
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="PART_Track"
+                                        CornerRadius="2"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}">
+                                </Border>
+                                <Border x:Name="PART_Indicator"
+                                        CornerRadius="2"
+                                        BorderThickness="1"
+                                        HorizontalAlignment="Left"
+                                        Background="{TemplateBinding Foreground}"
+                                        Margin="0,0,0,0">
+                                    <!--<Border.BorderBrush>
+                                        <LinearGradientBrush StartPoint="0,0"
+                                                             EndPoint="0,1">
+                                            <GradientBrush.GradientStops>
+                                                <GradientStopCollection>
+                                                    <GradientStop Color="{DynamicResource AccentColorBrush}"
+                                                                  Offset="0.0" />
+                                                    <GradientStop Color="{DynamicResource AccentColorBrush_Dark}"
+                                                                  Offset="1.0" />
+                                                </GradientStopCollection>
+                                            </GradientBrush.GradientStops>
+                                        </LinearGradientBrush>
+
+                                    </Border.BorderBrush>-->
+                                    <Grid ClipToBounds="True"
+                                          x:Name="Animation">
+                                        <Rectangle x:Name="PART_GlowRect"
+                                                   Width="100"
+                                                   HorizontalAlignment="Left"
+                                                   Fill="{DynamicResource ProgressBarIndicatorAnimatedFill}"
+                                                   Margin="-100,0,0,0" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background"
+                        Value="{DynamicResource ComponentColorBrush}">
+                    <!--<Setter.Value>
+                        <LinearGradientBrush EndPoint="0,1"
+                                             StartPoint="0,0">
+                            <GradientStop Color="{DynamicResource ComponentColorBrush}"
+                                          Offset="0" />
+                            <GradientStop Color="{DynamicResource ComponentColorBrush_Dark}"
+                                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>-->
+                </Setter>
+                <Setter Property="Foreground"
+                        Value="{DynamicResource AccentColorBrush}">
+                    <!--<Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1"
+                                             StartPoint="0.5,0">
+                            <GradientStop Color="{DynamicResource AccentColorBrush}"
+                                          Offset="0" />
+                            <GradientStop Color="{DynamicResource AccentColorBrush_Dark}"
+                                          Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>-->
+                </Setter>
+            </Style>
+
             <Style x:Key="IMYA_RADIO_BUTTON_DASHBOARD"
                    TargetType="RadioButton">
                 <Style.Resources>
