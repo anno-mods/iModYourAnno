@@ -144,7 +144,7 @@
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
                                 Content="{Binding TextManager[INSTALL_FROM_ZIP].Text}"
-                                Click="OnInstallFromZip"
+                                Click="OnInstallFromZipAsync"
                                 IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
                         <!--<Button Grid.Column="1"
                                 Margin="5"
@@ -154,13 +154,38 @@
                                 Click="OnInstallFromZip">
                         </Button>-->
                     </Grid>
-                    <ProgressBar Name="progress" Margin="6,6" Height ="15"
-                                 Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
-                                 Visibility="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}"
-                                 Minimum="0"
-                                 Maximum="1"/>
+                    
                 </StackPanel>
             </Border>
         </StackPanel>
+
+        <ScrollViewer Grid.Column="2" Grid.Row="2" Style="{StaticResource IMYA_SCROLLVIEWER}" Margin="2">
+            <ItemsControl ItemsSource="{Binding RunningInstallations, UpdateSourceTrigger=PropertyChanged}" x:Name="RunningInstallationsDisplay">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="2" Background="{DynamicResource ComponentColorBrush}" MinHeight="50" CornerRadius="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="{Binding}">
+                                </TextBlock>
+                                <ProgressBar Name="progress"
+                                             Margin="6,6"
+                                             Height="15"
+                                             Grid.Row="2"
+                                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                                             Minimum="0"
+                                             Maximum="1" />
+                            </Grid>
+                            
+                            
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

@@ -10,95 +10,18 @@ using System.Windows.Controls;
 using Imya.Models;
 using Imya.Utils;
 
+using System.Linq;
+using Imya.Models.Installation;
+
 namespace Imya.UI.Views
 {
     /// <summary>
     /// Main view to install mods.
     /// </summary>
     /// 
-
-    public class ModInstallationTask : InstallationTask<ModCollection>
-    {
-        public ModInstallationTask(String source_file_name) : base(source_file_name) { }
-
-        public override event InstallationTaskCompletedEventHandler InstallationTaskComplete = delegate { };
-
-        public override Task<ModCollection?> RunInstall()
-        {
-            IsInstalling = true;
-            var allowOldToOverwrite = AllowOldToOverwrite;
-
-            return Task.Run(async () =>
-            {
-                Console.WriteLine($"Extract zip: {SourceFilepath}");
-                var result = await ModInstaller.ExtractZipAsync(SourceFilepath,
-                    Path.Combine(Directory.GetCurrentDirectory(), Properties.Settings.Default.DownloadDir),
-                    this);
-
-                InstallationTaskComplete(this);
-                return result;
-            }
-            );
-        }
-
-        public bool AllowOldToOverwrite
-        {
-            get => _allowOldToOverwrite;
-            set => SetProperty(ref _allowOldToOverwrite, value);
-        }
-        private bool _allowOldToOverwrite = false;
-    }
-
-    public abstract  class InstallationTask<T> : IProgress<float>, INotifyPropertyChanged
-    {
-        protected String SourceFilepath { get; }
-
-        public abstract event InstallationTaskCompletedEventHandler InstallationTaskComplete;
-        public delegate void InstallationTaskCompletedEventHandler(InstallationTask<T> source);
-
-        public void Report(float value)
-        {
-            Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
-        }
-        protected (float, float) _progressRange = (0, 1);
-
-        #region NotifiableProperties
-        public float Progress
-        {
-            get => _progress;
-            set => SetProperty(ref _progress, value);
-        }
-        protected float _progress = 0.1f;
-
-        public bool IsInstalling
-        {
-            get => _isInstalling;
-            set => SetProperty(ref _isInstalling, value);
-        }
-        protected bool _isInstalling = false;
-
-        #endregion
-
-        public InstallationTask(String source_file_path)
-        {
-            SourceFilepath = source_file_path;
-        }
-
-        public abstract Task<T?> RunInstall();
-
-        #region INotifyPropertyChangedMembers
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        protected void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
-        {
-            property = value;
-            OnPropertyChanged(propertyName);
-        }
-        #endregion
-    }
     public partial class InstallationView : UserControl, INotifyPropertyChanged
     {
-        public ObservableCollection<ModInstallationTask> Installations { get; } = new();
+        public ObservableCollection<Installation> RunningInstallations { get; } = new();
 
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
@@ -134,8 +57,10 @@ namespace Imya.UI.Views
         {
             InitializeComponent();
             DataContext = this;
-            
+
             TextManager.LanguageChanged += OnLanguageChanged;
+
+            //RunningInstallations.CollectionChanged += (a, b) => RunningInstallationsDisplay.ItemsSource = RunningInstallations;
 
             if (GameSetup.ModLoader.IsInstalled)
             {
@@ -155,7 +80,30 @@ namespace Imya.UI.Views
             };
         }
 
-        private void OnInstallFromZip(object sender, RoutedEventArgs e)
+        private List<Task<ZipInstallation>> CreateInstallationTasks(IEnumerable<String> Filenames)
+        {
+            List<Task<ZipInstallation>> InstallationTasks = new();
+
+            foreach (var Filename in Filenames)
+            {
+                if (!IsRunningInstallation(Filename))
+                {
+                    var InstallationTask = new ZipInstallation(Filename, Properties.Settings.Default.DownloadDir);
+                    //add to displayed list
+                    RunningInstallations.Add(InstallationTask);
+                    //add to list of tasks for parallel async
+                    InstallationTasks.Add(InstallationTask.RunUnpack());
+                }
+                else
+                {
+                    Console.WriteLine($"Installation Already Running: {Filename}");
+                }
+            }
+
+            return InstallationTasks;
+        }
+
+        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
         {
             if (ModCollection.Global is null) return;
 
@@ -165,41 +113,19 @@ namespace Imya.UI.Views
 
             IsInstalling = true;
 
-            List<Task<ModCollection?>> InstallationTasks = new();
+            var InstallationTasks = CreateInstallationTasks(dialog.FileNames);
 
-            foreach (var Filename in dialog.FileNames)
+            IEnumerable<ZipInstallation>? TaskResults = await Task.WhenAll(InstallationTasks);
+
+            foreach (var _task in TaskResults)
             {
-                ModInstallationTask InstallationTask = new ModInstallationTask(Filename);
-                //add to displayed list
-                Installations.Add(InstallationTask);
-                //add to list of tasks for parallel async
-                InstallationTasks.Add(InstallationTask.RunInstall());
-
-                //notify if extraction is finished
-                InstallationTask.InstallationTaskComplete += x => Installations.Remove((ModInstallationTask)x);
+                await _task.RunMove();
+                RemoveZipInstallation(_task);
             }
 
-            _ = Task.Run( async () =>
-                {
-                    IEnumerable<ModCollection?> Extracted = await Task.WhenAll(InstallationTasks);
-
-                    foreach (var collection in Extracted)
-                    {
-                        if (collection is not null)
-                        {
-                            Console.WriteLine($"Install zip: {collection.ModsPath}");
-
-                            // TODO progress for MoveIntoAsync should be done per mod 
-
-                            // taubes comment: I happily leave that cancer to you :D
-                            await ModCollection.Global.MoveIntoAsync(collection,
-                                AllowOldToOverwrite);
-                        }
-                    }
-                }
-            );
-
             IsInstalling = false;
+            
+            //disable this for now :) 
             MainViewController.Instance.SetView(View.MOD_ACTIVATION);
 
             //nuked comments (I am sorry jakob)
@@ -209,6 +135,16 @@ namespace Imya.UI.Views
             //      but that's an update to be done when zip actually supports progress
 
         }
+
+        private void RemoveZipInstallation(ZipInstallation x)
+        {
+            bool success = App.Current.Dispatcher.Invoke(() => RunningInstallations.Remove(x));
+            Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
+        }
+
+        private bool IsRunningInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ZipInstallation && ((ZipInstallation)x).SourceFilepath.Equals(SourceFilepath));
+
+        //private bool IsRunningModloaderInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ModLoaderInstallation);
 
         public void OnOpenGamePath(object sender, RoutedEventArgs e)
         {
