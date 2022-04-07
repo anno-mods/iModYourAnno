@@ -182,6 +182,8 @@ namespace Imya.UnitTests
         [Fact]
         public void MoveInto_UpdateWithDifferentFolder()
         {
+            TextManager t = new TextManager(); 
+
             DirectoryEx.EnsureDeleted("tmp");
 
             // create obsolete target
@@ -263,6 +265,8 @@ namespace Imya.UnitTests
         [Fact]
         public void MoveInto_SameFolderDifferentModID()
         {
+            TextManager t = new TextManager();
+
             DirectoryEx.EnsureDeleted("tmp");
 
             // create target
