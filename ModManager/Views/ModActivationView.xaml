@@ -125,18 +125,19 @@
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="ContentSaveOutline"
                                                  Foreground="LightGray" />
-                        <TextBlock Foreground="LightGray"
-                                   Margin="10,0,0,0"
+                        <TextBlock Margin="10,0,0,0"
                                    Text="{Binding TextManager[MODLIST_LOAD_PROFILE].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource IMYA_TEXT}" />
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
                     </StackPanel>
                 </Button>
                 <Button x:Name="SaveProfileButton"
                         Style="{StaticResource IMYA_BUTTON}"
                         MinHeight="32"
                         Grid.Column="2"
-                        Click="SaveProfileClick">
+                        Click="SaveProfileClick"
+                        Foreground="{DynamicResource TextColorBrush}">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
@@ -144,17 +145,18 @@
                                                  Kind="ArrangeBringForward"
                                                  DockPanel.Dock="Left"
                                                  Foreground="LightGray" />
-                        <TextBlock Foreground="LightGray"
-                                   Margin="10,0,0,0"
+                        <TextBlock Margin="10,0,0,0"
                                    Text="{Binding TextManager[MODLIST_SAVE_PROFILE].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
-                                   Style="{StaticResource IMYA_TEXT}" />
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
                     </DockPanel>
                 </Button>
                 <!--<Button x:Name="BackupZipButton"
                         Style="{StaticResource IMYA_BUTTON}"
                         MinHeight="32"
-                        Grid.Column="3">
+                        Grid.Column="3"
+                        Foreground="{DynamicResource TextColorBrush}>
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">

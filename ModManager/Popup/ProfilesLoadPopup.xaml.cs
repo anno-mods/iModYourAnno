@@ -40,8 +40,12 @@ namespace Imya.UI.Popup
             InitializeComponent();
             DataContext = this;
 
+            Title = TextManager.Instance["PROFILE_LOAD"].Text;
+
+
             ProfileSelection.SelectionChanged += UpdateSelection;
             Load();
+
         }
 
         private void UpdateSelection(object sender, SelectionChangedEventArgs e)

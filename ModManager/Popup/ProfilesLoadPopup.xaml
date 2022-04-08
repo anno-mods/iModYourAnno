@@ -64,7 +64,7 @@
                     Margin="15,0"
                     Height="30"
                     Foreground="{StaticResource TextColorBrush}"
-                    Content="Select"
+                    Content="{Binding TextManager.Instance[DIALOG_OKAY]}"
                     HorizontalContentAlignment="Center"
                     Click="OkayButtonClick"
                     IsEnabled="{Binding HasSelection}"/>
@@ -74,7 +74,7 @@
                     Margin="15,0"
                     Height="30"
                     Foreground="{StaticResource TextColorBrush}"
-                    Content="Cancel"
+                    Content="{Binding TextManager.Instance[DIALOG_CANCEL]}"
                     HorizontalContentAlignment="Center"
                     Click="CancelButtonClick" />
         </Grid>

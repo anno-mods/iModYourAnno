@@ -65,12 +65,14 @@ namespace Imya.UI.Popup
         {
             InitializeComponent();
 
-            OK_TEXT = new SimpleText("OK");
-            CANCEL_TEXT = new SimpleText("Cancel");
+            OK_TEXT = TextManager.Instance["DIALOG_OKAY"];
+            CANCEL_TEXT = TextManager.Instance["DIALOG_CANCEL"];
 
             DataContext = this;
 
             NameTextbox.TextChanged += FilenameChanged;
+
+            Title = TextManager.Instance["PROFILE_SAVE"].Text;
         }
 
         private FilenameValidation ValidateFilename()
