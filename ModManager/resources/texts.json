@@ -1,4 +1,4 @@
-﻿{
+{
   "DASHBOARD_SETTINGS": {
     "Chinese": null,
     "English": "Settings",
@@ -508,9 +508,9 @@
   },
   "HEADER_VERSION": {
     "Chinese": null,
-    "English": "Version: ",
+    "English": "Version ",
     "French": null,
-    "German": "Version: ",
+    "German": "Version ",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -573,9 +573,22 @@
   },
   "HEADER_CREATOR": {
     "Chinese": null,
-    "English": "Creator: ",
+    "English": " by ",
     "French": null,
-    "German": "Ersteller: ",
+    "German": " von ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "HEADER_FOLDER": {
+    "Chinese": null,
+    "English": "Folder: ",
+    "French": null,
+    "German": "Verzeichnis: ",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -638,9 +651,9 @@
   },
   "SETTINGS_DEVMODE": {
     "Chinese": null,
-    "English": "Activate mod developer features: ",
+    "English": "Mod Creator Mode: ",
     "French": null,
-    "German": "Modentwicklungsfeatures aktivieren: ",
+    "German": "Moderstellermodus: ",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -844,11 +857,37 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "INSTALL_CLEANMOVE_NOTE": {
+    "Chinese": null,
+    "English": "Outdated files will be deleted when updating.",
+    "French": null,
+    "German": "Veraltete Dateien werden beim Updaten von Mods gelöscht.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "PROFILESAVE_ALREADYEXISTS": {
     "Chinese": null,
     "English": "A profile of that name already exists.",
     "French": null,
     "German": "Ein Profil mit diesem Namen existiert bereits.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALL_FROM_ZIP": {
+    "Chinese": null,
+    "English": "Install from Zip",
+    "French": null,
+    "German": "Zip installieren",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -914,6 +953,19 @@
     "English": "Save Profile",
     "French": null,
     "German": "Profil speichern",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
+    "Chinese": null,
+    "English": "Allow old versions to overwrite new",
+    "French": null,
+    "German": "Alte Versionen können Neue überschreiben",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
