@@ -16,23 +16,21 @@ namespace Imya.UI
        public App()
        {
             // load localized text first
-            var text = new TextManager();
+            var text = TextManager.Instance;
             text.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
-            var gameSetup = new GameSetupManager();
+            var gameSetup = GameSetupManager.Instance;
             gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
             // init global mods
-            ModCollection.Global = new ModCollection(GameSetupManager.Instance.GetModDirectory(), new ModCollection.Options()
+            ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollection.Options()
             {
                 Normalize = true,
                 LoadImages = true
             });
             Task.Run(() => ModCollection.Global.LoadModsAsync());
-
-            _ = new ModinfoCreationManager();
         }
     }
 }
