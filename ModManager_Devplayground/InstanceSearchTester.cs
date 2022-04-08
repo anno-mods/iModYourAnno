@@ -11,7 +11,7 @@ namespace ModManager_Devplayground
     {
         internal static void Test_InstanceSearch()
         {
-            var x = GamePathFinder.GetInstallDirFromRegistry();
+            var x = GameScanner.GetInstallDirFromRegistry();
         }
     }
 }

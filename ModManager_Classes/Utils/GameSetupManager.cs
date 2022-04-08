@@ -2,6 +2,9 @@
 using Imya.Models.NotifyPropertyChanged;
 using System.Diagnostics;
 
+using System.Timers;
+
+
 namespace Imya.Utils
 {
     /// <summary>
@@ -93,7 +96,7 @@ namespace Imya.Utils
             String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
             if (!File.Exists(executablePath) && autoSearchIfInvalid)
             {
-                var foundGamePath = GamePathFinder.GetInstallDirFromRegistry() ?? "";
+                var foundGamePath = GameScanner.GetInstallDirFromRegistry() ?? "";
                 executablePath = Path.Combine(foundGamePath, "Bin\\Win64\\Anno1800.exe");
                 if (File.Exists(executablePath))
                     gamePath = foundGamePath; // only replace if found, otherwise keep "wrong" path in the settings.
@@ -208,24 +211,72 @@ namespace Imya.Utils
             if (ExecutablePath == null)
                 return;
 
-            using Process process = new Process();
-            process.StartInfo.FileName = ExecutablePath;
-            process.EnableRaisingEvents = true;
-            process.Exited += OnGameExit;
-            process.Start();
+            _ = Task.Run(async () =>
+            {
+                using Process process = new Process();
+                process.StartInfo.FileName = ExecutablePath;
+                process.EnableRaisingEvents = true;
+                process.Exited += OnGameLaunchComplete;
+                process.Start();
 
-            Console.WriteLine("Anno 1800 started.");
+                Console.WriteLine("Anno 1800 started.");
 
+                await process.WaitForExitAsync();
+            }
+            );
             //This is worthless. 1800.exe starts uplay.exe (which starts 1800.exe again)
             //and commits suicide before the game window opening.
             //we can just as well do nothing, same result.
-            process.WaitForExit();
+
+        }
+
+        private void OnGameLaunchComplete(object sender, EventArgs e)
+        {
+            Console.WriteLine($"Start Process exited! Starting Game Scan");
+
+            _ = Task.Run (
+                async () =>
+                {
+                    Process? RunningGame = await ScanForRunningGameAsync(30);
+
+                    if (RunningGame is null) return;
+
+                    RunningGame.EnableRaisingEvents = true;
+                    RunningGame.Exited += OnGameExit;
+
+                    await RunningGame.WaitForExitAsync();
+                } 
+            );
+
         }
 
         private void OnGameExit(object sender, EventArgs e)
         {
-            Console.WriteLine($"Anno 1800 exited!");
+            var process = sender as Process;
+            Console.WriteLine($"Anno 1800 exited with Code {process?.ExitCode}");
         }
 
+        /// <summary>
+        /// Asynchronously searches for a running Anno 1800 process 
+        /// </summary>
+        /// <param name="TimeoutInSeconds"></param>
+        /// <returns></returns>
+        public async Task<Process?> ScanForRunningGameAsync(int TimeoutInSeconds)
+        {
+            Process? process = null;
+            
+            using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+            for (int i = TimeoutInSeconds; 
+                    process is null && 
+                    await periodicTimer.WaitForNextTickAsync() 
+                    && i > 0; i--  )
+            {
+                GameScanner.TryGetRunningGame(out process);
+            }
+
+            Console.WriteLine(process is not null ? "running process found!" : "failed to retrieve any running process");
+
+            return process;
+        }
     }
 }
