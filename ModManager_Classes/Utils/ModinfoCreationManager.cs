@@ -21,12 +21,10 @@ namespace Imya.Utils
         }
         private Modinfo _modinfoContext;
 
-        public static ModinfoCreationManager Instance;
+        public static ModinfoCreationManager Instance { get; } = new ModinfoCreationManager();
 
         public ModinfoCreationManager()
         {
-            Instance ??= this;
-
             ModinfoContext = new Modinfo();
             ModinfoContext.Version = "5";
         }

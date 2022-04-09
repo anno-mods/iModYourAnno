@@ -9,7 +9,7 @@ namespace Imya.Utils
 {
     public class TextManager
     {
-        public static TextManager Instance { get; private set; }
+        public static TextManager Instance { get; } = new TextManager(); 
 
         public ApplicationLanguage ApplicationLanguage { get; private set; } = ApplicationLanguage.English;
 
@@ -26,7 +26,7 @@ namespace Imya.Utils
 
         public TextManager()
         {
-            Instance ??= this;
+
         }
 
         public void AddText(String Key, IText t)

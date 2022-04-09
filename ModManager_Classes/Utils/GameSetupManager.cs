@@ -19,7 +19,7 @@ namespace Imya.Utils
     {
         private static int MAX_RDA_INDEX = 21;
 
-        public static GameSetupManager Instance { get; private set; }
+        public static GameSetupManager Instance { get; } = new GameSetupManager();
 
         public ModLoaderInstaller ModLoader { get; private set; }
 
@@ -40,7 +40,7 @@ namespace Imya.Utils
 
         public GameSetupManager()
         {
-            Instance ??= this;
+
         }
 
         public String GameRootPath { get => _gameRootPath;
