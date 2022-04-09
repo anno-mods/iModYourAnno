@@ -24,8 +24,9 @@
               Margin="15">
             <TextBlock Style="{StaticResource IMYA_TEXT}"
                        Text="{Binding MESSAGE.Text}"
-                       HorizontalAlignment="Center">
-                
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center">
             </TextBlock>
         </Grid>
 

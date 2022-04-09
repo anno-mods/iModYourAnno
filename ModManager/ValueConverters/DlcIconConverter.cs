@@ -21,7 +21,10 @@ namespace Imya.UI.ValueConverters
             { DlcId.Docklands, "dlc_docklands" },
             { DlcId.Tourism, "dlc_tourists" },
             { DlcId.Highlife, "dlc_highlife" },
-            { DlcId.Anarchist, "dlc_anarchist" }
+            { DlcId.Anarchist, "dlc_anarchist" },
+            { DlcId.SeedsOfChange, "dlc_seedsofuseless"},
+            { DlcId.EmpireOfTheSkies, "dlc_airships"},
+            { DlcId.NewWorldRising, "dlc_newworldrising"}
         };
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)

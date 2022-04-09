@@ -11,14 +11,22 @@ namespace Imya.Enums
         [EnumMember] SeatOfPower,
         [EnumMember] BrightHarvest,
         [EnumMember] LandOfLions,
-        [EnumMember] Christmas,
-        [EnumMember] AmusementPark,
-        [EnumMember] CityLife,
         [EnumMember] Docklands,
         [EnumMember] Tourism,
         [EnumMember] Highlife,
+        [EnumMember] SeedsOfChange, 
+        [EnumMember] EmpireOfTheSkies,
+        [EnumMember] NewWorldRising,
+
+        //Cosmetic DLCs
+        [EnumMember] Christmas,
+        [EnumMember] AmusementPark,
+        [EnumMember] CityLife,
         [EnumMember] VehicleSkins,
         [EnumMember] VibrantCity,
-        [EnumMember] PedestrianZone
+        [EnumMember] PedestrianZone,
+        [EnumMember] SeasonalDecorations,
+        [EnumMember] IndustryOrnaments,
+        [EnumMember] CDLC09
     }
 }

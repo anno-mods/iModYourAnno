@@ -89,7 +89,7 @@
                 <Setter Property="HorizontalAlignment"
                         Value="Stretch" />
                 <Setter Property="HorizontalContentAlignment"
-                        Value="Center" />
+                        Value="Left" />
                 <Setter Property="Margin"
                         Value="2,2,2,2" />
                 <Setter Property="MinHeight"

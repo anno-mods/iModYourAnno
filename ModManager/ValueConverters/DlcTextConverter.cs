@@ -34,7 +34,10 @@ namespace Imya.UI.ValueConverters
             { DlcId.VehicleSkins, "DLC_VEHICLESKINS" },
             { DlcId.PedestrianZone, "DLC_PEDESTRIANZONE" },
             { DlcId.VibrantCity, "DLC_VIBRANTCITY" },
-            { DlcId.Anarchist, "DLC_ANARCHIST" }
+            { DlcId.Anarchist, "DLC_ANARCHIST" },
+            { DlcId.SeedsOfChange, "DLC_SEEDSOFUSELESS" },
+            { DlcId.EmpireOfTheSkies, "DLC_AIRSHIPS" },
+            { DlcId.NewWorldRising, "DLC_NEWWORLDRISING" }
         };
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
