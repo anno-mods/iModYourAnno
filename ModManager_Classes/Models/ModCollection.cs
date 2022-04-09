@@ -173,44 +173,58 @@ namespace Imya.Models
             Directory.CreateDirectory(ModsPath);
 
             // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
-
             // TODO external issue handling
-            foreach (var sourceMod in source.Mods)
+            // done, boss! :kekw:
+            try
             {
-                var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
-
-                if (!AllowOldToOverwrite && IsSourceOutdated(sourceMod, targetMod))
+                foreach (var sourceMod in source.Mods)
                 {
-                    Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
-                    continue;
+                    await MoveSingleModIntoAsync(sourceMod, source.ModsPath, AllowOldToOverwrite);
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Move Error: {e.Message}");
+            }
+            finally
+            {
+                Directory.Delete(source.ModsPath, true);
+                DisplayedMods = new ObservableCollection<Mod>(Mods);
+            }
+        }
 
-                // do it!
-                sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
-                DirectoryEx.CleanMove(Path.Combine(source.ModsPath, sourceMod.FullFolderName), targetModPath);
-                Console.WriteLine($"{sourceMod.Status}: {sourceMod.FolderName}");
+        public async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
+        {
+            var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-                // mark all duplicate id mods as obsolete
-                if (sourceMod.Modinfo.ModID != null)
-                {
-                    var sameModIDs = WhereByModID(sourceMod.Modinfo.ModID).Where(x => x != targetMod);
-                    foreach (var mod in sameModIDs)
-                        await mod.MakeObsoleteAsync(ModsPath);
-                    // mark mod as updated, since there was the same modid already there
-                    if (sameModIDs.Any())
-                        sourceMod.Status = ModStatus.Updated;
-                }
-
-                // update mod list, only remove in case of same folder
-                if (targetMod is not null)
-                    Mods.Remove(targetMod);
-                var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
-                reparsed.Status = sourceMod.Status;
-                Mods.Add(reparsed);
+            if (!AllowOldToOverwrite && IsSourceOutdated(sourceMod, targetMod))
+            {
+                Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
+                return;
             }
 
-            Directory.Delete(source.ModsPath, true);
-            DisplayedMods = new ObservableCollection<Mod>(Mods);
+            // do it!
+            sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
+            DirectoryEx.CleanMove(Path.Combine(SourceModsPath, sourceMod.FullFolderName), targetModPath);
+            Console.WriteLine($"{sourceMod.Status}: {sourceMod.FolderName}");
+
+            // mark all duplicate id mods as obsolete
+            if (sourceMod.Modinfo.ModID != null)
+            {
+                var sameModIDs = WhereByModID(sourceMod.Modinfo.ModID).Where(x => x != targetMod);
+                foreach (var mod in sameModIDs)
+                    await mod.MakeObsoleteAsync(ModsPath);
+                // mark mod as updated, since there was the same modid already there
+                if (sameModIDs.Any())
+                    sourceMod.Status = ModStatus.Updated;
+            }
+
+            // update mod list, only remove in case of same folder
+            if (targetMod is not null)
+                Mods.Remove(targetMod);
+            var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
+            reparsed.Status = sourceMod.Status;
+            Mods.Add(reparsed);
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)

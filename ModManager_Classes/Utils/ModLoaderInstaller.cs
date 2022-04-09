@@ -5,6 +5,8 @@ namespace Imya.Utils
 {
     /// <summary>
     /// Check and install mod loader.
+    /// 
+    /// TODO (taubenangriff): Transform this thing into a reusable install class.
     /// </summary>
     public class ModLoaderInstaller : Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier
     {

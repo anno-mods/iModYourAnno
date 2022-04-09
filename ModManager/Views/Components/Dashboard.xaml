@@ -99,7 +99,8 @@
                          MinWidth="200"
                          MinHeight="32"
                          Margin="5,4,4,0"
-                         Click="ModInstallationClick">
+                         Click="ModInstallationClick"
+                         x:Name="ModInstallationButton">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"
@@ -117,7 +118,8 @@
                          MinWidth="200"
                          MinHeight="32"
                          Margin="5,4,4,0"
-                         Click="ModTweakerClick">
+                         Click="ModTweakerClick"
+                         x:Name="ModTweakerButton">
                 <StackPanel Margin="5,0,0,0"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Stretch"

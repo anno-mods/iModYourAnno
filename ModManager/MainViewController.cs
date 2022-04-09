@@ -18,7 +18,6 @@ namespace Imya.UI
         DUMMY
     }
 
-
     public class MainViewController : INotifyPropertyChanged
     {
         private static ModActivationView ModActivationView = new ModActivationView();
@@ -30,6 +29,9 @@ namespace Imya.UI
         private static UserControl DummyControl = new InstallationView();
 
         public static MainViewController Instance { get; private set; }
+
+        public delegate void ViewChangedEventHandler(View view);
+        public event ViewChangedEventHandler ViewChanged = delegate { };
 
         public MainViewController()
         {
@@ -73,6 +75,8 @@ namespace Imya.UI
 
                 default: CurrentView = DummyControl; break;
             }
+
+            ViewChanged(view);
         }
 
         public View GetView()
