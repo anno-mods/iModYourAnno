@@ -10,6 +10,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>resources\icon.ico</ApplicationIcon>
     <AssemblyName>iModYourAnno</AssemblyName>
+    <StartupObject>Imya.UI.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
