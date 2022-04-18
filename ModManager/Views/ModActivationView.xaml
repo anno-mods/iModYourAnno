@@ -117,7 +117,8 @@
                         Style="{StaticResource IMYA_BUTTON}"
                         MinHeight="32"
                         Click="LoadProfileClick"
-                        Grid.Column="1">
+                        Grid.Column="1"
+                        IsEnabled="{Binding CanLoadProfile, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Stretch"

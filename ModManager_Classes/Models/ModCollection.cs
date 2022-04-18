@@ -87,9 +87,10 @@ namespace Imya.Models
             ModsPath = path;
             _options = new () {
                 Normalize = options?.Normalize ?? false,
-                LoadImages = options?.LoadImages ?? false
+                LoadImages = options?.LoadImages ?? false,
             };
         }
+
         
         /// <summary>
         /// Load all mods.

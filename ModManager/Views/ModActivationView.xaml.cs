@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.ComponentModel;
@@ -39,6 +40,13 @@ namespace Imya.UI.Views
             private set => SetProperty(ref _canDelete, value);
         }
         private bool _canDelete = false;
+
+        public bool CanLoadProfile
+        {
+            get => _canLoadProfile;
+            private set => SetProperty(ref _canLoadProfile, value);
+        }
+        private bool _canLoadProfile = false;
         #endregion
 
         public ModActivationView()
@@ -47,6 +55,19 @@ namespace Imya.UI.Views
             DataContext = this;
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
             ModList.ModList_SelectionChanged += UpdateButtons;
+
+            GameSetupManager.Instance.GameStarted += () => UpdateButtons(null);
+            GameSetupManager.Instance.GameClosed += (x, y) => UpdateButtons(null);
+        }
+
+        private void OnGameStart()
+        { 
+        
+        }
+
+        private void OnGameClose(int exitcode, bool RegularClose)
+        { 
+        
         }
 
         private void OnActivate(object sender, RoutedEventArgs e)
@@ -109,9 +130,11 @@ namespace Imya.UI.Views
 
         private void UpdateButtons(Mod? m)
         {
-            CanActivate = ModList.AnyInactiveSelected();
-            CanDeactivate = ModList.AnyActiveSelected();
-            CanDelete = ModList.HasSelection;
+            CanActivate = ModList.AnyInactiveSelected() && !GameSetupManager.Instance.IsGameRunning;
+            CanDeactivate = ModList.AnyActiveSelected() && !GameSetupManager.Instance.IsGameRunning;
+            CanDelete = ModList.HasSelection && !GameSetupManager.Instance.IsGameRunning;
+
+            CanLoadProfile = !GameSetupManager.Instance.IsGameRunning;
         }
 
         #region INotifyPropertyChangedMembers

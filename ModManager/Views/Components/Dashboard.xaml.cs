@@ -9,18 +9,28 @@ using System;
 using System.Globalization;
 using Imya.UI.Views;
 using Imya.UI.Utils;
+using System.Runtime.CompilerServices;
 
 namespace Imya.UI.Components
 {
     /// <summary>
     /// Interaktionslogik für Dashboard.xaml
     /// </summary>
-    public partial class Dashboard : UserControl
+    public partial class Dashboard : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
         public MainViewController MainViewController { get; } = MainViewController.Instance;
+
+        public bool CanStartGame { 
+            get => _canStartGame;
+            private set {
+                _canStartGame = value;
+                OnPropertyChanged(nameof(CanStartGame));
+            }
+        }
+        private bool _canStartGame;
 
         public Dashboard()
         {
@@ -28,6 +38,16 @@ namespace Imya.UI.Components
             DataContext = this;
 
             MainViewController.Instance.ViewChanged += UpdateSelection;
+
+            CanStartGame = CheckCanStartGame();
+
+            GameSetupManager.GameStarted += () => CanStartGame = CheckCanStartGame();
+            GameSetupManager.GameClosed += (x, y) => CanStartGame = CheckCanStartGame();
+        }
+
+        private bool CheckCanStartGame()
+        { 
+            return GameSetupManager.IsValidSetup && !GameSetupManager.IsGameRunning;
         }
 
         public void SettingsClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.SETTINGS);
@@ -65,5 +85,16 @@ namespace Imya.UI.Components
                 default: return null;
             }
         }
-    }
+
+
+        #region INotifyPropertyChangedMembers
+        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
+        private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void SetProperty<T>(ref T property, T value, [CallerMemberName] string propertyName = "")
+        {
+            property = value;
+            OnPropertyChanged(propertyName);
+        }
+        #endregion
+}
 }

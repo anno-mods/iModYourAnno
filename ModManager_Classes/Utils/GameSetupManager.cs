@@ -30,7 +30,13 @@ namespace Imya.Utils
         public delegate void ModDirectoryNameChangedEventHandler(String newName);
         public event ModDirectoryNameChangedEventHandler ModDirectoryNameChanged = delegate { };
 
-        private bool isLocked = false;
+        public delegate void GameStartEventHandler();
+        public event GameStartEventHandler GameStarted = delegate { };
+
+        public delegate void GameCloseEventHandler(int GameExitCode, bool IsRegularExit = true);
+        public event GameCloseEventHandler GameClosed = delegate { };
+
+        public bool IsGameRunning { get; private set; }
 
         // File System Watchers
 #pragma warning disable IDE0052 // Never used, but we want to keep them until GameSetupManager dies
@@ -40,7 +46,8 @@ namespace Imya.Utils
 
         public GameSetupManager()
         {
-
+            GameStarted += () => IsGameRunning = true;
+            GameClosed += (x,y) => IsGameRunning = false;
         }
 
         public String GameRootPath { get => _gameRootPath;
@@ -141,18 +148,18 @@ namespace Imya.Utils
         #endregion
 
         public void LockGame()
-        { 
-            isLocked = true;
+        {
+            IsGameRunning = true;
         }
 
         public void UnlockGame() 
         {
-            isLocked = false;
+            IsGameRunning = false;
         }
 
         public bool IsUnlocked()
         {
-            return !isLocked;
+            return !IsGameRunning;
         }
 
         private void CreateWatchers()
@@ -251,16 +258,20 @@ namespace Imya.Utils
                     RunningGame.EnableRaisingEvents = true;
                     RunningGame.Exited += OnGameExit;
 
+                    GameStarted.Invoke();
+
                     await RunningGame.WaitForExitAsync();
                 } 
             );
-
         }
 
         private void OnGameExit(object sender, EventArgs e)
         {
             var process = sender as Process;
             Console.WriteLine($"Anno 1800 exited with Code {process?.ExitCode}");
+
+            int exitCode = process?.ExitCode ?? -1;
+            GameClosed.Invoke(exitCode);
         }
 
         /// <summary>
@@ -282,6 +293,11 @@ namespace Imya.Utils
             }
 
             Console.WriteLine(process is not null ? "running process found!" : "failed to retrieve any running process");
+
+            if (process is null)
+            {
+                GameClosed.Invoke(-1, false);
+            }
 
             return process;
         }

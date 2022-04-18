@@ -11,6 +11,7 @@
     <ApplicationIcon>resources\icon.ico</ApplicationIcon>
     <AssemblyName>iModYourAnno</AssemblyName>
     <StartupObject>Imya.UI.App</StartupObject>
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
