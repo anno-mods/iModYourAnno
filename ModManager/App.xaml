@@ -153,7 +153,7 @@
                                          Value="true">
                                     <Setter Property="Background"
                                             TargetName="border"
-                                            Value="{DynamicResource InteractiveComponentColorBrush_Light}" />
+                                            Value="{DynamicResource InteractiveComponentColorBrush_Dark}" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled"
                                          Value="false">
@@ -165,7 +165,7 @@
                                          Value="true">
                                     <Setter Property="Background"
                                             TargetName="border"
-                                            Value="{DynamicResource ComponentColorBrush_Pressed}" />
+                                            Value="{DynamicResource InteractiveComponentColorBrush_Light}" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -217,13 +217,13 @@
                                          Value="true">
                                     <Setter Property="Background"
                                             TargetName="border"
-                                            Value="{DynamicResource InteractiveComponentColorBrush_Light}" />
+                                            Value="{DynamicResource InteractiveComponentColorBrush_Dark}" />
                                 </Trigger>
                                 <Trigger Property="IsPressed"
                                          Value="true">
                                     <Setter Property="Background"
                                             TargetName="border"
-                                            Value="{DynamicResource ComponentColorBrush_Pressed}" />
+                                            Value="{DynamicResource InteractiveComponentColorBrush_Light}" />
                                 </Trigger>
                                 <Trigger Property="IsEnabled"
                                          Value="false">
@@ -257,11 +257,53 @@
 
             <Style x:Key="IMYA_TEXTBOX"
                    TargetType="TextBox">
+                <Setter Property="Foreground"
+                        Value="{DynamicResource TextColorBrush}" />
+                <Setter Property="Height"
+                        Value="32" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="TextBox">
                             <Border CornerRadius="3"
-                                    Background="{TemplateBinding Background}">
+                                    Background="{TemplateBinding Background}"
+                                    x:Name="border"
+                                    BorderBrush="{TemplateBinding Background}"
+                                    BorderThickness="2"
+                                    VerticalAlignment="Center"
+                                    Height="{TemplateBinding Height}"
+                                    Width="{TemplateBinding Width}">
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              VerticalAlignment="Center"
+                                              Margin="1"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="true">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush_Dark}" />
+                                </Trigger>
+                                <Trigger Property="IsFocused"
+                                         Value="true">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsReadOnly"
+                                         Value="true">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{Binding RelativeSource={RelativeSource Self}, Path=Background}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                        
+                        <!--<ControlTemplate TargetType="TextBox">
+                            <Border CornerRadius="3"
+                                    Background="{TemplateBinding Background}"
+                                    x:Name="border"
+                                    BorderBrush="{TemplateBinding Background}"
+                                    BorderThickness="2">
                                 <Grid>
                                     <Rectangle Margin="1"
                                                StrokeThickness="1" />
@@ -276,9 +318,24 @@
                                     </TextBox>
                                 </Grid>
                             </Border>
-                        </ControlTemplate>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver"
+                                         Value="true">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush_Dark}" />
+                                </Trigger>
+                                <Trigger Property="IsFocused"
+                                         Value="true">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>-->
                     </Setter.Value>
                 </Setter>
+                
             </Style>
 
             <Style x:Key="IMYA_SCROLLBAR_THUMB_VERTICAL"
@@ -477,22 +534,31 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="ListBoxItem">
                             <Border Margin="0"
-                                    x:Name="Border"
+                                    x:Name="border"
                                     CornerRadius="2,2,2,2"
                                     Background="{TemplateBinding Background}"
-                                    SnapsToDevicePixels="true">
+                                    SnapsToDevicePixels="true"
+                                    BorderBrush="{TemplateBinding Background}"
+                                    BorderThickness="1">
                                 <ContentPresenter />
                             </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="BorderBrush"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsSelected"
+                                         Value="True">
+                                    <Setter Property="Background"
+                                            TargetName="border"
+                                            Value="{DynamicResource AccentColorBrush_Dark}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsSelected"
-                             Value="True">
-                        <Setter Property="Background"
-                                Value="{DynamicResource AccentColorBrush}" />
-                    </Trigger>
-                </Style.Triggers>
             </Style>
 
             <Style x:Key="IMYA_CHECKBOX"
@@ -555,7 +621,7 @@
                     <Border Grid.Column="0"
                             CornerRadius="2,0,0,2"
                             Margin="0"
-                            Background="{DynamicResource InteractiveComponentColorBrush_Light}"
+                            Background="{DynamicResource InteractiveComponentColorBrush}"
                             BorderThickness="0">
                     </Border>
                     <Path x:Name="Arrow"
@@ -587,7 +653,7 @@
                                                   Focusable="false"
                                                   ClickMode="Press"
                                                   IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, 
-                                    RelativeSource={RelativeSource TemplatedParent}}" />
+                                                                RelativeSource={RelativeSource TemplatedParent}}" />
                                     <ContentPresenter x:Name="ContentSite"
                                                       IsHitTestVisible="False"
                                                       Content="{TemplateBinding SelectionBoxItem}"
