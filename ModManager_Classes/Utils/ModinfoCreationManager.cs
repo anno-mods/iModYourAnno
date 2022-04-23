@@ -21,6 +21,28 @@ namespace Imya.Utils
         }
         private Modinfo _modinfoContext;
 
+        public String IncompatibleIDsJoined 
+        {
+            get => _incompatible_ids_joined;
+            set
+            {
+                _incompatible_ids_joined = value;
+                OnPropertyChanged(nameof(IncompatibleIDsJoined));
+            }
+        }
+        private String _incompatible_ids_joined;
+
+        public String ModDepsJoined
+        {
+            get => _mod_deps_joined;
+            set
+            {
+                _mod_deps_joined = value;
+                OnPropertyChanged(nameof(ModDepsJoined));
+            }
+        }
+        private String _mod_deps_joined;
+
         public static ModinfoCreationManager Instance { get; } = new ModinfoCreationManager();
 
         public ModinfoCreationManager()
@@ -34,13 +56,16 @@ namespace Imya.Utils
             if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
             {
                 ModinfoContext = _modinfo;
-
-                ModinfoContext.IncompatibleIds = ModinfoContext.IncompatibleIds?.Distinct().ToArray();
+                //
+                IncompatibleIDsJoined = StringArrToString(ModinfoContext?.IncompatibleIds) ?? "";
+                ModDepsJoined = StringArrToString(ModinfoContext?.ModDependencies) ?? "";
             }
         }
 
         public void Save(String Filename)
         {
+            ModinfoContext.IncompatibleIds = StringToStringArr(IncompatibleIDsJoined);
+            ModinfoContext.ModDependencies = StringToStringArr(ModDepsJoined);
             ModinfoLoader.TrySaveToFile(Filename, ModinfoContext);
         }
 
@@ -49,22 +74,20 @@ namespace Imya.Utils
             ModinfoContext = new Modinfo();
         }
 
-        public void AddIncompatibleID(String IncompatibleID)
+        private String[]? StringToStringArr(String? _string)
         {
-            if (ModinfoContext.IncompatibleIds is not null &&
-                ModinfoContext.IncompatibleIds.Any(x => x.Equals(IncompatibleID))) 
-                return;
+            if (_string is null) return null;
+            var split =  _string.Split(";");
 
-            var List = ModinfoContext.IncompatibleIds?.ToList();
-            List?.Add(IncompatibleID);
-            ModinfoContext.IncompatibleIds = List?.ToArray();
+            if (split.Length == 1 && split[0].Equals(String.Empty)) return null;
+
+            return split;
         }
 
-        public void RemoveIncompatibleID(String IncompatibleID)
+        private String? StringArrToString(String[]? _string)
         {
-            IEnumerable<String>? List = ModinfoContext.IncompatibleIds?.ToList();
-            List = List?.Where(x => x.Equals(IncompatibleID));
-            ModinfoContext.IncompatibleIds = List?.ToArray();
+            if (_string is null) return null;
+            return String.Join(";", _string);
         }
     }
 }

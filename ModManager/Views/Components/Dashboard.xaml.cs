@@ -81,7 +81,7 @@ namespace Imya.UI.Components
                 case View.TWEAKER:
                     return ModTweakerButton;
                 case View.MODINFO_CREATOR:
-                    return ModTweakerButton;
+                    return ModinfoCreatorButton;
                 default: return null;
             }
         }

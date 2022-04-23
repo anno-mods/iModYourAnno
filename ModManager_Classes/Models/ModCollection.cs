@@ -69,6 +69,9 @@ namespace Imya.Models
         public string ModsPath { get; private set; }
         public List<Mod> Mods { get; private set; } = new();
 
+        public IEnumerable<String> ModIDs { get => _modids; }
+        private List<String> _modids = new();
+
         public struct Options
         {
             public bool Normalize { get; init; }

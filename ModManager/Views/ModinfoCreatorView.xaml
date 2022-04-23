@@ -121,6 +121,7 @@
                          Text="{Binding ModinfoCreationManager.ModinfoContext.CreatorName, Mode=TwoWay}"
                          Grid.Column="1" />
             </Grid>
+
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -136,6 +137,14 @@
                          Text="{Binding ModinfoCreationManager.ModinfoContext.CreatorContact, Mode=TwoWay}"
                          Grid.Column="1" />
             </Grid>
+
+
+            <TextBlock Text="Seperate multiple Entries in the following textboxes by ';'" 
+                       Style="{StaticResource IMYA_TEXT}"
+                       HorizontalAlignment="Center"
+                       Margin="5">
+
+            </TextBlock>
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
@@ -146,30 +155,28 @@
                            Text="Mod Dependency IDs:"
                            VerticalAlignment="Top" >
                 </TextBlock>
-                <ListBox Style="{StaticResource IMYA_LISTBOX}"
-                         Grid.Column="1"
-                         ItemsSource="{Binding ModinfoCreationManager.ModinfoContext.IncompatibleIds}"
-                         Height="125"
-                         >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        Margin="5,2,0,2">
-                                <TextBox Text="{Binding Path=., Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource IMYA_TEXTBOX}"
-                                         Background="{DynamicResource InteractiveComponentColorBrush}"
-                                         Margin="4,0,4,0" Height="30"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem"
-                               BasedOn="{StaticResource IMYA_LISTBOXITEM}">
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
+                <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                         Background="{DynamicResource InteractiveComponentColorBrush}"
+                         Text="{Binding ModinfoCreationManager.ModDepsJoined, Mode=TwoWay}"
+                         Grid.Column="1" />
             </Grid>
-            
+
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <!-- Version Label-->
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="Mod Incompabilities IDs:"
+                           VerticalAlignment="Top">
+                </TextBlock>
+                <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                         Background="{DynamicResource InteractiveComponentColorBrush}"
+                         Text="{Binding ModinfoCreationManager.IncompatibleIDsJoined, Mode=TwoWay}"
+                         Grid.Column="1" />
+            </Grid>
+
         </StackPanel>
     </Grid>
 </UserControl>

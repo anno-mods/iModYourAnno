@@ -155,6 +155,7 @@
             </RadioButton>
             <RadioButton MinWidth="200"
                          MinHeight="32"
+                         x:Name="ModinfoCreatorButton"
                          Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          VerticalContentAlignment="Center"
                          Click="MetadataClick"
