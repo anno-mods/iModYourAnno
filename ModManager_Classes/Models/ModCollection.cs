@@ -139,6 +139,17 @@ namespace Imya.Models
             await LoadModsAsync();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns>index of <paramref name="m"/> in the DisplayedMods property</returns>
+        public int IndexOf(Mod m)
+        { 
+            if(DisplayedMods.Contains(m)) return DisplayedMods.IndexOf(m);
+
+            return -1;
+        }
+
         private void SetDisplayMods(ObservableCollection<Mod> value)
         {
             _displayedMods = new ObservableCollection<Mod>(value.

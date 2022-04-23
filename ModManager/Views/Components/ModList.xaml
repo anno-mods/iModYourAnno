@@ -39,7 +39,8 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="TextBox">
                                     <Border CornerRadius="3"
-                                            Background="{TemplateBinding Background}">
+                                            Background="{TemplateBinding Background}"
+                                            x:Name="border">
                                         <Grid>
                                             <Rectangle Margin="1"
                                                        StrokeThickness="1" />
