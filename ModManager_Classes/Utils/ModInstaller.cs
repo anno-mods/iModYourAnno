@@ -20,14 +20,17 @@ namespace Imya.Utils
             if (Directory.Exists(extractTarget))
                 Directory.Delete(extractTarget, true);
 
-            // TODO ZipFile doesn't have progress
-            ZipFile.ExtractToDirectory(zipFilePath, extractTarget, true);
-            progress?.Report(0.1f);
+            using (FileStream fs = File.OpenRead(zipFilePath))
+            using (ZipArchive archive = new ZipArchive(fs, ZipArchiveMode.Read))
+            {
+                archive.ExtractToDirectory(extractTarget, progress, overwrite: true);
+            }
+            progress?.Report(0.9f);
 
             var collection = new ModCollection(extractTarget);
             await collection.LoadModsAsync();
 
-            progress?.Report(0.5f);
+            progress?.Report(1f);
             return collection;
         }
     }
