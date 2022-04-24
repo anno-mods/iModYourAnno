@@ -9,6 +9,7 @@
 
     <SolidColorBrush x:Key="InteractiveComponentColorBrush">#B0B0B0</SolidColorBrush>
     <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#B5B5B5</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Dark">#909090</SolidColorBrush>
 
     <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
     <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#F5F5F5</SolidColorBrush>
