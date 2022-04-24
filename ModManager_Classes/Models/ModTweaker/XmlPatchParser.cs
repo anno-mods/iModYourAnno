@@ -44,9 +44,9 @@ namespace Imya.Models.ModTweaker
             foreach (XmlNode ExposeInstruction in ExposedValues)
             {
                 //per expose instruction
-                ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction);
+                ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction, parent);
 
-                expose.Parent = parent;
+                if (expose is null) return;
 
                 if (parent.TweakStorage.TryGetTweakValue(parent.FilePath, expose.ExposeID, out var value))
                 {

@@ -16,7 +16,7 @@ namespace Imya.Models.ModTweaker
             set
             {
                 _value = value;
-                Parent.TweakStorage!.SetTweakValue(Parent.FilePath, ExposeID, Value);
+                Parent.TweakStorage.SetTweakValue(Parent.FilePath, ExposeID, Value);
             }
         }
 
@@ -24,13 +24,13 @@ namespace Imya.Models.ModTweaker
 
         private String _value;
 
-        public static ExposedModValue? FromXmlNode(XmlNode Expose)
+        public static ExposedModValue? FromXmlNode(XmlNode Expose, TweakerFile parent)
         {
             if (Expose.TryGetAttribute(TweakerConstants.EXPOSE_PATH, out String? Path)
                 && Expose.TryGetAttribute(TweakerConstants.MODOP_ID, out String? ModOpID)
                 && Expose.TryGetAttribute(TweakerConstants.EXPOSE_ATTR, out String? ExposeID))
             {
-                return new ExposedModValue() { Path = Path!, ModOpID = ModOpID!, ExposeID = ExposeID! };
+                return new ExposedModValue() { Path = Path!, ModOpID = ModOpID!, ExposeID = ExposeID!, Parent = parent};
             }
             return null;
         }

@@ -30,7 +30,7 @@ namespace Imya.Models.ModTweaker
     {
         public String BasePath { get; private set; }
         public String FilePath { get; private set; }
-        public String BaseFilePath => FilePath.Substring(0, FilePath.Length - Path.GetFileName(SourceFilename).Length);
+        public String BaseFilePath => Path.GetDirectoryName(FilePath);
         public String SourceFilename { get; private set; }
         public String EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.xml";
 
@@ -61,7 +61,7 @@ namespace Imya.Models.ModTweaker
         private XmlDocument TargetDocument { get; set; } = new XmlDocument();
         private XmlNode TargetRoot { get; init; }
 
-        public ITweakStorage? TweakStorage;
+        public ITweakStorage TweakStorage;
 
         private TweakerFile(String _filepath, String _basepath)
         {
