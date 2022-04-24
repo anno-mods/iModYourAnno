@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Imya.Models.Installation;
+using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +72,56 @@ namespace Imya.Utils
             if (input is not null && !input.Contains('.'))
                 input += ".0";
             return Version.TryParse(input, out result);
+        }
+    }
+
+    //https://stackoverflow.com/questions/43661211/extract-an-archive-with-progress-bar
+
+    public static class ZipArchiveExtensions
+    {
+        public static void ExtractToDirectory(this ZipArchive source, string destinationDirectoryName, IProgress<float>? progress = null, bool overwrite = false)
+        {
+            if (source == null)
+                throw new ArgumentNullException(nameof(source));
+
+            if (destinationDirectoryName == null)
+                throw new ArgumentNullException(nameof(destinationDirectoryName));
+
+
+            // Rely on Directory.CreateDirectory for validation of destinationDirectoryName.
+
+            // Note that this will give us a good DirectoryInfo even if destinationDirectoryName exists:
+            DirectoryInfo di = Directory.CreateDirectory(destinationDirectoryName);
+            string destinationDirectoryFullPath = di.FullName;
+
+            int count = 0;
+            foreach (ZipArchiveEntry entry in source.Entries)
+            {
+                count++;
+                string fileDestinationPath = Path.GetFullPath(Path.Combine(destinationDirectoryFullPath, entry.FullName));
+
+                if (!fileDestinationPath.StartsWith(destinationDirectoryFullPath, StringComparison.OrdinalIgnoreCase))
+                    throw new IOException("File is extracting to outside of the folder specified.");
+
+                progress?.Report( ((float)count / source.Entries.Count) * 0.9f);
+
+                if (Path.GetFileName(fileDestinationPath).Length == 0)
+                {
+                    // If it is a directory:
+
+                    if (entry.Length != 0)
+                        throw new IOException("Directory entry with data.");
+
+                    Directory.CreateDirectory(fileDestinationPath);
+                }
+                else
+                {
+                    // If it is a file:
+                    // Create containing directory:
+                    Directory.CreateDirectory(Path.GetDirectoryName(fileDestinationPath));
+                    entry.ExtractToFile(fileDestinationPath, overwrite: overwrite);
+                }
+            }
         }
     }
 }
