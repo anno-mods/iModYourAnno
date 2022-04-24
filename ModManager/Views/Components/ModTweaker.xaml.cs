@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 using Imya.Models;
 using Imya.Models.ModTweaker;
 using Imya.Utils;
+using Newtonsoft.Json;
 
 namespace Imya.UI.Components
 {
@@ -55,6 +57,8 @@ namespace Imya.UI.Components
             InitializeComponent();
             DataContext = this;
             IsVisibleChanged += OnVisibleChanged;
+
+            Application.Current.Exit += OnAppExit;
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -81,8 +85,17 @@ namespace Imya.UI.Components
                     if (IsVisible)
                     {
                         currentTweaks.Save();
+                        
                         if (mod is not null)
                             tweaks.Load(mod);
+
+                        if (currentTweaks.TweakerFiles is not null)
+                        {
+                            foreach (TweakerFile file in currentTweaks.TweakerFiles)
+                            {
+                                file.TweakStorage?.Save(file.BasePath);
+                            }
+                        }
                     }
 
                     Dispatcher.BeginInvoke(() =>
@@ -99,7 +112,18 @@ namespace Imya.UI.Components
             ThreadPool.QueueUserWorkItem(o =>
                 {
                     tweaks.Save();
-                });   
+                    foreach (TweakerFile file in tweaks.TweakerFiles)
+                    {
+                        file.TweakStorage?.Save(file.BasePath);
+                    }
+                });
+
+            
+        }
+
+        public void OnAppExit(object sender, ExitEventArgs e)
+        {
+            OnLeave();
         }
 
         #region INotifyPropertyChangedMembers
