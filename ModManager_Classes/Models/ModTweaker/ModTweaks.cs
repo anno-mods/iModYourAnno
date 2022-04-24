@@ -23,6 +23,7 @@ namespace Imya.Models.ModTweaker
 
         private String? ModBaseName => _mod?.FolderName;
 
+        public ITweakStorage TweakStorage;
         public void Load(Mod mod)
         {
             if (mod is null) return; 
@@ -31,10 +32,10 @@ namespace Imya.Models.ModTweaker
             var files = mod.GetFilesWithExtension("xml").Where(x => !x.EndsWith("imyatweak.xml")).Select(x => Path.GetRelativePath(mod.FullModPath, x)).ToArray();
             var list = new ObservableCollection<TweakerFile>();
 
-            var tweakStorage = TweakCollection.LoadOrCreate(ModBaseName!);
+            TweakStorage = TweakCollection.LoadOrCreate(ModBaseName!);
             foreach (string filename in files)
             {
-                if (TweakerFile.TryInit(mod.FullModPath, filename, tweakStorage, out var file))
+                if (TweakerFile.TryInit(mod.FullModPath, filename, TweakStorage, out var file))
                 {
                     list.Add(file);
                 }
@@ -44,13 +45,15 @@ namespace Imya.Models.ModTweaker
 
         public void Save()
         {
-            if (TweakerFiles != null && _mod != null)
+            if (TweakerFiles != null && TweakerFiles.Count > 0 && _mod != null)
             {
                 foreach (var f in TweakerFiles)
                 {
                     f.Save(_mod.FullModPath);
                 }
+                TweakStorage.Save(ModBaseName);
             }
+
         }
     }
 }

@@ -88,14 +88,6 @@ namespace Imya.UI.Components
                         
                         if (mod is not null)
                             tweaks.Load(mod);
-
-                        if (currentTweaks.TweakerFiles is not null)
-                        {
-                            foreach (TweakerFile file in currentTweaks.TweakerFiles)
-                            {
-                                file.TweakStorage?.Save(file.BasePath);
-                            }
-                        }
                     }
 
                     Dispatcher.BeginInvoke(() =>
@@ -112,10 +104,6 @@ namespace Imya.UI.Components
             ThreadPool.QueueUserWorkItem(o =>
                 {
                     tweaks.Save();
-                    foreach (TweakerFile file in tweaks.TweakerFiles)
-                    {
-                        file.TweakStorage?.Save(file.BasePath);
-                    }
                 });
 
             
