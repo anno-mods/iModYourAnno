@@ -79,9 +79,35 @@ namespace Imya.UI.Components
         {
             var selectedItems = ListBox_ModList.SelectedItems.Cast<Mod>().ToList();
             
-            CurrentlySelectedMod = ListBox_ModList.SelectedItems.Count > 0 ? ListBox_ModList.SelectedItems[ListBox_ModList.SelectedItems.Count -1] as Mod : ListBox_ModList.SelectedItem as Mod;
+            CurrentlySelectedMod = ListBox_ModList.SelectedItems.Count > 0 ? 
+                GetHighestIndexMod(selectedItems) as Mod :
+                ListBox_ModList.SelectedItem as Mod;
+            
+            
             CurrentlySelectedMods = selectedItems;
+
+
             ModList_SelectionChanged?.Invoke(CurrentlySelectedMod);
+        }
+
+        private Mod? GetHighestIndexMod(IEnumerable<Mod> mods)
+        {
+            if (mods.Count() <= 0 || Mods is null) return null;
+
+            Mod? ModHigh = null;
+            int IndexHigh = -1;
+
+            foreach (Mod m in mods)
+            {
+                var i = Mods!.IndexOf(m);
+                if (IndexHigh < i)
+                {
+                    ModHigh = m;
+                    IndexHigh = i;
+                }
+            }
+
+            return ModHigh;
         }
 
         public async void ActivateSelection()
