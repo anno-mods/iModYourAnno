@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using Imya.Models;
+using Imya.Models.Installation;
 
 namespace Imya.Utils
 {
@@ -8,8 +9,9 @@ namespace Imya.Utils
     /// </summary>
     public class ModInstaller
     {
-        public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir, IProgress<float>? progress = null)
+        public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir, Installation? progress = null)
         {
+            progress?.SetProgressRange(0, 0.9f);
             progress?.Report(0);
 
             // TODO issue handling
@@ -25,7 +27,9 @@ namespace Imya.Utils
             {
                 archive.ExtractToDirectory(extractTarget, progress, overwrite: true);
             }
-            progress?.Report(0.9f);
+            progress?.Report(1f);
+
+            progress?.SetProgressRange(0.9f, 0);
 
             var collection = new ModCollection(extractTarget);
             await collection.LoadModsAsync();

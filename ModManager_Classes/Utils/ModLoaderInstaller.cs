@@ -29,7 +29,7 @@ namespace Imya.Utils
         /// <summary>
         /// Download and install mod loader from GitHub.
         /// </summary>
-        public async Task InstallAsync()
+        public async Task InstallAsync(IProgress<float>? progress = null)
         {
             if (GameSetup.ExecutableDir == null)
             {
@@ -39,11 +39,12 @@ namespace Imya.Utils
             }
 
             var modloaderRepo = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce" };
-            string downloadResult = await GithubDownloader!.DownloadReleaseAsync(modloaderRepo, "loader.zip");
+            var downloadResult = await GithubDownloader!.DownloadReleaseAsync(modloaderRepo, "loader.zip", progress);
+            if (!downloadResult.DownloadSuccessful) return;
 
-            string target = Path.Combine(Path.GetDirectoryName(downloadResult)??"", Path.GetFileNameWithoutExtension(downloadResult));
-
-            ZipFile.ExtractToDirectory(downloadResult, target, true);
+            String DownloadFilename = downloadResult.DownloadDestination;
+            string target = Path.Combine(Path.GetDirectoryName(DownloadFilename) ??"", Path.GetFileNameWithoutExtension(DownloadFilename));
+            ZipFile.ExtractToDirectory(DownloadFilename, target, true);
            
             foreach (string absFile in Directory.GetFiles(target))
             { 
