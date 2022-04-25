@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Imya.UI.Views"
              d:DataContext="{d:DesignInstance Type=local:InstallationView}"
              xmlns:conv="clr-namespace:Imya.UI.ValueConverters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -20,28 +21,30 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
+        <StackPanel Orientation="Vertical" Margin="0,5,5,5" Grid.Row="1">
             <!-- game setup -->
             <Border CornerRadius="3"
                     Margin="0,0,0,8"
                     Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0">
-                <StackPanel Orientation="Vertical">
+                    BorderThickness="0"
+                    Height="45">
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Center">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3*" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Margin="5"
                                    VerticalAlignment="Center" />
                         <Grid Grid.Column="1"
-                              Margin="5">
+                              Margin="0,5,5,5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="50" />
@@ -61,28 +64,36 @@
                             </Button>
                         </Grid>
                     </Grid>
+
+                </StackPanel>
+            </Border>
+            <Border CornerRadius="3"
+                    Margin="0,0,0,8"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
+                <StackPanel>
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
                             <ColumnDefinition Width="2*" />
-                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                            Text="{Binding TextManager[SETTINGS_MODLOADER].Text}"
-                            VerticalAlignment="Center"
-                            Margin="5">
+                                   Text="{Binding TextManager[SETTINGS_MODLOADER].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
                         </TextBlock>
-                        <Grid Grid.Column="1"
-                              Margin="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                Text="{Binding InstallStatus.Localized.Text}"
-                                VerticalAlignment="Center"
-                                Margin="5">
-                            </TextBlock>
-                            <Button Grid.Column="1"
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding InstallStatus.Localized.Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,5"
+                                   Grid.Column="1">
+                        </TextBlock>
+                        <Button Grid.Column="2"
+                                Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
                                 HorizontalContentAlignment="Center"
                                 Content="{Binding TextManager[SETTINGS_INSTALL_MODLOADER].Text}"
@@ -90,118 +101,226 @@
                                 Click="OnInstallModLoader"
                                 MinHeight="30"
                                 x:Name="ModloaderDownloadButton">
-                            </Button>
-                        </Grid>
+                        </Button>
                     </Grid>
-                </StackPanel>
-            </Border>
-            
-            <!-- install -->
-            <Border CornerRadius="3" 
-                    Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding TextManager[ZIP_INSTALLER_TITLE].Text}"
-                               VerticalAlignment="Center"
-                               Margin="5">
-                    </TextBlock>
-                    <!--<StackPanel Orientation="Horizontal">
-                        <RadioButton Margin="5"
-                                     GroupName="installMode"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Left"
-                                     Foreground="{DynamicResource TextColorBrush}"
-                                     Content="Only update existing mods"
-                                     IsChecked="False">
-                        </RadioButton>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton Margin="5"
-                                     GroupName="installMode"
-                                     VerticalAlignment="Center"
-                                     HorizontalAlignment="Left"
-                                     Foreground="{DynamicResource TextColorBrush}"
-                                     Content="Only add new mods"
-                                     IsEnabled="False"
-                                     IsChecked="False">
-                        </RadioButton>
-                    </StackPanel>-->
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="2"
+                                    Grid.Column="1">
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}" 
+                                      Content="Enabled"
+                                      Margin="0,5,5,5"/>
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                                      Content="Automatic Updates" 
+                                      Margin="0,5,5,5"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                
+            </Border>
+
+            <!-- install: zip -->
+            <Border CornerRadius="3" 
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Margin="0,0,0,8">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="1*" />
                         </Grid.ColumnDefinitions>
-                        <Button 
-                            Grid.Column="0"
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[ZIP_INSTALLER_TITLE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                        <Button Grid.Column="1"
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
                                 Content="{Binding TextManager[INSTALL_FROM_ZIP].Text}"
                                 Click="OnInstallFromZipAsync"
+                                HorizontalContentAlignment="Center"
                                 IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
-                        <!--<Button Grid.Column="1"
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Grid.Column="1">
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                                      Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                                      IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
+                                      Margin="0,5,5,5" />
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                                      Content="Configure Auto updating where possible"
+                                      Margin="0,5,5,5" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Column="2"
+                                    Grid.Row="1">
+                            <materialDesign:PackIcon Kind="InfoCircleOutline"
+                                                     VerticalAlignment="Center">
+
+                            </materialDesign:PackIcon>
+                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                       Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
+                                       VerticalAlignment="Center"
+                                       Margin="5">
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="Install mods from Github"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                        <Button Grid.Column="1"
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
-                                Content="Install from GitHub"
-                                IsEnabled="False"
-                                Click="OnInstallFromZip">
-                        </Button>-->
+                                Content="Select"
+                                Click="OnInstallFromGithub"
+                                HorizontalContentAlignment="Center"
+                                IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
                     </Grid>
-                    <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
-                              Margin="5"
-                              VerticalAlignment="Center"
-                              HorizontalAlignment="Left"
-                              Grid.Column="1"
-                              Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                              Foreground="{DynamicResource AccentColorBrush}"
-                              IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}" />
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
-                               VerticalAlignment="Center"
-                               Margin="5">
-                    </TextBlock>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0"
+                                    Grid.Column="1">
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                                      Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                                      Margin="0,5,5,5" />
+                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                                      Content="Configure Auto updating"
+                                      Margin="0,5,5,5" />
+                            <!-- Information -->
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="2">
+                                <materialDesign:PackIcon Kind="InfoCircleOutline"
+                                                         VerticalAlignment="Center">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
+                                           VerticalAlignment="Center"
+                                           Margin="5">
+                                </TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="2">
+                                <materialDesign:PackIcon Kind="Internet"
+                                                         VerticalAlignment="Center">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="Online Feature: Requires active internet connection"
+                                           VerticalAlignment="Center"
+                                           Margin="5">
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+
+                        
+                    </Grid>
                 </StackPanel>
             </Border>
         </StackPanel>
 
-        <ScrollViewer Grid.Column="2" Grid.Row="2" Style="{StaticResource IMYA_SCROLLVIEWER}" Margin="2">
-            <ItemsControl ItemsSource="{Binding RunningInstallations, UpdateSourceTrigger=PropertyChanged}" x:Name="RunningInstallationsDisplay">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Margin="2" Background="{DynamicResource ComponentColorBrush}" MinHeight="80" CornerRadius="2">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <StackPanel Orientation="Horizontal">
+        <StackPanel Grid.Column="1"
+                    Grid.Row="1"
+                    Margin="5"
+                    Orientation="Vertical">
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Height="45"
+                    Margin="0,0,0,8">
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="Active Installs: 0"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Margin="5"
+                           FontWeight="DemiBold">
+                </TextBlock>
+            </Border>
+
+            <ScrollViewer Grid.Column="2"
+                          Grid.Row="2"
+                          Style="{StaticResource IMYA_SCROLLVIEWER}"
+                          Margin="2">
+                <ItemsControl ItemsSource="{Binding RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
+                              x:Name="RunningInstallationsDisplay">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="2"
+                                    Background="{DynamicResource ComponentColorBrush}"
+                                    MinHeight="80"
+                                    CornerRadius="2">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                   Text="Installing Mods from"
+                                                   Margin="5"
+                                                   FontWeight="Bold" />
+                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                   Text="{Binding SourceFilepath, UpdateSourceTrigger=PropertyChanged}"
+                                                   Margin="5" />
+                                    </StackPanel>
+                                    <ProgressBar Name="progress"
+                                                 Margin="6,6"
+                                                 Height="15"
+                                                 Grid.Row="1"
+                                                 Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                                                 Minimum="0"
+                                                 Maximum="1" />
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="Installing Mods from"
+                                               Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5"
-                                               FontWeight="Bold" />
-                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding SourceFilepath, UpdateSourceTrigger=PropertyChanged}"
-                                               Margin="5" />
-                                </StackPanel>
-                                <ProgressBar Name="progress"
-                                             Margin="6,6"
-                                             Height="15"
-                                             Grid.Row="1"
-                                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
-                                             Minimum="0"
-                                             Maximum="1" />
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
-                                           Margin="5" 
-                                           Grid.Row="2"/>
-                            </Grid>
-                            
-                            
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                                               Grid.Row="2" />
+                                </Grid>
+
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>
