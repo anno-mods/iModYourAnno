@@ -33,7 +33,7 @@ namespace Imya.Models.Installation
 
         public IInstallationStatus? Status { get; }
 
-        public virtual void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
+        public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
         public void SetProgressRange(float Min, float Max)
         {
