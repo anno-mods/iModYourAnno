@@ -564,7 +564,7 @@
             <Style x:Key="IMYA_CHECKBOX"
                    TargetType="CheckBox">
                 <Setter Property="Foreground"
-                        Value="{DynamicResource TextColorBrush}" />
+                        Value="{DynamicResource AccentColorBrush}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="CheckBox">
