@@ -10,6 +10,8 @@ namespace Imya.GithubIntegration
 {
     public struct DownloadResult
     {
+        public DownloadResult() { }
+
         public bool DownloadSuccessful = false;
         public String DownloadDestination = String.Empty;
     }
