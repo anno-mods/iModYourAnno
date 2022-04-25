@@ -44,24 +44,31 @@ namespace Imya.Models.ModTweaker
             foreach (XmlNode ExposeInstruction in ExposedValues)
             {
                 //per expose instruction
-                ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction, parent);
-
-                if (expose is null) return;
-
-                if (parent.TweakStorage.TryGetTweakValue(parent.FilePath, expose.ExposeID, out var value))
-                {
-                    expose.Value = value!;
-                }
-                else
-                {
-                    expose.Value = parent.GetDefaultNodeValue(expose);
-                }
-
+                ExposedModValue? expose = FetchExpose(ExposeInstruction, parent);
                 if (expose is not null)
                 {
                     yield return expose;
                 }
             }
+        }
+
+        private ExposedModValue? FetchExpose(XmlNode ExposeInstruction, TweakerFile parent)
+        {
+            //per expose instruction
+            ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction, parent);
+
+            if (expose is null) return null;
+
+            if (parent.TweakStorage.TryGetTweakValue(parent.FilePath, expose.ExposeID, out var value))
+            {
+                expose.Value = value!;
+            }
+            else
+            {
+                expose.Value = parent.GetDefaultNodeValue(expose);
+            }
+
+            return expose;
         }
 
         internal IEnumerable<ModOp> FetchModOps(XmlDocument ImportDocument)
