@@ -23,7 +23,7 @@ namespace Imya.GithubIntegration
             }
         }
 
-        public async Task<Release?> FetchLatestRelease(GithubRepoInfo repository)
+        public async Task<Release?> FetchLatestReleaseAsync(GithubRepoInfo repository)
         {
             Release? release = null;
             try
@@ -70,7 +70,7 @@ namespace Imya.GithubIntegration
 
         public async Task<String> DownloadReleaseAsync(GithubRepoInfo mod, String AssetName)
         {
-            var rel = await FetchLatestRelease(mod);
+            var rel = await FetchLatestReleaseAsync(mod);
             return await DownloadReleaseAsync(rel, AssetName);
         }
     }

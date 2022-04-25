@@ -38,7 +38,7 @@
                     MinHeight="32"
                     Margin="5,4,4,0"
                     HorizontalContentAlignment="Left"
-                    IsEnabled="{Binding GameSetupManager.IsValidSetup, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding CanStartGame, UpdateSourceTrigger=PropertyChanged}"
                     Click="StartGameClick">
                 <DockPanel Margin="10,0,0,0"
                            HorizontalAlignment="Left"
@@ -155,6 +155,7 @@
             </RadioButton>
             <RadioButton MinWidth="200"
                          MinHeight="32"
+                         x:Name="ModinfoCreatorButton"
                          Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          VerticalContentAlignment="Center"
                          Click="MetadataClick"
