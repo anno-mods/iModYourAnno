@@ -13,7 +13,7 @@ namespace Imya.Utils
         public string DownloadDirectory { get; private set; }
         public bool IsInstalled { get; private set; } = false;
 
-        readonly GithubDownloader? GithubDownloader;
+        readonly GithubDownloader GithubDownloader;
         readonly GameSetupManager GameSetup = GameSetupManager.Instance;
 
         public ModLoaderInstaller(string gamePath, string downloadDirectory)
@@ -39,7 +39,7 @@ namespace Imya.Utils
             }
 
             var modloaderRepo = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce" };
-            var downloadResult = await GithubDownloader!.DownloadReleaseAsync(modloaderRepo, "loader.zip", progress);
+            var downloadResult = await GithubDownloader.DownloadReleaseAsync(modloaderRepo, "loader.zip", progress);
             if (!downloadResult.DownloadSuccessful) return;
 
             String DownloadFilename = downloadResult.DownloadDestination;
