@@ -62,6 +62,11 @@ namespace Imya.Models
         /// Category with default "NoCategory".
         /// </summary>
         public IText Category => Modinfo.Category;
+
+        /// <summary>
+        /// Number of likes with default 0.
+        /// </summary>
+        public IText Likes => Modinfo.Likes;
         #endregion
 
         #region Optional Mod Manager info
