@@ -9,6 +9,8 @@ using Imya.Models;
 using Imya.Models.ModMetadata;
 using Imya.Utils;
 
+using Markdown.Xaml;
+
 namespace Imya.UI.Components
 {
     /// <summary>
@@ -142,6 +144,7 @@ namespace Imya.UI.Components
             // force update of DLC ids
             DlcIds = DlcIds.ToArray();
         }
+
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
