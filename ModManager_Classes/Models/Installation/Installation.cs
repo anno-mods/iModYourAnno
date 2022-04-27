@@ -33,6 +33,30 @@ namespace Imya.Models.Installation
 
         public IInstallationStatus? Status { get; }
 
+        public IText? HeaderText 
+        { 
+            get => _headerText;
+            protected set 
+            {
+                SetProperty(ref _headerText, value);
+                OnPropertyChanged(nameof(HeaderText));
+            }
+        }
+        protected IText? _headerText;
+
+        public IText? AdditionalText
+        {
+            get => _additional_text;
+            protected set
+            {
+                SetProperty(ref _additional_text, value);
+                OnPropertyChanged(nameof(AdditionalText));
+            }
+        }
+        protected IText? _additional_text;
+
+        public bool HasAdditionalText => AdditionalText is not null;
+
         public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
         public void SetProgressRange(float Min, float Max)
