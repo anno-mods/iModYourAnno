@@ -1,10 +1,13 @@
-﻿using Imya.Models.Installation;
+
+using Imya.Models.ModTweaker;
+using Imya.Models.Installation;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Imya.Utils
 {
@@ -75,6 +78,55 @@ namespace Imya.Utils
         }
     }
 
+    public static class DictionaryEx
+    {
+        public static TValue? SafeGet<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey Key) where TKey : notnull
+        {
+            try
+            {
+                return dict[Key];
+            }
+            catch (Exception e)
+            {
+                return default(TValue);
+            }
+        }
+
+        public static TValue SafeAddOrGet<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey Key) where TKey : notnull where TValue : new()
+        {
+            if (dict.ContainsKey(Key)) return dict.SafeGet(Key)!;
+
+            TValue t = new();
+            dict.Add(Key, t);
+            return t;
+        }
+    }
+
+    public static class XmlNodeExtensions
+    {
+        public static bool HasAttribute(this XmlNode node, String AttribID)
+        {
+            return node.Attributes?[AttribID] is not null;
+        }
+
+        public static bool TryGetAttribute(this XmlNode node, String AttribID, out String? Value)
+        { 
+            Value = node.Attributes?[AttribID]?.Value;
+            return Value is not null;
+        }
+
+        public static bool TryGetModOpNode(this XmlDocument Document, String ModOpId, out XmlNode? ModOp)
+        {
+            ModOp = Document.SelectSingleNode($@"/ModOps/ModOp[@{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            return ModOp is not null;
+        }
+
+        public static bool TryGetModOpNodes(this XmlDocument Document, String ModOpId, out XmlNodeList? ModOps)
+        {
+            ModOps = Document.SelectNodes($@"/ModOps/ModOp[@{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            return ModOps is not null && ModOps.Count > 0;
+        }
+    }
     //https://stackoverflow.com/questions/43661211/extract-an-archive-with-progress-bar
 
     public static class ZipArchiveExtensions

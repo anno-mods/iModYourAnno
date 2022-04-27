@@ -58,7 +58,7 @@
                                     </TextBlock>
                                 </Expander.Header>
 
-                                <ItemsControl ItemsSource="{Binding EditableValues}">
+                                <ItemsControl ItemsSource="{Binding Exposes}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border HorizontalAlignment="Left"
@@ -70,7 +70,7 @@
                                                         <ColumnDefinition />
                                                         <ColumnDefinition Width="2*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Key}"
+                                                    <TextBlock Text="{Binding ExposeID}"
                                                                Style="{StaticResource IMYA_TEXT}"
                                                                VerticalAlignment="Center"
                                                                Margin="10,0,0,0"
@@ -78,7 +78,7 @@
                                                     <TextBox Grid.Column="1"
                                                              Style="{StaticResource IMYA_TEXTBOX}"
                                                              Background="{DynamicResource InteractiveComponentColorBrush}"
-                                                             Text="{Binding Value}"
+                                                             Text="{Binding Value, Mode=TwoWay}"
                                                              TextAlignment="Justify"
                                                              MinWidth="40"
                                                              Margin="0,4,4,4" />
