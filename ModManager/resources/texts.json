@@ -885,9 +885,9 @@
   },
   "INSTALL_FROM_ZIP": {
     "Chinese": null,
-    "English": "Install from Zip",
+    "English": "Select...",
     "French": null,
-    "German": "Zip installieren",
+    "German": "Auswählen...",
     "Italian": null,
     "Japanese": null,
     "Korean": null,

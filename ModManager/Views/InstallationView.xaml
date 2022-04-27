@@ -84,7 +84,8 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Text="{Binding TextManager[SETTINGS_MODLOADER].Text}"
                                    VerticalAlignment="Center"
-                                   Margin="5">
+                                   Margin="5"
+                                   FontWeight="DemiBold">
                         </TextBlock>
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Text="{Binding InstallStatus.Localized.Text}"
@@ -105,7 +106,7 @@
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="2"
@@ -136,7 +137,8 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Text="{Binding TextManager[ZIP_INSTALLER_TITLE].Text}"
                                    VerticalAlignment="Center"
-                                   Margin="5">
+                                   Margin="5"
+                                   FontWeight="DemiBold">
                         </TextBlock>
                         <Button Grid.Column="1"
                                 Margin="5"
@@ -149,7 +151,7 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -196,12 +198,13 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Text="Install mods from Github"
                                    VerticalAlignment="Center"
+                                   FontWeight="DemiBold"
                                    Margin="5">
                         </TextBlock>
                         <Button Grid.Column="1"
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
-                                Content="Select"
+                                Content="Select..."
                                 Click="OnInstallFromGithub"
                                 HorizontalContentAlignment="Center"
                                 IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
@@ -209,7 +212,7 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="20" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -266,13 +269,25 @@
                     BorderThickness="0"
                     Height="45"
                     Margin="0,0,0,8">
-                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                           Text="Active Installs: 0"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Margin="5"
-                           FontWeight="DemiBold">
-                </TextBlock>
+                <Grid VerticalAlignment="Center"
+                      HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="Active Installs"
+                               Margin="5"
+                               FontWeight="DemiBold">
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding RunningInstallations.Count}"
+                               Margin="5"
+                               FontWeight="DemiBold"
+                               Grid.Column="1">
+                    </TextBlock>
+                </Grid>
+                
             </Border>
 
             <ScrollViewer Grid.Column="2"
