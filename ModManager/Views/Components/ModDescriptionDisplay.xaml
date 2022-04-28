@@ -146,7 +146,8 @@
                                               IsEnabled="False"
                                               Style="{StaticResource FlowDocumentScrollViewer}"
                                               Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
-                                              Margin="-15,0,0,0">
+                                              Margin="-15,0,0,0"
+                                              x:Name="DescriptionFlowViewer">
                                               
                     </FlowDocumentScrollViewer>
 
@@ -160,7 +161,8 @@
                                Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
 
                     <ItemsControl ItemsSource="{Binding Mod.Modinfo.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
-                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
+                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -184,10 +186,11 @@
                                Text="{Binding TextManager[HEADER_DLCDEPENDENCY].Text, UpdateSourceTrigger=PropertyChanged}"
                                Margin="2,5,2,5"
                                FontWeight="SemiBold"
-                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
+                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}"/>
 
                     <ItemsControl x:Name="DLC_Dependencies"
-                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}">
+                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"

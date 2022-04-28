@@ -103,6 +103,7 @@ namespace Imya.UI.Components
             InitializeComponent();
             DataContext = this;
             TextManager.Instance.LanguageChanged += OnLanguageChanged;
+            
         }
 
         public void SetDisplayedMod(Mod? mod)
@@ -139,6 +140,18 @@ namespace Imya.UI.Components
             }
         }
 
+        private void OnSizeChanged(object sender, SizeChangedEventArgs s)
+        {
+            var Width = BaseGrid.ActualWidth;
+
+            var document = DescriptionFlowViewer.Document;
+            if (document is not null) document.PageWidth = Width;
+
+            DescriptionTextWidth = Width > 20 ? Width - 20 : 20;
+            KnownIssueTextWidth = Width > 50 ? Width - 50 : 50;
+            
+        }
+
         private void OnLanguageChanged(ApplicationLanguage language)
         {
             // force update of DLC ids
@@ -153,12 +166,6 @@ namespace Imya.UI.Components
         {
             property = value;
             OnPropertyChanged(propertyName);
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs s) 
-        {
-            DescriptionTextWidth = BaseGrid.ActualWidth > 20 ? BaseGrid.ActualWidth - 20 : 20;
-            KnownIssueTextWidth = BaseGrid.ActualWidth > 50 ? BaseGrid.ActualWidth - 50 : 50;
         }
         #endregion
     }
