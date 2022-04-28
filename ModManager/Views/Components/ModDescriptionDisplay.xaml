@@ -145,7 +145,8 @@
                     <FlowDocumentScrollViewer Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                               IsEnabled="False"
                                               Style="{StaticResource FlowDocumentScrollViewer}"
-                                              Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}">
+                                              Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
+                                              Margin="-15,0,0,0">
                                               
                     </FlowDocumentScrollViewer>
 
