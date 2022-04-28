@@ -98,12 +98,13 @@ namespace Imya.UI.Components
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
+        public double WindowWidth { get; private set; }
+
         public ModDescriptionDisplay()
         {
             InitializeComponent();
             DataContext = this;
             TextManager.Instance.LanguageChanged += OnLanguageChanged;
-            
         }
 
         public void SetDisplayedMod(Mod? mod)
@@ -124,6 +125,8 @@ namespace Imya.UI.Components
             // If the mod does not have an image, it will show a placeholder. 
             // Only hide the image in case there is no displayed mod.
             ShowImage = mod != null;
+
+            AdjustDocumentWidth();
         }
 
         public void OnCopyModIDClick(object sender, RoutedEventArgs e)
@@ -140,15 +143,20 @@ namespace Imya.UI.Components
             }
         }
 
+        private void AdjustDocumentWidth()
+        {
+            var document = DescriptionFlowViewer.Document;
+            if (document is not null) document.PageWidth = WindowWidth;
+        }
+
         private void OnSizeChanged(object sender, SizeChangedEventArgs s)
         {
-            var Width = BaseGrid.ActualWidth;
+            WindowWidth = BaseGrid.ActualWidth;
 
-            var document = DescriptionFlowViewer.Document;
-            if (document is not null) document.PageWidth = Width;
+            AdjustDocumentWidth();
 
-            DescriptionTextWidth = Width > 20 ? Width - 20 : 20;
-            KnownIssueTextWidth = Width > 50 ? Width - 50 : 50;
+            DescriptionTextWidth = WindowWidth > 20 ? WindowWidth - 20 : 20;
+            KnownIssueTextWidth = WindowWidth > 50 ? WindowWidth - 50 : 50;
             
         }
 
