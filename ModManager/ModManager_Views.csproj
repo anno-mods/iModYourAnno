@@ -40,12 +40,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Markdown.Xaml" Version="1.0.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ModManager_Classes\ModManager_Classes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Markdown.Xaml">
+      <HintPath>lib\Markdown.Xaml.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

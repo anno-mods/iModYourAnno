@@ -30,7 +30,9 @@
                          Heading4Style="{StaticResource H4Style}"
                          LinkStyle="{StaticResource LinkStyle}"
                          ImageStyle="{StaticResource ImageStyle}"
-                         SeparatorStyle="{StaticResource SeparatorStyle}" />
+                         SeparatorStyle="{StaticResource SeparatorStyle}"
+                         TableStyle="{StaticResource TableStyle}"
+                         TableHeaderStyle="{StaticResource TableHeaderStyle}" />
 
             <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter"
                                                Markdown="{StaticResource Markdown}" />
@@ -140,11 +142,11 @@
                                    Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}" />
                     </StackPanel>-->
 
-                    <FlowDocumentScrollViewer Margin="2,8,2,8"
-                                              FontWeight="SemiBold"
-                                              Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                    <FlowDocumentScrollViewer Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="False"
+                                              Style="{StaticResource FlowDocumentScrollViewer}"
                                               Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}">
-                        
+                                              
                     </FlowDocumentScrollViewer>
 
                     <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
