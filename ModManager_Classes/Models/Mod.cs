@@ -248,5 +248,68 @@ namespace Imya.Models
             return !name.Equals("") && !category.Equals("");
         }
         #endregion
+
+        #region comparisons
+        /// <summary>
+        /// Check if mod has the same version and content as the target mod.
+        /// </summary>
+        public bool HasSameContentAs(Mod? target)
+        {
+            if (target is null) return false;
+
+            if (Modinfo.Version != target.Modinfo.Version)
+                return false;
+
+            var dirA = new DirectoryInfo(FullModPath);
+            var dirB = new DirectoryInfo(target.FullModPath);
+            var listA = dirA.GetFiles("*", SearchOption.AllDirectories);
+            var listB = dirB.GetFiles("*", SearchOption.AllDirectories);
+
+            // TODO filter tweaking files!
+
+            // first compare path only to avoid costly md5 checks
+            var pathComparer = new FilePathComparer(prefixPathA: dirA.FullName, prefixPathB: dirB.FullName);
+            bool areIdentical = listA.SequenceEqual(listB, pathComparer);
+            if (!areIdentical)
+                return false;
+
+            // no path (or file length) difference, now go for file content
+            return listA.SequenceEqual(listB, new FileMd5Comparer());
+        }
+
+        /// <summary>
+        /// Check if mod is an update of the target mod.
+        /// Must have same ModID.
+        /// Go by modinfo.json version first and fallback to checksum if versions are equal.
+        /// Consider null targets as updatable.
+        /// </summary>
+        public bool IsUpdateOf(Mod? target)
+        {
+            if (target is null)
+                return true;
+            if (target.Modinfo.ModID != Modinfo.ModID)
+                return false;
+
+            // compare content when unversioned
+            if (target.Modinfo.Version is null && Modinfo.Version is null)
+                return !HasSameContentAs(target); // consider same as outdated
+
+            // prefer versioned mods
+            if (target.Modinfo.Version is null)
+                return true;
+            if (Modinfo.Version is null)
+                return false;
+
+            // can't compare not parsable versions
+            if (!VersionEx.TryParse(target.Modinfo.Version, out var targetVersion) ||
+                !VersionEx.TryParse(Modinfo.Version, out var sourceVersion))
+                return !HasSameContentAs(target); // consider same as outdated
+
+            if (sourceVersion == targetVersion)
+                return !HasSameContentAs(target); // consider same as outdated
+
+            return sourceVersion > targetVersion;
+        }
+        #endregion
     }
 }
