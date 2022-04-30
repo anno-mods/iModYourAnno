@@ -79,8 +79,11 @@ namespace Imya.Models
         public bool HasModID { get => Modinfo.ModID is not null; }
         #endregion
 
+
+        public float SizeInMB { get; private set; }
+
         public delegate void ModStatsChangedHandler();
-        public event ModStatsChangedHandler StatsChanged;
+        public event ModStatsChangedHandler? StatsChanged;
 
         #region UI info
         // TODO selection is UI code. 
@@ -135,6 +138,11 @@ namespace Imya.Models
                 Image = new ImyaImageSource();
                 Image.ConstructAsBase64Image(Modinfo.Image);
             }
+
+            // Just get the size
+            // TODO move to separate async?
+            var info = new DirectoryInfo(FullModPath);
+            SizeInMB = (float)Math.Round((decimal)info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(x => x.Length) / 1024 / 1024, 1);
         }
 
         public void InitImageAsFilepath(String ImagePath)
