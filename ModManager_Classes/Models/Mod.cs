@@ -40,6 +40,7 @@ namespace Imya.Models
             {
                 _isActive = value;
                 OnPropertyChanged(nameof(IsActive));
+                StatsChanged?.Invoke();
             }
 
         }
@@ -77,6 +78,9 @@ namespace Imya.Models
 
         public bool HasModID { get => Modinfo.ModID is not null; }
         #endregion
+
+        public delegate void ModStatsChangedHandler();
+        public event ModStatsChangedHandler StatsChanged;
 
         #region UI info
         // TODO selection is UI code. 
