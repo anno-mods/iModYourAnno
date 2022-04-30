@@ -189,7 +189,7 @@
                     <!-- extra information -->
                     <StackPanel Orientation="Horizontal"
                                 Margin="2,8,2,0"
-                                Visibility="{Binding ShowCreatorName, Converter={StaticResource BoolToVis}}">
+                                Visibility="{Binding ShowExtraInfo, Converter={StaticResource BoolToVis}}">
                         <TextBlock TextWrapping="Wrap"
                                    Text="{Binding TextManager[HEADER_FOLDER].Text}"
                                    Style="{StaticResource IMYA_TEXT}" />
@@ -198,7 +198,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 Margin="2,0,2,8"
-                                Visibility="{Binding ShowCreatorName, Converter={StaticResource BoolToVis}}">
+                                Visibility="{Binding ShowExtraInfo, Converter={StaticResource BoolToVis}}">
                         <TextBlock TextWrapping="Wrap"
                                    Text="{Binding TextManager[HEADER_FOLDER_SIZE].Text}"
                                    Style="{StaticResource IMYA_TEXT}" />
