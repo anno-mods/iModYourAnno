@@ -14,6 +14,9 @@ namespace Imya.UI.ValueConverters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             String? Text = values[0] as String;
+
+            if (Text is null) return String.Empty;
+
             return String.Format( Text, values.Skip(1).Take(values.Length -1).ToArray() );
         }
 
