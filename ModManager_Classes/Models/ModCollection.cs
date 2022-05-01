@@ -39,35 +39,23 @@ namespace Imya.Models
 
         public int ActiveMods
         {
-            get
-            {
-                return _activeMods;
-            }
-            set
-            {
-                _activeMods = value;
-                OnPropertyChanged("ActiveMods");
-            }
+            get => _activeMods;
+            set => SetProperty(ref _activeMods, value);
         }
         private int _activeMods;
 
-        public int InactiveMods
+        public float ActiveSizeInMBs
         {
-            get
-            {
-                return _inactiveMods;
-            }
-            set
-            {
-                _inactiveMods = value;
-                OnPropertyChanged(nameof(InactiveMods));
-            }
+            get => _activeSizeInMBs;
+            set => SetProperty(ref _activeSizeInMBs, value);
         }
-        private int _inactiveMods;
+        private float _activeSizeInMBs = 0;
         #endregion
 
         public string ModsPath { get; private set; }
-        public List<Mod> Mods { get; private set; } = new();
+
+        public IReadOnlyList<Mod> Mods => _mods;
+        private List<Mod> _mods = new();
 
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
@@ -102,12 +90,12 @@ namespace Imya.Models
         {
             if (!Directory.Exists(ModsPath))
             {
-                Mods = new();
+                _mods = new();
                 DisplayedMods = new();
                 return;
             }
 
-            Mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
+            _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                 .Where(x => !Path.GetFileName(x).StartsWith(".")));
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
@@ -156,24 +144,33 @@ namespace Imya.Models
 
         private void SetDisplayMods(ObservableCollection<Mod> value)
         {
+            // TODO display mods should move to a separate wrapper around ModCollection
+
+            // clear out old mods
+            foreach (var mod in _displayedMods)
+                mod.StatsChanged -= OnModStatsChanged;
+
             _displayedMods = new ObservableCollection<Mod>(value.
                 OrderBy(x => x.Name.Text).
                 OrderBy(x => x.Category.Text).
                 OrderByDescending(x => x.IsActive).
                 ToList());
-            UpdateModCounts();
+
+            // register for stat changes
+            foreach (var mod in _displayedMods)
+                mod.StatsChanged += OnModStatsChanged;
+            OnModStatsChanged();
             OnPropertyChanged(nameof(DisplayedMods));
         }
 
-        private void UpdateModCounts()
+        private void OnModStatsChanged()
         {
-            var newActive = Mods.Count(x => x.IsActive);
-            var newInactive = Mods.Count - newActive;
-            if (newActive != ActiveMods || newInactive != InactiveMods)
+            var newActive = _mods.Count(x => x.IsActive);
+            if (newActive != ActiveMods)
             {
                 ActiveMods = newActive;
-                InactiveMods = newInactive;
-                Console.WriteLine($"Found: {Mods.Count}, Active: {ActiveMods}, Inactive: {InactiveMods}");
+                ActiveSizeInMBs = _mods.Sum(x => x.IsActive ? x.SizeInMB : 0);
+                Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
             }
         }
 
@@ -236,10 +233,14 @@ namespace Imya.Models
 
             // update mod list, only remove in case of same folder
             if (targetMod is not null)
-                Mods.Remove(targetMod);
+            {
+                _mods.Remove(targetMod);
+                targetMod.StatsChanged -= OnModStatsChanged;
+            }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
             reparsed.Status = sourceMod.Status;
-            Mods.Add(reparsed);
+            _mods.Add(reparsed);
+            reparsed.StatsChanged += OnModStatsChanged;
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -284,7 +285,8 @@ namespace Imya.Models
                     Directory.Delete(mod.FullModPath, true);
 
                     // remove from the mod lists to prevent access.
-                    Mods.Remove(mod);
+                    _mods.Remove(mod);
+                    mod.StatsChanged -= OnModStatsChanged;
                     // remove on DisplayMods cannot be than from non-Dispatcher threads
                     DisplayedMods = new ObservableCollection<Mod>(Mods);
                 }

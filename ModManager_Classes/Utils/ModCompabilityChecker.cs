@@ -25,7 +25,7 @@ namespace Imya.Utils
 
         public ModCompabilityChecker()
         {
-            mods = ModCollection.Global?.Mods ?? new();
+            mods = ModCollection.Global?.Mods ?? Array.Empty<Mod>();
         }
 
         public IEnumerable<ModCompabilityResult> RunCompabilityCheck()

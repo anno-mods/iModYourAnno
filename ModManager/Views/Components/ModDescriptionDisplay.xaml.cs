@@ -47,12 +47,12 @@ namespace Imya.UI.Components
         }
         private bool _showDescription;
 
-        public bool ShowCreatorName
+        public bool ShowExtraInfo
         {
-            get => _showCreatorName;
-            private set => SetProperty(ref _showCreatorName, value);
+            get => _showExtraInfo;
+            private set => SetProperty(ref _showExtraInfo, value);
         }
-        private bool _showCreatorName;
+        private bool _showExtraInfo;
 
         public bool ShowVersion
         {
@@ -110,8 +110,8 @@ namespace Imya.UI.Components
             // TODO is it really necessary to trigger all invidiual fields?
             ShowKnownIssues = mod?.HasKnownIssues ?? false;
             ShowDescription = mod?.HasDescription ?? false;
-            ShowCreatorName = mod?.HasCreator ?? false;
-            ShowVersion = mod?.HasVersion ?? false;
+            ShowExtraInfo = mod is not null;
+            ShowVersion = (mod?.HasVersion ?? false) || (mod?.HasCreator ?? false);
             ShowDlcDeps = mod?.HasDlcDependencies ?? false;
             ShowModID = Properties.Settings.Default.ModCreatorMode && (mod?.HasModID ?? false);
 
@@ -120,7 +120,7 @@ namespace Imya.UI.Components
             // the default behavior for images is different:
             // If the mod does not have an image, it will show a placeholder. 
             // Only hide the image in case there is no displayed mod.
-            ShowImage = mod != null;
+            ShowImage = mod is not null;
         }
 
         public void OnCopyModIDClick(object sender, RoutedEventArgs e)
