@@ -212,7 +212,7 @@ namespace Imya.Models
         {
             var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-            if (!AllowOldToOverwrite && IsSourceOutdated(sourceMod, targetMod))
+            if (!AllowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
             {
                 Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
                 return;
@@ -261,23 +261,6 @@ namespace Imya.Models
             }
 
             return (targetMod, targetModPath);
-        }
-
-        private static bool IsSourceOutdated(Mod sourceMod, Mod? targetMod)
-        {
-            if (targetMod is null || targetMod.Modinfo.Version is null)
-                return false;
-
-            if (sourceMod.Modinfo.Version is null && targetMod.Modinfo.Version is not null)
-                return true;
-
-            if (!VersionEx.TryParse(targetMod.Modinfo.Version, out var targetVersion))
-                return false;
-
-            if (!VersionEx.TryParse(sourceMod.Modinfo.Version, out var sourceVersion))
-                return true;
-
-            return sourceVersion < targetVersion;
         }
 
         /// <summary>

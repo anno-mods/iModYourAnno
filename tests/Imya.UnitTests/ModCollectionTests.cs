@@ -402,5 +402,67 @@ namespace Imya.UnitTests
             Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
             Assert.Equal("{\"Version\": null}", File.ReadAllText($"{targetMod}\\modinfo.json"));
         }
+
+        /// <summary>
+        /// Update when versions are same, but content changed.
+        /// </summary>
+        [Fact]
+        public void MoveInto_SameVersionDifferentContent()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create target
+            const string targetMod = "tmp\\target\\mod1";
+            Directory.CreateDirectory(targetMod);
+            File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            File.WriteAllText($"{targetMod}\\changed.txt", "old");
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // create source
+            const string sourceMod = "tmp\\source\\mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            File.WriteAllText($"{sourceMod}\\changed.txt", "new");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Updated, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+            Assert.Equal("new", File.ReadAllText($"{targetMod}\\changed.txt"));
+        }
+
+        /// <summary>
+        /// Don't update when versions and content are same.
+        /// </summary>
+        [Fact]
+        public void MoveInto_SameVersionSameContent()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create target
+            const string targetMod = "tmp\\target\\mod1";
+            Directory.CreateDirectory(targetMod);
+            File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            File.WriteAllText($"{targetMod}\\unchanged.txt", "unchanged");
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // create source
+            const string sourceMod = "tmp\\source\\mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
+            File.WriteAllText($"{sourceMod}\\unchanged.txt", "unchanged");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // target should not be overwritten
+            target.MoveIntoAsync(source).Wait();
+            Assert.Equal(ModStatus.Default, target.Mods.First().Status);
+            Assert.Equal("{\"Version\": \"1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
+            Assert.Equal("unchanged", File.ReadAllText($"{targetMod}\\unchanged.txt"));
+        }
     }
 }
