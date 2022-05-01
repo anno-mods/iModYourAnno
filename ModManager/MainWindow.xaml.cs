@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using Imya.UI.Properties;
 
@@ -23,7 +25,8 @@ namespace Imya.UI
             MinHeight = Settings.Default.MinWindowHeight;
             MinWidth = Settings.Default.MinWindowWidth;
 
-            Title = "iModYourAnno - Anno 1800 Mod Manager";
+            var productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "?";
+            Title = $"iModYourAnno - Anno 1800 Mod Manager {productVersion}";
 
             MainViewController.SetView(View.MOD_ACTIVATION);
 #if DEBUG
