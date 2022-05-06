@@ -177,11 +177,11 @@
                                 </Grid.RowDefinitions>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="Installing Mods from"
+                                               Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5"
                                                FontWeight="Bold" />
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding SourceFilepath, UpdateSourceTrigger=PropertyChanged}"
+                                               Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5" />
                                 </StackPanel>
                                 <ProgressBar Name="progress"
