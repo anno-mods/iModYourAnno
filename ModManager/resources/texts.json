@@ -1000,6 +1000,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ACTIVATION_HEADER_FORMATTED": {
+    "Chinese": null,
+    "English": "Active: {0}, ({1} MB), Available: {2}",
+    "French": null,
+    "German": "Aktiviert: {0}, ({1} MB), Installiert: {2}",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
     "Chinese": null,
     "English": "Allow old versions to overwrite new",
