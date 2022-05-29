@@ -57,7 +57,7 @@ namespace Imya.UI.Views
 
             TextManager.LanguageChanged += OnLanguageChanged;
 
-            if (GameSetup.ModLoader.IsInstalled)
+            if (GameSetup.IsModloaderInstalled)
             {
                 InstallStatus = ModLoaderStatus.Installed;
                 // TODO async update check
@@ -124,7 +124,7 @@ namespace Imya.UI.Views
             foreach (var _task in TaskResults)
             {
                 await _task.RunMove();
-                RemoveZipInstallation(_task);
+                RemoveInstallation(_task);
             }
 
             //IsInstalling = false;
@@ -140,10 +140,10 @@ namespace Imya.UI.Views
 
         }
 
-        private void RemoveZipInstallation(ZipInstallation x)
+        private void RemoveInstallation(Installation x)
         {
             bool success = App.Current.Dispatcher.Invoke(() => RunningInstallations.Remove(x));
-            Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
+            //Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
         }
 
         private bool IsRunningInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ZipInstallation && ((ZipInstallation)x).SourceFilepath.Equals(SourceFilepath));
@@ -169,11 +169,17 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            await GameSetup.ModLoader.InstallAsync();
+            ModloaderInstallation? installation = new ModloaderInstallation();
+            if (installation is null) return;
+
+            RunningInstallations.Add(installation);
+            await installation!.InstallAsync();
 
             ModloaderDownloadButton.IsEnabled = true;
-            if (GameSetup.ModLoader.IsInstalled)
+            if (GameSetup.IsModloaderInstalled)
                 InstallStatus = ModLoaderStatus.Installed;
+
+            RemoveInstallation(installation);
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)

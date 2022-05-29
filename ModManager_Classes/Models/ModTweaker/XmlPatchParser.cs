@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Imya.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,6 @@ namespace Imya.Models.ModTweaker
 {
     internal class XmlPatchParser
     {
-        private static readonly String EXPOSE_STRING = "ImyaExpose";
-        private static readonly String EXPOSE_ATTR = "ExposeID";
-        private static readonly String EXPOSE_PATH = "Path";
-
         private XmlDocument Document;
 
         internal XmlPatchParser(XmlDocument doc)
@@ -20,38 +17,87 @@ namespace Imya.Models.ModTweaker
             Document = doc;
         }
 
-        internal IEnumerable<ExposedModValue> FetchExposedValues()
+        /*
+        internal IEnumerable<ExposedModValue> FetchExposedValues(TweakerFile parent)
         {
-            var ExposedValues = Document.SelectNodes($"//{EXPOSE_STRING}");
+            var ExposedValues = Document.SelectNodes($"//{TweakerConstants.EXPOSE_STRING}");
+            if (ExposedValues is null) yield break;
 
             foreach (XmlNode ExposeInstruction in ExposedValues)
             {
                 //per expose instruction
-                String? Path = ExposeInstruction.Attributes?[EXPOSE_PATH]?.Value;
-                String? ExposeID = ExposeInstruction.Attributes?[EXPOSE_ATTR]?.Value;
+                Expose? expose = Expose.FromXmlNode(ExposeInstruction);
 
-                if (TryFetchExposedValue(Path, ExposeID, out var ExposedModValue))
+                if (expose is not null && TryFetchExposedValue(expose, parent, out var ExposedModValue))
                 {
                     yield return ExposedModValue;
                 }
             }
         }
+        */
 
-        internal bool TryFetchExposedValue(String Path, String ExposeID, out ExposedModValue exposedModValue)
+        internal IEnumerable<ExposedModValue> FetchExposes(TweakerFile parent)
         {
-            if (Path is not null && ExposeID is not null)
+            var ExposedValues = Document.SelectNodes($"//{TweakerConstants.EXPOSE_STRING}");
+            if (ExposedValues is null) yield break;
+
+            foreach (XmlNode ExposeInstruction in ExposedValues)
             {
-                var node = Document.SelectSingleNode(Path);
+                //per expose instruction
+                ExposedModValue? expose = FetchExpose(ExposeInstruction, parent);
+                if (expose is not null)
+                {
+                    yield return expose;
+                }
+            }
+        }
+
+        private ExposedModValue? FetchExpose(XmlNode ExposeInstruction, TweakerFile parent)
+        {
+            //per expose instruction
+            ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction, parent);
+
+            if (expose is null) return null;
+
+            if (parent.TweakStorage.TryGetTweakValue(parent.FilePath, expose.ExposeID, out var value))
+            {
+                expose.Value = value!;
+            }
+            else
+            {
+                expose.Value = parent.GetDefaultNodeValue(expose);
+            }
+
+            return expose;
+        }
+
+        internal IEnumerable<ModOp> FetchModOps(XmlDocument ImportDocument)
+        { 
+            var ModOps = Document.SelectNodes("/ModOps/ModOp");
+
+            foreach (XmlNode _ModOp in ModOps)
+            {
+                var Imported = ImportDocument.ImportNode(_ModOp, true);
+                ModOp? op = ModOp.FromXmlNode(Imported);
+                if (op is not null && op.HasID) yield return op;
+            }
+        }
+        /*
+        internal bool TryFetchExposedValue(Expose Expose, TweakerFile parent, out ExposedModValue exposedModValue)
+        {
+            if (Expose.Path is not null && Expose.ExposeID is not null && Document.TryGetModOpNode("Heater", out var modop))
+            {
+                var node = modop.SelectSingleNode(Expose.Path);
                 var TextNode = node?.SelectSingleNode("./text()");
 
                 if (TextNode is not null)
                 {
-                    exposedModValue = new ExposedModValue(TextNode, ExposeID);
+                    exposedModValue = new ExposedModValue(TextNode, Expose.ExposeID, parent);
                     return true;
                 }
             }
             exposedModValue = null;
             return false;
-        }
+        }*/
     }
 }

@@ -325,17 +325,29 @@
                                                  Minimum="0"
                                                  Maximum="1" />
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
+                                               Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5"
-                                               Grid.Row="2" />
-                                </Grid>
-
-
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-        </StackPanel>
+                                               FontWeight="Bold" />
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="5" />
+                                </StackPanel>
+                                <ProgressBar Name="progress"
+                                             Margin="6,6"
+                                             Height="15"
+                                             Grid.Row="1"
+                                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
+                                             Minimum="0"
+                                             Maximum="1" />
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
+                                           Margin="5" 
+                                           Grid.Row="2"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

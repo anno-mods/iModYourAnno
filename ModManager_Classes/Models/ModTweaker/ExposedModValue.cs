@@ -1,26 +1,39 @@
-﻿using System.Text.RegularExpressions;
+﻿using Imya.Models.NotifyPropertyChanged;
+using Imya.Utils;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Imya.Models.ModTweaker
 {
     public class ExposedModValue
     {
-        public String Key { get; }
-        private XmlNode ValueNode { get; }
-        public String Value { get => ValueNode.InnerText; set => SetValue(value); }
-
-        public ExposedModValue(XmlNode value, String key)
+        public String Path;
+        public String ModOpID;
+        public String ExposeID { get; private set; }
+        public String Value
         {
-            ValueNode = value; 
-            Key = key;
-
-            SetValue(ValueNode.InnerText);
+            get => _value;
+            set
+            {
+                _value = value;
+                Parent.TweakStorage.SetTweakValue(Parent.FilePath, ExposeID, Value);
+            }
         }
 
-        public void SetValue(String content)
+        public TweakerFile Parent { get; set; }
+
+        private String _value;
+
+        public static ExposedModValue? FromXmlNode(XmlNode Expose, TweakerFile parent)
         {
-            //ValueNode.Value = Regex.Replace(content, @"\s+", "");
-            ValueNode.Value = content.TrimStart().TrimEnd();
+            if (Expose.TryGetAttribute(TweakerConstants.EXPOSE_PATH, out String? Path)
+                && Expose.TryGetAttribute(TweakerConstants.MODOP_ID, out String? ModOpID)
+                && Expose.TryGetAttribute(TweakerConstants.EXPOSE_ATTR, out String? ExposeID))
+            {
+                return new ExposedModValue() { Path = Path!, ModOpID = ModOpID!, ExposeID = ExposeID!, Parent = parent};
+            }
+            return null;
         }
     }
+
 }

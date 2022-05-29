@@ -116,11 +116,24 @@
     "Spanish": null,
     "Taiwanese": null
   },
-  "MODLIST_INACTIVE": {
+  "MODLIST_ACTIVE_SIZE": {
     "Chinese": null,
-    "English": "Inactive: ",
+    "English": " (",
     "French": null,
-    "German": "Deaktiviert: ",
+    "German": " (",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLIST_TOTAL": {
+    "Chinese": null,
+    "English": " MB), Available: ",
+    "French": null,
+    "German": " MB), Verfügbar: ",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -597,6 +610,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "HEADER_FOLDER_SIZE": {
+    "Chinese": null,
+    "English": "Size: ",
+    "French": null,
+    "German": "Größe: ",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "HEADER_FOLDER_SIZE_MB": {
+    "Chinese": null,
+    "English": " MB",
+    "French": null,
+    "German": " MB",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "MODLIST_SEARCHBAR": {
     "Chinese": null,
     "English": "Type to Search ",
@@ -961,6 +1000,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ACTIVATION_HEADER_FORMATTED": {
+    "Chinese": null,
+    "English": "Active: {0}, ({1} MB), Available: {2}",
+    "French": null,
+    "German": "Aktiviert: {0}, ({1} MB), Installiert: {2}",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
     "Chinese": null,
     "English": "Allow old versions to overwrite new",
@@ -992,6 +1044,46 @@
     "English": "Unpacking Files",
     "French": null,
     "German": "Dateien entpacken",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALL_DOWNLOAD": {
+    "Chinese": null,
+    "English": "Downloading...",
+    "French": null,
+    "German": "Wird heruntergeladen...",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+
+  "INSTALLATION_HEADER_MOD": {
+    "Chinese": null,
+    "English": "Installing Mods from: ",
+    "French": null,
+    "German": "Mods werden installiert aus:",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALLATION_HEADER_LOADER": {
+    "Chinese": null,
+    "English": "Installing Modloader",
+    "French": null,
+    "German": "Modloader wird installiert",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
