@@ -26,7 +26,17 @@ namespace Imya.UI.Views
     {
         public TextManager TextManager { get; set; } = TextManager.Instance;
 
-        public ModinfoCreationManager ModinfoCreationManager { get; set; } = ModinfoCreationManager.Instance;
+        public ModinfoFactory ModinfoFactory 
+        {
+            get => _factory;
+            set
+            {
+                _factory = value;
+                OnPropertyChanged(nameof(ModinfoFactory));
+            }
+        }
+
+        private ModinfoFactory _factory;
 
         public ModinfoCreatorView()
         {
@@ -37,17 +47,31 @@ namespace Imya.UI.Views
 
         public void OnNewClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Reset();
+            ModinfoFactory.Reset();
         }
 
         public void OnSaveClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Save("fuck.json");            
+            Save("fuck.json");            
         }
 
         public void OnLoadClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Load("fuck.json");
+            Load("fuck.json");
+        }
+
+
+        public void Load(String Filename)
+        {
+            if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
+            {
+                ModinfoFactory = new ModinfoFactory(_modinfo!);
+            }
+        }
+
+        public void Save(String Filename)
+        {
+            ModinfoLoader.TrySaveToFile(Filename, ModinfoFactory.GetResult());
         }
 
         #region INotifyPropertyChangedMembers

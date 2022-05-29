@@ -88,7 +88,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.ModinfoContext.Version, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.ModinfoContext.Version, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="1" />
             </Grid>
             <Grid Margin="5">
@@ -103,7 +103,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.ModinfoContext.ModID, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.ModinfoContext.ModID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="1" />
             </Grid>
             <Grid Margin="5">
@@ -118,7 +118,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.ModinfoContext.CreatorName, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.ModinfoContext.CreatorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="1" />
             </Grid>
 
@@ -134,7 +134,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.ModinfoContext.CreatorContact, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.ModinfoContext.CreatorContact, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Column="1" />
             </Grid>
 
@@ -157,7 +157,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.ModDepsJoined, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.ModDepsJoined, Mode=TwoWay}"
                          Grid.Column="1" />
             </Grid>
 
@@ -173,7 +173,7 @@
                 </TextBlock>
                 <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                          Background="{DynamicResource InteractiveComponentColorBrush}"
-                         Text="{Binding ModinfoCreationManager.IncompatibleIDsJoined, Mode=TwoWay}"
+                         Text="{Binding ModinfoFactory.IncompatibleIDsJoined, Mode=TwoWay}"
                          Grid.Column="1" />
             </Grid>
 

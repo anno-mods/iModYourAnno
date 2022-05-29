@@ -8,25 +8,31 @@ using System.Threading.Tasks;
 
 namespace Imya.Utils
 {
-    public class ModinfoCreationManager : PropertyChangedNotifier
+    public class ModinfoFactory : PropertyChangedNotifier
     {
+        public readonly char ArraySplitter = ';';
         public Modinfo ModinfoContext
         {
             get => _modinfoContext;
-            set
+            private set
             {
                 _modinfoContext = value;
+
+                IncompatibleIDsJoined = StringArrToString(_modinfoContext?.IncompatibleIds) ?? "";
+                ModDepsJoined = StringArrToString(_modinfoContext?.ModDependencies) ?? "";
+
                 OnPropertyChanged(nameof(ModinfoContext));
             }
         }
         private Modinfo _modinfoContext;
 
-        public String IncompatibleIDsJoined 
+        public String IncompatibleIDsJoined
         {
             get => _incompatible_ids_joined;
             set
             {
                 _incompatible_ids_joined = value;
+                ModinfoContext.IncompatibleIds = StringToStringArr(_incompatible_ids_joined);
                 OnPropertyChanged(nameof(IncompatibleIDsJoined));
             }
         }
@@ -38,35 +44,23 @@ namespace Imya.Utils
             set
             {
                 _mod_deps_joined = value;
+                ModinfoContext.ModDependencies = StringToStringArr(_mod_deps_joined);
                 OnPropertyChanged(nameof(ModDepsJoined));
             }
         }
         private String _mod_deps_joined;
 
-        public static ModinfoCreationManager Instance { get; } = new ModinfoCreationManager();
+        //* this should not exist!!!
 
-        public ModinfoCreationManager()
+
+        public ModinfoFactory()
         {
             ModinfoContext = new Modinfo();
-            ModinfoContext.Version = "5";
         }
 
-        public void Load(String Filename)
+        public ModinfoFactory(Modinfo _)
         {
-            if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
-            {
-                ModinfoContext = _modinfo;
-                //
-                IncompatibleIDsJoined = StringArrToString(ModinfoContext?.IncompatibleIds) ?? "";
-                ModDepsJoined = StringArrToString(ModinfoContext?.ModDependencies) ?? "";
-            }
-        }
-
-        public void Save(String Filename)
-        {
-            ModinfoContext.IncompatibleIds = StringToStringArr(IncompatibleIDsJoined);
-            ModinfoContext.ModDependencies = StringToStringArr(ModDepsJoined);
-            ModinfoLoader.TrySaveToFile(Filename, ModinfoContext);
+            ModinfoContext = _;
         }
 
         public void Reset()
@@ -74,10 +68,25 @@ namespace Imya.Utils
             ModinfoContext = new Modinfo();
         }
 
+        public Modinfo? GetResult()
+        {
+            return ModinfoContext;
+        }
+
+        public void SetModDependencies(String ArrayString)
+        {
+            ModinfoContext.ModDependencies = StringToStringArr(ArrayString);
+        }
+
+        public void SetIncompatibleIDs(String ArrayString)
+        {
+            ModinfoContext.IncompatibleIds = StringToStringArr(ArrayString);
+        }
+
         private String[]? StringToStringArr(String? _string)
         {
             if (_string is null) return null;
-            var split =  _string.Split(";");
+            var split =  _string.Split(ArraySplitter);
 
             if (split.Length == 1 && split[0].Equals(String.Empty)) return null;
 
@@ -87,7 +96,7 @@ namespace Imya.Utils
         private String? StringArrToString(String[]? _string)
         {
             if (_string is null) return null;
-            return String.Join(";", _string);
+            return String.Join(ArraySplitter, _string);
         }
     }
 }
