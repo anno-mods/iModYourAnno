@@ -261,9 +261,8 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1"
-                    Grid.Row="1"
-                    Margin="5"
-                    Orientation="Vertical">
+              Grid.Row="1"
+              Margin="5">
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0"
@@ -287,7 +286,6 @@
                                Grid.Column="1">
                     </TextBlock>
                 </Grid>
-                
             </Border>
 
             <ScrollViewer Grid.Column="2"
@@ -308,15 +306,13 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                   Text="Installing Mods from"
-                                                   Margin="5"
-                                                   FontWeight="Bold" />
-                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                   Text="{Binding SourceFilepath, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="5" />
-                                    </StackPanel>
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="5"
+                                               FontWeight="Bold" />
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
+                                               Margin="5" />
                                     <ProgressBar Name="progress"
                                                  Margin="6,6"
                                                  Height="15"
@@ -325,29 +321,15 @@
                                                  Minimum="0"
                                                  Maximum="1" />
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
+                                               Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
                                                Margin="5"
-                                               FontWeight="Bold" />
-                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
-                                               Margin="5" />
-                                </StackPanel>
-                                <ProgressBar Name="progress"
-                                             Margin="6,6"
-                                             Height="15"
-                                             Grid.Row="1"
-                                             Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
-                                             Minimum="0"
-                                             Maximum="1" />
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}"
-                                           Margin="5" 
-                                           Grid.Row="2"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                                               Grid.Row="2" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </UserControl>
