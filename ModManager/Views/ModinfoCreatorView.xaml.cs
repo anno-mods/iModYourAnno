@@ -13,8 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Imya.Enums;
 using Imya.Models.ModMetadata;
+using Imya.UI.Popup;
 using Imya.Utils;
 
 namespace Imya.UI.Views
@@ -42,6 +43,8 @@ namespace Imya.UI.Views
         {
             DataContext = this;
             InitializeComponent();
+
+            ModinfoFactory = new ModinfoFactory();
         }
 
 
@@ -58,6 +61,16 @@ namespace Imya.UI.Views
         public void OnLoadClick(object sender, RoutedEventArgs e)
         {
             Load("fuck.json");
+        }
+
+        public void OnDlcDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            var DataContext = but?.DataContext;
+
+            var _id = DataContext as DlcId?;
+
+            if (_id is not null) ModinfoFactory.RemoveDLC((DlcId)_id);
         }
 
 
@@ -87,5 +100,17 @@ namespace Imya.UI.Views
             }
         }
         #endregion
+
+        private void OnDlcAddClick(object sender, RoutedEventArgs e)
+        {
+            var remaining = ModinfoFactory.GetRemainingDlcIds();
+            AddDlcPopup popup = new AddDlcPopup(remaining);
+            popup.ShowDialog();
+
+            foreach (DlcId x in popup.SelectedIDs)
+            {
+                ModinfoFactory.AddDLC(x);
+            }
+        }
     }
 }

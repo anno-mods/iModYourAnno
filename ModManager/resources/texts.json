@@ -38,6 +38,45 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "DLC_SEASONALDECORATIONS": {
+    "Chinese": null,
+    "English": "Seasonal Decorations",
+    "French": null,
+    "German": "Jahreszeiten-Dekorationen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "DLC_INDUSTRYORNAMENTS": {
+    "Chinese": null,
+    "English": "Industrial Decorations",
+    "French": null,
+    "German": "Industrie-Dekorationen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "DLC_OLDTOWN": {
+    "Chinese": null,
+    "English": "Old Town Pack",
+    "French": null,
+    "German": "Old-Town Paket",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "DASHBOARD_MOD_INSTALLATION": {
     "Chinese": null,
     "English": "Mod Installation",
