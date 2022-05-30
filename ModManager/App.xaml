@@ -580,7 +580,7 @@
                                                                    Storyboard.TargetName="slider"
                                                                    Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                         <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
-                                                              Value="25" />
+                                                              Value="18" />
                                     </DoubleAnimationUsingKeyFrames>
                                     <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                                                                   Storyboard.TargetName="base"
@@ -611,18 +611,18 @@
 
                             <StackPanel x:Name="stackPanel"
                                         Orientation="Horizontal">
-                                <Border Margin="5"
-                                        Width="50"
+                                <Border Margin="2"
+                                        Width="38"
                                         CornerRadius="3"
-                                        Height="12"
+                                        Height="16"
                                         x:Name="base">
                                     <Border.Background>
                                         <SolidColorBrush Color="{StaticResource DarkColor}" />
                                     </Border.Background>
                                     <Border HorizontalAlignment="Left"
                                             x:Name="slider"
-                                            Width="22"
-                                            BorderThickness="1"
+                                            Width="20"
+                                            BorderThickness="2"
                                             CornerRadius="3"
                                             RenderTransformOrigin="0.5,0.5"
                                             Margin="1,-2,1,-2"
