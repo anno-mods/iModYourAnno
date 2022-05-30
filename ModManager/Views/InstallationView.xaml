@@ -111,12 +111,9 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Row="2"
                                     Grid.Column="1">
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}" 
-                                      Content="Enabled"
-                                      Margin="0,5,5,5"/>
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
+                            <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                                       Content="Automatic Updates" 
-                                      Margin="0,5,5,5"/>
+                                      Margin="2"/>
                         </StackPanel>
                     </Grid>
                 </StackPanel>
@@ -151,41 +148,62 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="15" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
+
                         <StackPanel Grid.Row="0"
                                     Grid.Column="1">
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
-                                      Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                                      IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
-                                      Margin="0,5,5,5" />
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
-                                      Content="Configure Auto updating where possible"
-                                      Margin="0,5,5,5" />
+                            
+                            <!-- Expandable Options -->
+                            <Expander IsExpanded="False"
+                                      Grid.Column="0"
+                                      Grid.ColumnSpan="2">
+                                <Expander.Header>
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="Options"
+                                               Margin="5">
+                                    </TextBlock>
+                                </Expander.Header>
+
+                                <StackPanel>
+                                    <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                              Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                                              IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
+                                              Margin="2" />
+                                    <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                              Content="Configure automatic updates where possible"
+                                              Margin="2" />
+                                </StackPanel>
+                            </Expander>
+                            
+                            <!-- Always visible info because important -->
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="2"
+                                        Grid.Row="1"
+                                        Margin="5,0,0,0">
+                                <materialDesign:PackIcon Kind="InfoCircleOutline"
+                                                         VerticalAlignment="Center">
+
+                                </materialDesign:PackIcon>
+                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                           Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
+                                           VerticalAlignment="Center"
+                                           Margin="5">
+                                </TextBlock>
+                            </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Column="2"
-                                    Grid.Row="1">
-                            <materialDesign:PackIcon Kind="InfoCircleOutline"
-                                                     VerticalAlignment="Center">
-
-                            </materialDesign:PackIcon>
-                            <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                       Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
-                                       VerticalAlignment="Center"
-                                       Margin="5">
-                            </TextBlock>
-                        </StackPanel>
+                        
                     </Grid>
                 </StackPanel>
             </Border>
 
+            <!-- Install: Github -->
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0">
@@ -212,7 +230,7 @@
 
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="15" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
@@ -221,15 +239,26 @@
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0"
                                     Grid.Column="1">
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
-                                      Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                                      Margin="0,5,5,5" />
-                            <CheckBox Style="{StaticResource IMYA_CHECKBOX}"
-                                      Content="Configure Auto updating"
-                                      Margin="0,5,5,5" />
+                            <Expander IsExpanded="False" Grid.Column="0" Grid.ColumnSpan="2">
+                                <Expander.Header>
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="Options"
+                                               Margin="5">
+                                    </TextBlock>
+                                </Expander.Header>
+                                <StackPanel Orientation="Vertical">
+                                    <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                              Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                                              Margin="5,2,2,2" />
+                                    <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                              Content="Configure Auto updating"
+                                              Margin="5,2,2,2" />
+                                </StackPanel>
+                            </Expander>
                             <!-- Information -->
                             <StackPanel Orientation="Horizontal"
-                                        Grid.Column="2">
+                                        Grid.Column="2"
+                                        Margin="5,0,0,0">
                                 <materialDesign:PackIcon Kind="InfoCircleOutline"
                                                          VerticalAlignment="Center">
 
@@ -241,7 +270,8 @@
                                 </TextBlock>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal"
-                                        Grid.Column="2">
+                                        Grid.Column="2"
+                                        Margin="5,0,0,0">
                                 <materialDesign:PackIcon Kind="Internet"
                                                          VerticalAlignment="Center">
 
