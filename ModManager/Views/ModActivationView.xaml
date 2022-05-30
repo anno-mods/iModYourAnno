@@ -43,6 +43,8 @@
                                  UpdateSourceTrigger="PropertyChanged" />
                         <Binding Path="Mods.DisplayedMods.Count"
                                  UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Mods.InstalledSizeInMBs"
+                                 UpdateSourceTrigger="PropertyChanged" />
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>

@@ -44,12 +44,19 @@ namespace Imya.Models
         }
         private int _activeMods;
 
-        public float ActiveSizeInMBs
+        public int ActiveSizeInMBs
         {
             get => _activeSizeInMBs;
             set => SetProperty(ref _activeSizeInMBs, value);
         }
-        private float _activeSizeInMBs = 0;
+        private int _activeSizeInMBs = 0;
+
+        public int InstalledSizeInMBs
+        {
+            get => _installedSizeInMBs;
+            set => SetProperty(ref _installedSizeInMBs, value);
+        }
+        private int _installedSizeInMBs = 0;
         #endregion
 
         public string ModsPath { get; private set; }
@@ -169,7 +176,8 @@ namespace Imya.Models
             if (newActive != ActiveMods)
             {
                 ActiveMods = newActive;
-                ActiveSizeInMBs = _mods.Sum(x => x.IsActive ? x.SizeInMB : 0);
+                ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
+                InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
             }
         }

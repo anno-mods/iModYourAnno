@@ -1002,9 +1002,9 @@
   },
   "ACTIVATION_HEADER_FORMATTED": {
     "Chinese": null,
-    "English": "Active: {0}, ({1} MB), Available: {2}",
+    "English": "Active Mods: {0} ({1} MB), Installed: {2} ({3} MB)",
     "French": null,
-    "German": "Aktiviert: {0}, ({1} MB), Installiert: {2}",
+    "German": "Aktivierte Mods: {0} ({1} MB), Installiert: {2} ({3} MB)",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
