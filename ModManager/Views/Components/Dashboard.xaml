@@ -56,7 +56,7 @@
             </Button>
             <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                       Content="Modloader"
-                      Margin="5,4,4,0">
+                      Margin="10,3,0,0">
             </CheckBox>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left"
