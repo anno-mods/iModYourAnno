@@ -48,12 +48,6 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <!--<TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_ACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding Mods.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_ACTIVE_SIZE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding Mods.ActiveSizeInMBs, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_TOTAL].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding Mods.DisplayedMods.Count, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>-->
         </StackPanel>
 
         <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList" />
