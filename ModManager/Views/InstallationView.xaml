@@ -97,11 +97,20 @@
                                 Margin="5"
                                 Style="{StaticResource IMYA_BUTTON}"
                                 HorizontalContentAlignment="Center"
-                                Content="{Binding TextManager[SETTINGS_INSTALL_MODLOADER].Text}"
                                 Foreground="{DynamicResource TextColorBrush}"
                                 Click="OnInstallModLoader"
                                 MinHeight="30"
                                 x:Name="ModloaderDownloadButton">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                         Kind="Internet"
+                                                         Height="20"
+                                                         Width="20"
+                                                         VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding TextManager[SETTINGS_INSTALL_MODLOADER].Text}"
+                                           VerticalAlignment="Center"
+                                           Padding="5" />
+                            </StackPanel>
                         </Button>
                     </Grid>
                     <Grid>
@@ -207,10 +216,18 @@
                             <Button Margin="5"
                                     Grid.Column="1"
                                     Style="{StaticResource IMYA_BUTTON}"
-                                    Content="{Binding TextManager[MODS_INSTALLATION_GIT].Text}"
                                     Click="OnInstallFromGithub"
                                     HorizontalContentAlignment="Center"
-                                    IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
+                                    IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}" 
+                                                             Kind="Internet" Height="20" Width="20"
+                                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding TextManager[MODS_INSTALLATION_GIT].Text}"
+                                               VerticalAlignment="Center"
+                                               Padding="5" />
+                                </StackPanel>
+                            </Button>
                         </Grid>
                         
                     </Grid>
