@@ -112,7 +112,7 @@
                         <StackPanel Grid.Row="2"
                                     Grid.Column="1">
                             <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                      Content="Automatic Updates" 
+                                      Content="{Binding TextManager[MODLOADER_AUTOUPDATES].Text}" 
                                       Margin="2"/>
                         </StackPanel>
                     </Grid>
@@ -171,7 +171,7 @@
                                           IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
                                           Margin="2" />
                                 <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                          Content="Configure automatic updates where possible"
+                                          Content="{Binding TextManager[MODS_AUTOUPDATES].Text}"
                                           Margin="2" />
                             </StackPanel>
 
@@ -199,7 +199,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Button Style="{StaticResource IMYA_BUTTON}"
-                                    Content="Select from Archive..."
+                                    Content="{Binding TextManager[MODS_INSTALLATION_ZIP].Text}"
                                     Click="OnInstallFromZipAsync"
                                     HorizontalContentAlignment="Center"
                                     Margin="5"
@@ -207,7 +207,7 @@
                             <Button Margin="5"
                                     Grid.Column="1"
                                     Style="{StaticResource IMYA_BUTTON}"
-                                    Content="Select from Github..."
+                                    Content="{Binding TextManager[MODS_INSTALLATION_GIT].Text}"
                                     Click="OnInstallFromGithub"
                                     HorizontalContentAlignment="Center"
                                     IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
