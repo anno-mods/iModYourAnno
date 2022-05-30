@@ -107,12 +107,12 @@ namespace Imya.Models
             var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
             if (_options.Normalize)
             {
-                foreach (var mod in Mods)
+                foreach (var mod in mods)
                     await mod.NormalizeAsync();
             }
             if (_options.LoadImages)
             {
-                foreach (var mod in Mods)
+                foreach (var mod in mods)
                 {
                     // TODO async and move into class Mod
                     var imagepath = Path.Combine(mod.FullModPath, "banner.png");
