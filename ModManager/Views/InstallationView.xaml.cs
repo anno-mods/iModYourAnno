@@ -12,6 +12,7 @@ using Imya.Utils;
 
 using System.Linq;
 using Imya.Models.Installation;
+using Imya.UI.Popup;
 
 namespace Imya.UI.Views
 {
@@ -95,6 +96,15 @@ namespace Imya.UI.Views
             }
 
             return InstallationTasks;
+        }
+
+        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
+        {
+            GenericOkayPopup popup = new GenericOkayPopup();
+
+            popup.MESSAGE = new SimpleText("TODO: Popup to select mods from github");
+
+            popup.ShowDialog();
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -187,6 +197,11 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
