@@ -21,6 +21,7 @@
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
 
             <md:Markdown x:Key="Markdown"
                          DocumentStyle="{StaticResource DocumentStyle}"
@@ -127,29 +128,34 @@
                     <Separator Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Description -->
-                    <!--
-                    <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
-                               Margin="2,8,2,8"
-                               Style="{StaticResource IMYA_TEXT}"
-                               FontWeight="SemiBold"
-                               Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel Orientation="Horizontal"
-                                Margin="2,8,2,8"
-                                Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+
+                    <Grid Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
+                                   Margin="2,8,2,0"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="SemiBold" />
+                        
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    MaxWidth="{Binding DescriptionTextWidth}"
                                    TextWrapping="Wrap"
-                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}" />
-                    </StackPanel>-->
+                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding Mod.UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="2,8,2,8"
+                                   Grid.Row="1"/>
 
-                    <FlowDocumentScrollViewer Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
-                                              IsEnabled="False"
-                                              Style="{StaticResource FlowDocumentScrollViewer}"
-                                              Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
-                                              Margin="-15,0,0,0"
-                                              x:Name="DescriptionFlowViewer">
-                                              
-                    </FlowDocumentScrollViewer>
+                        <FlowDocumentScrollViewer Visibility="{Binding Mod.UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                                  IsEnabled="False"
+                                                  Style="{StaticResource FlowDocumentScrollViewer}"
+                                                  Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
+                                                  Margin="-15,0,0,0"
+                                                  x:Name="DescriptionFlowViewer"
+                                                  Grid.Row="1">
+                        </FlowDocumentScrollViewer>
+                    </Grid>
 
                     <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
 
