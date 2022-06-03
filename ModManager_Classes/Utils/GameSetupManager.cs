@@ -15,15 +15,21 @@ namespace Imya.Utils
     /// - 
     /// 
     /// </summary>
+    /// 
+
+    public enum ModloaderInstallationState { Installed, Uninstalled, Deactivated }
+
     public class GameSetupManager : PropertyChangedNotifier
     {
-        private static int MAX_RDA_INDEX = 21;
+        public static readonly String ProfilesDirectoryName = "profiles";
 
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
+        private InstallationValidator Validator;
+
         //public ModloaderInstallation ModLoader { get; private set; }
 
-        //event for Game Root Path
+        #region EVENTS
         public delegate void GameRootPathChangedEventHandler(String newPath);
         public event GameRootPathChangedEventHandler GameRootPathChanged = delegate { };
 
@@ -36,7 +42,7 @@ namespace Imya.Utils
         public delegate void GameCloseEventHandler(int GameExitCode, bool IsRegularExit = true);
         public event GameCloseEventHandler GameClosed = delegate { };
 
-        public bool IsGameRunning { get; private set; }
+        #endregion
 
         // File System Watchers
 #pragma warning disable IDE0052 // Never used, but we want to keep them until GameSetupManager dies
@@ -44,11 +50,16 @@ namespace Imya.Utils
         // private FileSystemWatcher ModLoaderWatcher; // This is TODO
 #pragma warning restore IDE0052
 
-        public GameSetupManager()
+        public bool IsGameRunning
         {
-            GameStarted += () => IsGameRunning = true;
-            GameClosed += (x,y) => IsGameRunning = false;
+            get => _isGameRunning;
+            private set
+            {
+                _isGameRunning = value;
+                OnPropertyChanged(nameof(IsGameRunning));
+            }
         }
+        private bool _isGameRunning;
 
         public String GameRootPath { get => _gameRootPath;
             private set
@@ -64,32 +75,44 @@ namespace Imya.Utils
 
         public String ModDirectoryName {
             get => _modDirectoryName;
-            private set 
-            { 
+            private set
+            {
                 _modDirectoryName = value;
                 OnPropertyChanged(nameof(ModDirectoryName));
             }
         }
         private String _modDirectoryName;
 
-        public String ProfilesDirectoryName = "profiles";
-
         public bool IsValidSetup
         {
-           get { return _isValid; }
-           private set { _isValid = value; OnPropertyChanged(nameof(IsValidSetup)); }
+            get { return _isValid; }
+            private set { _isValid = value; OnPropertyChanged(nameof(IsValidSetup)); }
         }
         private bool _isValid;
 
-        public bool IsModloaderInstalled
+        public bool ModloaderActivationDesiredOnStart 
         {
-            get => _isModloaderInstalled;
-            private set {
-                _isModloaderInstalled = value;
-                OnPropertyChanged(nameof(IsModloaderInstalled));
+            get => _modloaderActivationDesiredOnStart;
+            set
+            {
+                _modloaderActivationDesiredOnStart = value;
+                OnPropertyChanged(nameof(ModloaderActivationDesiredOnStart));
             }
         }
-        private bool _isModloaderInstalled = false;
+        private bool _modloaderActivationDesiredOnStart; 
+
+        public bool IsModloaderInstalled => ModloaderState == ModloaderInstallationState.Installed;
+
+        public ModloaderInstallationState ModloaderState 
+        {
+            get => _modloaderState;
+            set
+            {
+                _modloaderState = value;
+                OnPropertyChanged(nameof(ModloaderState));
+            }
+        }
+        private ModloaderInstallationState _modloaderState = ModloaderInstallationState.Uninstalled;
 
         public String DownloadDirectory
         {
@@ -101,47 +124,41 @@ namespace Imya.Utils
         }
         private String _downloadDirectory = String.Empty;
 
-        #region DIRECTORY_PATH_REQUESTS
-
-        public String GetModDirectory()
+        public GameSetupManager()
         {
-            return Path.Combine(GameRootPath, ModDirectoryName);
+            GameStarted += () => IsGameRunning = true;
+            GameClosed += (x, y) => IsGameRunning = false;
         }
 
-        public String GetProfilesDirectory()
-        {
-            return Path.Combine(GameRootPath, ProfilesDirectoryName);
-        }
+        #region DIRECTORY_RELATED
 
-        #endregion
+        public String GetModDirectory() => Path.Combine(GameRootPath, ModDirectoryName);
 
-        #region REGISTERING_API
+        public String GetProfilesDirectory() => Path.Combine(GameRootPath, ProfilesDirectoryName);
 
         /// <summary>
         /// Set download directory. Relative to executable.
         /// </summary>
-        public void SetDownloadDirectory(string downloadDirectory)
-        {
-            DownloadDirectory = downloadDirectory;
-        }
+        public void SetDownloadDirectory(string downloadDirectory) => DownloadDirectory = downloadDirectory;
 
         public void SetGamePath(String gamePath, bool autoSearchIfInvalid = false)
         {
-            String executablePath = Path.Combine(gamePath, "Bin\\Win64\\Anno1800.exe");
+            String executablePath = Path.Combine(gamePath, "Bin", "Win64", "Anno1800.exe");
             if (!File.Exists(executablePath) && autoSearchIfInvalid)
             {
                 var foundGamePath = GameScanner.GetInstallDirFromRegistry() ?? "";
-                executablePath = Path.Combine(foundGamePath, "Bin\\Win64\\Anno1800.exe");
+                executablePath = Path.Combine(foundGamePath, "Bin", "Win64", "Anno1800.exe");
                 if (File.Exists(executablePath))
                     gamePath = foundGamePath; // only replace if found, otherwise keep "wrong" path in the settings.
             }
 
             GameRootPath = gamePath;
+            Validator = new InstallationValidator(GameRootPath);
 
             if (File.Exists(executablePath))
             {
                 ExecutablePath = executablePath;
-                ExecutableDir = Path.Combine(gamePath, "Bin\\Win64");
+                ExecutableDir = Path.Combine(gamePath, "Bin", "Win64");
                 IsValidSetup = true;
             }
             else
@@ -153,6 +170,7 @@ namespace Imya.Utils
             
             GameRootPathChanged(gamePath);
             CreateWatchers();
+            UpdateModloaderInstallStatus();
         }
 
         public void SetModDirectoryName(String ModDirectoryName)
@@ -165,89 +183,57 @@ namespace Imya.Utils
 
         #endregion
 
-        public void LockGame()
-        {
-            IsGameRunning = true;
-        }
+        private void CreateWatchers() => ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
 
-        public void UnlockGame() 
-        {
-            IsGameRunning = false;
-        }
+        public void UpdateModloaderInstallStatus() => ModloaderState = Validator.CheckInstallation();
 
-        public bool IsUnlocked()
+        public void EnsureModloaderActivation(bool desired)
         {
-            return !IsGameRunning;
-        }
+            UpdateModloaderInstallStatus();
 
-        private void CreateWatchers()
-        {
-            ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
-        }
-
-        public bool MaindataIsValid()
-        {
-            String MaindataPath = Path.Combine(GameRootPath, "maindata");
-            return 
-                Directory.Exists(MaindataPath) &&
-                CheckMaindata(MaindataPath);
-        }
-
-        public bool ModLoaderIsInstalled()
-        {
-            return 
-                File.Exists(Path.Combine(GameRootPath, "Bin", "Win64", "python35.dll")) &&
-                File.Exists(Path.Combine(GameRootPath, "Bin", "Win64", "python35_ubi.dll"));
-        }
-
-        private bool CheckMaindata(String MaindataPath)
-        {
-            List<String> BuildPaths = new List<String>();
-
-            for (int i = 0; i <= MAX_RDA_INDEX; i++)
+            if (desired && ModloaderState == ModloaderInstallationState.Deactivated)
             {
-                BuildPaths.Add($"data{i}.rda");
+                ActivateModloader(); 
+                return;
             }
-
-            bool allExist = true;
-            foreach (String s in BuildPaths)
-            {
-                if (!Directory.Exists(Path.Combine(GameRootPath, MaindataPath, s)))
-                {
-                    allExist = false;
-                }
-            }
-
-            return allExist; 
+            if (!desired && ModloaderState == ModloaderInstallationState.Installed) 
+                DeactivateModloader();
         }
 
-        public void UpdateModloaderInstallStatus()
+        private void ActivateModloader()
         {
-            IsModloaderInstalled = CheckInstallation();
+            if (ModloaderState != ModloaderInstallationState.Deactivated) return;
+            try
+            {
+                File.Move(Path.Combine(ExecutableDir, "python35.dll"), Path.Combine(ExecutableDir, "python35_ubi.dll"));
+                File.Move(Path.Combine(ExecutableDir, "modloader.dll"), Path.Combine(ExecutableDir, "python35.dll"));
+
+                ModloaderState = ModloaderInstallationState.Installed;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Modloader Activation unsuccessful");
+                return;
+            }
         }
 
-        private bool CheckInstallation()
+        private void DeactivateModloader()
         {
-            if (ExecutableDir == null) return false;
+            if (!IsModloaderInstalled) return;
 
-            var ubiPython = Path.Combine(ExecutableDir, "python35_ubi.dll");
-            var python = Path.Combine(ExecutableDir, "python35.dll");
-            var executable = ExecutablePath;
-            if (File.Exists(ubiPython) && File.Exists(python) && File.Exists(executable))
+            try
             {
-                // when the executable is a lot newer than ubiPython, then it either got repaired or updated
-                // chances are you need an update, but there's no concrete action that you could do here
-                // IsPotentiallyOutdated = File.GetLastWriteTimeUtc(executable) > File.GetLastWriteTimeUtc(ubiPython).AddHours(1);
+                //move python35 to modloader and python35_ubi to python35. modloader.dll is junk anyway, just override it.
+                File.Move(Path.Combine(ExecutableDir, "python35.dll"), Path.Combine(ExecutableDir, "modloader.dll"), true);
+                File.Move(Path.Combine(ExecutableDir, "python35_ubi.dll"), Path.Combine(ExecutableDir, "python35.dll"));
 
-                // mod loader has python and ubiPython at roughly the same time
-                // in case python is newer chances are it got repaired.
-                // consider it to be not installed in that case.
-                // note: will give false results if you repair right before you download a super fresh mod loader release
-                // TODO add hash-based check. remove the false result, but is only applicable when downloaded via imya
-                return File.GetLastWriteTimeUtc(python) <= File.GetLastWriteTimeUtc(ubiPython).AddMinutes(20);
+                ModloaderState = ModloaderInstallationState.Deactivated;
             }
-
-            return false;
+            catch (Exception e)
+            {
+                Console.WriteLine("Modloader Deactivation unsuccessful");
+                return;
+            }            
         }
 
         private FileSystemWatcher? CreateWatcher(string pathToWatch)
@@ -272,6 +258,8 @@ namespace Imya.Utils
             if (ExecutablePath == null)
                 return;
 
+            EnsureModloaderActivation(ModloaderActivationDesiredOnStart);
+
             _ = Task.Run(async () =>
             {
                 using Process process = new Process();
@@ -282,13 +270,11 @@ namespace Imya.Utils
 
                 Console.WriteLine("Anno 1800 started.");
 
+                GameStarted.Invoke();
+
                 await process.WaitForExitAsync();
             }
             );
-            //This is worthless. 1800.exe starts uplay.exe (which starts 1800.exe again)
-            //and commits suicide before the game window opening.
-            //we can just as well do nothing, same result.
-
         }
 
         private void OnGameLaunchComplete(object sender, EventArgs e)
@@ -304,8 +290,6 @@ namespace Imya.Utils
 
                     RunningGame.EnableRaisingEvents = true;
                     RunningGame.Exited += OnGameExit;
-
-                    GameStarted.Invoke();
 
                     await RunningGame.WaitForExitAsync();
                 } 
