@@ -107,6 +107,8 @@ namespace Imya.UI.Views
             AddDlcPopup popup = new AddDlcPopup(remaining);
             popup.ShowDialog();
 
+            if (popup.DialogResult is false) return;
+
             foreach (DlcId x in popup.SelectedIDs)
             {
                 ModinfoFactory.AddDLC(x);
