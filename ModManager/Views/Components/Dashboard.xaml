@@ -56,7 +56,8 @@
             </Button>
             <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                       Content="Modloader"
-                      Margin="10,3,0,0">
+                      Margin="10,3,0,0"
+                      IsChecked="{Binding GameSetupManager.ModloaderActivationDesiredOnStart, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
             </CheckBox>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left"
