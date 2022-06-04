@@ -9,7 +9,7 @@ namespace Imya.Utils
     /// <summary>
     /// Validator for game setup that checks maindata, modloader, etc. 
     /// </summary>
-    internal class InstallationValidator
+    public class InstallationValidator
     {
         private static int MAX_RDA_INDEX = 22;
 
@@ -22,7 +22,7 @@ namespace Imya.Utils
             ExecutableDir = Path.Combine(GameRootPath, "Bin", "Win64");
         }
 
-        internal ModloaderInstallationState CheckInstallation()
+        public ModloaderInstallationState CheckModloaderInstallState()
         {
             if (ExecutableDir == null) return ModloaderInstallationState.Uninstalled;
 
@@ -49,7 +49,7 @@ namespace Imya.Utils
             return ModloaderInstallationState.Uninstalled;
         }
 
-        internal bool ModLoaderIsInstalled()
+        public bool ModLoaderIsActive()
         {
             return
                 File.Exists(Path.Combine(ExecutableDir, "python35.dll")) &&
@@ -57,7 +57,7 @@ namespace Imya.Utils
         }
 
 
-        public bool ValidateMaindata()
+        public bool MaindataIsValid()
         {
             String MaindataPath = Path.Combine(GameRootPath, "maindata");
             return
@@ -65,26 +65,14 @@ namespace Imya.Utils
                 CheckMaindata(MaindataPath);
         }
 
-        //master kenobi you disappoint me, surely you can do better than this.
         private bool CheckMaindata(String MaindataPath)
         {
             List<String> BuildPaths = new List<String>();
 
             for (int i = 0; i <= MAX_RDA_INDEX; i++)
-            {
                 BuildPaths.Add($"data{i}.rda");
-            }
 
-            bool allExist = true;
-            foreach (String s in BuildPaths)
-            {
-                if (!Directory.Exists(Path.Combine(GameRootPath, MaindataPath, s)))
-                {
-                    allExist = false;
-                }
-            }
-
-            return allExist;
+            return !BuildPaths.Any(maindata_rda => !Directory.Exists(Path.Combine(GameRootPath, MaindataPath, maindata_rda)));
         }
     }
 }

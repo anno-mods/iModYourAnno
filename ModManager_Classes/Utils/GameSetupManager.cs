@@ -185,7 +185,7 @@ namespace Imya.Utils
 
         private void CreateWatchers() => ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
 
-        public void UpdateModloaderInstallStatus() => ModloaderState = Validator.CheckInstallation();
+        public void UpdateModloaderInstallStatus() => ModloaderState = Validator.CheckModloaderInstallState();
 
         public void EnsureModloaderActivation(bool desired)
         {
