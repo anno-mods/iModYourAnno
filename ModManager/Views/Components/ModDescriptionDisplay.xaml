@@ -143,14 +143,14 @@
                                    MaxWidth="{Binding DescriptionTextWidth}"
                                    TextWrapping="Wrap"
                                    Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
-                                   Visibility="{Binding Mod.UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                    Margin="2,8,2,8"
                                    Grid.Row="1"/>
 
-                        <FlowDocumentScrollViewer Visibility="{Binding Mod.UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                        <FlowDocumentScrollViewer Visibility="{Binding UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                                   IsEnabled="False"
                                                   Style="{StaticResource FlowDocumentScrollViewer}"
-                                                  Document="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
+                                                  Document="{Binding MarkdownDescription, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
                                                   Margin="-15,0,0,0"
                                                   x:Name="DescriptionFlowViewer"
                                                   Grid.Row="1">

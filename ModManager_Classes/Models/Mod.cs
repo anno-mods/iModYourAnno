@@ -94,13 +94,6 @@ namespace Imya.Models
         }
         private bool _isSelected;
 
-        public bool UseMarkdownDescription
-        {
-            get => _useMarkdownDescription;
-            set => SetProperty(ref _useMarkdownDescription, value);
-        }
-        private bool _useMarkdownDescription;
-
         public ModStatus Status
         { 
             get => _status;

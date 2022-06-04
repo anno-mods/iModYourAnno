@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -70,7 +71,7 @@ namespace Imya.UI.Components
         }
         private bool _showDlcDeps;
 
-        public bool ShowImage { 
+        public bool ShowImage {
             get => _showImage;
             set => SetProperty(ref _showImage, value);
         }
@@ -95,6 +96,20 @@ namespace Imya.UI.Components
             set => SetProperty(ref _knownIssueTextWidth, value);
         }
         private double _knownIssueTextWidth;
+
+        public bool UseMarkdownDescription
+        {
+            get => _useMarkdownDescription;
+            set => SetProperty(ref _useMarkdownDescription, value);
+        }
+        private bool _useMarkdownDescription = false;
+
+        public String? MarkdownDescription
+        {
+            get => _markdownDescription;
+            set => SetProperty(ref _markdownDescription, value);
+        }
+        private String? _markdownDescription;
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
@@ -125,7 +140,23 @@ namespace Imya.UI.Components
             // If the mod does not have an image, it will show a placeholder. 
             // Only hide the image in case there is no displayed mod.
             ShowImage = mod is not null;
+
             AdjustDocumentWidth();
+            UpdateDescription();
+        }
+
+        public void UpdateDescription()
+        {
+            if (Mod?.HasDescription ?? false)
+            {
+                var description = Mod.Modinfo.Description?.Text;
+
+                String? full_path = description is not null ? Path.Combine(Mod.FullModPath, description) : null;
+
+                bool exists = full_path is not null && File.Exists(full_path!) && full_path!.EndsWith(".md");
+                UseMarkdownDescription = exists;
+                MarkdownDescription = exists ? File.ReadAllText(full_path!) : null;
+            }
         }
 
         public void OnCopyModIDClick(object sender, RoutedEventArgs e)
@@ -163,6 +194,7 @@ namespace Imya.UI.Components
         {
             // force update of DLC ids
             DlcIds = DlcIds.ToArray();
+            UpdateDescription();
         }
 
 
