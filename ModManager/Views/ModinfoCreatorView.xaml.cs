@@ -13,8 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Imya.Enums;
 using Imya.Models.ModMetadata;
+using Imya.UI.Popup;
 using Imya.Utils;
 
 namespace Imya.UI.Views
@@ -26,28 +27,64 @@ namespace Imya.UI.Views
     {
         public TextManager TextManager { get; set; } = TextManager.Instance;
 
-        public ModinfoCreationManager ModinfoCreationManager { get; set; } = ModinfoCreationManager.Instance;
+        public ModinfoFactory ModinfoFactory 
+        {
+            get => _factory;
+            set
+            {
+                _factory = value;
+                OnPropertyChanged(nameof(ModinfoFactory));
+            }
+        }
+
+        private ModinfoFactory _factory;
 
         public ModinfoCreatorView()
         {
             DataContext = this;
             InitializeComponent();
+
+            ModinfoFactory = new ModinfoFactory();
         }
 
 
         public void OnNewClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Reset();
+            ModinfoFactory.Reset();
         }
 
         public void OnSaveClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Save("fuck.json");            
+            Save("fuck.json");            
         }
 
         public void OnLoadClick(object sender, RoutedEventArgs e)
         {
-            ModinfoCreationManager.Load("fuck.json");
+            Load("fuck.json");
+        }
+
+        public void OnDlcDeleteClick(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            var DataContext = but?.DataContext;
+
+            var _id = DataContext as DlcId?;
+
+            if (_id is not null) ModinfoFactory.RemoveDLC((DlcId)_id);
+        }
+
+
+        public void Load(String Filename)
+        {
+            if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
+            {
+                ModinfoFactory = new ModinfoFactory(_modinfo!);
+            }
+        }
+
+        public void Save(String Filename)
+        {
+            ModinfoLoader.TrySaveToFile(Filename, ModinfoFactory.GetResult());
         }
 
         #region INotifyPropertyChangedMembers
@@ -63,5 +100,19 @@ namespace Imya.UI.Views
             }
         }
         #endregion
+
+        private void OnDlcAddClick(object sender, RoutedEventArgs e)
+        {
+            var remaining = ModinfoFactory.GetRemainingDlcIds();
+            AddDlcPopup popup = new AddDlcPopup(remaining);
+            popup.ShowDialog();
+
+            if (popup.DialogResult is false) return;
+
+            foreach (DlcId x in popup.SelectedIDs)
+            {
+                ModinfoFactory.AddDLC(x);
+            }
+        }
     }
 }

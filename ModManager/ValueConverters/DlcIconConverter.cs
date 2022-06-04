@@ -24,7 +24,16 @@ namespace Imya.UI.ValueConverters
             { DlcId.Anarchist, "dlc_anarchist" },
             { DlcId.SeedsOfChange, "dlc_seedsofuseless"},
             { DlcId.EmpireOfTheSkies, "dlc_airships"},
-            { DlcId.NewWorldRising, "dlc_newworldrising"}
+            { DlcId.NewWorldRising, "dlc_newworldrising"},
+
+
+            { DlcId.SeasonalDecorations, "icon_seasondecorations" },
+            { DlcId.AmusementPark, "icon_amusement" },
+            { DlcId.CityLife, "dlc_citylights" },
+            { DlcId.Christmas, "icon_holidaypack" },
+            { DlcId.PedestrianZone, "dlc_pedestrians" },
+            { DlcId.VibrantCity, "dlc_residenceskins" },
+            { DlcId.VehicleSkins, "dlc_vehicleskins" }
         };
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)

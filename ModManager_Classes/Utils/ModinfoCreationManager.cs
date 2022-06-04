@@ -1,19 +1,22 @@
-﻿using Imya.Models.ModMetadata;
+﻿using Imya.Enums;
+using Imya.Models.ModMetadata;
 using Imya.Models.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Imya.Utils
 {
-    public class ModinfoCreationManager : PropertyChangedNotifier
+    public class ModinfoFactory : PropertyChangedNotifier
     {
+        public readonly char ArraySplitter = ';';
         public Modinfo ModinfoContext
         {
             get => _modinfoContext;
-            set
+            private set
             {
                 _modinfoContext = value;
                 OnPropertyChanged(nameof(ModinfoContext));
@@ -21,7 +24,7 @@ namespace Imya.Utils
         }
         private Modinfo _modinfoContext;
 
-        public String IncompatibleIDsJoined 
+        public String IncompatibleIDsJoined
         {
             get => _incompatible_ids_joined;
             set
@@ -43,41 +46,76 @@ namespace Imya.Utils
         }
         private String _mod_deps_joined;
 
-        public static ModinfoCreationManager Instance { get; } = new ModinfoCreationManager();
+        public ObservableCollection<DlcId> DLCs { get; set; } = new();
 
-        public ModinfoCreationManager()
+        public ModinfoFactory()
         {
             ModinfoContext = new Modinfo();
-            ModinfoContext.Version = "5";
         }
 
-        public void Load(String Filename)
+        public ModinfoFactory(Modinfo _)
         {
-            if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
-            {
-                ModinfoContext = _modinfo;
-                //
-                IncompatibleIDsJoined = StringArrToString(ModinfoContext?.IncompatibleIds) ?? "";
-                ModDepsJoined = StringArrToString(ModinfoContext?.ModDependencies) ?? "";
-            }
-        }
-
-        public void Save(String Filename)
-        {
-            ModinfoContext.IncompatibleIds = StringToStringArr(IncompatibleIDsJoined);
-            ModinfoContext.ModDependencies = StringToStringArr(ModDepsJoined);
-            ModinfoLoader.TrySaveToFile(Filename, ModinfoContext);
+            ModinfoContext = _;
+            LoadModinfo(ModinfoContext);
         }
 
         public void Reset()
         {
             ModinfoContext = new Modinfo();
+            LoadModinfo(ModinfoContext);
+        }
+
+        public void LoadModinfo(Modinfo _modinfo)
+        {
+            IncompatibleIDsJoined = StringArrToString(ModinfoContext?.IncompatibleIds) ?? "";
+            ModDepsJoined = StringArrToString(ModinfoContext?.ModDependencies) ?? "";
+
+            DLCs.Clear();
+            if (ModinfoContext?.DLCDependencies is not null)
+            {
+                foreach (Dlc _dlc in ModinfoContext?.DLCDependencies!)
+                {
+                    if (_dlc.DLC is null) continue;
+                    DLCs.Add((DlcId)_dlc.DLC);
+                }
+            }
+        }
+
+        public IEnumerable<DlcId> GetRemainingDlcIds()
+        {
+            Type DlcType = typeof(DlcId);
+            Array ids = DlcType.GetEnumValues();
+            foreach (object x in ids)
+            {
+                DlcId id = (DlcId)x;
+                if (!DLCs.Contains(id)) yield return id;
+            }
+        }
+
+
+        public Modinfo? GetResult()
+        {
+            ModinfoContext.IncompatibleIds = StringToStringArr(_incompatible_ids_joined);
+            ModinfoContext.ModDependencies = StringToStringArr(_mod_deps_joined);
+            ModinfoContext.DLCDependencies = DLCs.Count > 0 ? DLCs.Select(_id => new Dlc { DLC = _id, Dependant = DlcRequirement.required }).ToArray() : null;
+
+            return ModinfoContext;
+        }
+
+        public void AddDLC(DlcId _dlc)
+        {
+            DLCs.Add( _dlc );
+        }
+
+        public void RemoveDLC(DlcId _dlc)
+        {
+            DLCs.Remove(_dlc);
         }
 
         private String[]? StringToStringArr(String? _string)
         {
             if (_string is null) return null;
-            var split =  _string.Split(";");
+            var split =  _string.Split(ArraySplitter);
 
             if (split.Length == 1 && split[0].Equals(String.Empty)) return null;
 
@@ -87,7 +125,7 @@ namespace Imya.Utils
         private String? StringArrToString(String[]? _string)
         {
             if (_string is null) return null;
-            return String.Join(";", _string);
+            return String.Join(ArraySplitter, _string);
         }
     }
 }
