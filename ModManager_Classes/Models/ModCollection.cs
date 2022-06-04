@@ -39,35 +39,30 @@ namespace Imya.Models
 
         public int ActiveMods
         {
-            get
-            {
-                return _activeMods;
-            }
-            set
-            {
-                _activeMods = value;
-                OnPropertyChanged("ActiveMods");
-            }
+            get => _activeMods;
+            set => SetProperty(ref _activeMods, value);
         }
         private int _activeMods;
 
-        public int InactiveMods
+        public int ActiveSizeInMBs
         {
-            get
-            {
-                return _inactiveMods;
-            }
-            set
-            {
-                _inactiveMods = value;
-                OnPropertyChanged(nameof(InactiveMods));
-            }
+            get => _activeSizeInMBs;
+            set => SetProperty(ref _activeSizeInMBs, value);
         }
-        private int _inactiveMods;
+        private int _activeSizeInMBs = 0;
+
+        public int InstalledSizeInMBs
+        {
+            get => _installedSizeInMBs;
+            set => SetProperty(ref _installedSizeInMBs, value);
+        }
+        private int _installedSizeInMBs = 0;
         #endregion
 
         public string ModsPath { get; private set; }
-        public List<Mod> Mods { get; private set; } = new();
+
+        public IReadOnlyList<Mod> Mods => _mods;
+        private List<Mod> _mods = new();
 
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
@@ -102,12 +97,12 @@ namespace Imya.Models
         {
             if (!Directory.Exists(ModsPath))
             {
-                Mods = new();
+                _mods = new();
                 DisplayedMods = new();
                 return;
             }
 
-            Mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
+            _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                 .Where(x => !Path.GetFileName(x).StartsWith(".")));
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
@@ -119,12 +114,12 @@ namespace Imya.Models
             var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
             if (_options.Normalize)
             {
-                foreach (var mod in Mods)
+                foreach (var mod in mods)
                     await mod.NormalizeAsync();
             }
             if (_options.LoadImages)
             {
-                foreach (var mod in Mods)
+                foreach (var mod in mods)
                 {
                     // TODO async and move into class Mod
                     var imagepath = Path.Combine(mod.FullModPath, "banner.png");
@@ -156,24 +151,34 @@ namespace Imya.Models
 
         private void SetDisplayMods(ObservableCollection<Mod> value)
         {
+            // TODO display mods should move to a separate wrapper around ModCollection
+
+            // clear out old mods
+            foreach (var mod in _displayedMods)
+                mod.StatsChanged -= OnModStatsChanged;
+
             _displayedMods = new ObservableCollection<Mod>(value.
                 OrderBy(x => x.Name.Text).
                 OrderBy(x => x.Category.Text).
                 OrderByDescending(x => x.IsActive).
                 ToList());
-            UpdateModCounts();
+
+            // register for stat changes
+            foreach (var mod in _displayedMods)
+                mod.StatsChanged += OnModStatsChanged;
+            OnModStatsChanged();
             OnPropertyChanged(nameof(DisplayedMods));
         }
 
-        private void UpdateModCounts()
+        private void OnModStatsChanged()
         {
-            var newActive = Mods.Count(x => x.IsActive);
-            var newInactive = Mods.Count - newActive;
-            if (newActive != ActiveMods || newInactive != InactiveMods)
+            var newActive = _mods.Count(x => x.IsActive);
+            if (newActive != ActiveMods)
             {
                 ActiveMods = newActive;
-                InactiveMods = newInactive;
-                Console.WriteLine($"Found: {Mods.Count}, Active: {ActiveMods}, Inactive: {InactiveMods}");
+                ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
+                InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
+                Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
             }
         }
 
@@ -212,7 +217,7 @@ namespace Imya.Models
         {
             var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-            if (!AllowOldToOverwrite && IsSourceOutdated(sourceMod, targetMod))
+            if (!AllowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
             {
                 Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
                 return;
@@ -236,10 +241,14 @@ namespace Imya.Models
 
             // update mod list, only remove in case of same folder
             if (targetMod is not null)
-                Mods.Remove(targetMod);
+            {
+                _mods.Remove(targetMod);
+                targetMod.StatsChanged -= OnModStatsChanged;
+            }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
             reparsed.Status = sourceMod.Status;
-            Mods.Add(reparsed);
+            _mods.Add(reparsed);
+            reparsed.StatsChanged += OnModStatsChanged;
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -263,23 +272,6 @@ namespace Imya.Models
             return (targetMod, targetModPath);
         }
 
-        private static bool IsSourceOutdated(Mod sourceMod, Mod? targetMod)
-        {
-            if (targetMod is null || targetMod.Modinfo.Version is null)
-                return false;
-
-            if (sourceMod.Modinfo.Version is null && targetMod.Modinfo.Version is not null)
-                return true;
-
-            if (!VersionEx.TryParse(targetMod.Modinfo.Version, out var targetVersion))
-                return false;
-
-            if (!VersionEx.TryParse(sourceMod.Modinfo.Version, out var sourceVersion))
-                return true;
-
-            return sourceVersion < targetVersion;
-        }
-
         /// <summary>
         /// Permanently delete all mods from collection.
         /// </summary>
@@ -301,7 +293,8 @@ namespace Imya.Models
                     Directory.Delete(mod.FullModPath, true);
 
                     // remove from the mod lists to prevent access.
-                    Mods.Remove(mod);
+                    _mods.Remove(mod);
+                    mod.StatsChanged -= OnModStatsChanged;
                     // remove on DisplayMods cannot be than from non-Dispatcher threads
                     DisplayedMods = new ObservableCollection<Mod>(Mods);
                 }

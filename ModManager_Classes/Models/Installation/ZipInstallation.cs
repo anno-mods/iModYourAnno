@@ -15,7 +15,6 @@ namespace Imya.Models.Installation
         public String SourceFilepath { get; }
         public String UnpackDirectoryName { get; private set; }
 
-
         public ZipInstallationOptions Options { get; }
 
         #region NotifiableProperties
@@ -40,6 +39,9 @@ namespace Imya.Models.Installation
             UnpackDirectoryName = download_directory_name;
 
             Options = options;
+
+            HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD");
+            AdditionalText = new SimpleText(SourceFilepath);
         }
 
         public Task<ZipInstallation> RunUnpack()

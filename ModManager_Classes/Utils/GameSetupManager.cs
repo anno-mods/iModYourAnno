@@ -21,7 +21,7 @@ namespace Imya.Utils
 
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
-        public ModLoaderInstaller ModLoader { get; private set; }
+        //public ModloaderInstallation ModLoader { get; private set; }
 
         //event for Game Root Path
         public delegate void GameRootPathChangedEventHandler(String newPath);
@@ -81,6 +81,26 @@ namespace Imya.Utils
         }
         private bool _isValid;
 
+        public bool IsModloaderInstalled
+        {
+            get => _isModloaderInstalled;
+            private set {
+                _isModloaderInstalled = value;
+                OnPropertyChanged(nameof(IsModloaderInstalled));
+            }
+        }
+        private bool _isModloaderInstalled = false;
+
+        public String DownloadDirectory
+        {
+            get => _downloadDirectory;
+            private set {
+                _downloadDirectory = value;
+                OnPropertyChanged(nameof(DownloadDirectory));
+            }
+        }
+        private String _downloadDirectory = String.Empty;
+
         #region DIRECTORY_PATH_REQUESTS
 
         public String GetModDirectory()
@@ -102,7 +122,7 @@ namespace Imya.Utils
         /// </summary>
         public void SetDownloadDirectory(string downloadDirectory)
         {
-            ModLoader = new (GameRootPath, downloadDirectory);
+            DownloadDirectory = downloadDirectory;
         }
 
         public void SetGamePath(String gamePath, bool autoSearchIfInvalid = false)
@@ -132,8 +152,6 @@ namespace Imya.Utils
             }
             
             GameRootPathChanged(gamePath);
-            if (ModLoader != null)
-                ModLoader = new(GameRootPath, ModLoader.DownloadDirectory);
             CreateWatchers();
         }
 
@@ -201,6 +219,35 @@ namespace Imya.Utils
             }
 
             return allExist; 
+        }
+
+        public void UpdateModloaderInstallStatus()
+        {
+            IsModloaderInstalled = CheckInstallation();
+        }
+
+        private bool CheckInstallation()
+        {
+            if (ExecutableDir == null) return false;
+
+            var ubiPython = Path.Combine(ExecutableDir, "python35_ubi.dll");
+            var python = Path.Combine(ExecutableDir, "python35.dll");
+            var executable = ExecutablePath;
+            if (File.Exists(ubiPython) && File.Exists(python) && File.Exists(executable))
+            {
+                // when the executable is a lot newer than ubiPython, then it either got repaired or updated
+                // chances are you need an update, but there's no concrete action that you could do here
+                // IsPotentiallyOutdated = File.GetLastWriteTimeUtc(executable) > File.GetLastWriteTimeUtc(ubiPython).AddHours(1);
+
+                // mod loader has python and ubiPython at roughly the same time
+                // in case python is newer chances are it got repaired.
+                // consider it to be not installed in that case.
+                // note: will give false results if you repair right before you download a super fresh mod loader release
+                // TODO add hash-based check. remove the false result, but is only applicable when downloaded via imya
+                return File.GetLastWriteTimeUtc(python) <= File.GetLastWriteTimeUtc(ubiPython).AddMinutes(20);
+            }
+
+            return false;
         }
 
         private FileSystemWatcher? CreateWatcher(string pathToWatch)

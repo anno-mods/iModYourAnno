@@ -12,7 +12,23 @@
     <AssemblyName>iModYourAnno</AssemblyName>
     <StartupObject>Imya.UI.App</StartupObject>
     <DebugType>full</DebugType>
+
+    <!-- <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute> -->
+    <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
+
+  <!-- use git describe to set assembly version -->
+  <Target Name="SetGitVersion" BeforeTargets="InitializeSourceControlInformation">
+    <Exec Command="git describe --tags" ConsoleToMSBuild="True" IgnoreExitCode="False">
+      <Output PropertyName="GitDescribe" TaskParameter="ConsoleOutput"/>
+    </Exec>
+    <PropertyGroup>
+      <!-- <AssemblyVersion>$(GitDescribe)</AssemblyVersion> -->
+      <FileVersion>$(GitDescribe)</FileVersion>
+      <InformationalVersion>$(GitDescribe)</InformationalVersion>
+    </PropertyGroup>
+  </Target>
 
   <ItemGroup>
     <None Remove="resources\dlc_icons\*.png" />

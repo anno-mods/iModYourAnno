@@ -12,6 +12,7 @@ using Imya.Utils;
 
 using System.Linq;
 using Imya.Models.Installation;
+using Imya.UI.Popup;
 
 namespace Imya.UI.Views
 {
@@ -56,7 +57,7 @@ namespace Imya.UI.Views
 
             TextManager.LanguageChanged += OnLanguageChanged;
 
-            if (GameSetup.ModLoader.IsInstalled)
+            if (GameSetup.IsModloaderInstalled)
             {
                 InstallStatus = ModLoaderStatus.Installed;
                 // TODO async update check
@@ -97,6 +98,15 @@ namespace Imya.UI.Views
             return InstallationTasks;
         }
 
+        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
+        {
+            GenericOkayPopup popup = new GenericOkayPopup();
+
+            popup.MESSAGE = new SimpleText("TODO: Popup to select mods from github");
+
+            popup.ShowDialog();
+        }
+
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
         {
             if (ModCollection.Global is null) return;
@@ -114,7 +124,7 @@ namespace Imya.UI.Views
             foreach (var _task in TaskResults)
             {
                 await _task.RunMove();
-                RemoveZipInstallation(_task);
+                RemoveInstallation(_task);
             }
 
             //IsInstalling = false;
@@ -130,10 +140,10 @@ namespace Imya.UI.Views
 
         }
 
-        private void RemoveZipInstallation(ZipInstallation x)
+        private void RemoveInstallation(Installation x)
         {
             bool success = App.Current.Dispatcher.Invoke(() => RunningInstallations.Remove(x));
-            Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
+            //Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
         }
 
         private bool IsRunningInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ZipInstallation && ((ZipInstallation)x).SourceFilepath.Equals(SourceFilepath));
@@ -159,11 +169,17 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            await GameSetup.ModLoader.InstallAsync();
+            ModloaderInstallation? installation = new ModloaderInstallation();
+            if (installation is null) return;
+
+            RunningInstallations.Add(installation);
+            await installation!.InstallAsync();
 
             ModloaderDownloadButton.IsEnabled = true;
-            if (GameSetup.ModLoader.IsInstalled)
+            if (GameSetup.IsModloaderInstalled)
                 InstallStatus = ModLoaderStatus.Installed;
+
+            RemoveInstallation(installation);
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)
@@ -181,6 +197,11 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>

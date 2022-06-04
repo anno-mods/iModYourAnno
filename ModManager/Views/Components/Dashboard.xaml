@@ -10,7 +10,7 @@
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="80" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.Resources>
@@ -32,7 +32,8 @@
         </DockPanel>
         <!-- Play Button -->
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1"
+                    Orientation="Vertical">
             <Button Style="{StaticResource IMYA_BUTTON}"
                     MinWidth="200"
                     MinHeight="32"
@@ -53,6 +54,10 @@
                                Style="{StaticResource IMYA_TEXT}"/>
                 </DockPanel>
             </Button>
+            <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                      Content="Modloader"
+                      Margin="10,3,0,0">
+            </CheckBox>
         </StackPanel>
         <StackPanel HorizontalAlignment="Left"
                     Grid.Row="2"

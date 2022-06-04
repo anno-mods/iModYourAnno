@@ -5,11 +5,11 @@ using ModManager_Devplayground;
 
 public class Program
 {
-    public static void Main(String[] args)
+    public static async Task Main(String[] args)
     {
-        GameSetupManager gsm = new GameSetupManager();
+        GameSetupManager gsm = GameSetupManager.Instance;
         gsm.SetGamePath(@"F:\Spiele\Anno 1800");
 
-        GithubDevTester.DownloadModloader2();
+        await GithubDevTester.DownloadSpice();
     }
 }

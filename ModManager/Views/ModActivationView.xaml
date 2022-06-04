@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Views"
              xmlns:Components="clr-namespace:Imya.UI.Components"
+             xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DataContext="{d:DesignInstance Type=local:ModActivationView}"
              mc:Ignorable="d" 
@@ -20,16 +21,33 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Converters:StringFormatConverter x:Key="Format" />
+        </Grid.Resources>
         <StackPanel 
                 x:Name="UpperControls" 
                 Orientation="Horizontal"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-            Grid.ColumnSpan="2">
-            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_ACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding Mods.ActiveMods, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding TextManager[MODLIST_INACTIVE].Text, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
-            <TextBlock FontSize="15" Text="{Binding Mods.InactiveMods, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource IMYA_TEXT}"/>
+                Grid.ColumnSpan="2">
+            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                       FontSize="15">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource Format}"
+                                  UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="TextManager[ACTIVATION_HEADER_FORMATTED].Text"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Mods.ActiveMods"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Mods.ActiveSizeInMBs"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Mods.DisplayedMods.Count"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="Mods.InstalledSizeInMBs"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
 
         <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList" />
