@@ -26,6 +26,7 @@ namespace Imya.Utils
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
         private InstallationValidator Validator;
+        private GameScanner Scanner; 
 
         //public ModloaderInstallation ModLoader { get; private set; }
 
@@ -128,6 +129,8 @@ namespace Imya.Utils
         {
             GameStarted += () => IsGameRunning = true;
             GameClosed += (x, y) => IsGameRunning = false;
+
+            Scanner = new GameScanner();
         }
 
         #region DIRECTORY_RELATED
@@ -146,7 +149,7 @@ namespace Imya.Utils
             String executablePath = Path.Combine(gamePath, "Bin", "Win64", "Anno1800.exe");
             if (!File.Exists(executablePath) && autoSearchIfInvalid)
             {
-                var foundGamePath = GameScanner.GetInstallDirFromRegistry() ?? "";
+                var foundGamePath = Scanner.GetInstallDirFromRegistry() ?? "";
                 executablePath = Path.Combine(foundGamePath, "Bin", "Win64", "Anno1800.exe");
                 if (File.Exists(executablePath))
                     gamePath = foundGamePath; // only replace if found, otherwise keep "wrong" path in the settings.
@@ -284,9 +287,13 @@ namespace Imya.Utils
             _ = Task.Run (
                 async () =>
                 {
-                    Process? RunningGame = await ScanForRunningGameAsync(30);
+                    Process? RunningGame = await Scanner.ScanForRunningGameAsync(30);
 
-                    if (RunningGame is null) return;
+                    if (RunningGame is null)
+                    {
+                        GameClosed.Invoke(-1, false);
+                        return;
+                    }
 
                     RunningGame.EnableRaisingEvents = true;
                     RunningGame.Exited += OnGameExit;
@@ -305,32 +312,5 @@ namespace Imya.Utils
             GameClosed.Invoke(exitCode);
         }
 
-        /// <summary>
-        /// Asynchronously searches for a running Anno 1800 process 
-        /// </summary>
-        /// <param name="TimeoutInSeconds"></param>
-        /// <returns></returns>
-        public async Task<Process?> ScanForRunningGameAsync(int TimeoutInSeconds)
-        {
-            Process? process = null;
-            
-            using var periodicTimer = new PeriodicTimer(TimeSpan.FromSeconds(1));
-            for (int i = TimeoutInSeconds; 
-                    process is null && 
-                    await periodicTimer.WaitForNextTickAsync() 
-                    && i > 0; i--  )
-            {
-                GameScanner.TryGetRunningGame(out process);
-            }
-
-            Console.WriteLine(process is not null ? "running process found!" : "failed to retrieve any running process");
-
-            if (process is null)
-            {
-                GameClosed.Invoke(-1, false);
-            }
-
-            return process;
-        }
     }
 }
