@@ -327,14 +327,13 @@ namespace Imya.Models
 
         public async Task LoadProfileAsync(ModActivationProfile profile)
         {
-            await DeactivateAllAsync();
-            
-            foreach (String ModDirectoryName in profile)
-            {
-                Mod? mod = Mods.FirstOrDefault(x => x.FolderName.Equals(ModDirectoryName));
+            var activationSet = new HashSet<string>(profile);
 
-                if (mod is not null)
-                    await mod.ChangeActivationAsync(true);
+            foreach (var mod in Mods)
+            {
+                bool active = activationSet.Contains(mod.FolderName);
+                if (active != mod.IsActive)
+                    await mod.ChangeActivationAsync(active);
             }
         }
 
