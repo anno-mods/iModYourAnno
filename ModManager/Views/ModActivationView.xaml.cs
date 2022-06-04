@@ -99,7 +99,7 @@ namespace Imya.UI.Views
 
             Dialog.ShowDialog();
 
-            if (Dialog.DialogResult is true)
+            if (Dialog.DialogResult is true && Dialog.SelectedProfile is not null)
             {
                 await Mods.LoadProfileAsync(Dialog.SelectedProfile);
             }
@@ -113,9 +113,9 @@ namespace Imya.UI.Views
 
             dialog.ShowDialog();
 
-            if(dialog.DialogResult is true )
+            if (dialog.DialogResult is true)
             {
-                var profile = ModActivationProfile.FromModCollection(ModCollection.Global!, x => x.IsActive);
+                var profile = ModActivationProfile.FromModCollection(Mods, x => x.IsActive);
 
                 if (profile.SaveToFile(dialog.FullFilename))
                 {
