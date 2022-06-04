@@ -29,6 +29,11 @@ namespace Imya.Models.ModTweaker
             return Tweaks.SafeAddOrGet(ID);
         }
 
+        public IEnumerable<ITweakStorage> GetAllStorages()
+        {
+            return Tweaks.Values.ToList();
+        }
+
         public void SaveAll()
         {
             foreach (var (key, value) in Tweaks)
