@@ -20,7 +20,7 @@ namespace Imya.UI.Popup
 
         private static String ProfilesDirectoryPath = GameSetupManager.Instance.GetProfilesDirectory();
 
-        public ModActivationProfile SelectedProfile { get; private set; }
+        public ModActivationProfile? SelectedProfile { get; private set; }
 
         public TextManager TextManager { get; private set; } = TextManager.Instance;
 
@@ -68,11 +68,11 @@ namespace Imya.UI.Popup
             }
         }
 
-        public void AddProfile(String Filename)
+        public void AddProfile(string filePath)
         {
-            ModActivationProfile profile = new ModActivationProfile();
-            profile.LoadFromFile(Filename);
-            Profiles.Add(profile);
+            var profile = ModActivationProfile.FromFile(filePath);
+            if (profile is not null)
+                Profiles.Add(profile);
         }
 
         public void Accept()

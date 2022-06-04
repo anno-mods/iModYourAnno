@@ -54,10 +54,10 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
-            ModList.ModList_SelectionChanged += UpdateButtons;
+            ModList.ModList_SelectionChanged += OnUpdateSelection;
 
-            GameSetupManager.Instance.GameStarted += () => UpdateButtons(null);
-            GameSetupManager.Instance.GameClosed += (x, y) => UpdateButtons(null);
+            GameSetupManager.Instance.GameStarted += () => UpdateButtons();
+            GameSetupManager.Instance.GameClosed += (x, y) => UpdateButtons();
         }
 
         private void OnGameStart()
@@ -99,7 +99,7 @@ namespace Imya.UI.Views
 
             Dialog.ShowDialog();
 
-            if (Dialog.DialogResult is true)
+            if (Dialog.DialogResult is true && Dialog.SelectedProfile is not null)
             {
                 await Mods.LoadProfileAsync(Dialog.SelectedProfile);
             }
@@ -113,9 +113,9 @@ namespace Imya.UI.Views
 
             dialog.ShowDialog();
 
-            if(dialog.DialogResult is true )
+            if (dialog.DialogResult is true)
             {
-                var profile = ModActivationProfile.FromModCollection(ModCollection.Global!, x => x.IsActive);
+                var profile = ModActivationProfile.FromModCollection(Mods, x => x.IsActive);
 
                 if (profile.SaveToFile(dialog.FullFilename))
                 {
@@ -128,8 +128,27 @@ namespace Imya.UI.Views
             }
         }
 
-        private void UpdateButtons(Mod? m)
+        Mod? _previousSelection = null;
+        private void OnUpdateSelection(Mod? m)
         {
+            if (_previousSelection != m)
+            {
+                if (_previousSelection is not null)
+                    _previousSelection.PropertyChanged -= OnSelectionPropertyChanged;
+                if (m is not null)
+                    m.PropertyChanged += OnSelectionPropertyChanged;
+                _previousSelection = m;
+            }
+            UpdateButtons();
+        }
+
+        private void OnSelectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            UpdateButtons();
+        }
+
+        private void UpdateButtons()
+        { 
             CanActivate = ModList.AnyInactiveSelected() && !GameSetupManager.Instance.IsGameRunning;
             CanDeactivate = ModList.AnyActiveSelected() && !GameSetupManager.Instance.IsGameRunning;
             CanDelete = ModList.HasSelection && !GameSetupManager.Instance.IsGameRunning;
