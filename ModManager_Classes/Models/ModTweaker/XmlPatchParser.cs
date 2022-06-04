@@ -8,6 +8,9 @@ using System.Xml;
 
 namespace Imya.Models.ModTweaker
 {
+    /// <summary>
+    /// Object that scans XML documents for Imya Expose Instructions and ModOps that are affected by it.
+    /// </summary>
     internal class XmlPatchParser
     {
         private XmlDocument Document;
@@ -16,25 +19,6 @@ namespace Imya.Models.ModTweaker
         {
             Document = doc;
         }
-
-        /*
-        internal IEnumerable<ExposedModValue> FetchExposedValues(TweakerFile parent)
-        {
-            var ExposedValues = Document.SelectNodes($"//{TweakerConstants.EXPOSE_STRING}");
-            if (ExposedValues is null) yield break;
-
-            foreach (XmlNode ExposeInstruction in ExposedValues)
-            {
-                //per expose instruction
-                Expose? expose = Expose.FromXmlNode(ExposeInstruction);
-
-                if (expose is not null && TryFetchExposedValue(expose, parent, out var ExposedModValue))
-                {
-                    yield return ExposedModValue;
-                }
-            }
-        }
-        */
 
         internal IEnumerable<ExposedModValue> FetchExposes(TweakerFile parent)
         {
@@ -82,22 +66,5 @@ namespace Imya.Models.ModTweaker
                 if (op is not null && op.HasID) yield return op;
             }
         }
-        /*
-        internal bool TryFetchExposedValue(Expose Expose, TweakerFile parent, out ExposedModValue exposedModValue)
-        {
-            if (Expose.Path is not null && Expose.ExposeID is not null && Document.TryGetModOpNode("Heater", out var modop))
-            {
-                var node = modop.SelectSingleNode(Expose.Path);
-                var TextNode = node?.SelectSingleNode("./text()");
-
-                if (TextNode is not null)
-                {
-                    exposedModValue = new ExposedModValue(TextNode, Expose.ExposeID, parent);
-                    return true;
-                }
-            }
-            exposedModValue = null;
-            return false;
-        }*/
     }
 }

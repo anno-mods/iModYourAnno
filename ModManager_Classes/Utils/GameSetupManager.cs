@@ -137,7 +137,9 @@ namespace Imya.Utils
 
         public String GetModDirectory() => Path.Combine(GameRootPath, ModDirectoryName);
 
-        public String GetProfilesDirectory() => Path.Combine(GameRootPath, ProfilesDirectoryName);
+        public String GetProfilesDirectory() => Path.Combine(WorkingDirectory, ProfilesDirectoryName);
+
+        public String WorkingDirectory => Path.Combine(GameRootPath, ".imya");
 
         /// <summary>
         /// Set download directory. Relative to executable.

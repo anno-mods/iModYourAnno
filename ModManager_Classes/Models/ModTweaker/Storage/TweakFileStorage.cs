@@ -9,13 +9,16 @@ using System.Threading.Tasks;
 namespace Imya.Models.ModTweaker
 {
 
-    public class TweakCollection : ITweakStorage
+    public class TweakFileStorage : ITweakStorage
     {
         public Dictionary<String, Tweak> Tweaks { get; set; } = new();
 
-        public TweakCollection()
-        {
+        public static String BaseDirectory => Path.Combine(GameSetupManager.Instance.WorkingDirectory, "tweaks");
 
+        public TweakFileStorage()
+        {
+            if(!Directory.Exists(BaseDirectory))
+            Directory.CreateDirectory(BaseDirectory);
         }
 
         public void SetTweakValue(string Filename, string ExposeID, string NewValue)
@@ -45,17 +48,17 @@ namespace Imya.Models.ModTweaker
             FilenameBase = Path.GetFileName(FilenameBase);
 
             String s = JsonConvert.SerializeObject(Tweaks, Formatting.Indented);
-            using (StreamWriter writer = new StreamWriter(File.Create($"{FilenameBase}.json")))
+            using (StreamWriter writer = new StreamWriter(File.Create($"{Path.Combine(BaseDirectory, FilenameBase)}.json")))
             {
                 writer.Write(s);
             }
         }
 
-        public static TweakCollection? LoadFromFile(String FilenameBase)
+        public static TweakFileStorage? LoadFromFile(String FilenameBase)
         {
             try
             {
-                return LoadFromJson(File.ReadAllText($"{FilenameBase}.json"));
+                return LoadFromJson(File.ReadAllText($"{Path.Combine(BaseDirectory, FilenameBase)}.json"));
             }
             catch (Exception)
             {
@@ -68,19 +71,19 @@ namespace Imya.Models.ModTweaker
         /// </summary>
         /// <param name="FilenameBase"></param>
         /// <returns>The tweak collection</returns>
-        public static TweakCollection LoadOrCreate(String FilenameBase)
+        public static TweakFileStorage LoadOrCreate(String FilenameBase)
         {
             var coll = LoadFromFile(FilenameBase);
             if (coll is not null) return coll;
 
-            return new TweakCollection();
+            return new TweakFileStorage();
         }
 
-        public static TweakCollection? LoadFromJson(String JsonString)
+        public static TweakFileStorage? LoadFromJson(String JsonString)
         {
             try
             {
-                var coll = new TweakCollection();
+                var coll = new TweakFileStorage();
                 var tweaks = JsonConvert.DeserializeObject<Dictionary<String, Tweak>>(JsonString);
                 if (tweaks is null) return null;
                 coll.Tweaks = tweaks;
