@@ -64,6 +64,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Markdown.Xaml">
+      <HintPath>lib\Markdown.Xaml.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

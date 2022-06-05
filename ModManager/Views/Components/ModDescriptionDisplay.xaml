@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
+             xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              SizeChanged="OnSizeChanged">
@@ -20,6 +21,23 @@
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
+
+            <md:Markdown x:Key="Markdown"
+                         DocumentStyle="{StaticResource DocumentStyle}"
+                         Heading1Style="{StaticResource H1Style}"
+                         Heading2Style="{StaticResource H2Style}"
+                         Heading3Style="{StaticResource H3Style}"
+                         Heading4Style="{StaticResource H4Style}"
+                         LinkStyle="{StaticResource LinkStyle}"
+                         ImageStyle="{StaticResource ImageStyle}"
+                         SeparatorStyle="{StaticResource SeparatorStyle}"
+                         TableStyle="{StaticResource TableStyle}"
+                         TableHeaderStyle="{StaticResource TableHeaderStyle}" />
+
+            <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter"
+                                               Markdown="{StaticResource Markdown}" />
+            
         </Grid.Resources>
         <Border Background="{DynamicResource ComponentColorBrush}" CornerRadius="3" Margin="0,5,0,5">
             <StackPanel HorizontalAlignment="Center"
@@ -110,19 +128,34 @@
                     <Separator Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Description -->
-                    <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
-                               Margin="2,8,2,8"
-                               Style="{StaticResource IMYA_TEXT}"
-                               FontWeight="SemiBold"
-                               Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel Orientation="Horizontal"
-                                Margin="2,8,2,8"
-                                Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+
+                    <Grid Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
+                                   Margin="2,8,2,0"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="SemiBold" />
+                        
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    MaxWidth="{Binding DescriptionTextWidth}"
                                    TextWrapping="Wrap"
-                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
+                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="2,8,2,8"
+                                   Grid.Row="1"/>
+
+                        <FlowDocumentScrollViewer Visibility="{Binding UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                                  IsEnabled="False"
+                                                  Style="{StaticResource FlowDocumentScrollViewer}"
+                                                  Document="{Binding MarkdownDescription, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
+                                                  Margin="-15,0,0,0"
+                                                  x:Name="DescriptionFlowViewer"
+                                                  Grid.Row="1">
+                        </FlowDocumentScrollViewer>
+                    </Grid>
 
                     <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -134,7 +167,8 @@
                                Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
 
                     <ItemsControl ItemsSource="{Binding Mod.Modinfo.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
-                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
+                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -158,10 +192,11 @@
                                Text="{Binding TextManager[HEADER_DLCDEPENDENCY].Text, UpdateSourceTrigger=PropertyChanged}"
                                Margin="2,5,2,5"
                                FontWeight="SemiBold"
-                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
+                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}"/>
 
                     <ItemsControl x:Name="DLC_Dependencies"
-                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}">
+                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
