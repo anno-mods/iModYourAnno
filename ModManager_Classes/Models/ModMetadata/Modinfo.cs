@@ -18,6 +18,7 @@ namespace Imya.Models.ModMetadata
         public string? CreatorName { get; set; }
         public string? CreatorContact { get; set; }
         public string? Image { get; set; }
+        public int? Likes { get; set; }
 
         public LocalizedModinfo GetLocalized(string name) => new (name, this);
     }
@@ -43,6 +44,7 @@ namespace Imya.Models.ModMetadata
             ModName = (modinfo?.ModName is not null) ? TextManager.CreateLocalizedText(modinfo.ModName) : new SimpleText(name);
             Description = (modinfo?.Description is not null) ? TextManager.CreateLocalizedText(modinfo.Description) : null;
             KnownIssues = (modinfo?.KnownIssues is not null) ? modinfo.KnownIssues.Where(x => x is not null).Select(x => TextManager.CreateLocalizedText(x)).ToArray() : null;
+            Likes = modinfo?.Likes is not null ? new SimpleText(((int)modinfo.Likes).ToString()) : new SimpleText("0");
         }
 
         /// <summary>
@@ -56,6 +58,9 @@ namespace Imya.Models.ModMetadata
         public new IText Category { get; init; }
 
         public new IText? Description { get; init; }
+        
         public new IText[]? KnownIssues { get; init; }
+
+        public new IText Likes { get; init; }
     }
 }

@@ -90,6 +90,20 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
                                     Margin="5,3,0,3">
+                            <Button
+                                x:Name="likeModButton"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                Click="LikeMod"
+                                >
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Likes.Text}"
+                                               Style="{StaticResource IMYA_TEXT}"
+                                               Margin="5,0,0,0" />
+                                    <materialDesign:PackIcon Kind="Star"
+                                                             Foreground="White"
+                                                             Margin="5,0,5,0" />
+                                </StackPanel>
+                            </Button>
                             <materialDesign:PackIcon Margin="5,0,5,0"
                                                      Kind="{Binding Status, Converter={StaticResource ModStatusAsIcon}}"
                                                      Foreground="{Binding Status, Converter={StaticResource ModStatusAsColor}}" />

@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.UI.Popup;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -168,5 +169,17 @@ namespace Imya.UI.Components
             OnPropertyChanged(propertyName);
         }
         #endregion
+
+        private void LikeMod(object sender, RoutedEventArgs e)
+        {
+            Button original = (Button)sender;
+            Mod mod = (Mod)original.DataContext;
+            // Contact the server and store liked mod locally
+            GenericOkayPopup popup = new GenericOkayPopup();
+
+            popup.MESSAGE = new SimpleText("Mod " + mod.Modinfo.ModID + " liked!");
+
+            popup.ShowDialog();
+        }
     }
 }
