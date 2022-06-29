@@ -46,39 +46,60 @@ namespace Imya.Utils
         }
         private String _mod_deps_joined;
 
-        public ObservableCollection<DlcId> DLCs { get; set; } = new();
+        public String? ModID
+        {
+            get => _mod_id;
+            set
+            {
+                _mod_id = value;
+                OnPropertyChanged(nameof(ModID));
+            }
+        }
+        private String? _mod_id;
+
+        public ObservableCollection<Dlc> DLCs { get; set; } = new();
 
         public ModinfoFactory()
         {
-            ModinfoContext = new Modinfo();
+            InitNew();
         }
 
-        public ModinfoFactory(Modinfo _)
+        public ModinfoFactory(Modinfo _modinfo)
         {
-            ModinfoContext = _;
+            LoadModinfo(_modinfo);
+        }
+
+        public void InitNew()
+        {
+            ModinfoContext = new Modinfo();
+            SetNewModID();
             LoadModinfo(ModinfoContext);
         }
 
-        public void Reset()
+        public void SetNewModID()
         {
-            ModinfoContext = new Modinfo();
-            LoadModinfo(ModinfoContext);
+            ModinfoContext.ModID = Guid.NewGuid().ToString();
+            ModID = ModinfoContext.ModID;
         }
 
         public void LoadModinfo(Modinfo _modinfo)
         {
+            ModinfoContext = _modinfo;
             IncompatibleIDsJoined = StringArrToString(ModinfoContext?.IncompatibleIds) ?? "";
             ModDepsJoined = StringArrToString(ModinfoContext?.ModDependencies) ?? "";
 
             DLCs.Clear();
+
             if (ModinfoContext?.DLCDependencies is not null)
             {
                 foreach (Dlc _dlc in ModinfoContext?.DLCDependencies!)
                 {
-                    if (_dlc.DLC is null) continue;
-                    DLCs.Add((DlcId)_dlc.DLC);
+                    if (_dlc.DLC is null || _dlc.Dependant is null) continue;
+                    DLCs.Add(_dlc);
                 }
             }
+
+            ModID = _modinfo.ModID;
         }
 
         public IEnumerable<DlcId> GetRemainingDlcIds()
@@ -88,7 +109,7 @@ namespace Imya.Utils
             foreach (object x in ids)
             {
                 DlcId id = (DlcId)x;
-                if (!DLCs.Contains(id)) yield return id;
+                if (!DLCs.Any(x => x.DLC == id)) yield return id;
             }
         }
 
@@ -97,19 +118,20 @@ namespace Imya.Utils
         {
             ModinfoContext.IncompatibleIds = StringToStringArr(_incompatible_ids_joined);
             ModinfoContext.ModDependencies = StringToStringArr(_mod_deps_joined);
-            ModinfoContext.DLCDependencies = DLCs.Count > 0 ? DLCs.Select(_id => new Dlc { DLC = _id, Dependant = DlcRequirement.required }).ToArray() : null;
+            ModinfoContext.DLCDependencies = DLCs.Count > 0 ? DLCs.ToArray() : null;
 
             return ModinfoContext;
         }
 
         public void AddDLC(DlcId _dlc)
         {
-            DLCs.Add( _dlc );
+            DLCs.Add( new Dlc() { DLC = _dlc, Dependant = DlcRequirement.required});
         }
 
-        public void RemoveDLC(DlcId _dlc)
+        public void RemoveDLC(Dlc? _dlc)
         {
-            DLCs.Remove(_dlc);
+            if (_dlc is null) return;
+            DLCs.Remove(_dlc!);
         }
 
         private String[]? StringToStringArr(String? _string)

@@ -36,8 +36,11 @@ namespace Imya.UI.Views
                 OnPropertyChanged(nameof(ModinfoFactory));
             }
         }
-
         private ModinfoFactory _factory;
+
+        public Array DlcRequirementData { get; } = Enum.GetValues(typeof(DlcRequirement));
+
+        
 
         public ModinfoCreatorView()
         {
@@ -50,7 +53,7 @@ namespace Imya.UI.Views
 
         public void OnNewClick(object sender, RoutedEventArgs e)
         {
-            ModinfoFactory.Reset();
+            ModinfoFactory.InitNew();
         }
 
         public void OnSaveClick(object sender, RoutedEventArgs e)
@@ -68,9 +71,9 @@ namespace Imya.UI.Views
             var but = sender as Button;
             var DataContext = but?.DataContext;
 
-            var _id = DataContext as DlcId?;
+            var _id = DataContext as Dlc;
 
-            if (_id is not null) ModinfoFactory.RemoveDLC((DlcId)_id);
+            if (_id is not null) ModinfoFactory.RemoveDLC(_id);
         }
 
 
@@ -113,6 +116,16 @@ namespace Imya.UI.Views
             {
                 ModinfoFactory.AddDLC(x);
             }
+        }
+
+        private void OnAddDependencyClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void OnNewModIDClick(object sender, RoutedEventArgs e)
+        {
+            ModinfoFactory.SetNewModID();
         }
     }
 }
