@@ -13,7 +13,7 @@ namespace Imya.Models.ModTweaker
     {
         public Dictionary<String, Tweak> Tweaks { get; set; } = new();
 
-        public static String BaseDirectory => Path.Combine(GameSetupManager.Instance.WorkingDirectory, "tweaks");
+        public static String BaseDirectory => ImyaSetupManager.Instance.TweakDirectoryPath;
 
         public TweakFileStorage()
         {

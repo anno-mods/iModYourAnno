@@ -18,7 +18,7 @@ namespace Imya.UI.Popup
     {
         public ObservableCollection<ModActivationProfile> Profiles { get; private set; } = new ObservableCollection<ModActivationProfile>();
 
-        private static String ProfilesDirectoryPath = GameSetupManager.Instance.GetProfilesDirectory();
+        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
 
         public ModActivationProfile? SelectedProfile { get; private set; }
 

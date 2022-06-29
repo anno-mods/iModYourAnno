@@ -15,7 +15,7 @@ namespace Imya.Utils
         readonly GameSetupManager GameSetup = GameSetupManager.Instance;
         readonly GithubDownloader GithubDownloader;
 
-        public string DownloadDirectory { get => GameSetup.DownloadDirectory; } 
+        public string DownloadDirectory => ImyaSetupManager.Instance.DownloadDirectoryPath;
 
         public static GithubRepoInfo ModloaderRepository { get; } = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce" };
 
@@ -73,6 +73,7 @@ namespace Imya.Utils
             }
 
             Directory.Delete(target);
+            File.Delete(DownloadFilename);
 
             GameSetup.UpdateModloaderInstallStatus();
         }
