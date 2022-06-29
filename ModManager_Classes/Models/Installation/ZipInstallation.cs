@@ -52,7 +52,7 @@ namespace Imya.Models.Installation
             return Task.Run(async () =>
             {
                 Console.WriteLine($"Extract zip: {SourceFilepath}");
-                Result = await ModInstaller.ExtractZipAsync(SourceFilepath,
+                Result = await ModCollectionLoader.ExtractZipAsync(SourceFilepath,
                     UnpackDirectory,
                     this);
                 return this as IInstallation;

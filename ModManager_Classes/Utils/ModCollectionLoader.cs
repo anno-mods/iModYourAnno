@@ -7,7 +7,7 @@ namespace Imya.Utils
     /// <summary>
     /// Install mods from zip file - might depracate this honestly
     /// </summary>
-    public class ModInstaller
+    public class ModCollectionLoader
     {
         public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir, Installation? progress = null)
         {

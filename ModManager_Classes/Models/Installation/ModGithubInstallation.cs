@@ -37,7 +37,7 @@ namespace Imya.Models.Installation
             {
                 await DownloadAsync();
                 if (DownloadResult.DownloadSuccessful)
-                    Result = await ModInstaller.ExtractZipAsync(DownloadResult.DownloadDestination,
+                    Result = await ModCollectionLoader.ExtractZipAsync(DownloadResult.DownloadDestination,
                         UnpackDirectory,
                         this);
                 return this as IInstallation;
