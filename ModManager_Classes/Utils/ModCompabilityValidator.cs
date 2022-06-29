@@ -19,11 +19,11 @@ namespace Imya.Utils
         public bool HasUnresolvedDependencies { get => UnresolvedDependencies is not null; }
     }
 
-    public class ModCompabilityChecker
+    public class ModCompabilityValidator
     {
         private readonly IEnumerable<Mod> mods;
 
-        public ModCompabilityChecker()
+        public ModCompabilityValidator()
         {
             mods = ModCollection.Global?.Mods ?? Array.Empty<Mod>();
         }
