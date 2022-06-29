@@ -18,7 +18,7 @@ internal class GithubDevTester
 
     internal async static Task DownloadModloader2()
     {
-        GameSetupManager.Instance.SetDownloadDirectory("imya_temp");
+        GameSetupManager.Instance.SetGamePath("dummygamepath");
         Imya.Utils.ModloaderInstallation installation = new Imya.Utils.ModloaderInstallation();
         await installation.InstallAsync();
     }

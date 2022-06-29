@@ -21,14 +21,10 @@ namespace Imya.Utils
 
     public class GameSetupManager : PropertyChangedNotifier
     {
-        public static readonly String ProfilesDirectoryName = "profiles";
-
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
         private InstallationValidator Validator;
         private GameScanner Scanner; 
-
-        //public ModloaderInstallation ModLoader { get; private set; }
 
         #region EVENTS
         public delegate void GameRootPathChangedEventHandler(String newPath);
@@ -46,10 +42,10 @@ namespace Imya.Utils
         #endregion
 
         // File System Watchers
-#pragma warning disable IDE0052 // Never used, but we want to keep them until GameSetupManager dies
+        #pragma warning disable IDE0052 // Never used, but we want to keep them until GameSetupManager dies
         private FileSystemWatcher? ModDirectoryWatcher;
         // private FileSystemWatcher ModLoaderWatcher; // This is TODO
-#pragma warning restore IDE0052
+        #pragma warning restore IDE0052
 
         public bool IsGameRunning
         {
@@ -115,16 +111,6 @@ namespace Imya.Utils
         }
         private ModloaderInstallationState _modloaderState = ModloaderInstallationState.Uninstalled;
 
-        public String DownloadDirectory
-        {
-            get => _downloadDirectory;
-            private set {
-                _downloadDirectory = value;
-                OnPropertyChanged(nameof(DownloadDirectory));
-            }
-        }
-        private String _downloadDirectory = String.Empty;
-
         public GameSetupManager()
         {
             GameStarted += () => IsGameRunning = true;
@@ -137,13 +123,9 @@ namespace Imya.Utils
 
         public String GetModDirectory() => Path.Combine(GameRootPath, ModDirectoryName);
 
-        public String GetProfilesDirectory() => Path.Combine(GameRootPath, ProfilesDirectoryName);
-
         /// <summary>
         /// Set download directory. Relative to executable.
         /// </summary>
-        public void SetDownloadDirectory(string downloadDirectory) => DownloadDirectory = downloadDirectory;
-
         public void SetGamePath(String gamePath, bool autoSearchIfInvalid = false)
         {
             String executablePath = Path.Combine(gamePath, "Bin", "Win64", "Anno1800.exe");
@@ -256,6 +238,7 @@ namespace Imya.Utils
             };
         }
 
+        #region GAME_LAUNCH
         public void StartGame()
         {
             if (ExecutablePath == null)
@@ -311,6 +294,7 @@ namespace Imya.Utils
             int exitCode = process?.ExitCode ?? -1;
             GameClosed.Invoke(exitCode);
         }
+        #endregion
 
     }
 }

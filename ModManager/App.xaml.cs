@@ -20,7 +20,7 @@ namespace Imya.UI
             text.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
             var gameSetup = GameSetupManager.Instance;
-            gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
+            //gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
