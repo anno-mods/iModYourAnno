@@ -15,7 +15,7 @@ namespace Imya.Models.Installation
         protected String? TargetFilename = null;
         protected DownloadResult DownloadResult;
 
-        public static GithubRepoInfo RepositoryToInstall { get; private set; }
+        public GithubRepoInfo RepositoryToInstall { get; private set; }
 
         public new GithubInstallationStatus Status
         {

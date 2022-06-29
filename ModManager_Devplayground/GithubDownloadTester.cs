@@ -19,9 +19,9 @@ internal class GithubDevTester
     internal async static Task DownloadModloader2()
     {
         GameSetupManager.Instance.SetGamePath("dummygamepath");
-        var Installer = new Installer();
+        var Installer = new InstallationStarter();
 
-        var installation = await Installer.CreateModloaderInstallationTask();
+        var installation = await Installer.SetupModloaderInstallationTask();
         await installation.Finalize();
     }
 

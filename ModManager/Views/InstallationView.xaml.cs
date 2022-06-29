@@ -27,7 +27,7 @@ namespace Imya.UI.Views
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
         public ModInstallationOptions Options { get; } = new();
-        public Installer Installer { get; } = new Installer();
+        public InstallationStarter Installer { get; } = new InstallationStarter();
 
         IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
@@ -92,11 +92,18 @@ namespace Imya.UI.Views
         private async void OnInstallFromGithub(object sender, RoutedEventArgs e)
         {
             GenericOkayPopup popup = new GenericOkayPopup();
-            popup.MESSAGE = new SimpleText("Installing Taludas/WholesomeHaciendaOverhaul from Github now!");
-            popup.ShowDialog();
 
-            var InstallationTask = Installer.CreateModInstallationTask(RepoInfoProvider.GetSingle(), Options);
-            await Installer.ProcessAsync(InstallationTask);
+            var repo = RepoInfoProvider.GetSingle();
+
+            popup.MESSAGE = new SimpleText($"Installing {repo.Owner}/{repo.Name} from Github now!");
+
+            if ((popup.ShowDialog() is not bool okay) || !okay)
+                return;
+            var InstallationTask = Installer.SetupModInstallationTask(repo, Options);
+            if (InstallationTask is Task<IInstallation> valid_install)
+            {
+                await Installer.ProcessAsync(valid_install);
+            }
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -107,7 +114,7 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var InstallationTasks = Installer.CreateInstallationTasks(dialog.FileNames, Options);
+            var InstallationTasks = Installer.SetupZipInstallationTasks(dialog.FileNames, Options);
             await Installer.ProcessParallelAsync(InstallationTasks);
         }
 
@@ -117,8 +124,12 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            var installation = Installer.CreateModloaderInstallationTask();
-            await Installer.ProcessAsync(installation);
+            var installation = Installer.SetupModloaderInstallationTask();
+
+            if (installation is Task<IInstallation> valid_install)
+            {
+                await Installer.ProcessAsync(valid_install);
+            }
 
             ModloaderDownloadButton.IsEnabled = true;
             GameSetup.UpdateModloaderInstallStatus();
