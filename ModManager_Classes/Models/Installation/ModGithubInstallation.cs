@@ -13,6 +13,8 @@ namespace Imya.Models.Installation
         public ModCollection? Result { get; set; }
         public ModInstallationOptions Options { get; init; }
 
+        private String DownloadDestination;
+
         public async Task<String?> GetRepositoryDescription()
         {
             return await GithubDownloader.FetchDescriptionAsync(RepositoryToInstall);
@@ -23,6 +25,9 @@ namespace Imya.Models.Installation
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD_GIT");
             AdditionalText = new SimpleText($"{repoInfo.Owner}/{repoInfo.Name}: {repoInfo.AssetName}");
             Options = options;
+
+            //preemtively set this for later error handling
+            DownloadDestination = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, RepositoryToInstall.AssetName);
         }
 
         public override Task Finalize()
@@ -37,17 +42,21 @@ namespace Imya.Models.Installation
             {
                 await DownloadAsync();
                 if (DownloadResult.DownloadSuccessful)
+                {
+                    DownloadDestination = DownloadResult.DownloadDestination;
                     Result = await ModCollectionLoader.ExtractZipAsync(DownloadResult.DownloadDestination,
                         UnpackDirectory,
                         this);
+                }
                 return this as IInstallation;
             }
             );
         }
 
         public override void CleanUp()
-        { 
-        
+        {
+            if(DownloadDestination is String dest && File.Exists(dest))
+                File.Delete(dest);
         }
 
     }

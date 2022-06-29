@@ -14,6 +14,7 @@ using System.Linq;
 using Imya.Models.Installation;
 using Imya.UI.Popup;
 using Imya.GithubIntegration;
+using Imya.UI.Utils;
 
 namespace Imya.UI.Views
 {
@@ -28,6 +29,8 @@ namespace Imya.UI.Views
 
         public ModInstallationOptions Options { get; } = new();
         public InstallationStarter Installer { get; } = new InstallationStarter();
+
+        private InstallationMiddleware Middleware = new InstallationMiddleware();
 
         IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
@@ -58,6 +61,7 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
+            Middleware = new InstallationMiddleware(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -67,6 +71,8 @@ namespace Imya.UI.Views
         }
 
         private GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new GenericOkayPopup() { MESSAGE = new SimpleText("Installation is already running") };
+
+        private GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new GenericOkayPopup() { MESSAGE = new SimpleText(e.Message) };
 
         private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
         {
@@ -102,11 +108,20 @@ namespace Imya.UI.Views
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
 
-            var InstallationTask = Installer.SetupModInstallationTask(repo, Options);
-            if (InstallationTask is Task<IInstallation> valid_install)
-                await Installer.ProcessAsync(valid_install);
-            else
-                CreateInstallationAlreadyRunningPopup().ShowDialog();
+            var Result = await Middleware.RunGithubInstallAsync(repo, Options);
+
+            switch (Result.ResultType)
+            {
+                case DownloadResultType.InstallationAlreadyRunning:
+                    CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    break;
+                case DownloadResultType.Exception:
+                    CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
+                    break;
+                default:
+                    Console.WriteLine("Installation successful");
+                    break;
+            }
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -127,16 +142,24 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            var installation = Installer.SetupModloaderInstallationTask();
-            if (installation is Task<IInstallation> valid_install)
-                await Installer.ProcessAsync(valid_install);
-            else
-                CreateInstallationAlreadyRunningPopup().ShowDialog();
+            var Result = await Middleware.RunModloaderInstallAsync();
+
+            switch (Result.ResultType)
+            {
+                case DownloadResultType.InstallationAlreadyRunning:
+                    CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    break;
+                case DownloadResultType.Exception:
+                    CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
+                    break;
+                default:
+                    Console.WriteLine("Installation successful");
+                    break;
+            }
 
             ModloaderDownloadButton.IsEnabled = true;
             GameSetup.UpdateModloaderInstallStatus();
-            InstallStatus = ModLoaderStatus.Installed;
-
+            InstallStatus = GameSetup.IsModloaderInstalled ? ModLoaderStatus.Installed : ModLoaderStatus.NotInstalled;
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)

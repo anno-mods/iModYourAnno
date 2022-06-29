@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Imya.Utils;
 using Octokit;
 
 namespace Imya.GithubIntegration
@@ -42,7 +43,7 @@ namespace Imya.GithubIntegration
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Could not fetch Repository Release on {repository.Owner}/{repository.Name}: {e.Message}");
+                throw new InstallationException($"Could not fetch any Repository Release for {repository.Owner}/{repository.Name}: {e.Message}");
             }
             return release;
         }
@@ -55,15 +56,25 @@ namespace Imya.GithubIntegration
         /// <returns>the Filepath where the release has been downloaded to.</returns>
         public async Task<DownloadResult> DownloadReleaseAsync(Release release, String AssetName, IProgress<float>? progress = null)
         {
-            var downloadURL = release.Assets.First(x => x.Name.Equals(AssetName)).BrowserDownloadUrl;
+            var downloadURL = release.Assets.FirstOrDefault(x => x.Name.Equals(AssetName))?.BrowserDownloadUrl;
+            if (downloadURL is null) throw new InstallationException("No matching release found");
+
             String TargetFilename = Path.Combine(DOWNLOAD_DIRECTORY, AssetName);
 
-            using (var DownloadClient = new HttpClient())
-            using (Stream targetStream = File.Create(TargetFilename))
+            try
             {
-                await DownloadClient.DownloadAsync(downloadURL, targetStream, progress, DownloadBufferSize);
+                using (HttpClient DownloadClient = new HttpClient())
+                using (Stream targetStream = File.Create(TargetFilename))
+                {
+                    DownloadClient.Timeout = TimeSpan.FromSeconds(5);
+                    await DownloadClient.DownloadAsync(downloadURL, targetStream, progress, DownloadBufferSize);
+                    return new DownloadResult { DownloadSuccessful = true, DownloadDestination = TargetFilename };
+                }
             }
-            return new DownloadResult{ DownloadSuccessful = true, DownloadDestination = TargetFilename };
+            catch (Exception e)
+            {
+                throw new InstallationException($"Download failed: {e.Message}");
+            }            
         }
 
         public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo mod, IProgress<float>? progress = null)
@@ -82,7 +93,14 @@ namespace Imya.GithubIntegration
 
         public async Task<Repository?> GetRepositoryAsync(GithubRepoInfo repoInfo)
         {
-            return await GithubClient.Repository.Get(repoInfo.Owner, repoInfo.Name);
+            try
+            {
+                return await GithubClient.Repository.Get(repoInfo.Owner, repoInfo.Name);
+            }
+            catch (Exception e)
+            {
+                throw new InstallationException($"Could not fetch any Repository for {repoInfo.Owner}/{repoInfo.Name}: {e.Message}");
+            }
         }
     }
 
@@ -94,9 +112,6 @@ namespace Imya.GithubIntegration
             using (var ContentStream = await response.Content.ReadAsStreamAsync())
             {
                 var contentLength = response.Content.Headers.ContentLength ?? 0;
-
-                // Convert absolute progress (bytes downloaded) into relative progress (0% - 100%)
-                // Use extension method to report progress while downloading
                 await ContentStream.CopyToAsync(destination, BufferSize, progress, cancellationToken, contentLength);
             }
         }
@@ -120,9 +135,9 @@ namespace Imya.GithubIntegration
             var buffer = new byte[bufferSize];
             long totalBytesRead = 0;
             int bytesRead;
-            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false)) != 0)
+            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).TimeoutAfter(TimeSpan.FromSeconds(5))) != 0)
             {
-                await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
+                await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken);
                 totalBytesRead += bytesRead;
                 progress?.Report((float)totalBytesRead / totalBytes);
             }

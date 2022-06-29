@@ -54,9 +54,9 @@ namespace Imya.Utils
 
         public override void CleanUp()
         {
-            if(TargetFilename is String target)
+            if(TargetFilename is String target && Directory.Exists(target))
                 Directory.Delete(target);
-            if (DownloadResult.DownloadSuccessful)
+            if (DownloadResult.DownloadSuccessful && File.Exists(DownloadResult.DownloadDestination))
                 File.Delete(DownloadResult.DownloadDestination);
         }
     }

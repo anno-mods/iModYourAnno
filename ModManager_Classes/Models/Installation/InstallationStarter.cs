@@ -9,9 +9,21 @@ namespace Imya.Models.Installation
     {
         public ObservableCollection<IInstallation> RunningInstallations { get; } = new();
 
+        private Dictionary<int, IInstallation> InstallationsById = new();
+
         public InstallationStarter() { }
 
-        public void RemoveInstallation(IInstallation x)
+        public void CleanInstallation(Task<IInstallation> _task)
+        { 
+            var installation = InstallationsById.GetValueOrDefault(_task.Id);
+            if (installation is IInstallation valid_install)
+            { 
+                RemoveInstallation(valid_install);
+                valid_install.CleanUp();
+            }
+        }
+
+        private void RemoveInstallation(IInstallation x)
         {
             RunningInstallations.Remove(x);
         }
@@ -22,22 +34,28 @@ namespace Imya.Models.Installation
             if (IsRunningInstallation(githubRepoInfo)) return null;
             var installation = new ModGithubInstallation(githubRepoInfo, Options);
             RunningInstallations.Add(installation);
-            return installation.Setup();
+            var task = installation.Setup();
+            InstallationsById.Add(task.Id, installation);
+            return task;
         }
 
         public Task<IInstallation>? SetupModloaderInstallationTask()
         {
             var installation = new ModloaderInstallation();
             RunningInstallations.Add(installation);
-            return installation.Setup();
+            var task = installation.Setup();
+            InstallationsById.Add(task.Id, installation);
+            return task;
         }
 
         public Task<IInstallation>? SetupZipInstallationTask(String Filename, ModInstallationOptions Options)
         {
             if (IsRunningInstallation(Filename)) return null;
-            var InstallationTask = new ZipInstallation(Filename, Options);
-            RunningInstallations.Add(InstallationTask);
-            return InstallationTask.Setup();
+            var installation = new ZipInstallation(Filename, Options);
+            RunningInstallations.Add(installation);
+            var task = installation.Setup();
+            InstallationsById.Add(task.Id, installation);
+            return task;
         }
 
         public IEnumerable<Task<IInstallation>> SetupZipInstallationTasks(IEnumerable<String> Filenames, ModInstallationOptions Options)
