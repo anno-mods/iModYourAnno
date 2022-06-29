@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="IMYA_TEXT"
+           TargetType="TextBlock">
+        <Setter Property="Foreground"
+                Value="{DynamicResource TextColorBrush}"></Setter>
+        <Setter Property="FontFamily"
+                Value="Segoe UI" />
+        <Setter Property="FontSize"
+                Value="13" />
+    </Style>
+</ResourceDictionary>

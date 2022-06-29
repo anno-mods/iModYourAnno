@@ -84,9 +84,9 @@ namespace Imya.UI.Views
         {
             InitializeComponent();
 
-            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
-            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
-            Themes.Add(new ThemeSetting(TextManager["THEME_LIGHT"], "Themes/Light.xaml", "Light", Colors.LightGray));
+            Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Styles/Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
+            Themes.Add(new ThemeSetting(TextManager["THEME_CYAN"], "Styles/Themes/DarkCyan.xaml", "DarkCyan", Colors.DarkCyan));
+            Themes.Add(new ThemeSetting(TextManager["THEME_LIGHT"], "Styles/Themes/Light.xaml", "Light", Colors.LightGray));
 
             Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
             Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));

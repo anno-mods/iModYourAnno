@@ -1,0 +1,48 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="IMYA_CHECKBOX"
+           TargetType="CheckBox">
+        <Setter Property="Foreground"
+                Value="{DynamicResource AccentColorBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal">
+                        <Border x:Name="Border"
+                                CornerRadius="3"
+                                Background="White"
+                                Width="14"
+                                Height="14"
+                                BorderThickness="0"
+                                BorderBrush="{TemplateBinding Foreground}" />
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Margin="8,0,0,0">
+                                    <ContentPresenter />
+                        </TextBlock>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked"
+                                 Value="True">
+                            <Setter Property="BorderThickness"
+                                    TargetName="Border"
+                                    Value="3" />
+                            <Setter Property="CornerRadius"
+                                    TargetName="Border"
+                                    Value="2" />
+                        </Trigger>
+                        <Trigger Property="IsChecked"
+                                 Value="False">
+                            <Setter Property="BorderThickness"
+                                    TargetName="Border"
+                                    Value="0" />
+                            <Setter Property="CornerRadius"
+                                    TargetName="Border"
+                                    Value="3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
