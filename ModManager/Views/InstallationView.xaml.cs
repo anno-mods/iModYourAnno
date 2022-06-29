@@ -66,6 +66,8 @@ namespace Imya.UI.Views
             }
         }
 
+        private GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new GenericOkayPopup() { MESSAGE = new SimpleText("Installation is already running") };
+
         private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
         {
             return new System.Windows.Forms.OpenFileDialog
@@ -99,11 +101,12 @@ namespace Imya.UI.Views
 
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
+
             var InstallationTask = Installer.SetupModInstallationTask(repo, Options);
             if (InstallationTask is Task<IInstallation> valid_install)
-            {
                 await Installer.ProcessAsync(valid_install);
-            }
+            else
+                CreateInstallationAlreadyRunningPopup().ShowDialog();
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -125,11 +128,10 @@ namespace Imya.UI.Views
             InstallStatus = ModLoaderStatus.Installing;
 
             var installation = Installer.SetupModloaderInstallationTask();
-
             if (installation is Task<IInstallation> valid_install)
-            {
                 await Installer.ProcessAsync(valid_install);
-            }
+            else
+                CreateInstallationAlreadyRunningPopup().ShowDialog();
 
             ModloaderDownloadButton.IsEnabled = true;
             GameSetup.UpdateModloaderInstallStatus();
