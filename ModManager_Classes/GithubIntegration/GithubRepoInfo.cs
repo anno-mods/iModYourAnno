@@ -10,5 +10,6 @@ namespace Imya.GithubIntegration
     {
         public String Name;
         public String Owner;
+        public String AssetName;
     }
 }

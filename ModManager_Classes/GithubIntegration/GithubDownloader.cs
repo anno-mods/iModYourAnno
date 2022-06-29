@@ -66,12 +66,23 @@ namespace Imya.GithubIntegration
             return new DownloadResult{ DownloadSuccessful = true, DownloadDestination = TargetFilename };
         }
 
-        public async Task<DownloadResult> DownloadReleaseAsync(GithubRepoInfo mod, String AssetName, IProgress<float>? progress = null)
+        public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo mod, IProgress<float>? progress = null)
         {
             var rel = await FetchLatestReleaseAsync(mod);
             if (rel is null) return new DownloadResult { DownloadSuccessful = false };
 
-            return await DownloadReleaseAsync(rel, AssetName, progress);
+            return await DownloadReleaseAsync(rel, mod.AssetName, progress);
+        }
+
+        public async Task<String?> FetchDescriptionAsync(GithubRepoInfo repoInfo)
+        {
+            var repo = await GetRepositoryAsync(repoInfo);
+            return repo?.Description;
+        }
+
+        public async Task<Repository?> GetRepositoryAsync(GithubRepoInfo repoInfo)
+        {
+            return await GithubClient.Repository.Get(repoInfo.Owner, repoInfo.Name);
         }
     }
 

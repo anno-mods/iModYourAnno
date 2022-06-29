@@ -13,6 +13,7 @@ using Imya.Utils;
 using System.Linq;
 using Imya.Models.Installation;
 using Imya.UI.Popup;
+using Imya.GithubIntegration;
 
 namespace Imya.UI.Views
 {
@@ -22,14 +23,16 @@ namespace Imya.UI.Views
     /// 
     public partial class InstallationView : UserControl, INotifyPropertyChanged
     {
-        public ObservableCollection<Installation> RunningInstallations { get; } = new();
-
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
-        public ZipInstallationOptions Options { get; } = new();
+        public ModInstallationOptions Options { get; } = new();
+        public Installer Installer { get; } = new Installer();
+
+        IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
         #region notifyable properties
+
         public ModLoaderStatus InstallStatus
         {
             get => _installStatus;
@@ -60,8 +63,6 @@ namespace Imya.UI.Views
             if (GameSetup.IsModloaderInstalled)
             {
                 InstallStatus = ModLoaderStatus.Installed;
-                // TODO async update check
-                // InstallStatusText = "checking...";
             }
         }
 
@@ -74,81 +75,6 @@ namespace Imya.UI.Views
                 Multiselect = true
             };
         }
-
-        private List<Task<ZipInstallation>> CreateInstallationTasks(IEnumerable<String> Filenames)
-        {
-            List<Task<ZipInstallation>> InstallationTasks = new();
-
-            foreach (var Filename in Filenames)
-            {
-                if (!IsRunningInstallation(Filename))
-                {
-                    var InstallationTask = new ZipInstallation(Filename, Properties.Settings.Default.DownloadDir, Options);
-                    //add to displayed list
-                    RunningInstallations.Add(InstallationTask);
-                    //add to list of tasks for parallel async
-                    InstallationTasks.Add(InstallationTask.RunUnpack());
-                }
-                else
-                {
-                    Console.WriteLine($"Installation Already Running: {Filename}");
-                }
-            }
-
-            return InstallationTasks;
-        }
-
-        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
-        {
-            GenericOkayPopup popup = new GenericOkayPopup();
-
-            popup.MESSAGE = new SimpleText("TODO: Popup to select mods from github");
-
-            popup.ShowDialog();
-        }
-
-        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
-        {
-            if (ModCollection.Global is null) return;
-
-            var dialog = CreateOpenFileDialog();
-            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                return;
-
-            //IsInstalling = true;
-
-            var InstallationTasks = CreateInstallationTasks(dialog.FileNames);
-
-            IEnumerable<ZipInstallation>? TaskResults = await Task.WhenAll(InstallationTasks);
-
-            foreach (var _task in TaskResults)
-            {
-                await _task.RunMove();
-                RemoveInstallation(_task);
-            }
-
-            //IsInstalling = false;
-            
-            //disable this for now :) 
-            //MainViewController.Instance.SetView(View.MOD_ACTIVATION);
-
-            //nuked comments (I am sorry jakob)
-
-            // TODO current progress assumes all zip files take similarily long
-            //      this can be improved by giving absolute progress vs MB size for example
-            //      but that's an update to be done when zip actually supports progress
-
-        }
-
-        private void RemoveInstallation(Installation x)
-        {
-            bool success = App.Current.Dispatcher.Invoke(() => RunningInstallations.Remove(x));
-            //Console.WriteLine(success ? $"Successfully removed {x}" : $"Not able to remove {x}");
-        }
-
-        private bool IsRunningInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ZipInstallation && ((ZipInstallation)x).SourceFilepath.Equals(SourceFilepath));
-
-        //private bool IsRunningModloaderInstallation(String SourceFilepath) => RunningInstallations.Any(x => x is ModLoaderInstallation);
 
         public void OnOpenGamePath(object sender, RoutedEventArgs e)
         {
@@ -163,23 +89,41 @@ namespace Imya.UI.Views
             }
         }
 
+        private async void OnInstallFromGithub(object sender, RoutedEventArgs e)
+        {
+            GenericOkayPopup popup = new GenericOkayPopup();
+            popup.MESSAGE = new SimpleText("Installing Taludas/WholesomeHaciendaOverhaul from Github now!");
+            popup.ShowDialog();
+
+            var InstallationTask = Installer.CreateModInstallationTask(RepoInfoProvider.GetSingle(), Options);
+            await Installer.ProcessAsync(InstallationTask);
+        }
+
+        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
+        {
+            if (ModCollection.Global is null) return;
+
+            var dialog = CreateOpenFileDialog();
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                return;
+
+            var InstallationTasks = Installer.CreateInstallationTasks(dialog.FileNames, Options);
+            await Installer.ProcessParallelAsync(InstallationTasks);
+        }
+
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("Installing Modloader");
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            ModloaderInstallation? installation = new ModloaderInstallation();
-            if (installation is null) return;
-
-            RunningInstallations.Add(installation);
-            await installation!.InstallAsync();
+            var installation = Installer.CreateModloaderInstallationTask();
+            await Installer.ProcessAsync(installation);
 
             ModloaderDownloadButton.IsEnabled = true;
-            if (GameSetup.IsModloaderInstalled)
-                InstallStatus = ModLoaderStatus.Installed;
+            GameSetup.UpdateModloaderInstallStatus();
+            InstallStatus = ModLoaderStatus.Installed;
 
-            RemoveInstallation(installation);
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)

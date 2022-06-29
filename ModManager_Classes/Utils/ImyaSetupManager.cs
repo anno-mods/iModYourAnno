@@ -13,6 +13,7 @@ namespace Imya.Utils
         public static String ProfilesDirectory = "profiles";
         public static String DownloadDirectory = "download";
         public static String TweakDirectory = "tweaks";
+        public static String UnpackDirectory = ".unpack";
 
         public static ImyaSetupManager Instance = new ImyaSetupManager();
 
@@ -22,7 +23,8 @@ namespace Imya.Utils
         public String ProfilesDirectoryPath { get => Path.Combine(GameSetup.GameRootPath, WorkingDirectory, ProfilesDirectory); }
         public String DownloadDirectoryPath { get => Path.Combine(GameSetup.GameRootPath, WorkingDirectory, DownloadDirectory); }
         public String TweakDirectoryPath { get => Path.Combine(GameSetup.GameRootPath, WorkingDirectory, TweakDirectory); }
-        
+        public String UnpackDirectoryPath { get => Path.Combine(GameSetup.GameRootPath, WorkingDirectory, UnpackDirectory); }
+
         public ImyaSetupManager() 
         {
             Init();
@@ -40,6 +42,7 @@ namespace Imya.Utils
             Directory.CreateDirectory(ProfilesDirectoryPath);
             Directory.CreateDirectory(DownloadDirectoryPath);
             Directory.CreateDirectory(TweakDirectoryPath);
+            Directory.CreateDirectory(UnpackDirectoryPath);
         }
     }
 }

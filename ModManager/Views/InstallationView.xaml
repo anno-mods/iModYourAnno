@@ -340,7 +340,7 @@
                                FontWeight="DemiBold">
                     </TextBlock>
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding RunningInstallations.Count}"
+                               Text="{Binding Installer.RunningInstallations.Count}"
                                Margin="5"
                                FontWeight="DemiBold"
                                Grid.Column="1">
@@ -352,7 +352,7 @@
                           Grid.Row="2"
                           Style="{StaticResource IMYA_SCROLLVIEWER}"
                           Margin="2">
-                <ItemsControl ItemsSource="{Binding RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
+                <ItemsControl ItemsSource="{Binding Installer.RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
                               x:Name="RunningInstallationsDisplay">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
