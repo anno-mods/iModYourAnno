@@ -28,9 +28,8 @@ namespace Imya.UI.Views
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
         public ModInstallationOptions Options { get; } = new();
-        public InstallationStarter Installer { get; } = new InstallationStarter();
 
-        private InstallationMiddleware Middleware = new InstallationMiddleware();
+        private InstallerMiddleware InstallerMiddleware = new InstallerMiddleware();
 
         IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
@@ -61,7 +60,7 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            Middleware = new InstallationMiddleware(Installer);
+            InstallerMiddleware = new InstallerMiddleware();
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -108,7 +107,7 @@ namespace Imya.UI.Views
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
 
-            var Result = await Middleware.RunGithubInstallAsync(repo, Options);
+            var Result = await InstallerMiddleware.RunGithubInstallAsync(repo, Options);
 
             switch (Result.ResultType)
             {
@@ -132,7 +131,7 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var Result = await Middleware.RunZipInstallAsync(dialog.FileNames, Options);
+            var Result = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
 
             switch (Result.ResultType)
             {
@@ -149,7 +148,7 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            var Result = await Middleware.RunModloaderInstallAsync();
+            var Result = await InstallerMiddleware.RunModloaderInstallAsync();
 
             switch (Result.ResultType)
             {

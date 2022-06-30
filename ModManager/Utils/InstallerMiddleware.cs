@@ -24,16 +24,16 @@ namespace Imya.UI.Utils
         }
     }
     
-    internal class InstallationMiddleware
+    internal class InstallerMiddleware
     {
         public InstallationStarter Installer { get; init; }
 
-        public InstallationMiddleware(InstallationStarter installer)
+        public InstallerMiddleware(InstallationStarter installer)
         {
             Installer = installer;
         }
 
-        public InstallationMiddleware()
+        public InstallerMiddleware()
         {
             Installer = new InstallationStarter();
         }
