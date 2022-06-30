@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration.StaticData
 {
-    internal class StaticNameGithubRepoInfoFactory
+    public class StaticNameGithubRepoInfoFactory
     {
         public static GithubRepoInfo CreateWithStaticName(String RepositoryName, String Owner, String AssetName)
         {
