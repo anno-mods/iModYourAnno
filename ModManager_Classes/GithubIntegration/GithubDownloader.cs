@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Imya.Models.Options;
 using Imya.Utils;
 using Octokit;
 
@@ -20,14 +21,14 @@ namespace Imya.GithubIntegration
     public class GithubDownloader
     {
         private readonly String DOWNLOAD_DIRECTORY;
-
         private static GitHubClient GithubClient = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
 
-        public static int DownloadBufferSize { get; } = 81920;
+        public GithubDownloaderOptions Options = new GithubDownloaderOptions();
 
-        public GithubDownloader(String download_dir)
+        public GithubDownloader(GithubDownloaderOptions _options)
         {
-            DOWNLOAD_DIRECTORY = download_dir;
+            Options = _options;
+            DOWNLOAD_DIRECTORY = Options.DownloadDirectory;
             if (!Directory.Exists(DOWNLOAD_DIRECTORY))
             {
                 Directory.CreateDirectory(DOWNLOAD_DIRECTORY);
@@ -66,8 +67,8 @@ namespace Imya.GithubIntegration
                 using (HttpClient DownloadClient = new HttpClient())
                 using (Stream targetStream = File.Create(TargetFilename))
                 {
-                    DownloadClient.Timeout = TimeSpan.FromSeconds(5);
-                    await DownloadClient.DownloadAsync(downloadURL, targetStream, progress, DownloadBufferSize);
+                    DownloadClient.Timeout = Options.Timeout;
+                    await DownloadClient.DownloadAsync(downloadURL, targetStream, Options.DownloadBufferSize, Options.Timeout, progress);
                     return new DownloadResult { DownloadSuccessful = true, DownloadDestination = TargetFilename };
                 }
             }
@@ -106,20 +107,32 @@ namespace Imya.GithubIntegration
 
     public static class HttpClientExtensions
     {
-        public static async Task DownloadAsync(this HttpClient client, String RequestUri, Stream destination, IProgress<float>? progress = null, int BufferSize = 81920, CancellationToken cancellationToken = default)
+        public static async Task DownloadAsync(this HttpClient client,
+            String RequestUri, 
+            Stream destination,
+            int BufferSize,
+            TimeSpan Timeout,
+            IProgress<float>? progress = null, 
+            CancellationToken cancellationToken = default)
         {
             using (var response = await client.GetAsync(RequestUri, HttpCompletionOption.ResponseHeadersRead))
             using (var ContentStream = await response.Content.ReadAsStreamAsync())
             {
                 var contentLength = response.Content.Headers.ContentLength ?? 0;
-                await ContentStream.CopyToAsync(destination, BufferSize, progress, cancellationToken, contentLength);
+                await ContentStream.CopyToAsync(destination, BufferSize, Timeout, progress, cancellationToken, contentLength);
             }
         }
     }
 
     public static class StreamExtensions
     {
-        public static async Task CopyToAsync(this Stream source, Stream destination, int bufferSize, IProgress<float>? progress = null, CancellationToken cancellationToken = default, long totalBytes = 1)
+        public static async Task CopyToAsync(this Stream source, 
+            Stream destination, 
+            int bufferSize, 
+            TimeSpan Timeout,
+            IProgress<float>? progress = null, 
+            CancellationToken cancellationToken = default, 
+            long totalBytes = 1)
         {
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
@@ -135,7 +148,7 @@ namespace Imya.GithubIntegration
             var buffer = new byte[bufferSize];
             long totalBytesRead = 0;
             int bytesRead;
-            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).TimeoutAfter(TimeSpan.FromSeconds(5))) != 0)
+            while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken).TimeoutAfter(Timeout)) != 0)
             {
                 await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken);
                 totalBytesRead += bytesRead;
