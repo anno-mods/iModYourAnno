@@ -5,8 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Popup"
              mc:Ignorable="d" 
-            Height="200" Width="350"
-            ResizeMode="NoResize"
+            Height="500" Width="700"
             WindowStartupLocation="CenterScreen"
              d:DesignHeight="200" d:DesignWidth="375">
     <Grid Background="{DynamicResource BackgroundColorBrush}">
@@ -47,5 +46,46 @@
                 Content="{Binding CANCEL_TEXT.Text}"
                 HorizontalContentAlignment="Center"
                 Click="CancelButtonClick"/>
+
+        <ListBox 
+                 x:Name="RepoSelection"
+                 Style="{StaticResource IMYA_LISTBOX}"
+                 Margin="5"
+                 ItemsSource="{Binding AllRepositories}"
+                 ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Owner}"
+                                       Style="{StaticResource IMYA_TEXT}"
+                                       FontWeight="Bold"></TextBlock>
+                            <TextBlock Text="{Binding Name}"
+                                       Style="{StaticResource IMYA_TEXT}"
+                                       Padding="5,0"></TextBlock>
+                        </StackPanel>
+                        
+                        <TextBlock Text="{Binding ReleaseAssetName}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Left"
+                                   Margin="2"
+                                   FontWeight="ExtraLight"></TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Border Grid.Column="2" Background="{DynamicResource ComponentColorBrush}" Margin="5" CornerRadius="3">
+            <TextBlock HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Text="The Future will bring a repository readme here"
+                       Style="{StaticResource IMYA_TEXT}" />
+
+        </Border>
     </Grid>
 </Window>

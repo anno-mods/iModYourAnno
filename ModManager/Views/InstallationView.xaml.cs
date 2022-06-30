@@ -113,7 +113,8 @@ namespace Imya.UI.Views
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
 
-            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo, Options);
+            if (!popup.HasRepoSelection) return;
+            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo!, Options);
 
             switch (Result.ResultType)
             {

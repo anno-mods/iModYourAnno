@@ -3,6 +3,7 @@ using Imya.GithubIntegration.StaticData;
 using Imya.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,10 @@ namespace Imya.UI.Popup
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
 
-        public GithubRepoInfo SelectedRepo { get; init; }
+        public GithubRepoInfo? SelectedRepo { get; private set; }
+
+        public bool HasRepoSelection => SelectedRepo is not null;
+        public ObservableCollection<GithubRepoInfo> AllRepositories { get; private set;}
 
         IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
@@ -39,12 +43,12 @@ namespace Imya.UI.Popup
             OK_TEXT = new SimpleText("OK");
             CANCEL_TEXT = new SimpleText("Cancel");
 
-            SelectedRepo = RepoInfoProvider.GetSingle();
-            MESSAGE = new SimpleText(SelectedRepo.ToString());
+            AllRepositories = new ObservableCollection<GithubRepoInfo>(RepoInfoProvider.GetAll());
         }
 
         private void OkayButtonClick(object sender, RoutedEventArgs e)
         {
+            SelectedRepo = RepoSelection.SelectedItem as GithubRepoInfo;
             DialogResult = true;
         }
 
