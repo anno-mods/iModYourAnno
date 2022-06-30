@@ -29,7 +29,9 @@ namespace Imya.UI.Views
 
         public ModInstallationOptions Options { get; } = new();
 
-        private InstallerMiddleware InstallerMiddleware = new InstallerMiddleware();
+        public InstallationStarter Installer { get; } = new InstallationStarter();
+
+        private InstallerMiddleware InstallerMiddleware;
 
         IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
 
@@ -60,7 +62,7 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            InstallerMiddleware = new InstallerMiddleware();
+            InstallerMiddleware = new InstallerMiddleware(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
