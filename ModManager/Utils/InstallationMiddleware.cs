@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace Imya.UI.Utils
 {
-    public enum DownloadResultType { SuccessfulInstallation, InstallationAlreadyRunning, Exception}
+    public enum InstallationResultType { SuccessfulInstallation, InstallationAlreadyRunning, Exception}
 
-    public class DownloadResult
+    public class InstallationResult
     {
-        public DownloadResultType ResultType { get; init; }
+        public InstallationResultType ResultType { get; init; }
         public InstallationException? Exception { get; init; }
 
-        public DownloadResult(DownloadResultType _type) : this(_type, null) { }
+        public InstallationResult(InstallationResultType _type) : this(_type, null) { }
 
-        public DownloadResult(DownloadResultType _type, InstallationException? e)
+        public InstallationResult(InstallationResultType _type, InstallationException? e)
         {
             ResultType=_type;
             Exception = e;
@@ -38,7 +38,20 @@ namespace Imya.UI.Utils
             Installer = new InstallationStarter();
         }
 
-        public async Task<DownloadResult> RunGithubInstallAsync(GithubRepoInfo repo, ModInstallationOptions Options)
+        public async Task<InstallationResult> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)
+        {
+            var InstallationTasks = Installer.SetupZipInstallationTasks(Filenames, Options);
+            //return is only okay here because the cleanup does not need to happen in this specific case.
+            if (InstallationTasks.Count() == 0) return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
+            await Installer.ProcessParallelAsync(InstallationTasks);
+            foreach (var i in InstallationTasks)
+            {
+                Installer.CleanInstallation(i);
+            }
+            return new InstallationResult(InstallationResultType.SuccessfulInstallation);
+        }
+
+        public async Task<InstallationResult> RunGithubInstallAsync(GithubRepoInfo repo, ModInstallationOptions Options)
         {
             Task<IInstallation>? installation = null;
             try
@@ -47,12 +60,12 @@ namespace Imya.UI.Utils
                 if (installation is Task<IInstallation> valid_install)
                     await Installer.ProcessAsync(valid_install);
                 else
-                    return new DownloadResult(DownloadResultType.InstallationAlreadyRunning);
-                return new DownloadResult(DownloadResultType.SuccessfulInstallation);
+                    return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
+                return new InstallationResult(InstallationResultType.SuccessfulInstallation);
             }
             catch (InstallationException ex)
             {
-                return new DownloadResult(DownloadResultType.Exception, ex);
+                return new InstallationResult(InstallationResultType.Exception, ex);
             }
             finally
             {
@@ -61,7 +74,7 @@ namespace Imya.UI.Utils
             }
         }
 
-        public async Task<DownloadResult> RunModloaderInstallAsync()
+        public async Task<InstallationResult> RunModloaderInstallAsync()
         {
             Task<IInstallation>? installation = null;
             try
@@ -70,12 +83,12 @@ namespace Imya.UI.Utils
                 if (installation is Task<IInstallation> valid_install)
                     await Installer.ProcessAsync(valid_install);
                 else
-                    return new DownloadResult(DownloadResultType.InstallationAlreadyRunning);
-                return new DownloadResult(DownloadResultType.SuccessfulInstallation);
+                    return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
+                return new InstallationResult(InstallationResultType.SuccessfulInstallation);
             }
             catch (InstallationException ex)
             {
-                return new DownloadResult(DownloadResultType.Exception, ex);
+                return new InstallationResult(InstallationResultType.Exception, ex);
             }
             finally
             {

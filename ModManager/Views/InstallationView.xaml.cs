@@ -112,10 +112,10 @@ namespace Imya.UI.Views
 
             switch (Result.ResultType)
             {
-                case DownloadResultType.InstallationAlreadyRunning:
+                case InstallationResultType.InstallationAlreadyRunning:
                     CreateInstallationAlreadyRunningPopup().ShowDialog();
                     break;
-                case DownloadResultType.Exception:
+                case InstallationResultType.Exception:
                     CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
                     break;
                 default:
@@ -132,8 +132,15 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var InstallationTasks = Installer.SetupZipInstallationTasks(dialog.FileNames, Options);
-            await Installer.ProcessParallelAsync(InstallationTasks);
+            var Result = await Middleware.RunZipInstallAsync(dialog.FileNames, Options);
+
+            switch (Result.ResultType)
+            {
+                case InstallationResultType.InstallationAlreadyRunning:
+                    CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    break;
+                default: break;
+            }
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
@@ -146,10 +153,10 @@ namespace Imya.UI.Views
 
             switch (Result.ResultType)
             {
-                case DownloadResultType.InstallationAlreadyRunning:
+                case InstallationResultType.InstallationAlreadyRunning:
                     CreateInstallationAlreadyRunningPopup().ShowDialog();
                     break;
-                case DownloadResultType.Exception:
+                case InstallationResultType.Exception:
                     CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
                     break;
                 default:
