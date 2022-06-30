@@ -32,7 +32,7 @@ namespace Imya.GithubIntegration
 
         public override String ToString()
         {
-            return $"{Name}/{Owner} : {GetReleaseAssetName()}";
+            return $"{Owner}/{Name} : {GetReleaseAssetName()}";
         }
     }
 
