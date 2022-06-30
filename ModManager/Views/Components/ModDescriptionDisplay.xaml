@@ -21,6 +21,7 @@
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
+            <converters:StringFormatConverter x:Key="Format" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
 
             <md:Markdown x:Key="Markdown"
@@ -79,19 +80,25 @@
                             Margin="5,0,0,0"
                             Grid.Row="1">
                     <!-- Version and creator -->
-                    <StackPanel Orientation="Horizontal"
+
+                    <TextBlock  Style="{StaticResource IMYA_TEXT}"
                                 Margin="2,8,2,8"
-                                Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}">
-                        <TextBlock TextWrapping="Wrap"
-                                   Text="{Binding TextManager[HEADER_VERSION].Text}"
-                                   Style="{StaticResource IMYA_TEXT}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.Version, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding TextManager[HEADER_CREATOR].Text}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.CreatorName, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
+                                Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}"
+                                TextWrapping="Wrap"
+                                MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource Format}"
+                                          UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="TextManager[HEADER_VERSION].Text"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Path="Mod.Modinfo.Version"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Path="Mod.Modinfo.CreatorName"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    
                     <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Mod ID-->
@@ -99,13 +106,19 @@
                                 Margin="2,8,2,8"
                                 Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}">
                         <TextBlock TextWrapping="Wrap"
-                                   Text="{Binding TextManager[HEADER_MODID].Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    FontWeight="SemiBold"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.ModID, UpdateSourceTrigger=PropertyChanged}"
-                                   VerticalAlignment="Center" Padding="10" />
+                                   VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource Format}"
+                                              UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="TextManager[HEADER_MODID].Text"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding Path="Mod.Modinfo.ModID"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         <Button Style="{StaticResource IMYA_BUTTON}"
                                 Click="OnCopyModIDClick" MinHeight="32"
                                 VerticalAlignment="Center">
@@ -122,7 +135,6 @@
                                     
                                 </TextBlock>
                             </StackPanel>
-                            
                         </Button>
                     </StackPanel>
                     <Separator Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}" />
@@ -140,8 +152,9 @@
                                    FontWeight="SemiBold" />
                         
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   MaxWidth="{Binding DescriptionTextWidth}"
+                                   MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="Wrap"
+                                   HorizontalAlignment="Left"
                                    Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
                                    Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                    Margin="2,8,2,8"

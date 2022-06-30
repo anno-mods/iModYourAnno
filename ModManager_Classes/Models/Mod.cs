@@ -71,8 +71,8 @@ namespace Imya.Models
 
         public bool HasVersion { get => Modinfo.Version is not null; }
         public bool HasDescription { get => Modinfo.Description is not null; }
-        public bool HasKnownIssues { get => Modinfo.KnownIssues is not null; }
-        public bool HasDlcDependencies { get => Modinfo.DLCDependencies is not null; }
+        public bool HasKnownIssues { get => Modinfo.KnownIssues is not null && Modinfo.KnownIssues.Length > 0; }
+        public bool HasDlcDependencies { get => Modinfo.DLCDependencies is not null && Modinfo.DLCDependencies.Length > 0; }
         public bool HasCreator { get => Modinfo.CreatorName is not null; }
         public bool HasImage { get => Image is not null; }
 
