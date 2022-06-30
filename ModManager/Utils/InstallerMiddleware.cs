@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.GithubIntegration.Download;
 using Imya.Models.Installation;
 using Imya.Models.Options;
 using System;

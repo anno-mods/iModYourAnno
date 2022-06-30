@@ -8,7 +8,7 @@ using Imya.Models.Options;
 using Imya.Utils;
 using Octokit;
 
-namespace Imya.GithubIntegration
+namespace Imya.GithubIntegration.Download
 {
     public struct DownloadResult
     {
@@ -20,7 +20,6 @@ namespace Imya.GithubIntegration
 
     public class GithubDownloader
     {
-        private readonly String DOWNLOAD_DIRECTORY;
         private static GitHubClient GithubClient = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
 
         public GithubDownloaderOptions Options = new GithubDownloaderOptions();
@@ -28,10 +27,9 @@ namespace Imya.GithubIntegration
         public GithubDownloader(GithubDownloaderOptions _options)
         {
             Options = _options;
-            DOWNLOAD_DIRECTORY = Options.DownloadDirectory;
-            if (!Directory.Exists(DOWNLOAD_DIRECTORY))
+            if (!Directory.Exists(Options.DownloadDirectory))
             {
-                Directory.CreateDirectory(DOWNLOAD_DIRECTORY);
+                Directory.CreateDirectory(Options.DownloadDirectory);
             }
         }
 
@@ -55,12 +53,12 @@ namespace Imya.GithubIntegration
         /// <param name="release">the release to be downloaded</param>
         /// <param name="AssetName">the name of the asset in the release to fetch</param>
         /// <returns>the Filepath where the release has been downloaded to.</returns>
-        public async Task<DownloadResult> DownloadReleaseAsync(Release release, String AssetName, IProgress<float>? progress = null)
+        private async Task<DownloadResult> DownloadReleaseAssetAsync(ReleaseAsset releaseAsset, IProgress<float>? progress = null)
         {
-            var downloadURL = release.Assets.FirstOrDefault(x => x.Name.Equals(AssetName))?.BrowserDownloadUrl;
+            var downloadURL = releaseAsset.BrowserDownloadUrl;
             if (downloadURL is null) throw new InstallationException("No matching release found");
 
-            String TargetFilename = Path.Combine(DOWNLOAD_DIRECTORY, AssetName);
+            String TargetFilename = Path.Combine(Options.DownloadDirectory, releaseAsset.Name);
 
             try
             {
@@ -75,15 +73,18 @@ namespace Imya.GithubIntegration
             catch (Exception e)
             {
                 throw new InstallationException($"Download failed: {e.Message}");
-            }            
+            }
         }
 
         public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo mod, IProgress<float>? progress = null)
         {
-            var rel = await FetchLatestReleaseAsync(mod);
-            if (rel is null) return new DownloadResult { DownloadSuccessful = false };
+            var release = await FetchLatestReleaseAsync(mod);
+            if (release is null) return new DownloadResult { DownloadSuccessful = false };
 
-            return await DownloadReleaseAsync(rel, mod.AssetName, progress);
+            var ReleaseAsset = release?.Assets.FirstOrDefault(x => x.Name.Equals(mod.GetReleaseAssetName()));
+            if (ReleaseAsset is null) return new DownloadResult { DownloadSuccessful = false };
+
+            return await DownloadReleaseAssetAsync(ReleaseAsset, progress);
         }
 
         public async Task<String?> FetchDescriptionAsync(GithubRepoInfo repoInfo)

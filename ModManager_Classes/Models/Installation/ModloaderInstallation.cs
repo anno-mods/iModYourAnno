@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using Imya.GithubIntegration;
+using Imya.GithubIntegration.StaticData;
 using Imya.Models;
 using Imya.Models.Installation;
 using Imya.Models.Options;
@@ -8,8 +9,8 @@ namespace Imya.Utils
 {
     public class ModloaderInstallation : GithubInstallation
     {
-        public static GithubRepoInfo ModloaderRepository { get; } = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce", AssetName="loader.zip"};
-
+        public static GithubRepoInfo ModloaderRepository { get; } = StaticNameGithubRepoInfoFactory.CreateWithStaticName("anno1800-mod-loader", "xforce", "loader.zip");
+           
         public ModloaderInstallationOptions ModloaderInstallationOptions { get; } = new ModloaderInstallationOptions();
 
         internal ModloaderInstallation() : base(ModloaderRepository)

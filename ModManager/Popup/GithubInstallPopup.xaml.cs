@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.GithubIntegration.StaticData;
 using Imya.Models;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace Imya.UI.Popup
             CANCEL_TEXT = new SimpleText("Cancel");
 
             SelectedRepo = RepoInfoProvider.GetSingle();
-            MESSAGE = new SimpleText($"Installing {SelectedRepo.Owner}/{SelectedRepo.Name} : {SelectedRepo.AssetName}");
+            MESSAGE = new SimpleText(SelectedRepo.ToString());
         }
 
         private void OkayButtonClick(object sender, RoutedEventArgs e)

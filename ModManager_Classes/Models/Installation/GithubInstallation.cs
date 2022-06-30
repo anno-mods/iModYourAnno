@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using Imya.GithubIntegration;
+using Imya.GithubIntegration.Download;
 using Imya.Models;
 using Imya.Models.Installation;
 using Imya.Models.Options;

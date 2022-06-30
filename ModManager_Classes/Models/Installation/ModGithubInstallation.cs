@@ -24,11 +24,11 @@ namespace Imya.Models.Installation
         internal ModGithubInstallation(GithubRepoInfo repoInfo, ModInstallationOptions options) : base(repoInfo)
         {
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD_GIT");
-            AdditionalText = new SimpleText($"{repoInfo.Owner}/{repoInfo.Name}: {repoInfo.AssetName}");
+            AdditionalText = new SimpleText(repoInfo.ToString());
             Options = options;
 
             //preemtively set this for later error handling
-            DownloadDestination = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, RepositoryToInstall.AssetName);
+            DownloadDestination = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, RepositoryToInstall.GetReleaseAssetName());
         }
 
         public override Task Finalize()
