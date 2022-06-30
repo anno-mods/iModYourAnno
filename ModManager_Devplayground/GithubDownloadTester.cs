@@ -1,5 +1,6 @@
 ﻿using Imya.GithubIntegration;
 using Imya.Models.Installation;
+using Imya.Models.Options;
 using Imya.Utils;
 
 internal class GithubDevTester
