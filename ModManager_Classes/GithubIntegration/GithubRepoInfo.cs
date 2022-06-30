@@ -12,6 +12,8 @@ namespace Imya.GithubIntegration
         public String Name { get; init; }
         public String Owner { get; init; }
 
+        public String ReleaseAssetName { get => GetReleaseAssetName(); }
+
         private IReleaseAssetNameStrategy _strategy;
 
         public GithubRepoInfo(IReleaseAssetNameStrategy strat)
