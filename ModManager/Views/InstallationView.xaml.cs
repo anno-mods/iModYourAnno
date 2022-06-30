@@ -76,6 +76,12 @@ namespace Imya.UI.Views
 
         private GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new GenericOkayPopup() { MESSAGE = new SimpleText(e.Message) };
 
+        private GithubInstallPopup CreateGithubInstallPopup()
+        {
+            GithubInstallPopup popup = new GithubInstallPopup();
+            return popup;
+        }
+
         private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
         {
             return new System.Windows.Forms.OpenFileDialog
@@ -101,16 +107,11 @@ namespace Imya.UI.Views
 
         private async void OnInstallFromGithub(object sender, RoutedEventArgs e)
         {
-            GenericOkayPopup popup = new GenericOkayPopup();
-
-            var repo = RepoInfoProvider.GetSingle();
-
-            popup.MESSAGE = new SimpleText($"Installing {repo.Owner}/{repo.Name} from Github now!");
-
+            var popup = CreateGithubInstallPopup();
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
 
-            var Result = await InstallerMiddleware.RunGithubInstallAsync(repo, Options);
+            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo, Options);
 
             switch (Result.ResultType)
             {
