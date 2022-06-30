@@ -1,13 +1,5 @@
-﻿using Imya.Models.NotifyPropertyChanged;
-using Imya.Models.Options;
+﻿using Imya.Models.Options;
 using Imya.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
@@ -28,19 +20,16 @@ namespace Imya.Models.Installation
                 OnPropertyChanged(nameof(Status));
             }
         }
+        private ZipInstallationStatus _status = ZipInstallationStatus.NotStarted;
 
         public ModCollection? Result { get; set; }
         public ModInstallationOptions Options { get; init; }
-
-        private ZipInstallationStatus _status = ZipInstallationStatus.NotStarted;
 
         #endregion
         internal ZipInstallation(String source_file_path, ModInstallationOptions options)
         {
             SourceFilepath = source_file_path;
-
             Options = options;
-
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD");
             AdditionalText = new SimpleText(SourceFilepath);
         }
