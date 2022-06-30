@@ -15,6 +15,7 @@ namespace Imya.Utils
         internal ModloaderInstallation() : base(ModloaderRepository)
         {
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_LOADER");
+            AdditionalText = new SimpleText($"Downloading from {ModloaderRepository.Owner}/{ModloaderRepository.Name}");
         }
 
         public override Task<IInstallation> Setup()
