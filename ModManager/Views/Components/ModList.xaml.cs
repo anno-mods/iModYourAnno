@@ -126,7 +126,7 @@ namespace Imya.UI.Components
 
         public async void DeleteSelection()
         {
-            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>());
+            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>().ToList());
             OnSelectionChanged();
         }
 
