@@ -2,12 +2,15 @@
 using Imya.GithubIntegration;
 using Imya.Models;
 using Imya.Models.Installation;
+using Imya.Models.Options;
 
 namespace Imya.Utils
 {
     public class ModloaderInstallation : GithubInstallation
     {
         public static GithubRepoInfo ModloaderRepository { get; } = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce", AssetName="loader.zip"};
+
+        public ModloaderInstallationOptions ModloaderInstallationOptions { get; } = new ModloaderInstallationOptions();
 
         internal ModloaderInstallation() : base(ModloaderRepository)
         {
@@ -46,7 +49,7 @@ namespace Imya.Utils
         {
             if (!DownloadResult.DownloadSuccessful) return;
             String DownloadFilename = DownloadResult.DownloadDestination;
-            TargetFilename = Path.Combine(UnpackDirectory, Path.GetFileNameWithoutExtension(DownloadFilename));
+            TargetFilename = Path.Combine(ModloaderInstallationOptions.UnpackDirectory, Path.GetFileNameWithoutExtension(DownloadFilename));
 
             Status = GithubInstallationStatus.Unpacking;
             ZipFile.ExtractToDirectory(DownloadFilename, TargetFilename, true);

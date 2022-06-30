@@ -2,6 +2,7 @@
 using Imya.GithubIntegration;
 using Imya.Models;
 using Imya.Models.Installation;
+using Imya.Models.Options;
 using Imya.Utils;
 using Octokit;
 
@@ -28,11 +29,14 @@ namespace Imya.Models.Installation
         }
         private GithubInstallationStatus _status = GithubInstallationStatus.NotStarted;
 
-        public GithubInstallation(GithubRepoInfo repoInfo)
+        public GithubDownloaderOptions DownloaderOptions { get; set; }
+
+        public GithubInstallation(GithubRepoInfo repoInfo, GithubDownloaderOptions? options = null)
         {
+            DownloaderOptions = options ?? new GithubDownloaderOptions();
             RepositoryToInstall = repoInfo;
 
-            GithubDownloader = new GithubDownloader(DownloadDirectory);
+            GithubDownloader = new GithubDownloader(DownloaderOptions);
             if (GameSetup.GameRootPath == null)
                 return;
 

@@ -1,5 +1,5 @@
 ﻿using Imya.GithubIntegration;
-using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Options;
 using Imya.Utils;
 using System.Collections.ObjectModel;
 

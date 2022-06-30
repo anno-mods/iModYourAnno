@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.Models.Options;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace Imya.Models.Installation
                     DownloadDestination = DownloadResult.DownloadDestination;
                     Status = GithubInstallationStatus.MovingFiles;
                     Result = await ModCollectionLoader.ExtractZipAsync(DownloadResult.DownloadDestination,
-                        UnpackDirectory,
+                        Options.UnpackDirectory,
                         this);
                 }
                 return this as IInstallation;

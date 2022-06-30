@@ -1,4 +1,5 @@
 ﻿using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Options;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -53,7 +54,7 @@ namespace Imya.Models.Installation
             {
                 Console.WriteLine($"Extract zip: {SourceFilepath}");
                 Result = await ModCollectionLoader.ExtractZipAsync(SourceFilepath,
-                    UnpackDirectory,
+                    Options.UnpackDirectory,
                     this);
                 return this as IInstallation;
             }

@@ -6,7 +6,7 @@ internal class GithubDevTester
 {
     internal async static Task DownloadSpice()
     {
-        GithubDownloader Downloader = new GithubDownloader("fuck");
+        GithubDownloader Downloader = new GithubDownloader( new GithubDownloaderOptions() { DownloadDirectory = "fuck"});
 
         File.Delete("fuck/loader.zip");
 

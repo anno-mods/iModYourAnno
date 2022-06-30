@@ -1,4 +1,6 @@
 ﻿using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Options;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,19 +33,5 @@ namespace Imya.Models.Installation
             }
             );
         }
-    }
-
-    public class ModInstallationOptions : PropertyChangedNotifier
-    {
-        public bool AllowOldToOverwrite
-        {
-            get => _allowOldToOverwrite;
-            set
-            {
-                _allowOldToOverwrite = value;
-                OnPropertyChanged(nameof(AllowOldToOverwrite));
-            }
-        }
-        private bool _allowOldToOverwrite = false;
     }
 }

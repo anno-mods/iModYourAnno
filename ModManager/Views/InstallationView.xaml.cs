@@ -15,6 +15,7 @@ using Imya.Models.Installation;
 using Imya.UI.Popup;
 using Imya.GithubIntegration;
 using Imya.UI.Utils;
+using Imya.Models.Options;
 
 namespace Imya.UI.Views
 {

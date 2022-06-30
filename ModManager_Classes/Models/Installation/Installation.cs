@@ -69,9 +69,6 @@ namespace Imya.Models.Installation
             Report(Progress);
         }
 
-        public String DownloadDirectory => ImyaSetupManager.Instance.DownloadDirectoryPath;
-        public String UnpackDirectory => ImyaSetupManager.Instance.UnpackDirectoryPath;
-
         public abstract Task<IInstallation> Setup();
         public abstract Task Finalize();
 
