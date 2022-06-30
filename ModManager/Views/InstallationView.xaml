@@ -320,14 +320,16 @@
             </Border> -->
         </StackPanel>
 
-        <StackPanel Grid.Column="1"
+        <Grid Grid.Column="1"
               Grid.Row="1"
               Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0"
-                    Height="45"
-                    Margin="0,0,0,8">
+                    BorderThickness="0">
                 <Grid VerticalAlignment="Center"
                       HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -350,7 +352,9 @@
 
             <ScrollViewer Grid.Column="2"
                           Grid.Row="2"
-                          Style="{StaticResource IMYA_SCROLLVIEWER}">
+                          Style="{StaticResource IMYA_SCROLLVIEWER}"
+                          CanContentScroll="True"
+                          Margin="0,4,0,0">
                 <ItemsControl ItemsSource="{Binding Installer.RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
                               x:Name="RunningInstallationsDisplay">
                     <ItemsControl.ItemTemplate>
@@ -394,6 +398,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
