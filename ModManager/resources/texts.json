@@ -521,9 +521,9 @@
   },
   "HEADER_VERSION": {
     "Chinese": null,
-    "English": "Version ",
+    "English": "Version {0} by {1}",
     "French": null,
-    "German": "Version ",
+    "German": "Version {0} von {1}",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -534,9 +534,9 @@
   },
   "HEADER_MODID": {
     "Chinese": null,
-    "English": "Mod ID (Dev): ",
+    "English": "Mod ID (Dev): {0}",
     "French": null,
-    "German": "Mod ID (Dev): ",
+    "German": "Mod ID (Dev): {0}",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
