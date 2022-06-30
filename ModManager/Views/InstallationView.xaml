@@ -350,13 +350,12 @@
 
             <ScrollViewer Grid.Column="2"
                           Grid.Row="2"
-                          Style="{StaticResource IMYA_SCROLLVIEWER}"
-                          Margin="2">
+                          Style="{StaticResource IMYA_SCROLLVIEWER}">
                 <ItemsControl ItemsSource="{Binding Installer.RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
                               x:Name="RunningInstallationsDisplay">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="2"
+                            <Border Margin="0,0,0,10"
                                     Background="{DynamicResource ComponentColorBrush}"
                                     MinHeight="80"
                                     CornerRadius="2">
@@ -366,14 +365,17 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical"
+                                                HorizontalAlignment="Center">
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                    Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
                                                    Margin="5"
-                                                   FontWeight="Bold" />
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center" />
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                    Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="5" />
+                                                   Margin="5"
+                                                   HorizontalAlignment="Center" />
                                     </StackPanel>
                                     <ProgressBar Name="progress"
                                                  Margin="6,6"
