@@ -44,6 +44,7 @@ namespace Imya.Models.Installation
                 if (DownloadResult.DownloadSuccessful)
                 {
                     DownloadDestination = DownloadResult.DownloadDestination;
+                    Status = GithubInstallationStatus.MovingFiles;
                     Result = await ModCollectionLoader.ExtractZipAsync(DownloadResult.DownloadDestination,
                         UnpackDirectory,
                         this);
