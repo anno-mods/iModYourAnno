@@ -177,7 +177,7 @@
                             <StackPanel>
                                 <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                                           Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                                          IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
+                                          IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Margin="2" />
                                 <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                                           Content="{Binding TextManager[MODS_AUTOUPDATES].Text}"
