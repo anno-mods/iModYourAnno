@@ -5,6 +5,7 @@ using Imya.UI.Properties;
 using Imya.Enums;
 using Imya.UI.Utils;
 using System.Threading.Tasks;
+using Imya.Models.Options;
 
 namespace Imya.UI
 {
@@ -25,7 +26,7 @@ namespace Imya.UI
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
             // init global mods
-            ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollection.Options()
+            ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollectionOptions()
             {
                 Normalize = true,
                 LoadImages = true

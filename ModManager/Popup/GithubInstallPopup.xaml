@@ -1,0 +1,51 @@
+﻿<Window x:Class="Imya.UI.Popup.GithubInstallPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Imya.UI.Popup"
+             mc:Ignorable="d" 
+            Height="200" Width="350"
+            ResizeMode="NoResize"
+            WindowStartupLocation="CenterScreen"
+             d:DesignHeight="200" d:DesignWidth="375">
+    <Grid Background="{DynamicResource BackgroundColorBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.ColumnSpan="2"
+              Margin="15">
+            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                       Text="{Binding MESSAGE.Text}"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center">
+            </TextBlock>
+        </Grid>
+
+        <Button Style="{StaticResource IMYA_BUTTON}"
+                Grid.Row="1" 
+                Margin="15,0"
+                Height="30"
+                Foreground="{StaticResource TextColorBrush}"
+                Content="{Binding OK_TEXT.Text}"
+                HorizontalContentAlignment="Center"
+                Click="OkayButtonClick"/>
+        <Button Style="{StaticResource IMYA_BUTTON}"
+                Grid.Row="1" 
+                Grid.Column="1" 
+                Margin="15,0" 
+                Height="30"
+                Foreground="{StaticResource TextColorBrush}"
+                Content="{Binding CANCEL_TEXT.Text}"
+                HorizontalContentAlignment="Center"
+                Click="CancelButtonClick"/>
+    </Grid>
+</Window>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Imya.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
-    public abstract class Installation : Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier, IProgress<float>
+    public abstract class Installation : 
+        Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier,
+        IProgress<float>,
+        IInstallation
     {
         public float Progress
         {
@@ -64,6 +68,11 @@ namespace Imya.Models.Installation
             _progressRange = (Min, Max);
             Report(Progress);
         }
+
+        public abstract Task<IInstallation> Setup();
+        public abstract Task Finalize();
+
+        public abstract void CleanUp();
     }
 
     public interface IInstallationStatus

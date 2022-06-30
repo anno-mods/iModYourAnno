@@ -177,7 +177,7 @@
                             <StackPanel>
                                 <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                                           Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                                          IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay}"
+                                          IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Margin="2" />
                                 <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
                                           Content="{Binding TextManager[MODS_AUTOUPDATES].Text}"
@@ -320,14 +320,16 @@
             </Border> -->
         </StackPanel>
 
-        <StackPanel Grid.Column="1"
+        <Grid Grid.Column="1"
               Grid.Row="1"
               Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0"
-                    Height="45"
-                    Margin="0,0,0,8">
+                    BorderThickness="0">
                 <Grid VerticalAlignment="Center"
                       HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
@@ -340,7 +342,7 @@
                                FontWeight="DemiBold">
                     </TextBlock>
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="{Binding RunningInstallations.Count}"
+                               Text="{Binding Installer.RunningInstallations.Count}"
                                Margin="5"
                                FontWeight="DemiBold"
                                Grid.Column="1">
@@ -351,12 +353,13 @@
             <ScrollViewer Grid.Column="2"
                           Grid.Row="2"
                           Style="{StaticResource IMYA_SCROLLVIEWER}"
-                          Margin="2">
-                <ItemsControl ItemsSource="{Binding RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
+                          CanContentScroll="True"
+                          Margin="0,4,0,0">
+                <ItemsControl ItemsSource="{Binding Installer.RunningInstallations, UpdateSourceTrigger=PropertyChanged}"
                               x:Name="RunningInstallationsDisplay">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="2"
+                            <Border Margin="0,0,0,10"
                                     Background="{DynamicResource ComponentColorBrush}"
                                     MinHeight="80"
                                     CornerRadius="2">
@@ -366,14 +369,17 @@
                                         <RowDefinition />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Vertical"
+                                                HorizontalAlignment="Center">
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                    Text="{Binding HeaderText.Text, UpdateSourceTrigger=PropertyChanged}"
                                                    Margin="5"
-                                                   FontWeight="Bold" />
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center" />
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                    Text="{Binding AdditionalText.Text, UpdateSourceTrigger=PropertyChanged}"
-                                                   Margin="5" />
+                                                   Margin="5"
+                                                   HorizontalAlignment="Center" />
                                     </StackPanel>
                                     <ProgressBar Name="progress"
                                                  Margin="6,6"
@@ -392,6 +398,6 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

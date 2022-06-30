@@ -1,4 +1,5 @@
 ﻿using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Options;
 using Imya.Utils;
 using System.Collections.ObjectModel;
 
@@ -67,12 +68,7 @@ namespace Imya.Models
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
 
-        public struct Options
-        {
-            public bool Normalize { get; init; }
-            public bool LoadImages { get; init; }
-        }
-        private readonly Options _options;
+        private readonly ModCollectionOptions _options;
 
         /// <summary>
         /// Open mod collection from folder.
@@ -80,7 +76,7 @@ namespace Imya.Models
         /// <param name="path">Path to mods.</param>
         /// <param name="options.Normalize">Remove duplicate "-"</param>
         /// <param name="options.LoadImages">Load image files into memory</param>
-        public ModCollection(string path, Options? options = null)
+        public ModCollection(string path, ModCollectionOptions? options = null)
         {
             ModsPath = path;
             _options = new () {

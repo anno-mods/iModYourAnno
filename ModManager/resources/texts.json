@@ -1157,6 +1157,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "INSTALLATION_HEADER_MOD_GIT": {
+    "Chinese": null,
+    "English": "Installing Mods from Github",
+    "French": null,
+    "German": "Mods werden von Github installiert",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ZIP_INSTALLER_TITLE": {
     "Chinese": null,
     "English": "Install Mods",

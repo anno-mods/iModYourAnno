@@ -87,6 +87,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Popup\GithubInstallPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -95,6 +98,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Popup\GithubInstallPopup.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\ComboBoxStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
