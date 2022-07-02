@@ -16,11 +16,6 @@ namespace Imya.Models.Installation
 
         private String DownloadDestination;
 
-        public async Task<String?> GetRepositoryDescription()
-        {
-            return await GithubDownloader.FetchDescriptionAsync(RepositoryToInstall);
-        }
-
         internal ModGithubInstallation(GithubRepoInfo repoInfo, ModInstallationOptions options) : base(repoInfo)
         {
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD_GIT");
