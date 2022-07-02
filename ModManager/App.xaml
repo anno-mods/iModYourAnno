@@ -94,7 +94,7 @@
                         Value="UniformToFill">
                 </Setter>
                 <Setter Property="MaxWidth"
-                        Value="1000">
+                        Value="500">
                     
                 </Setter>
                 <Style.Triggers>
