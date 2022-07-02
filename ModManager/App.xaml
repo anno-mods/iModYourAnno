@@ -40,8 +40,6 @@
                 <Setter Property="Foreground"
                         Value="{DynamicResource TextColorBrush}">
                 </Setter>
-                <Setter Property="TextAlignment"
-                        Value="Left" />
             </Style>
 
             <Style x:Key="H1Style"
@@ -92,8 +90,13 @@
 
             <Style x:Key="ImageStyle"
                    TargetType="Image">
-                <Setter Property="RenderOptions.BitmapScalingMode"
-                        Value="NearestNeighbor" />
+                <Setter Property="Stretch"
+                        Value="UniformToFill">
+                </Setter>
+                <Setter Property="MaxWidth"
+                        Value="1000">
+                    
+                </Setter>
                 <Style.Triggers>
                     <Trigger Property="Tag"
                              Value="imageright">
