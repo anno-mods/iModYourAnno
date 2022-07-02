@@ -36,7 +36,7 @@ namespace Imya.UI.Views
 
         private InstallerMiddleware InstallerMiddleware;
 
-        IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
+        IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
         #region notifyable properties
 
