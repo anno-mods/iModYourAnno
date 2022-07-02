@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration.StaticData
 {
-    public class StaticRepositoryInfoProvider : IRepositoryInfoProvider
+    public class StaticRepoInfoSource : IRepoInfoSource
     {
         private Random random = new Random();
 
