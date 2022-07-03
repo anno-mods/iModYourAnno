@@ -1,14 +1,18 @@
 ﻿using Octokit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Imya.Utils
 {
-    internal class GithubClientProvider
+    public class GithubClientProvider
     {
-        internal static GitHubClient Client { get; } = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
+        public static GitHubClient Client { get; } = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
     }
 }
