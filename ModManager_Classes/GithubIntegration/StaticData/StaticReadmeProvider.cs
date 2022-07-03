@@ -15,7 +15,7 @@ namespace Imya.GithubIntegration.StaticData
         {
             try
             {
-                return await cache.GetOrCreateAsync(repoInfo, _ => ReadmeFunc(repoInfo.Name, repoInfo.Owner));
+                return await cache.GetOrCreateAsync(repoInfo, _ => ReadmeFunc(repoInfo));
             }
             catch (ApiException e)
             {
@@ -23,10 +23,12 @@ namespace Imya.GithubIntegration.StaticData
             }
         }
 
-        private async Task<String> ReadmeFunc(String Name, String Owner)
+        private async Task<String> ReadmeFunc(GithubRepoInfo repoInfo)
         {
-            var readme = await GitHubClient.Repository.Content.GetReadme(Owner, Name);
-            return readme.Content;
+            var readme = await GitHubClient.Repository.Content.GetAllContents(repoInfo.Owner, repoInfo.Name, repoInfo.GetMarkdownReadmeFilepath());
+            var content = readme.FirstOrDefault();
+            if (content is null) return String.Empty;
+            return content!.Content;
         }
     }
 }

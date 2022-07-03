@@ -10,8 +10,10 @@ namespace Imya.GithubIntegration.StaticData
     {
         public static GithubRepoInfo CreateWithStaticName(String RepositoryName, String Owner, String AssetName)
         {
-            StaticNameReleaseAssetStrategy strat = new(AssetName);
-            return new GithubRepoInfo(strat) { Owner = Owner, Name = RepositoryName };
+            IReleaseAssetNameStrategy release_asset_strat = new StaticNameReleaseAssetStrategy(AssetName);
+            IReadmeFilepathStrategy filepath_strat = new StaticReadmeFilepathStrategy();
+
+            return new GithubRepoInfo(release_asset_strat, filepath_strat, Owner, RepositoryName);
         }
     }
 }
