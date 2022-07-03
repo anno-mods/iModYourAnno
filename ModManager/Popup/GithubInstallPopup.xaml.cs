@@ -1,6 +1,7 @@
 ﻿using Imya.GithubIntegration;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -30,18 +31,36 @@ namespace Imya.UI.Popup
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
 
-        public GithubRepoInfo? SelectedRepo { get; private set; }
 
         public bool HasRepoSelection => SelectedRepo is not null;
-        public ObservableCollection<GithubRepoInfo> AllRepositories { get; private set; }
+
+        #region Notifying
+        public ObservableCollection<GithubRepoInfo> DisplayedRepositories 
+        { 
+            get => _displayedRepositories;
+            private set => SetProperty(ref _displayedRepositories, value);
+        }
+        private ObservableCollection<GithubRepoInfo> _displayedRepositories;
+
+        public String? ReadmeText
+        {
+            get => _readmeText;
+            set => SetProperty(ref _readmeText, value);
+        }
+        private String? _readmeText;
+
+        public GithubRepoInfo? SelectedRepo {
+            get => _selectedRepo;
+            private set => SetProperty(ref _selectedRepo, value);
+        }
+        private GithubRepoInfo? _selectedRepo;
+        #endregion
+
+        public ObservableCollection<GithubRepoInfo> AllRepositories;
 
         StaticReadmeProvider ReadmeProvider = new StaticReadmeProvider();
 
-        public String? ReadmeText { 
-            get => _readmeText; 
-            set => SetProperty(ref _readmeText, value); 
-        }
-        private String? _readmeText;
+        public TextManager TextManager { get;} = TextManager.Instance;
 
         IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
@@ -54,6 +73,8 @@ namespace Imya.UI.Popup
             CANCEL_TEXT = new SimpleText("Cancel");
 
             AllRepositories = new ObservableCollection<GithubRepoInfo>(RepoInfoProvider.GetAll());
+
+            DisplayedRepositories = AllRepositories;
 
             RepoSelection.SelectionChanged += UpdateReadmeForSelection;
         }
@@ -74,9 +95,19 @@ namespace Imya.UI.Popup
             var repoInfo = RepoSelection.SelectedItem as GithubRepoInfo;
             if (repoInfo is null) return;
             ReadmeText = await ReadmeProvider.GetReadmeAsync(repoInfo);
+
+            SelectedRepo = repoInfo;
         }
 
+        public void Filter(IEnumerable<string> keywords)
+        { 
+            var selection = AllRepositories.Where(repoInfo =>
+               keywords.Any(x => repoInfo.Name.Contains(x, StringComparison.InvariantCultureIgnoreCase))
+               || keywords.Any(x => repoInfo.Owner.Contains(x, StringComparison.InvariantCultureIgnoreCase))
+            );
 
+            DisplayedRepositories = selection.Count() > 0 ? new(selection) : AllRepositories;
+        }
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -87,5 +118,14 @@ namespace Imya.UI.Popup
             OnPropertyChanged(propertyName);
         }
         #endregion
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var textbox = sender as TextBox;
+            if (textbox is not TextBox valid_textbox) return;
+            var keywords = valid_textbox.Text.Split(' ').Where(x => x != String.Empty);
+
+            Filter(keywords);
+        }
     }
 }

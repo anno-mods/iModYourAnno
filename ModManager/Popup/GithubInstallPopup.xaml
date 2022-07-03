@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Imya.UI.Popup"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
         mc:Ignorable="d" 
             Height="500" Width="700"
@@ -32,44 +33,82 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.ColumnSpan="2"
-              Margin="15">
-            <TextBlock Style="{StaticResource IMYA_TEXT}"
-                       Text="{Binding MESSAGE.Text}"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center">
-            </TextBlock>
-        </Grid>
-
         <Button Style="{StaticResource IMYA_BUTTON}"
-                Grid.Row="1" 
+                Grid.Row="2" 
                 Margin="15,0"
                 Height="30"
+                MaxWidth="250"
                 Foreground="{StaticResource TextColorBrush}"
                 Content="{Binding OK_TEXT.Text}"
                 HorizontalContentAlignment="Center"
                 Click="OkayButtonClick"/>
         <Button Style="{StaticResource IMYA_BUTTON}"
-                Grid.Row="1" 
+                Grid.Row="2" 
                 Grid.Column="1" 
-                Margin="15,0" 
+                Margin="15,0"
                 Height="30"
+                MaxWidth="250"
                 Foreground="{StaticResource TextColorBrush}"
                 Content="{Binding CANCEL_TEXT.Text}"
                 HorizontalContentAlignment="Center"
                 Click="CancelButtonClick"/>
 
-        <ListBox 
-                 x:Name="RepoSelection"
+        
+        <Grid Grid.Row="0"
+              Margin="10,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBox MinHeight="25"
+                        Margin="0,2,10,5"
+                        x:Name="SearchTextBox"
+                        Background="{DynamicResource InteractiveComponentColorBrush}"
+                        Style="{StaticResource IMYA_TEXTBOX}"
+                     TextChanged="SearchTextBox_TextChanged">
+            </TextBox>
+            <TextBlock IsHitTestVisible="False"
+                        Text="{Binding TextManager[MODLIST_SEARCHBAR].Text}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Margin="8,5,0,0"
+                        MinHeight="25"
+                        Foreground="DarkGray">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource IMYA_TEXT}"
+                            TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility"
+                                Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, ElementName=SearchTextBox}"
+                                            Value="">
+                                <Setter Property="Visibility"
+                                        Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <materialDesign:PackIcon VerticalAlignment="Center"
+                                        Grid.Column="1"
+                                        Kind="Search"
+                                        Style="{StaticResource IMYA_ICON}"
+                                        Foreground="{DynamicResource TextColorBrush}"
+                                        Margin="0,0,5,0">
+            </materialDesign:PackIcon>
+        </Grid>
+
+        <ListBox x:Name="RepoSelection"
                  Style="{StaticResource IMYA_LISTBOX}"
-                 Margin="5"
-                 ItemsSource="{Binding AllRepositories}"
-                 ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}">
+                 ItemsSource="{Binding DisplayedRepositories, UpdateSourceTrigger=PropertyChanged}"
+                 ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}"
+                 Grid.Row="1"
+                 Margin="10,0,5,5">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="8">
@@ -86,7 +125,7 @@
                                        Style="{StaticResource IMYA_TEXT}"
                                        Padding="5,0"></TextBlock>
                         </StackPanel>
-                        
+
                         <TextBlock Text="{Binding ReleaseAssetName}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Grid.Row="2"
@@ -97,10 +136,24 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Border Background="{DynamicResource ComponentColorBrush}"
+                CornerRadius="3"
+                Grid.Column="2"
+                Margin="5,15,10,10">
+            <TextBlock Text="{Binding SelectedRepo.Name, UpdateSourceTrigger=PropertyChanged}"
+                       Style="{StaticResource IMYA_TEXT}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontWeight="DemiBold">
+            </TextBlock>
+        </Border>
+
         <Border CornerRadius="3"
                 Background="{DynamicResource ComponentColorBrush}"
                 Grid.Column="2"
-                Margin="5">
+                Grid.Row="1"
+                Margin="5,0,10,5">
             <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}">
                 <FlowDocumentScrollViewer IsEnabled="False"
                                           Style="{StaticResource FlowDocumentScrollViewer}"
