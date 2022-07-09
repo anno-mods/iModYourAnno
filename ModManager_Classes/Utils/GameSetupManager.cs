@@ -96,7 +96,7 @@ namespace Imya.Utils
                 OnPropertyChanged(nameof(ModloaderActivationDesiredOnStart));
             }
         }
-        private bool _modloaderActivationDesiredOnStart; 
+        private bool _modloaderActivationDesiredOnStart = true; 
 
         public bool IsModloaderInstalled => ModloaderState == ModloaderInstallationState.Installed;
 
