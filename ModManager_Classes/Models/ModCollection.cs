@@ -70,6 +70,8 @@ namespace Imya.Models
 
         private readonly ModCollectionOptions _options;
 
+        public IModComparer ModComparer { get; set; } = new NameComparer();
+
         /// <summary>
         /// Open mod collection from folder.
         /// </summary>
@@ -153,11 +155,7 @@ namespace Imya.Models
             foreach (var mod in _displayedMods)
                 mod.StatsChanged -= OnModStatsChanged;
 
-            _displayedMods = new ObservableCollection<Mod>(value.
-                OrderBy(x => x.Name.Text).
-                OrderBy(x => x.Category.Text).
-                OrderByDescending(x => x.IsActive).
-                ToList());
+            _displayedMods = new ObservableCollection<Mod>(value.OrderBy(x => x, ModComparer));
 
             // register for stat changes
             foreach (var mod in _displayedMods)
