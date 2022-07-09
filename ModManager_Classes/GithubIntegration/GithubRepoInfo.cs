@@ -12,11 +12,23 @@ namespace Imya.GithubIntegration
         public String Name { get; init; }
         public String Owner { get; init; }
 
-        private IReleaseAssetNameStrategy _strategy;
+        public String ReleaseAssetName { get => GetReleaseAssetName(); }
+        public String ReadmeMarkdownFilepath { get => GetMarkdownReadmeFilepath(); }
 
-        public GithubRepoInfo(IReleaseAssetNameStrategy strat)
+        private IReleaseAssetNameStrategy _releaseAssetNameStrategy;
+        private IReadmeFilepathStrategy _readmeFilepathStrategy;
+
+        public GithubRepoInfo(
+            IReleaseAssetNameStrategy releaseAssetNameStrategy,
+            IReadmeFilepathStrategy readmeFilepathStrategy,
+            String owner, 
+            String repoName)
         {
-            _strategy = strat;
+            Name = repoName;
+            Owner = owner;
+
+            _releaseAssetNameStrategy = releaseAssetNameStrategy;
+            _readmeFilepathStrategy = readmeFilepathStrategy;
         }
 
         public override bool Equals([NotNullWhen(true)] object? obj)
@@ -27,7 +39,12 @@ namespace Imya.GithubIntegration
 
         public String GetReleaseAssetName()
         {
-            return _strategy.GetReleaseAssetName();
+            return _releaseAssetNameStrategy.GetReleaseAssetName();
+        }
+
+        public String GetMarkdownReadmeFilepath()
+        { 
+            return _readmeFilepathStrategy.GetMarkdownReadmeFilepath();
         }
 
         public override String ToString()

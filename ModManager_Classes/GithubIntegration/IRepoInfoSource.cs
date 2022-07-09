@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration
 {
-    public interface IRepositoryInfoProvider
+    public interface IRepoInfoSource
     {
         public IEnumerable<GithubRepoInfo> GetAll();
         public IEnumerable<GithubRepoInfo> Get(int count);

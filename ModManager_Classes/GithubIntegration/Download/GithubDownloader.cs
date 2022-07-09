@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Imya.GithubIntegration.RepositoryInformation;
 using Imya.Models.Options;
 using Imya.Utils;
 using Octokit;
@@ -20,9 +21,9 @@ namespace Imya.GithubIntegration.Download
 
     public class GithubDownloader
     {
-        private static GitHubClient GithubClient = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
-
         public GithubDownloaderOptions Options = new GithubDownloaderOptions();
+
+        IRepositoryProvider releaseProvider = new RepositoryProvider();
 
         public GithubDownloader(GithubDownloaderOptions _options)
         {
@@ -31,20 +32,6 @@ namespace Imya.GithubIntegration.Download
             {
                 Directory.CreateDirectory(Options.DownloadDirectory);
             }
-        }
-
-        public async Task<Release?> FetchLatestReleaseAsync(GithubRepoInfo repository)
-        {
-            Release? release = null;
-            try
-            {
-                release = await GithubClient.Repository.Release.GetLatest(repository.Owner, repository.Name);
-            }
-            catch (Exception e)
-            {
-                throw new InstallationException($"Could not fetch any Repository Release for {repository.Owner}/{repository.Name}: {e.Message}");
-            }
-            return release;
         }
 
         /// <summary>
@@ -78,31 +65,16 @@ namespace Imya.GithubIntegration.Download
 
         public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo mod, IProgress<float>? progress = null)
         {
-            var release = await FetchLatestReleaseAsync(mod);
-            if (release is null) return new DownloadResult { DownloadSuccessful = false };
-
+            var release = await releaseProvider.FetchLatestReleaseAsync(mod);
             var ReleaseAsset = release?.Assets.FirstOrDefault(x => x.Name.Equals(mod.GetReleaseAssetName()));
-            if (ReleaseAsset is null) return new DownloadResult { DownloadSuccessful = false };
+
+            if (release is null || ReleaseAsset is null)
+            {
+                //return new DownloadResult { DownloadSuccessful = false };
+                throw new InstallationException($"Could not fetch any Release for {mod}");
+            }
 
             return await DownloadReleaseAssetAsync(ReleaseAsset, progress);
-        }
-
-        public async Task<String?> FetchDescriptionAsync(GithubRepoInfo repoInfo)
-        {
-            var repo = await GetRepositoryAsync(repoInfo);
-            return repo?.Description;
-        }
-
-        public async Task<Repository?> GetRepositoryAsync(GithubRepoInfo repoInfo)
-        {
-            try
-            {
-                return await GithubClient.Repository.Get(repoInfo.Owner, repoInfo.Name);
-            }
-            catch (Exception e)
-            {
-                throw new InstallationException($"Could not fetch any Repository for {repoInfo.Owner}/{repoInfo.Name}: {e.Message}");
-            }
         }
     }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration.StaticData
 {
-    public class StaticRepositoryInfoProvider : IRepositoryInfoProvider
+    public class StaticRepoInfoSource : IRepoInfoSource
     {
         private Random random = new Random();
 
@@ -19,6 +19,11 @@ namespace Imya.GithubIntegration.StaticData
             StaticNameGithubRepoInfoFactory.CreateWithStaticName("WholesomeHaciendaHaul", "Taludas", "TheWholesomeHaciendaHaul_v1.3.2.zip"),
             StaticNameGithubRepoInfoFactory.CreateWithStaticName("SmallModsCollection", "Taludas", "SmallModsCollection_v1.0.zip"),
             StaticNameGithubRepoInfoFactory.CreateWithStaticName("Police_Station_MU", "muggenstuermer", "Source Code"),
+            StaticNameGithubRepoInfoFactory.CreateWithStaticName("Tourists_Alternativ_Buildings_MU", "muggenstuermer", "Source Code"),
+            StaticNameGithubRepoInfoFactory.CreateWithStaticName("Hospital_MU", "muggenstuermer", "Source Code"),
+            StaticNameGithubRepoInfoFactory.CreateWithStaticName("Fire_Station_MU", "muggenstuermer", "Source Code"),
+            StaticNameGithubRepoInfoFactory.CreateWithStaticName("MuggenTours_MU", "muggenstuermer", "Source Code"),
+            StaticNameGithubRepoInfoFactory.CreateWithStaticName("City_Ornaments_MU_2.0", "muggenstuermer", "Source Code"),
             StaticNameGithubRepoInfoFactory.CreateWithStaticName("thesacredjeditexts", "luke skywalker", "Source Code"),
         };
 

@@ -36,7 +36,7 @@ namespace Imya.UI.Views
 
         private InstallerMiddleware InstallerMiddleware;
 
-        IRepositoryInfoProvider RepoInfoProvider = new StaticRepositoryInfoProvider();
+        IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
         #region notifyable properties
 
@@ -113,7 +113,8 @@ namespace Imya.UI.Views
             if ((popup.ShowDialog() is not bool okay) || !okay)
                 return;
 
-            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo, Options);
+            if (!popup.HasRepoSelection) return;
+            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo!, Options);
 
             switch (Result.ResultType)
             {
