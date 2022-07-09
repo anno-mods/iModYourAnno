@@ -174,9 +174,33 @@
                                     Click="GameModDirectory_ButtonClick" />
                         </Grid>
                     </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            Style="{StaticResource IMYA_TEXTBOX}"
+                            Text="resources/secrets.json"
+                            Background="{DynamicResource InteractiveComponentColorBrush}"
+                            Margin="5"
+                            Name="SecretsFileTextBox"
+                            >
+                            
+                        </TextBox>
+                        
+                        <Button Content="Authorize App"
+                                Margin="5"
+                                Style="{StaticResource IMYA_BUTTON}"
+                                HorizontalContentAlignment="Center"
+                                Click="OnAuthenticate"
+                                Grid.Column="2"></Button>
+                    </Grid>
                 </StackPanel>
 
+
             </Border>
+            
         </StackPanel>
 
     </Grid>

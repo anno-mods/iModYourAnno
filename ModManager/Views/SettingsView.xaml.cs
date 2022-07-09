@@ -7,6 +7,8 @@ using System.Windows.Media;
 using System.Collections.Generic;
 using Imya.Utils;
 using Imya.Models;
+using Imya.UI.Utils;
+using System.Threading.Tasks;
 
 namespace Imya.UI.Views
 {
@@ -145,6 +147,17 @@ namespace Imya.UI.Views
 
             ChangeColorTheme(pair);
             
+        }
+
+        public void OnAuthenticate(object sender, RoutedEventArgs e)
+        {
+            GithubClientProvider.Authenticator = Properties.Settings.Default.DevMode ?
+                    new OAuthenticator() :
+                    new DummyAuthenticator();
+
+            GithubClientProvider.Authenticator.LoadSecrets(SecretsFileTextBox.Text);
+
+            Task.Run(() => GithubClientProvider.RunAuthenticate());
         }
 
         //Apply new Mod Directory Name
