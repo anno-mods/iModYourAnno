@@ -138,14 +138,17 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var Result = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
+            var Results = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
 
-            switch (Result.ResultType)
+            foreach (var Result in Results)
             {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                default: break;
+                switch (Result.ResultType)
+                {
+                    case InstallationResultType.InstallationAlreadyRunning:
+                        CreateInstallationAlreadyRunningPopup().ShowDialog();
+                        break;
+                    default: break;
+                }
             }
         }
 

@@ -40,17 +40,45 @@ namespace Imya.UI.Utils
             Installer = new InstallationStarter();
         }
 
-        public async Task<InstallationResult> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)
+        public async Task<IEnumerable<InstallationResult>> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)
         {
-            var InstallationTasks = Installer.SetupZipInstallationTasks(Filenames, Options);
-            //return is only okay here because the cleanup does not need to happen in this specific case.
-            if (InstallationTasks.Count() == 0) return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
-            await Installer.ProcessParallelAsync(InstallationTasks);
-            foreach (var i in InstallationTasks)
+            List<Task<IInstallation>> installations = new();
+            List<InstallationResult> results = new();
+
+            foreach (var Filename in Filenames)
             {
-                Installer.CleanInstallation(i);
+                var installation = Installer.SetupZipInstallationTask(Filename, Options);
+                if (installation is Task<IInstallation> valid_install)
+                {
+                    installations.Add(valid_install);
+                }
+                else
+                {
+                    results.Add(new InstallationResult(InstallationResultType.InstallationAlreadyRunning));
+                }
             }
-            return new InstallationResult(InstallationResultType.SuccessfulInstallation);
+
+            while (installations.Count > 0)
+            {
+                var installation = await Task.WhenAny(installations);
+                try
+                {
+                    await Installer.ProcessAsync(installation);
+                    results.Add(new InstallationResult(InstallationResultType.SuccessfulInstallation));
+                }
+                catch (InstallationException ex)
+                {
+                    results.Add(new InstallationResult(InstallationResultType.Exception, ex));
+                }
+                finally
+                {
+                    if (installation is Task<IInstallation>)
+                        Installer.CleanInstallation(installation);
+                    installations.Remove(installation);
+                }
+            }
+
+            return results;
         }
 
         public async Task<InstallationResult> RunGithubInstallAsync(GithubRepoInfo repo, ModInstallationOptions Options)
