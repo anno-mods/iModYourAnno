@@ -60,6 +60,9 @@ namespace Imya.Models
         private int _installedSizeInMBs = 0;
         #endregion
 
+        public event ModAddedEventHandler ModAdded = delegate { };
+        public delegate void ModAddedEventHandler(Mod m);
+
         public string ModsPath { get; private set; }
 
         public IReadOnlyList<Mod> Mods => _mods;
@@ -124,6 +127,10 @@ namespace Imya.Models
                     if (File.Exists(imagepath))
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
+            }
+            foreach (var mod in mods)
+            {
+                ModAdded(mod);
             }
             return mods;
         }
@@ -243,6 +250,8 @@ namespace Imya.Models
             reparsed.Status = sourceMod.Status;
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
+
+            ModAdded(reparsed);
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
