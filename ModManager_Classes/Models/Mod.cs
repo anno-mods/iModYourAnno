@@ -4,19 +4,10 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
 using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Attributes;
 
 namespace Imya.Models
 {
-    // TODO obsolete may be a different kind of state more similar to other compatibility issues.
-    //      Obsolete may also be detected on startup, not only after zip installation.
-    public enum ModStatus
-    {
-        Default,
-        New,
-        Updated,
-        Obsolete
-    }
-
     public class Mod : PropertyChangedNotifier
     {
         #region ModLoader info
@@ -79,7 +70,6 @@ namespace Imya.Models
         public bool HasModID { get => Modinfo.ModID is not null; }
         #endregion
 
-
         public float SizeInMB { get; private set; }
 
         public delegate void ModStatsChangedHandler();
@@ -110,6 +100,8 @@ namespace Imya.Models
             ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);
             return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
         }
+
+        public IAttributeCollection Attributes { get; } = new ObservableAttributeCollection();
 
         #region loading
         /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
@@ -218,8 +210,8 @@ namespace Imya.Models
         public async Task MakeObsoleteAsync(string path)
         {
             await ChangeActivationAsync(false);
-            Status = ModStatus.Obsolete;
-            Console.WriteLine($"{Status}: {FolderName}");
+            Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+            Console.WriteLine($"{ModStatus.Obsolete}: {FolderName}");
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.Models.Attributes;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,18 @@ using System.Windows.Data;
 
 namespace Imya.UI.Components
 {
-    [ValueConversion(typeof(ModStatus), typeof(string))]
+    [ValueConversion(typeof(IAttribute), typeof(string))]
     internal class ModStatusAsIcon : IValueConverter
     {
         static readonly string[] _names = new string[] { "None", "Download", "Update", "RemoveCircleOutline" };
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
-            return _names[(int)value];
+            if (value is IAttribute attrib)
+            {
+                return attrib.Icon;
+            }
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
@@ -35,7 +40,11 @@ namespace Imya.UI.Components
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
-            return _names[(int)value];
+            if (value is IAttribute attrib)
+            {
+                return attrib.Color;
+            }
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)

@@ -1,4 +1,5 @@
-﻿using Imya.Models.NotifyPropertyChanged;
+﻿using Imya.Models.Attributes;
+using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
 using Imya.Utils;
 using System.Collections.ObjectModel;
@@ -225,9 +226,11 @@ namespace Imya.Models
             }
 
             // do it!
-            sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
+            var status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
+            sourceMod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
+
             DirectoryEx.CleanMove(Path.Combine(SourceModsPath, sourceMod.FullFolderName), targetModPath);
-            Console.WriteLine($"{sourceMod.Status}: {sourceMod.FolderName}");
+            Console.WriteLine($"{sourceMod.Attributes.GetByType(AttributeType.ModStatus)}: {sourceMod.FolderName}");
 
             // mark all duplicate id mods as obsolete
             if (sourceMod.Modinfo.ModID != null)
@@ -237,7 +240,7 @@ namespace Imya.Models
                     await mod.MakeObsoleteAsync(ModsPath);
                 // mark mod as updated, since there was the same modid already there
                 if (sameModIDs.Any())
-                    sourceMod.Status = ModStatus.Updated;
+                    status = ModStatus.Updated;
             }
 
             // update mod list, only remove in case of same folder
@@ -247,7 +250,7 @@ namespace Imya.Models
                 targetMod.StatsChanged -= OnModStatsChanged;
             }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
-            reparsed.Status = sourceMod.Status;
+            reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
 

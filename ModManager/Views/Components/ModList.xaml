@@ -88,12 +88,18 @@
                             <TextBlock Text="{Binding Name.Text}"
                                    Style="{StaticResource IMYA_TEXT}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
-                                    Margin="5,3,0,3">
-                            <materialDesign:PackIcon Margin="5,0,5,0"
-                                                     Kind="{Binding Status, Converter={StaticResource ModStatusAsIcon}}"
-                                                     Foreground="{Binding Status, Converter={StaticResource ModStatusAsColor}}" />
-                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding Attributes}"
+                                      HorizontalAlignment="Right"
+                                      Grid.Column="1"
+                                      Margin="5,3,0,3">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:PackIcon Margin="5,0,5,0"
+                                                             Kind="{Binding Icon}"
+                                                             Foreground="{Binding Color}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
