@@ -26,18 +26,18 @@ namespace Imya.UI.Utils
         }
     }
     
-    internal class InstallerMiddleware
+    internal class InstallationStarter
     {
-        public InstallationStarter Installer { get; init; }
+        public InstallationSetup Installer { get; init; }
 
-        public InstallerMiddleware(InstallationStarter installer)
+        public InstallationStarter(InstallationSetup installer)
         {
             Installer = installer;
         }
 
-        public InstallerMiddleware()
+        public InstallationStarter()
         {
-            Installer = new InstallationStarter();
+            Installer = new InstallationSetup();
         }
 
         public async Task<IEnumerable<InstallationResult>> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)

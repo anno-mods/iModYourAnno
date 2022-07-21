@@ -5,14 +5,14 @@ using System.Collections.ObjectModel;
 
 namespace Imya.Models.Installation
 {
-    public class InstallationStarter
+    public class InstallationSetup
     {
         public ObservableCollection<IInstallation> RunningInstallations { get; } = new();
         private Dictionary<int, IInstallation> InstallationsById = new();
 
         Mutex FinalizeMutex;
 
-        public InstallationStarter() {
+        public InstallationSetup() {
             FinalizeMutex = new Mutex();
         }
 
