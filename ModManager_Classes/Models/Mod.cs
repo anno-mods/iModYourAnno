@@ -308,5 +308,10 @@ namespace Imya.Models
             return sourceVersion > targetVersion;
         }
         #endregion
+
+        public ModStatusAttribute? GetStatusAttribute()
+        { 
+            return Attributes.GetByType(AttributeType.ModStatus) as ModStatusAttribute;
+        }
     }
 }

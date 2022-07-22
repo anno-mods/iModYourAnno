@@ -22,42 +22,46 @@ namespace Imya.Models.Attributes
         {
             {
                 ModStatus.Default,
-                new GenericAttribute()
+                new ModStatusAttribute()
                 {
                     Color = "Black",
                     Icon = "None",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Mod Status Attribute")
+                    Description = new SimpleText("Mod Status Attribute"),
+                    Status = ModStatus.Default
                 }
             },
             {
                 ModStatus.New,
-                new GenericAttribute()
+                new ModStatusAttribute()
                 {
                     Color = "DodgerBlue",
                     Icon = "Download",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Recently Added")
+                    Description = new SimpleText("Recently Added"),
+                    Status = ModStatus.New
                 }
             },
             {
                 ModStatus.Updated,
-                new GenericAttribute()
+                new ModStatusAttribute()
                 {
                     Color = "LimeGreen",
                     Icon = "Update",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Recently Updated")
+                    Description = new SimpleText("Recently Updated"),
+                    Status = ModStatus.Updated
                 }
             },
             {
                 ModStatus.Obsolete,
-                new GenericAttribute()
+                new ModStatusAttribute()
                 {
                     Color = "Crimson",
                     Icon = "RemoveCircleOutline",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Obsolete")
+                    Description = new SimpleText("Obsolete"),
+                    Status = ModStatus.Obsolete
                 }
             }
         };
