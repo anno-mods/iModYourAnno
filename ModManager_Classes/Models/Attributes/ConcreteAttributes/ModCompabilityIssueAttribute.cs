@@ -10,8 +10,6 @@ namespace Imya.Models.Attributes
     {
         public AttributeType AttributeType { get; } = AttributeType.ModCompabilityIssue;
         public IText Description { get => new SimpleText($"Compability Issues: {String.Join(',', CompabilityIssues.Select(x => $"{x.Category} {x.Name}" ))}"); }
-        public string Icon { get; } = "AlertBox";
-        public string Color { get; } = "Red";
 
         public IEnumerable<Mod> CompabilityIssues { get; }
 

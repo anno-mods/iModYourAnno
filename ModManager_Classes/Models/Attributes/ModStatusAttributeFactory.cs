@@ -24,8 +24,6 @@ namespace Imya.Models.Attributes
                 ModStatus.Default,
                 new ModStatusAttribute()
                 {
-                    Color = "Black",
-                    Icon = "None",
                     AttributeType = AttributeType.ModStatus,
                     Description = new SimpleText("Mod Status Attribute"),
                     Status = ModStatus.Default
@@ -35,8 +33,6 @@ namespace Imya.Models.Attributes
                 ModStatus.New,
                 new ModStatusAttribute()
                 {
-                    Color = "DodgerBlue",
-                    Icon = "Download",
                     AttributeType = AttributeType.ModStatus,
                     Description = new SimpleText("Recently Added"),
                     Status = ModStatus.New
@@ -46,8 +42,6 @@ namespace Imya.Models.Attributes
                 ModStatus.Updated,
                 new ModStatusAttribute()
                 {
-                    Color = "LimeGreen",
-                    Icon = "Update",
                     AttributeType = AttributeType.ModStatus,
                     Description = new SimpleText("Recently Updated"),
                     Status = ModStatus.Updated
@@ -57,8 +51,6 @@ namespace Imya.Models.Attributes
                 ModStatus.Obsolete,
                 new ModStatusAttribute()
                 {
-                    Color = "Crimson",
-                    Icon = "RemoveCircleOutline",
                     AttributeType = AttributeType.ModStatus,
                     Description = new SimpleText("Obsolete"),
                     Status = ModStatus.Obsolete

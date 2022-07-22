@@ -10,8 +10,6 @@ namespace Imya.Models.Attributes
     {
         public AttributeType AttributeType { get; } = AttributeType.UnresolvedDependencyIssue;
         public IText Description { get => new SimpleText($"Missing Dependencies: {String.Join(',', UnresolvedDependencies)}"); }
-        public string Icon { get; } = "FileTree";
-        public string Color { get; } = "Red";
 
         public IEnumerable<String> UnresolvedDependencies { get; }
 

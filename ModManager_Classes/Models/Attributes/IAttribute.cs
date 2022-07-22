@@ -12,7 +12,5 @@ namespace Imya.Models.Attributes
     {
         AttributeType AttributeType { get; }
         IText Description { get; }
-        String Icon { get; }
-        String Color { get; }
     }
 }

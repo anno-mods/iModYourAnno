@@ -12,9 +12,7 @@ namespace Imya.Models.Attributes
             new GenericAttribute()
             {
                 AttributeType = AttributeType.TweakedMod,
-                Description = new SimpleText("The Mod has been tweaked"),
-                Icon = "Tools",
-                Color = "White"
+                Description = new SimpleText("The Mod has been tweaked")
             };
 
         public static IAttribute Get()
