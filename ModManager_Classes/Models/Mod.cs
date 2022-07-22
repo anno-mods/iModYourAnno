@@ -309,9 +309,9 @@ namespace Imya.Models
         }
         #endregion
 
-        public ModStatusAttribute? GetStatusAttribute()
+        public ModStatus GetStatus()
         { 
-            return Attributes.GetByType(AttributeType.ModStatus) as ModStatusAttribute;
+            return (Attributes.GetByType(AttributeType.ModStatus) as ModStatusAttribute)?.Status ?? ModStatus.Default;
         }
     }
 }
