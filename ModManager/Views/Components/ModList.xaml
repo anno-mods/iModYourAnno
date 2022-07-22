@@ -18,9 +18,9 @@
         <Grid.Resources>
             <converters:IconConverter x:Key="ModIconConverter" />
             <converters:IconColorConverter x:Key="ModIconColorConverter" />
-            <local:ModStatusAsIcon x:Key="ModStatusAsIcon" />
-            <local:ModStatusAsColor x:Key="ModStatusAsColor" />
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:AttributeIconConverter x:Key="AttribIconConverter" />
+            <converters:AttributeColorConverter x:Key="AttribColorConverter" />
         </Grid.Resources>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -86,14 +86,33 @@
                                    Margin="0,0,5,0"
                                    FontWeight="ExtraBold" />
                             <TextBlock Text="{Binding Name.Text}"
-                                   Style="{StaticResource IMYA_TEXT}" />
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   MaxWidth="500"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1"
-                                    Margin="5,3,0,3">
-                            <materialDesign:PackIcon Margin="5,0,5,0"
-                                                     Kind="{Binding Status, Converter={StaticResource ModStatusAsIcon}}"
-                                                     Foreground="{Binding Status, Converter={StaticResource ModStatusAsColor}}" />
-                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding Attributes}"
+                                      HorizontalAlignment="Right"
+                                      Grid.Column="1"
+                                      Margin="0,3,0,3"
+                                      Visibility="{Binding Path=DataContext.ShowAttributes, Converter={StaticResource BoolToVis}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModList}}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"></StackPanel>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:PackIcon Margin="0,0,5,0"
+                                                             Kind="{Binding Path=. ,Converter={StaticResource AttribIconConverter}}"
+                                                             Foreground="{Binding Path=. , Converter={StaticResource AttribColorConverter}}"
+                                                             Padding="5">
+                                        <materialDesign:PackIcon.ToolTip>
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                       Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </materialDesign:PackIcon.ToolTip>
+                                    </materialDesign:PackIcon>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

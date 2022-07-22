@@ -18,4 +18,8 @@
 
     <SolidColorBrush x:Key="ModActiveColorBrush">LightGray</SolidColorBrush>
     <SolidColorBrush x:Key="ModInactiveColorBrush">Gray</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ErrorColorBrush">Red</SolidColorBrush>
+    <SolidColorBrush x:Key="InformationColorBrush">LightGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="HighlightColorBrush">LightBlue</SolidColorBrush>
 </ResourceDictionary>

@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="Styles/CheckBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ComboBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/ToolTipStyle.xaml" />
                 
             </ResourceDictionary.MergedDictionaries>
 

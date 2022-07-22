@@ -32,9 +32,9 @@ namespace Imya.UI.Views
 
         public ModInstallationOptions Options { get; } = new();
 
-        public InstallationStarter Installer { get; } = new InstallationStarter();
+        public InstallationSetup Installer { get; } = new InstallationSetup();
 
-        private InstallerMiddleware InstallerMiddleware;
+        private InstallationStarter InstallerMiddleware;
 
         IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
@@ -65,7 +65,7 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            InstallerMiddleware = new InstallerMiddleware(Installer);
+            InstallerMiddleware = new InstallationStarter(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -138,14 +138,17 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var Result = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
+            var Results = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
 
-            switch (Result.ResultType)
+            foreach (var Result in Results)
             {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                default: break;
+                switch (Result.ResultType)
+                {
+                    case InstallationResultType.InstallationAlreadyRunning:
+                        CreateInstallationAlreadyRunningPopup().ShowDialog();
+                        break;
+                    default: break;
+                }
             }
         }
 
