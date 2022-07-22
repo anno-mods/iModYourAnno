@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Attributes
 {
-    internal class GenericAttribute : IAttribute
+    public class GenericAttribute : IAttribute
     {
         public AttributeType AttributeType { get; init; }
         public IText Description { get; init; }

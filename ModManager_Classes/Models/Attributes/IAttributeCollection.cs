@@ -13,5 +13,6 @@ namespace Imya.Models.Attributes
         public void RemoveAttributesByType(AttributeType type);
 
         public IAttribute? GetByType(AttributeType type);
+        public bool HasAttribute(AttributeType type);
     }
 }

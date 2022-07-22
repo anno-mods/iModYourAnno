@@ -30,7 +30,6 @@ namespace Imya.Models.Attributes
                     Description = new SimpleText("Mod Status Attribute")
                 }
             },
-
             {
                 ModStatus.New,
                 new GenericAttribute()
@@ -38,7 +37,7 @@ namespace Imya.Models.Attributes
                     Color = "DodgerBlue",
                     Icon = "Download",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Mod Status Attribute")
+                    Description = new SimpleText("Recently Added")
                 }
             },
             {
@@ -48,7 +47,7 @@ namespace Imya.Models.Attributes
                     Color = "LimeGreen",
                     Icon = "Update",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Mod Status Attribute")
+                    Description = new SimpleText("Recently Updated")
                 }
             },
             {
@@ -58,7 +57,7 @@ namespace Imya.Models.Attributes
                     Color = "Crimson",
                     Icon = "RemoveCircleOutline",
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Mod Status Attribute")
+                    Description = new SimpleText("Obsolete")
                 }
             }
         };
