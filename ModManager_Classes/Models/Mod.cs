@@ -83,13 +83,6 @@ namespace Imya.Models
             set => SetProperty(ref _isSelected, value);
         }
         private bool _isSelected;
-
-        public ModStatus Status
-        { 
-            get => _status;
-            set => SetProperty(ref _status, value);
-        }
-        private ModStatus _status = ModStatus.Default;
         #endregion
 
         public static Mod? TryFromFolder(string modFolderPath)
@@ -101,7 +94,7 @@ namespace Imya.Models
             return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
         }
 
-        public IAttributeCollection Attributes { get; } = new ObservableAttributeCollection();
+        public IAttributeCollection Attributes { get; } = AttributeCollectionFactory.GetNew();
 
         #region loading
         /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
