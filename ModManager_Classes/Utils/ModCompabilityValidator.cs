@@ -9,16 +9,6 @@ using Imya.Models.ModMetadata;
 
 namespace Imya.Utils
 {
-    public struct ModCompabilityResult
-    {
-        public bool HasIssues = true;
-        public IEnumerable<Mod>? IncompatibleMods;
-        public IEnumerable<String>? UnresolvedDependencies;
-
-        public bool HasIncompatibleMods { get => IncompatibleMods is not null; }
-        public bool HasUnresolvedDependencies { get => UnresolvedDependencies is not null; }
-    }
-
     public class ModCompabilityValidator
     {
         private ModCollection? _context => ModCollection.Global;
