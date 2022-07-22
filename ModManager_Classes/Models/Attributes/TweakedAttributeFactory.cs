@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Imya.Utils;
 
 namespace Imya.Models.Attributes
 {
     public class TweakedAttributeFactory
     {
-        static GenericAttribute TweakedAttribute = 
+        static GenericAttribute TweakedAttribute =
             new GenericAttribute()
             {
                 AttributeType = AttributeType.TweakedMod,
-                Description = new SimpleText("The Mod has been tweaked")
+                Description = TextManager.Instance.GetText("ATTRIBUTE_TWEAKED")
             };
 
         public static IAttribute Get()

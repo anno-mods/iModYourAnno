@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Imya.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Imya.Models.Attributes
                 new ModStatusAttribute()
                 {
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Recently Added"),
+                    Description = TextManager.Instance.GetText("ATTRIBUTE_STATUS_NEW"),
                     Status = ModStatus.New
                 }
             },
@@ -43,7 +44,7 @@ namespace Imya.Models.Attributes
                 new ModStatusAttribute()
                 {
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Recently Updated"),
+                    Description = TextManager.Instance.GetText("ATTRIBUTE_STATUS_UPDATE"),
                     Status = ModStatus.Updated
                 }
             },
@@ -52,7 +53,7 @@ namespace Imya.Models.Attributes
                 new ModStatusAttribute()
                 {
                     AttributeType = AttributeType.ModStatus,
-                    Description = new SimpleText("Obsolete"),
+                    Description = TextManager.Instance.GetText("ATTRIBUTE_STATUS_OBSOLETE"),
                     Status = ModStatus.Obsolete
                 }
             }
