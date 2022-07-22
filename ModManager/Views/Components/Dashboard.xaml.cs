@@ -74,7 +74,7 @@ namespace Imya.UI.Components
             {
                 GenericOkayPopup popup = new GenericOkayPopup()
                 {
-                    MESSAGE = new SimpleText("You have unresolved Dependencies and/or Mod Incompabilities. Start Anyway? (WARNING: This can lead to critical errors ingame!!!!)")
+                    MESSAGE = TextManager.GetText("ATTRIBUTE_GAMESTART_WARNING")
                 };
                 if (popup.ShowDialog() is false) return;
             }

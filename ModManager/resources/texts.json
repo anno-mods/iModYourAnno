@@ -1260,5 +1260,18 @@
     "Russian": null,
     "Spanish": null,
     "Taiwanese": null
+  },
+  "ATTRIBUTE_GAMESTART_WARNING": {
+    "Chinese": null,
+    "English": "You have unresolved Dependencies and/or Mod Incompabilities. WARNING: This might lead to critical errors ingame!!! \n\n Start Anyway?",
+    "French": null,
+    "German": "Der Modordner hat fehlende Abhängigkeiten und/oder miteinander inkompatible Mods. ACHTUNG: Das kann ingame zu schwerwiegenden Fehlern führen!!! \n\n Trotzdem starten?",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
   }
 }
