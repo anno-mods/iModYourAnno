@@ -64,6 +64,9 @@ namespace Imya.Models
         public event ModAddedEventHandler ModAdded = delegate { };
         public delegate void ModAddedEventHandler(Mod m);
 
+        public event UpdatedEventHandler Updated = delegate { };
+        public delegate void UpdatedEventHandler();
+
         public string ModsPath { get; private set; }
 
         public IReadOnlyList<Mod> Mods => _mods;
@@ -109,6 +112,8 @@ namespace Imya.Models
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
             DisplayedMods = new ObservableCollection<Mod>(Mods);
+
+            Updated();
         }
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
@@ -133,6 +138,7 @@ namespace Imya.Models
             {
                 ModAdded(mod);
             }
+            Updated();
             return mods;
         }
 
@@ -181,7 +187,10 @@ namespace Imya.Models
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
+
+                Updated();
             }
+
         }
 
         #region Add, remove mods
@@ -213,9 +222,11 @@ namespace Imya.Models
                 Directory.Delete(source.ModsPath, true);
                 DisplayedMods = new ObservableCollection<Mod>(Mods);
             }
+
+            Updated();
         }
 
-        public async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
+        private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
         {
             var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
@@ -285,12 +296,14 @@ namespace Imya.Models
         {
             foreach (var mod in mods)
                 await DeleteAsync(mod);
+
+            Updated();
         }
 
         /// <summary>
         /// Permanently delete mod from collection.
         /// </summary>
-        public async Task DeleteAsync(Mod mod)
+        private async Task DeleteAsync(Mod mod)
         {
             await Task.Run(() =>
             {
@@ -341,12 +354,16 @@ namespace Imya.Models
                 if (active != mod.IsActive)
                     await mod.ChangeActivationAsync(active);
             }
+
+            Updated();
         }
 
         public async Task DeactivateAllAsync()
         {
             foreach (Mod mod in Mods)
                 await mod.ChangeActivationAsync(false);
+
+            Updated();
         }
         #endregion
 
@@ -358,5 +375,7 @@ namespace Imya.Models
             DisplayedMods = new ObservableCollection<Mod>(Mods.Where(x => filter(x)).ToList());
         }
         #endregion
+
+        public IEnumerable<Mod> WithAttribute(AttributeType attributeType) => Mods.Where(x => x.Attributes.HasAttribute(attributeType));
     }
 }
