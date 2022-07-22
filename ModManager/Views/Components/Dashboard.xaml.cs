@@ -10,6 +10,9 @@ using System.Globalization;
 using Imya.UI.Views;
 using Imya.UI.Utils;
 using System.Runtime.CompilerServices;
+using Imya.Models.Attributes;
+using System.Linq;
+using Imya.UI.Popup;
 
 namespace Imya.UI.Components
 {
@@ -62,7 +65,22 @@ namespace Imya.UI.Components
 
         public void ModInstallationClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.DUMMY);
 
-        public void StartGameClick(object sender, RoutedEventArgs e) => GameSetupManager.Instance.StartGame();
+        public void StartGameClick(object sender, RoutedEventArgs e)
+        {
+            var withUnresolved = ModCollection.Global?.WithAttribute(AttributeType.UnresolvedDependencyIssue);
+            var withIncompatibleIssue = ModCollection.Global?.WithAttribute(AttributeType.ModCompabilityIssue);
+
+            if (withUnresolved?.Count() > 0 || withIncompatibleIssue?.Count() > 0)
+            {
+                GenericOkayPopup popup = new GenericOkayPopup()
+                {
+                    MESSAGE = new SimpleText("You have unresolved Dependencies and/or Mod Incompabilities. Start Anyway? (WARNING: This can lead to critical errors ingame!!!!)")
+                };
+                if (popup.ShowDialog() is false) return;
+            }
+
+            GameSetupManager.Instance.StartGame();
+        }
 
         private void UpdateSelection(View view)
         {
