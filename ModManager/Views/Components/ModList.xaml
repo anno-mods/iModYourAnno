@@ -19,6 +19,8 @@
             <converters:IconConverter x:Key="ModIconConverter" />
             <converters:IconColorConverter x:Key="ModIconColorConverter" />
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:AttributeIconConverter x:Key="AttribIconConverter" />
+            <converters:AttributeColorConverter x:Key="AttribColorConverter" />
         </Grid.Resources>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -100,8 +102,8 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <materialDesign:PackIcon Margin="0,0,5,0"
-                                                             Kind="{Binding Icon}"
-                                                             Foreground="{Binding Color}"
+                                                             Kind="{Binding Path=. ,Converter={StaticResource AttribIconConverter}}"
+                                                             Foreground="{Binding Path=. , Converter={StaticResource AttribColorConverter}}"
                                                              Padding="5">
                                         <materialDesign:PackIcon.ToolTip>
                                             <TextBlock Style="{StaticResource IMYA_TEXT}"
