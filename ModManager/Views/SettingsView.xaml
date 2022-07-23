@@ -105,7 +105,7 @@
                                   HorizontalAlignment="Left"
                                   Grid.Column="1"
                                   Foreground="{DynamicResource AccentColorBrush}"
-                                  Style="{StaticResource IMYA_CHECKBOX}"
+                                  Style="{StaticResource IMYA_TOGGLESWITCH}"
                                   IsChecked="{Binding ShowConsole, Mode=TwoWay}">
                         </CheckBox>
                     </Grid>
@@ -126,7 +126,7 @@
                                   HorizontalAlignment="Left"
                                   Grid.Column="1"
                                   Foreground="{DynamicResource AccentColorBrush}"
-                                  Style="{StaticResource IMYA_CHECKBOX}"
+                                  Style="{StaticResource IMYA_TOGGLESWITCH}"
                                   IsChecked="{Binding ModCreatorMode, Mode=TwoWay}">
                         </CheckBox>
                     </Grid>
