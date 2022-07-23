@@ -1,98 +1,86 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TextStyle.xaml" />
+    </ResourceDictionary.MergedDictionaries>
     <Style x:Key="IMYA_TOGGLESWITCH"
            TargetType="{x:Type CheckBox}">
-        <Style.Resources>
-            <Color x:Key="NormalColor">Gray</Color>
-            <Color x:Key="DarkColor">DarkSlateGray</Color>
-        </Style.Resources>
         <Setter Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
-        <Setter Property="Background"
-                Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+                Value="{DynamicResource TextColorBrush}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type CheckBox}">
                     <ControlTemplate.Resources>
-                        <Storyboard x:Key="OnChecking">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                                           Storyboard.TargetName="slider"
-                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
-                                                      Value="18" />
-                            </DoubleAnimationUsingKeyFrames>
-                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                          Storyboard.TargetName="base"
-                                                          FillBehavior="HoldEnd">
-                                <ColorAnimationUsingKeyFrames.KeyFrames>
-                                    <LinearColorKeyFrame Value="{StaticResource NormalColor}"
-                                                         KeyTime="00:00:00.2000000" />
-                                </ColorAnimationUsingKeyFrames.KeyFrames>
-                            </ColorAnimationUsingKeyFrames>
+                        <Storyboard x:Key="OnCheck">
+                            <DoubleAnimation
+                                Storyboard.TargetName="slider"
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.X)"
+                                Duration="0:0:0.2"
+                                To="20" />  
+                            <DoubleAnimation 
+                                Storyboard.TargetName="bar"
+                                Storyboard.TargetProperty="(Border.Opacity)"
+                                FillBehavior="HoldEnd"
+                                Duration="0:0:0.2"
+                                To="1" />
                         </Storyboard>
-                        <Storyboard x:Key="OnUnchecking">
-                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
-                                                           Storyboard.TargetName="slider"
-                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                                <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
-                                                      Value="0" />
-                            </DoubleAnimationUsingKeyFrames>
-                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                          Storyboard.TargetName="base"
-                                                          FillBehavior="HoldEnd">
-                                <ColorAnimationUsingKeyFrames.KeyFrames>
-                                    <LinearColorKeyFrame Value="{StaticResource DarkColor}"
-                                                         KeyTime="00:00:00.2000000" />
-                                </ColorAnimationUsingKeyFrames.KeyFrames>
-                            </ColorAnimationUsingKeyFrames>
+                        <Storyboard x:Key="OnUncheck">
+                            <DoubleAnimation
+                                Storyboard.TargetName="slider"
+                                Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(TranslateTransform.X)"
+                                Duration="0:0:0.2"
+                                To="4" />
+                            <DoubleAnimation
+                                Storyboard.TargetName="bar"
+                                Storyboard.TargetProperty="(Border.Opacity)"
+                                FillBehavior="HoldEnd"
+                                Duration="0:0:0.2"
+                                To="0" />
                         </Storyboard>
                     </ControlTemplate.Resources>
-
                     <StackPanel x:Name="stackPanel"
                                 Orientation="Horizontal">
-                        <Border Margin="2"
-                                Width="38"
-                                CornerRadius="3"
+                        <Grid>
+                            <Border 
+                                Margin="2,4"
+                                Width="32"
                                 Height="16"
-                                x:Name="base">
-                            <Border.Background>
-                                <SolidColorBrush Color="{StaticResource DarkColor}" />
-                            </Border.Background>
-                            <Border HorizontalAlignment="Left"
-                                    x:Name="slider"
-                                    Width="20"
-                                    BorderThickness="2"
-                                    CornerRadius="3"
-                                    RenderTransformOrigin="0.5,0.5"
-                                    Margin="1,-2,1,-2"
-                                    BorderBrush="{DynamicResource AccentColorBrush_Dark}"
-                                    Background="{DynamicResource AccentColorBrush}">
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="0"
-                                                      BlurRadius="2" />
-                                </Border.Effect>
-                                <Border.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform ScaleX="1"
-                                                        ScaleY="1" />
-                                        <SkewTransform AngleX="0"
-                                                       AngleY="0" />
-                                        <RotateTransform Angle="0" />
-                                        <TranslateTransform X="0"
-                                                            Y="0" />
-                                    </TransformGroup>
-                                </Border.RenderTransform>
+                                CornerRadius="8"
+                                Background="{DynamicResource InteractiveComponentColorBrush}" />
+                            <Border
+                                x:Name="bar"
+                                Margin="2,4"
+                                Width="32"
+                                Height="16"
+                                CornerRadius="8"
+                                Opacity="0"
+                                Background="{DynamicResource AccentColorBrush}">
                             </Border>
+                            <Border
+                                x:Name="slider"
+                                HorizontalAlignment="Left"
+                                Width="12"
+                                Height="12"
+                                CornerRadius="6"
+                                RenderTransformOrigin="0.5,0.5"
+                                Background="{DynamicResource TextColorBrush}">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <TranslateTransform X="4" Y="0" />
+                                </TransformGroup>
+                            </Border.RenderTransform>
                         </Border>
+                        </Grid>
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Margin="8,0,0,0">
-                                    <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                      Content="{TemplateBinding Content}"
-                                                      ContentStringFormat="{TemplateBinding ContentStringFormat}"
-                                                      ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                      RecognizesAccessKey="True"
-                                                      VerticalAlignment="Center"
-                                                      Margin="5" />
+                            <ContentPresenter
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                Content="{TemplateBinding Content}"
+                                ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                RecognizesAccessKey="True"
+                                VerticalAlignment="Center"
+                                Margin="5" />
                         </TextBlock>
                     </StackPanel>
 
@@ -100,12 +88,10 @@
                         <Trigger Property="IsChecked"
                                  Value="True">
                             <Trigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource OnUnchecking}"
-                                                 x:Name="OnUnchecking_BeginStoryboard" />
+                                <BeginStoryboard Storyboard="{StaticResource OnUncheck}" />
                             </Trigger.ExitActions>
                             <Trigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource OnChecking}"
-                                                 x:Name="OnChecking_BeginStoryboard" />
+                                <BeginStoryboard Storyboard="{StaticResource OnCheck}" />
                             </Trigger.EnterActions>
                         </Trigger>
                         <Trigger Property="IsEnabled"
