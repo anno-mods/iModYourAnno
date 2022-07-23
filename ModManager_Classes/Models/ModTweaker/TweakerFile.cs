@@ -16,6 +16,7 @@ namespace Imya.Models.ModTweaker
         public static readonly String EXPOSE_ATTR = "ExposeID";
         public static readonly String EXPOSE_PATH = "Path";
         public static readonly String MODOP_ID = "ModOpID";
+        public static readonly String KIND = "Kind";
 
         public static readonly String PATH = "Path";
         public static readonly String TYPE = "Type";
