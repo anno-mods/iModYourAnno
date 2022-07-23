@@ -29,6 +29,11 @@ namespace Imya.Models.ModTweaker
             return Tweaks.SafeAddOrGet(ID);
         }
 
+        public bool IsStored(String ID)
+        {
+            return File.Exists(Path.Combine(ImyaSetupManager.Instance.TweakDirectoryPath, ID + ".json"));
+        }
+
         public IEnumerable<ITweakStorage> GetAllStorages()
         {
             return Tweaks.Values.ToList();

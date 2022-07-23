@@ -6,6 +6,8 @@ using Imya.Enums;
 using Imya.UI.Utils;
 using System.Threading.Tasks;
 using Imya.Models.Options;
+using Imya.Models.Attributes;
+using Imya.UI.Models;
 
 namespace Imya.UI
 {
@@ -25,12 +27,15 @@ namespace Imya.UI
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
+            AttributeCollectionFactory.AttributeCollectionType = typeof(ObservableAttributeCollection);
+
             // init global mods
             ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollectionOptions()
             {
                 Normalize = true,
                 LoadImages = true
             });
+            ModCollectionHooks.Initialize();
             Task.Run(() => ModCollection.Global.LoadModsAsync());
         }
     }
