@@ -32,7 +32,7 @@ namespace Imya.UI.Popup
     {
         public String ProfileFilename { get; set; } = "Profile1";
 
-        private static String ProfilesDirectoryPath = GameSetupManager.Instance.GetProfilesDirectory();
+        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
 
         public bool IsValidFilename
         {

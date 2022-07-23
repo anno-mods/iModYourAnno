@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.Models.Attributes;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,38 +13,6 @@ using System.Windows.Data;
 
 namespace Imya.UI.Components
 {
-    [ValueConversion(typeof(ModStatus), typeof(string))]
-    internal class ModStatusAsIcon : IValueConverter
-    {
-        static readonly string[] _names = new string[] { "None", "Download", "Update", "RemoveCircleOutline" };
-
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            return _names[(int)value];
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    [ValueConversion(typeof(ModStatus), typeof(string))]
-    internal class ModStatusAsColor : IValueConverter
-    {
-        static readonly string[] _names = new string[] { "Black", "DodgerBlue", "LimeGreen", "Crimson" };
-
-        public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            return _names[(int)value];
-        }
-
-        public object ConvertBack(object value, Type TargetType, object parameter, CultureInfo Culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
     /// <summary>
     /// Interaktionslogik für ModList.xaml
     /// </summary>
@@ -69,6 +38,12 @@ namespace Imya.UI.Components
             DataContext = this;
             OnSelectionChanged();
         }
+
+        public bool ShowAttributes { 
+            get => _showAttributes; 
+            set => SetProperty(ref _showAttributes, value); 
+        }
+        private bool _showAttributes = true;
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -126,7 +101,7 @@ namespace Imya.UI.Components
 
         public async void DeleteSelection()
         {
-            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>());
+            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>().ToList());
             OnSelectionChanged();
         }
 

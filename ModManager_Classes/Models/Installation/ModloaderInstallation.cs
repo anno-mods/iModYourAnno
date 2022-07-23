@@ -1,108 +1,68 @@
 ﻿using System.IO.Compression;
 using Imya.GithubIntegration;
+using Imya.GithubIntegration.StaticData;
 using Imya.Models;
 using Imya.Models.Installation;
+using Imya.Models.Options;
 
 namespace Imya.Utils
 {
-    /// <summary>
-    /// Check and install mod loader.
-    /// 
-    /// TODO (taubenangriff): Transform this thing into a reusable install class.
-    /// </summary>
-    public class ModloaderInstallation : Installation
+    public class ModloaderInstallation : GithubInstallation
     {
-        readonly GameSetupManager GameSetup = GameSetupManager.Instance;
-        readonly GithubDownloader GithubDownloader;
+        public static GithubRepoInfo ModloaderRepository { get; } = StaticNameGithubRepoInfoFactory.CreateWithStaticName("anno1800-mod-loader", "xforce", "loader.zip");
+           
+        public ModloaderInstallationOptions ModloaderInstallationOptions { get; } = new ModloaderInstallationOptions();
 
-        public string DownloadDirectory { get => GameSetup.DownloadDirectory; } 
-
-        public static GithubRepoInfo ModloaderRepository { get; } = new GithubRepoInfo() { Name = "anno1800-mod-loader", Owner = "xforce" };
-
-        public new ModloaderInstallationStatus Status
+        internal ModloaderInstallation() : base(ModloaderRepository)
         {
-            get => _status;
-            set
-            {
-                _status = value;
-                OnPropertyChanged(nameof(Status));
-            }
-        }
-        private ModloaderInstallationStatus _status = ModloaderInstallationStatus.NotStarted;
-
-        public ModloaderInstallation()
-        {
-            GithubDownloader = new GithubDownloader(DownloadDirectory);
-            if (GameSetup.GameRootPath == null)
-                return;
-
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_LOADER");
-
-            //do we need that here?
-            //GameSetup.UpdateModloaderInstallStatus();
+            AdditionalText = new SimpleText($"Downloading from {ModloaderRepository.Owner}/{ModloaderRepository.Name}");
         }
 
-        /// <summary>
-        /// Download and install mod loader from GitHub.
-        /// </summary>
-        public async Task InstallAsync()
+        public override Task<IInstallation> Setup()
         {
-            if (GameSetup.ExecutableDir == null)
+            return Task.Run(async () =>
             {
-                // TODO disable install UI based on game path setting
-                Console.WriteLine($"Game path is not set yet.");
-                return;
+                await DownloadAsync();
+                Unpack();
+                return this as IInstallation;
             }
-
-            Status = ModloaderInstallationStatus.Downloading;
-
-            var downloadResult = await GithubDownloader.DownloadReleaseAsync(ModloaderRepository, "loader.zip", progress: this);
-            if (!downloadResult.DownloadSuccessful) return;
-
-            String DownloadFilename = downloadResult.DownloadDestination;
-            string target = Path.Combine(Path.GetDirectoryName(DownloadFilename) ??"", Path.GetFileNameWithoutExtension(DownloadFilename));
-
-            Status = ModloaderInstallationStatus.Unpacking;
-            ZipFile.ExtractToDirectory(DownloadFilename, target, true);
-
-            Status = ModloaderInstallationStatus.MovingFiles;
-            foreach (string absFile in Directory.GetFiles(target))
-            { 
-                string relFile = Path.GetFileName(absFile);
-                File.Move(Path.Combine(target, relFile), Path.Combine(GameSetup.ExecutableDir, relFile), true);
-            }
-
-            Directory.Delete(target);
-
-            GameSetup.UpdateModloaderInstallStatus();
+            );
         }
 
-        /// <summary>
-        /// Check if there's an updated mod loader on GitHub.
-        /// </summary>
-        public async Task CheckForUpdatesAsync()
+        public override Task Finalize()
         {
-            // TODO
-            // - check release tag against local version
-            // - optional: crawl release notes for latest "Game Update ?\d\d(\.\d)?" or "GU ?\d\d(\.\d)?" 
-            await Task.Run(() => { });
+            if (TargetFilename is not String target) return Task.CompletedTask;
+           
+            Status = GithubInstallationStatus.MovingFiles;
+            return Task.Run(() =>
+            {
+                foreach (string absFile in Directory.GetFiles(TargetFilename))
+                {
+                    string relFile = Path.GetFileName(absFile);
+                    File.Move(Path.Combine(TargetFilename, relFile), Path.Combine(GameSetup.ExecutableDir, relFile), true);
+                }
+                CleanUp();
+            }
+            );
+        }
+
+        protected void Unpack()
+        {
+            if (!DownloadResult.DownloadSuccessful) return;
+            String DownloadFilename = DownloadResult.DownloadDestination;
+            TargetFilename = Path.Combine(ModloaderInstallationOptions.UnpackDirectory, Path.GetFileNameWithoutExtension(DownloadFilename));
+
+            Status = GithubInstallationStatus.Unpacking;
+            ZipFile.ExtractToDirectory(DownloadFilename, TargetFilename, true);
+        }
+
+        public override void CleanUp()
+        {
+            if(TargetFilename is String target && Directory.Exists(target))
+                Directory.Delete(target);
+            if (DownloadResult.DownloadSuccessful && File.Exists(DownloadResult.DownloadDestination))
+                File.Delete(DownloadResult.DownloadDestination);
         }
     }
-
-    public class ModloaderInstallationStatus : IInstallationStatus
-    {
-        public static readonly ModloaderInstallationStatus NotStarted = new("ZIP_NOTSTARTED");
-        public static readonly ModloaderInstallationStatus Downloading = new("INSTALL_DOWNLOAD");
-        public static readonly ModloaderInstallationStatus Unpacking = new("ZIP_UNPACKING");
-        public static readonly ModloaderInstallationStatus MovingFiles = new("ZIP_MOVING");
-
-        private readonly string _value;
-        private ModloaderInstallationStatus(string value)
-        {
-            _value = value;
-        }
-
-        public IText Localized => TextManager.Instance[_value];
-    }
-
 }

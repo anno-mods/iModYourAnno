@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
+             xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800"
              SizeChanged="OnSizeChanged">
@@ -20,6 +21,24 @@
             <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:DlcTextConverter x:Key="DlcText" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
+            <converters:StringFormatConverter x:Key="Format" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
+
+            <md:Markdown x:Key="Markdown"
+                         DocumentStyle="{StaticResource DocumentStyle}"
+                         Heading1Style="{StaticResource H1Style}"
+                         Heading2Style="{StaticResource H2Style}"
+                         Heading3Style="{StaticResource H3Style}"
+                         Heading4Style="{StaticResource H4Style}"
+                         LinkStyle="{StaticResource LinkStyle}"
+                         ImageStyle="{StaticResource ImageStyle}"
+                         SeparatorStyle="{StaticResource SeparatorStyle}"
+                         TableStyle="{StaticResource TableStyle}"
+                         TableHeaderStyle="{StaticResource TableHeaderStyle}" />
+
+            <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter"
+                                               Markdown="{StaticResource Markdown}" />
+            
         </Grid.Resources>
         <Border Background="{DynamicResource ComponentColorBrush}" CornerRadius="3" Margin="0,5,0,5">
             <StackPanel HorizontalAlignment="Center"
@@ -41,12 +60,22 @@
                       Margin="0,0,0,5"
                       Background="{DynamicResource ComponentColorBrush}"
                       >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="185"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border BorderThickness="2" 
+            <StackPanel Orientation="Vertical">
+
+                <Border BorderThickness="2"
+                        Margin="5"
+                        CornerRadius="4"
+                        BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
+                        Visibility="{Binding ShowImage, Converter={StaticResource BoolToVis}}"
+                        Width="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}">
+                    <Image Source="{Binding Mod.Image, Converter={StaticResource ImageConverter}}"
+                           Stretch="UniformToFill"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                            />
+                </Border>
+                
+                <!--<Border BorderThickness="2" 
                         Margin="5"
                         CornerRadius="4"
                         BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
@@ -55,25 +84,31 @@
                         <ImageBrush ImageSource="{Binding Mod.Image, Converter={StaticResource ImageConverter}}"
                                     Stretch="UniformToFill" />
                     </Border.Background>
-                </Border>
+                </Border>-->
                 
                 <StackPanel Orientation="Vertical"
                             Margin="5,0,0,0"
                             Grid.Row="1">
                     <!-- Version and creator -->
-                    <StackPanel Orientation="Horizontal"
+
+                    <TextBlock  Style="{StaticResource IMYA_TEXT}"
                                 Margin="2,8,2,8"
-                                Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}">
-                        <TextBlock TextWrapping="Wrap"
-                                   Text="{Binding TextManager[HEADER_VERSION].Text}"
-                                   Style="{StaticResource IMYA_TEXT}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.Version, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding TextManager[HEADER_CREATOR].Text}" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.CreatorName, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
+                                Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}"
+                                TextWrapping="Wrap"
+                                MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource Format}"
+                                          UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="TextManager[HEADER_VERSION].Text"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Path="Mod.Modinfo.Version"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Path="Mod.Modinfo.CreatorName"
+                                         UpdateSourceTrigger="PropertyChanged" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    
                     <Separator Visibility="{Binding ShowVersion, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Mod ID-->
@@ -81,13 +116,19 @@
                                 Margin="2,8,2,8"
                                 Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}">
                         <TextBlock TextWrapping="Wrap"
-                                   Text="{Binding TextManager[HEADER_MODID].Text}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    FontWeight="SemiBold"
-                                   VerticalAlignment="Center" />
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding Mod.Modinfo.ModID, UpdateSourceTrigger=PropertyChanged}"
-                                   VerticalAlignment="Center" Padding="10" />
+                                   VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{StaticResource Format}"
+                                              UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="TextManager[HEADER_MODID].Text"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                    <Binding Path="Mod.Modinfo.ModID"
+                                             UpdateSourceTrigger="PropertyChanged" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                         <Button Style="{StaticResource IMYA_BUTTON}"
                                 Click="OnCopyModIDClick" MinHeight="32"
                                 VerticalAlignment="Center">
@@ -104,25 +145,40 @@
                                     
                                 </TextBlock>
                             </StackPanel>
-                            
                         </Button>
                     </StackPanel>
                     <Separator Visibility="{Binding ShowModID, Converter={StaticResource BoolToVis}}" />
 
                     <!-- Description -->
-                    <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
-                               Margin="2,8,2,8"
-                               Style="{StaticResource IMYA_TEXT}"
-                               FontWeight="SemiBold"
-                               Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
-                    <StackPanel Orientation="Horizontal"
-                                Margin="2,8,2,8"
-                                Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+
+                    <Grid Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
+                                   Margin="2,8,2,0"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="SemiBold" />
+                        
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   MaxWidth="{Binding DescriptionTextWidth}"
+                                   MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="Wrap"
-                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
+                                   HorizontalAlignment="Left"
+                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                   Margin="2,8,2,8"
+                                   Grid.Row="1"/>
+
+                        <FlowDocumentScrollViewer Visibility="{Binding UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
+                                                  IsEnabled="False"
+                                                  Style="{StaticResource FlowDocumentScrollViewer}"
+                                                  Document="{Binding MarkdownDescription, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
+                                                  Margin="-15,0,0,0"
+                                                  x:Name="DescriptionFlowViewer"
+                                                  Grid.Row="1">
+                        </FlowDocumentScrollViewer>
+                    </Grid>
 
                     <Separator Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -134,7 +190,8 @@
                                Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}" />
 
                     <ItemsControl ItemsSource="{Binding Mod.Modinfo.KnownIssues, UpdateSourceTrigger=PropertyChanged}"
-                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}">
+                                  Visibility="{Binding ShowKnownIssues, Converter={StaticResource BoolToVis}}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -158,10 +215,11 @@
                                Text="{Binding TextManager[HEADER_DLCDEPENDENCY].Text, UpdateSourceTrigger=PropertyChanged}"
                                Margin="2,5,2,5"
                                FontWeight="SemiBold"
-                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}" />
+                               Visibility="{Binding ShowDlcDeps, Converter={StaticResource BoolToVis}}"/>
 
                     <ItemsControl x:Name="DLC_Dependencies"
-                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}">
+                                  ItemsSource="{Binding DlcIds, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="10,0,0,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
@@ -209,7 +267,7 @@
                                    Style="{StaticResource IMYA_TEXT}" />
                     </StackPanel>
                 </StackPanel>
-            </Grid>
+            </StackPanel>
             
         </ScrollViewer>
 

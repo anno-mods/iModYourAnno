@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace Imya.Models.ModTweaker
 {
+    /// <summary>
+    /// Represents all Tweaker Files in a Mod at once
+    /// </summary>
     public class ModTweaks : PropertyChangedNotifier
     {
         public bool IsEmpty => _tweakerFiles == null || _tweakerFiles.Count == 0;
@@ -32,7 +35,7 @@ namespace Imya.Models.ModTweaker
             var files = mod.GetFilesWithExtension("xml").Where(x => !x.EndsWith("imyatweak.xml")).Select(x => Path.GetRelativePath(mod.FullModPath, x)).ToArray();
             var list = new ObservableCollection<TweakerFile>();
 
-            TweakStorage = TweakCollection.LoadOrCreate(ModBaseName!);
+            TweakStorage = TweakFileStorage.LoadOrCreate(ModBaseName!);
             foreach (string filename in files)
             {
                 if (TweakerFile.TryInit(mod.FullModPath, filename, TweakStorage, out var file))

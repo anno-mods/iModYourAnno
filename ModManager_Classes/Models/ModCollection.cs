@@ -1,4 +1,6 @@
-﻿using Imya.Models.NotifyPropertyChanged;
+﻿using Imya.Models.Attributes;
+using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Options;
 using Imya.Utils;
 using System.Collections.ObjectModel;
 
@@ -59,6 +61,12 @@ namespace Imya.Models
         private int _installedSizeInMBs = 0;
         #endregion
 
+        public event ModAddedEventHandler ModAdded = delegate { };
+        public delegate void ModAddedEventHandler(Mod m);
+
+        public event UpdatedEventHandler Updated = delegate { };
+        public delegate void UpdatedEventHandler();
+
         public string ModsPath { get; private set; }
 
         public IReadOnlyList<Mod> Mods => _mods;
@@ -67,12 +75,9 @@ namespace Imya.Models
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
 
-        public struct Options
-        {
-            public bool Normalize { get; init; }
-            public bool LoadImages { get; init; }
-        }
-        private readonly Options _options;
+        private readonly ModCollectionOptions _options;
+
+        public IModComparer ModComparer { get; set; } = new NameComparer();
 
         /// <summary>
         /// Open mod collection from folder.
@@ -80,7 +85,7 @@ namespace Imya.Models
         /// <param name="path">Path to mods.</param>
         /// <param name="options.Normalize">Remove duplicate "-"</param>
         /// <param name="options.LoadImages">Load image files into memory</param>
-        public ModCollection(string path, Options? options = null)
+        public ModCollection(string path, ModCollectionOptions? options = null)
         {
             ModsPath = path;
             _options = new () {
@@ -107,6 +112,8 @@ namespace Imya.Models
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
             DisplayedMods = new ObservableCollection<Mod>(Mods);
+
+            Updated();
         }
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
@@ -127,6 +134,11 @@ namespace Imya.Models
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
             }
+            foreach (var mod in mods)
+            {
+                ModAdded(mod);
+            }
+            Updated();
             return mods;
         }
 
@@ -157,11 +169,7 @@ namespace Imya.Models
             foreach (var mod in _displayedMods)
                 mod.StatsChanged -= OnModStatsChanged;
 
-            _displayedMods = new ObservableCollection<Mod>(value.
-                OrderBy(x => x.Name.Text).
-                OrderBy(x => x.Category.Text).
-                OrderByDescending(x => x.IsActive).
-                ToList());
+            _displayedMods = new ObservableCollection<Mod>(value.OrderBy(x => x, ModComparer));
 
             // register for stat changes
             foreach (var mod in _displayedMods)
@@ -179,7 +187,10 @@ namespace Imya.Models
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
+
+                Updated();
             }
+
         }
 
         #region Add, remove mods
@@ -211,9 +222,11 @@ namespace Imya.Models
                 Directory.Delete(source.ModsPath, true);
                 DisplayedMods = new ObservableCollection<Mod>(Mods);
             }
+
+            Updated();
         }
 
-        public async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
+        private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
         {
             var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
@@ -224,9 +237,11 @@ namespace Imya.Models
             }
 
             // do it!
-            sourceMod.Status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
+            var status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
+            sourceMod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
+
             DirectoryEx.CleanMove(Path.Combine(SourceModsPath, sourceMod.FullFolderName), targetModPath);
-            Console.WriteLine($"{sourceMod.Status}: {sourceMod.FolderName}");
+            Console.WriteLine($"{sourceMod.Attributes.GetByType(AttributeType.ModStatus)}: {sourceMod.FolderName}");
 
             // mark all duplicate id mods as obsolete
             if (sourceMod.Modinfo.ModID != null)
@@ -236,7 +251,7 @@ namespace Imya.Models
                     await mod.MakeObsoleteAsync(ModsPath);
                 // mark mod as updated, since there was the same modid already there
                 if (sameModIDs.Any())
-                    sourceMod.Status = ModStatus.Updated;
+                    status = ModStatus.Updated;
             }
 
             // update mod list, only remove in case of same folder
@@ -246,9 +261,11 @@ namespace Imya.Models
                 targetMod.StatsChanged -= OnModStatsChanged;
             }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
-            reparsed.Status = sourceMod.Status;
+            reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
+
+            ModAdded(reparsed);
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -279,12 +296,14 @@ namespace Imya.Models
         {
             foreach (var mod in mods)
                 await DeleteAsync(mod);
+
+            Updated();
         }
 
         /// <summary>
         /// Permanently delete mod from collection.
         /// </summary>
-        public async Task DeleteAsync(Mod mod)
+        private async Task DeleteAsync(Mod mod)
         {
             await Task.Run(() =>
             {
@@ -335,12 +354,16 @@ namespace Imya.Models
                 if (active != mod.IsActive)
                     await mod.ChangeActivationAsync(active);
             }
+
+            Updated();
         }
 
         public async Task DeactivateAllAsync()
         {
             foreach (Mod mod in Mods)
                 await mod.ChangeActivationAsync(false);
+
+            Updated();
         }
         #endregion
 
@@ -352,5 +375,7 @@ namespace Imya.Models
             DisplayedMods = new ObservableCollection<Mod>(Mods.Where(x => filter(x)).ToList());
         }
         #endregion
+
+        public IEnumerable<Mod> WithAttribute(AttributeType attributeType) => Mods.Where(x => x.Attributes.HasAttribute(attributeType));
     }
 }

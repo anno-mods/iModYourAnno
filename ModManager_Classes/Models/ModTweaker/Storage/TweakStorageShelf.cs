@@ -11,14 +11,13 @@ namespace Imya.Models.ModTweaker
     /// <summary>
     /// A quick and dirty way to store the tweaks we did. 
     /// </summary>
-    /// 
-    public class TweakStorage
+    public class TweakStorageShelf
     {
-        public static TweakStorage Global { get; } = new TweakStorage();
+        public static TweakStorageShelf Global { get; } = new TweakStorageShelf();
 
-        public TweakStorage() { }
+        public TweakStorageShelf() { }
 
-        private Dictionary<String, TweakCollection> Tweaks = new(); 
+        private Dictionary<String, TweakFileStorage> Tweaks = new(); 
 
         /// <summary>
         /// Gets the Tweak Storage for an ID. If it does not exist, it creates a new one.
@@ -28,6 +27,16 @@ namespace Imya.Models.ModTweaker
         public ITweakStorage Get(String ID)
         {
             return Tweaks.SafeAddOrGet(ID);
+        }
+
+        public bool IsStored(String ID)
+        {
+            return File.Exists(Path.Combine(ImyaSetupManager.Instance.TweakDirectoryPath, ID + ".json"));
+        }
+
+        public IEnumerable<ITweakStorage> GetAllStorages()
+        {
+            return Tweaks.Values.ToList();
         }
 
         public void SaveAll()

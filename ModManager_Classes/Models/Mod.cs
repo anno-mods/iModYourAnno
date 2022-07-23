@@ -4,19 +4,10 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
 using Imya.Models.NotifyPropertyChanged;
+using Imya.Models.Attributes;
 
 namespace Imya.Models
 {
-    // TODO obsolete may be a different kind of state more similar to other compatibility issues.
-    //      Obsolete may also be detected on startup, not only after zip installation.
-    public enum ModStatus
-    {
-        Default,
-        New,
-        Updated,
-        Obsolete
-    }
-
     public class Mod : PropertyChangedNotifier
     {
         #region ModLoader info
@@ -71,14 +62,13 @@ namespace Imya.Models
 
         public bool HasVersion { get => Modinfo.Version is not null; }
         public bool HasDescription { get => Modinfo.Description is not null; }
-        public bool HasKnownIssues { get => Modinfo.KnownIssues is not null; }
-        public bool HasDlcDependencies { get => Modinfo.DLCDependencies is not null; }
+        public bool HasKnownIssues { get => Modinfo.KnownIssues is not null && Modinfo.KnownIssues.Length > 0; }
+        public bool HasDlcDependencies { get => Modinfo.DLCDependencies is not null && Modinfo.DLCDependencies.Length > 0; }
         public bool HasCreator { get => Modinfo.CreatorName is not null; }
         public bool HasImage { get => Image is not null; }
 
         public bool HasModID { get => Modinfo.ModID is not null; }
         #endregion
-
 
         public float SizeInMB { get; private set; }
 
@@ -93,13 +83,6 @@ namespace Imya.Models
             set => SetProperty(ref _isSelected, value);
         }
         private bool _isSelected;
-
-        public ModStatus Status
-        { 
-            get => _status;
-            set => SetProperty(ref _status, value);
-        }
-        private ModStatus _status = ModStatus.Default;
         #endregion
 
         public static Mod? TryFromFolder(string modFolderPath)
@@ -110,6 +93,8 @@ namespace Imya.Models
             ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);
             return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
         }
+
+        public IAttributeCollection Attributes { get; } = AttributeCollectionFactory.GetNew();
 
         #region loading
         /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
@@ -218,8 +203,8 @@ namespace Imya.Models
         public async Task MakeObsoleteAsync(string path)
         {
             await ChangeActivationAsync(false);
-            Status = ModStatus.Obsolete;
-            Console.WriteLine($"{Status}: {FolderName}");
+            Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+            Console.WriteLine($"{ModStatus.Obsolete}: {FolderName}");
         }
         #endregion
 
@@ -323,5 +308,10 @@ namespace Imya.Models
             return sourceVersion > targetVersion;
         }
         #endregion
+
+        public ModStatus GetStatus()
+        { 
+            return (Attributes.GetByType(AttributeType.ModStatus) as ModStatusAttribute)?.Status ?? ModStatus.Default;
+        }
     }
 }

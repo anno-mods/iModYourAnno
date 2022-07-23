@@ -1,0 +1,74 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:Imya.UI.ValueConverters">
+    
+    <Style x:Key="IMYA_RADIO_BUTTON_DASHBOARD"
+           TargetType="RadioButton">
+        <Style.Resources>
+            <converters:ExtendedBoolToVisibilityConverter x:Key="BoolToVis"
+                                                          TrueValue="Visible"
+                                                          FalseValue="Hidden" />
+        </Style.Resources>
+        <Setter Property="Background"
+                Value="{DynamicResource InteractiveComponentColorBrush}" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Border x:Name="border"
+                            CornerRadius="3"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="true">
+                        <StackPanel Width="{TemplateBinding Width}"
+                                    Orientation="Horizontal"
+                                    Margin="1,0,0,0">
+                            <Border Background="{DynamicResource AccentColorBrush}"
+                                    CornerRadius="2"
+                                    Width="3"
+                                    Margin="1,7,3,7"
+                                    Visibility="{TemplateBinding IsChecked, Converter={StaticResource BoolToVis}}">
+                            </Border>
+
+                            <ContentPresenter x:Name="contentPresenter"
+                                              Focusable="False"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              Margin="{TemplateBinding Padding}"
+                                              RecognizesAccessKey="True"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{DynamicResource InteractiveComponentColorBrush_Dark}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="false">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{DynamicResource ComponentColorBrush_Inactive}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="true">
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="{DynamicResource InteractiveComponentColorBrush_Light}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

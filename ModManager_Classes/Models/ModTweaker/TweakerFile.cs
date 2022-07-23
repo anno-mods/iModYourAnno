@@ -23,9 +23,10 @@ namespace Imya.Models.ModTweaker
     }
     
     /// <summary>
-    /// This is basically the same as ExposedModValue
-    /// </summary>
-    
+    /// A collection of Exposed Mod Values in a File.
+    /// 
+    /// Can apply the exposes, adjusts the OG document to skip affected modops and generates the edited modop.s
+    /// </summary>    
     public class TweakerFile : PropertyChangedNotifier
     {
         public String BasePath { get; private set; }

@@ -5,9 +5,9 @@ using Imya.Models.Installation;
 namespace Imya.Utils
 {
     /// <summary>
-    /// Install mods from zip file.
+    /// Install mods from zip file - might depracate this honestly
     /// </summary>
-    public class ModInstaller
+    public class ModCollectionLoader
     {
         public static async Task<ModCollection?> ExtractZipAsync(string zipFilePath, string tempDir, Installation? progress = null)
         {
@@ -29,7 +29,7 @@ namespace Imya.Utils
             }
             progress?.Report(1f);
 
-            progress?.SetProgressRange(0.9f, 0);
+            progress?.SetProgressRange(0.9f, 1);
 
             var collection = new ModCollection(extractTarget);
             await collection.LoadModsAsync();

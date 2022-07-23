@@ -21,7 +21,7 @@ namespace Imya.UI.Popup
     {
         public ObservableCollection<DlcId> Dlcs { get; private set; }
 
-        private static String ProfilesDirectoryPath = GameSetupManager.Instance.GetProfilesDirectory();
+        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
 
         public DlcId[] SelectedIDs { get; private set; } = Array.Empty<DlcId>();
 

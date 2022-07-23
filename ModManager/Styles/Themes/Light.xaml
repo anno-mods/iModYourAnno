@@ -22,4 +22,8 @@
 
     <SolidColorBrush x:Key="ModActiveColorBrush">#120A24</SolidColorBrush>
     <SolidColorBrush x:Key="ModInactiveColorBrush">#2E0E18</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ErrorColorBrush">Red</SolidColorBrush>
+    <SolidColorBrush x:Key="InformationColorBrush">LightGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="HighlightColorBrush">LightBlue</SolidColorBrush>
 </ResourceDictionary>
