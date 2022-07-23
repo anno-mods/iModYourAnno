@@ -16,6 +16,7 @@ namespace Imya.Models.ModTweaker
         public static readonly String EXPOSE_ATTR = "ExposeID";
         public static readonly String EXPOSE_PATH = "Path";
         public static readonly String MODOP_ID = "ModOpID";
+        public static readonly String KIND = "Kind";
 
         public static readonly String PATH = "Path";
         public static readonly String TYPE = "Type";
@@ -35,7 +36,7 @@ namespace Imya.Models.ModTweaker
         public String SourceFilename { get; private set; }
         public String EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.xml";
 
-        public ObservableCollection<ExposedModValue> Exposes
+        public ObservableCollection<IExposedModValue> Exposes
         {
             get => _exposes;
             private set
@@ -44,7 +45,7 @@ namespace Imya.Models.ModTweaker
                 OnPropertyChanged(nameof(Exposes));
             }
         }
-        private ObservableCollection<ExposedModValue> _exposes;
+        private ObservableCollection<IExposedModValue> _exposes;
 
         //ModOps in here need to have an ID. This is considered by the XMLPatchParser.
         public ObservableCollection<ModOp> ModOps
@@ -76,7 +77,7 @@ namespace Imya.Models.ModTweaker
             TargetRoot = node;
         }
 
-        public ExposedModValue? GetExpose(String ExposeID)
+        public IExposedModValue? GetExpose(String ExposeID)
         {
             return Exposes.First(x => x.ExposeID.Equals(ExposeID));
         }
@@ -93,7 +94,7 @@ namespace Imya.Models.ModTweaker
         /// </summary>
         /// <param name="expose"></param>
         /// <returns>The default value as String</returns>
-        public String GetDefaultNodeValue(ExposedModValue expose)
+        public String GetDefaultNodeValue(IExposedModValue expose)
         {
             var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).First();
 
@@ -152,10 +153,10 @@ namespace Imya.Models.ModTweaker
         /// <param name="exposes"></param>
         /// <param name="NewValue"></param>
         /// <returns>Whether any exposes were executed on the node.</returns>
-        public bool ExecuteExposes(XmlNode node, IEnumerable<ExposedModValue> exposes, String NewValue)
+        public bool ExecuteExposes(XmlNode node, IEnumerable<IExposedModValue> exposes, String NewValue)
         {
             bool AnyExecutes = false;
-            foreach (ExposedModValue x in exposes)
+            foreach (IExposedModValue x in exposes)
             {
                 bool Executed = ExecuteExpose(node, x);
                 //if no executes were done yet, consider the current value, else stay true.
@@ -198,7 +199,7 @@ namespace Imya.Models.ModTweaker
         /// <param name="expose"></param>
         /// <param name="NewValue"></param>
         /// <returns>Whether the expose needed to be executed.</returns>
-        private bool ExecuteExpose(XmlNode node, ExposedModValue expose)
+        private bool ExecuteExpose(XmlNode node, IExposedModValue expose)
         {
             var nodesToEdit = node.SelectNodes(expose.Path);
             if (nodesToEdit is null || nodesToEdit.Count == 0) return false;
@@ -215,7 +216,7 @@ namespace Imya.Models.ModTweaker
         /// </summary>
         /// <param name="expose"></param>
         /// <returns>Whether the expose needed to be executed.</returns>
-        internal bool ExecuteExpose(ExposedModValue expose)
+        internal bool ExecuteExpose(IExposedModValue expose)
         {
             var ops = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID));
 
@@ -237,7 +238,7 @@ namespace Imya.Models.ModTweaker
 
         public void Export()
         {
-            foreach (ExposedModValue e in Exposes)
+            foreach (IExposedModValue e in Exposes)
             {
                 ExecuteExpose(e);
             }
@@ -290,7 +291,7 @@ namespace Imya.Models.ModTweaker
                 {
                     return false;
                 }
-                tweakerFile.Exposes = new ObservableCollection<ExposedModValue>(editables);
+                tweakerFile.Exposes = new ObservableCollection<IExposedModValue>(editables);
 
 
                 return true;

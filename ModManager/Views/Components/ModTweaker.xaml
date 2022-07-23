@@ -81,7 +81,23 @@
                                                              Text="{Binding Value, Mode=TwoWay}"
                                                              TextAlignment="Justify"
                                                              MinWidth="40"
-                                                             Margin="0,4,4,4" />
+                                                             Margin="0,4,4,4"
+                                                             Visibility="{Binding IsSimpleValue, Converter={StaticResource VisibleOnTrue}}"/>
+                                                    <ComboBox Grid.Column="1"
+                                                              Margin="0,4,4,4"
+                                                              Style="{StaticResource IMYA_COMBOBOX}"
+                                                              Background="{DynamicResource InteractiveComponentColorBrush}"
+                                                              ItemsSource="{Binding PredefinedValues}"
+                                                              SelectionChanged="ComboBox_SelectionChanged"
+                                                              Initialized="ComboBox_Initialized" 
+                                                              Visibility="{Binding IsEnumType, Converter={StaticResource VisibleOnTrue}}">
+                                                        <ComboBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                                           Text="{Binding}" />
+                                                            </DataTemplate>
+                                                        </ComboBox.ItemTemplate>
+                                                    </ComboBox>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

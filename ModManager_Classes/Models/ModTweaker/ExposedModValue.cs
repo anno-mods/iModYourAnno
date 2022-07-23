@@ -5,11 +5,14 @@ using System.Xml;
 
 namespace Imya.Models.ModTweaker
 {
-    public class ExposedModValue
+    public class ExposedModValue : IExposedModValue
     {
-        public String Path;
-        public String ModOpID;
-        public String ExposeID { get; private set; }
+        public String Path { get; init; }
+        public String ModOpID { get; init; }
+        public String ExposeID { get; init; }
+        public ExposedModValueType ExposedModValueType { get; init; }
+        public TweakerFile Parent { get; init; }
+
         public String Value
         {
             get => _value;
@@ -19,20 +22,11 @@ namespace Imya.Models.ModTweaker
                 Parent.TweakStorage.SetTweakValue(Parent.FilePath, ExposeID, Value);
             }
         }
-
-        public TweakerFile Parent { get; set; }
-
         private String _value;
 
-        public static ExposedModValue? FromXmlNode(XmlNode Expose, TweakerFile parent)
+        public ExposedModValue()
         {
-            if (Expose.TryGetAttribute(TweakerConstants.EXPOSE_PATH, out String? Path)
-                && Expose.TryGetAttribute(TweakerConstants.MODOP_ID, out String? ModOpID)
-                && Expose.TryGetAttribute(TweakerConstants.EXPOSE_ATTR, out String? ExposeID))
-            {
-                return new ExposedModValue() { Path = Path!, ModOpID = ModOpID!, ExposeID = ExposeID!, Parent = parent};
-            }
-            return null;
+            ExposedModValueType = ExposedModValueType.SimpleValue;
         }
     }
 

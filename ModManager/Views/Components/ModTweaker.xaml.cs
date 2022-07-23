@@ -126,5 +126,23 @@ namespace Imya.UI.Components
             }
         }
         #endregion
+
+        private void ComboBox_Initialized(object sender, EventArgs e)
+        {
+            if (sender is not ComboBox box) return;
+            if (box.DataContext is not IExposedModValue value) return;
+            if (!value.IsEnumType) return;
+
+            box.SelectedItem = box.ItemsSource.Cast<String>().Where(x => x.Equals(value.Value)).FirstOrDefault() ?? String.Empty;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is not ComboBox box) return;
+            if (box.DataContext is not IExposedModValue value) return;
+
+            if (box.SelectedItem is String stringval)
+                value.Value = stringval;
+        }
     }
 }
