@@ -20,7 +20,7 @@ namespace Imya.Models.ModTweaker
             Document = doc;
         }
 
-        internal IEnumerable<ExposedModValue> FetchExposes(TweakerFile parent)
+        internal IEnumerable<IExposedModValue> FetchExposes(TweakerFile parent)
         {
             var ExposedValues = Document.SelectNodes($"//{TweakerConstants.EXPOSE_STRING}");
             if (ExposedValues is null) yield break;
@@ -28,7 +28,7 @@ namespace Imya.Models.ModTweaker
             foreach (XmlNode ExposeInstruction in ExposedValues)
             {
                 //per expose instruction
-                ExposedModValue? expose = FetchExpose(ExposeInstruction, parent);
+                IExposedModValue? expose = FetchExpose(ExposeInstruction, parent);
                 if (expose is not null)
                 {
                     yield return expose;
@@ -36,10 +36,10 @@ namespace Imya.Models.ModTweaker
             }
         }
 
-        private ExposedModValue? FetchExpose(XmlNode ExposeInstruction, TweakerFile parent)
+        private IExposedModValue? FetchExpose(XmlNode ExposeInstruction, TweakerFile parent)
         {
             //per expose instruction
-            ExposedModValue? expose = ExposedModValue.FromXmlNode(ExposeInstruction, parent);
+            IExposedModValue? expose = ExposedModValueFactory.FromXmlNode(ExposeInstruction, parent);
 
             if (expose is null) return null;
 
