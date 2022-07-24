@@ -17,6 +17,8 @@ namespace Imya.Models.ModTweaker
                 && Expose.TryGetAttribute(TweakerConstants.MODOP_ID, out String? ModOpID)
                 && Expose.TryGetAttribute(TweakerConstants.EXPOSE_ATTR, out String? ExposeID))
             {
+                Expose.TryGetAttribute(TweakerConstants.DESCRIPTION, out String? Description);
+
                 ExposedModValueType type = ExposedModValueType.SimpleValue;
                 Expose.TryGetAttribute(TweakerConstants.KIND, out String? Kind);
                 if (Kind is String valid_kind && Enum.TryParse<ExposedModValueType>(valid_kind, out var _val))
@@ -26,31 +28,76 @@ namespace Imya.Models.ModTweaker
 
                 if (type == ExposedModValueType.Enum)
                 {
-                    var nodes = Expose.SelectNodes("./FixedValues/Value");
-
-                    var predefined_vals = nodes?.Cast<XmlNode>()
-                                .Select(node => node.InnerText)
-                                .ToArray();
-                    return new ExposedPredefinedModValue()
+                    var nodes = Expose.SelectNodes($"./{TweakerConstants.ENUM_HEADER}/{TweakerConstants.ENUM_ENTRY}");
+                    if (nodes is not null && nodes.Count > 0)
                     {
-                        Path = Path!,
-                        ModOpID = ModOpID!,
-                        ExposeID = ExposeID!,
-                        Parent = parent,
-                        PredefinedValues = predefined_vals
-                    };
+                        var predefined_vals = nodes?.Cast<XmlNode>()
+                                    .Select(node => node.InnerText)
+                                    .ToArray();
+                        return new ExposedPredefinedModValue()
+                        {
+                            Path = Path!,
+                            ModOpID = ModOpID!,
+                            ExposeID = ExposeID!,
+                            Parent = parent,
+                            Description = Description,
+                            PredefinedValues = predefined_vals
+                        };
+                    }
+                }
+                else if (type == ExposedModValueType.Slider)
+                {
+                    var node = Expose.SelectSingleNode("./SliderDefinition");
+                    if (node is XmlNode slider_definition
 
-                }
-                else
-                { 
-                    return new ExposedModValue()
+                        && slider_definition.TryGetAttribute("Min", out var MinStr)
+                        && slider_definition.TryGetAttribute("Max", out var MaxStr)
+                        && slider_definition.TryGetAttribute("Stepping", out var SteppingStr)
+
+                        && float.TryParse(MinStr, out float min)
+                        && float.TryParse(MaxStr, out float max)
+                        && float.TryParse(SteppingStr, out float stepping))
                     {
-                        Path = Path!,
-                        ModOpID = ModOpID!,
-                        ExposeID = ExposeID!,
-                        Parent = parent
-                    };
+                        return new ExposedRangedModValue()
+                        {
+                            Path = Path!,
+                            ModOpID = ModOpID!,
+                            ExposeID = ExposeID!,
+                            Parent = parent,
+                            Description = Description,
+                            Min = min,
+                            Max = max,
+                            Stepping = stepping
+                        };
+                    }
                 }
+                else if (type == ExposedModValueType.Toggle)
+                {
+                    var trueval = Expose.SelectSingleNode("./TrueValue");
+                    var falseval = Expose.SelectSingleNode("./FalseValue");
+
+                    if (trueval is XmlNode valid_trueval
+                        && falseval is XmlNode valid_falseval)
+                    {
+                        return new ExposedToggleModValue()
+                        {
+                            Path = Path!,
+                            ModOpID = ModOpID!,
+                            ExposeID = ExposeID!,
+                            Parent = parent,
+                            Description = Description,
+                            FalseValue = valid_falseval.InnerXml,
+                            TrueValue = valid_trueval.InnerXml
+                        };
+                    }
+                }
+                return new ExposedModValue()
+                {
+                    Path = Path!,
+                    ModOpID = ModOpID!,
+                    ExposeID = ExposeID!,
+                    Parent = parent
+                };
             }
             return null;
         }

@@ -95,6 +95,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Update="Views\Components\ContentThumb.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -107,6 +110,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\CheckBoxStyle.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Styles\SliderStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
@@ -152,6 +159,10 @@
     </Page>
     <Page Update="Styles\Themes\Light.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Views\Components\ContentThumb.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 

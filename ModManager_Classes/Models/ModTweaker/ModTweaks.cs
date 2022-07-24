@@ -1,4 +1,6 @@
-﻿using Imya.Models.NotifyPropertyChanged;
+﻿using Imya.Models.Attributes;
+using Imya.Models.NotifyPropertyChanged;
+using Imya.Utils;
 using System.Collections.ObjectModel;
 
 namespace Imya.Models.ModTweaker
@@ -55,7 +57,15 @@ namespace Imya.Models.ModTweaker
                     f.Save(_mod.FullModPath);
                 }
                 TweakStorage.Save(ModBaseName);
+
+                if (_mod is not null && !_mod.Attributes.HasAttribute(AttributeType.TweakedMod))
+                {
+                    _mod.Attributes.AddAttribute(TweakedAttributeFactory.Get());
+                }
+
+                GameSetupManager.Instance.DeleteCache();
             }
+
 
         }
     }

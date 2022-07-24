@@ -26,7 +26,6 @@ namespace Imya.Utils
             ModTweaks tweaks = new ModTweaks();
             tweaks.Load(m);
             tweaks.Save();
-            m.Attributes.AddAttribute(TweakedAttributeFactory.Get());
         }
 
         public void UpdateCompabilityCheck()

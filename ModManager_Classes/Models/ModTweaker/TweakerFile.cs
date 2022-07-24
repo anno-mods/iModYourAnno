@@ -17,6 +17,9 @@ namespace Imya.Models.ModTweaker
         public static readonly String EXPOSE_PATH = "Path";
         public static readonly String MODOP_ID = "ModOpID";
         public static readonly String KIND = "Kind";
+        public static readonly String DESCRIPTION = "Description";
+        public static readonly String ENUM_HEADER = "FixedValues";
+        public static readonly String ENUM_ENTRY = "Value";
 
         public static readonly String PATH = "Path";
         public static readonly String TYPE = "Type";
@@ -100,7 +103,7 @@ namespace Imya.Models.ModTweaker
 
             foreach (XmlNode x in op.Code)
             {
-                var node = OriginalDocument.SelectSingleNode(expose.Path);
+                var node = x.SelectSingleNode(expose.Path);
                 if (node is not null) return node.InnerText;
             }
             return String.Empty;
@@ -206,7 +209,10 @@ namespace Imya.Models.ModTweaker
 
             foreach (XmlNode n in nodesToEdit)
             {
-                n.InnerText = expose.Value;
+                if(expose.ReplaceType == ExposedModValueReplaceType.Text)
+                    n.InnerText = expose.Value;
+                else if (expose.ReplaceType == ExposedModValueReplaceType.Xml)
+                    n.InnerXml = expose.Value;
             }
             return true;
         }

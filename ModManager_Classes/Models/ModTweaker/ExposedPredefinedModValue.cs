@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.ModTweaker
 {
-    internal class ExposedPredefinedModValue : ExposedModValue
+    public class ExposedPredefinedModValue : ExposedModValue
     {
         public String[]? PredefinedValues { get; init; }
 
