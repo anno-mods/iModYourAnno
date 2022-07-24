@@ -174,10 +174,19 @@
                                     Click="GameModDirectory_ButtonClick" />
                         </Grid>
                     </Grid>
+
+                    <Button Style="{StaticResource IMYA_BUTTON}"
+                            Width="200"
+                            HorizontalAlignment="Left"
+                            HorizontalContentAlignment="Center"
+                            Margin="5"
+                            Click="OnAuthenticate">
+                        <TextBlock Text="Authorize with Github"
+                                   Style="{StaticResource IMYA_TEXT}"></TextBlock>
+                    </Button>
                 </StackPanel>
 
             </Border>
         </StackPanel>
-
     </Grid>
 </UserControl>
