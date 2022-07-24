@@ -185,6 +185,15 @@ namespace Imya.Utils
                 DeactivateModloader();
         }
 
+        public void DeleteCache()
+        {
+            var cache = Path.Combine(GetModDirectory(), ".cache");
+            if (Directory.Exists(cache))
+            {
+                Directory.Delete(cache, true);
+            }
+        }
+
         private void ActivateModloader()
         {
             if (ModloaderState != ModloaderInstallationState.Deactivated) return;

@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
+             xmlns:Components="clr-namespace:Imya.UI.Views.Components"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -61,14 +63,17 @@
                                 <ItemsControl ItemsSource="{Binding Exposes}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border HorizontalAlignment="Left"
+                                            <Border HorizontalAlignment="Stretch"
                                                     Background="{StaticResource ComponentColorBrush_Light}"
                                                     CornerRadius="3"
-                                                    Margin="0,2,-10,2">
+                                                    Margin="0,5,-10,5"
+                                                    BorderBrush="{DynamicResource AccentColorBrush}"
+                                                    BorderThickness="2">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition />
                                                         <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="35" />
                                                     </Grid.ColumnDefinitions>
                                                     <TextBlock Text="{Binding ExposeID}"
                                                                Style="{StaticResource IMYA_TEXT}"
@@ -98,6 +103,65 @@
                                                             </DataTemplate>
                                                         </ComboBox.ItemTemplate>
                                                     </ComboBox>
+                                                    <Grid Grid.Column="1"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Stretch"
+                                                          Visibility="{Binding IsSliderType, Converter={StaticResource VisibleOnTrue}}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="30"/>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition Width="30"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="5"
+                                                                   Text="{Binding Min}"
+                                                                   Grid.Column="0"
+                                                                   MinWidth="25"/>
+                                                        
+                                                        <Components:ContentSlider Grid.Column="1" 
+                                                                                  Margin="0,4,4,4"
+                                                                                  Minimum="{Binding Min}"
+                                                                                  Maximum="{Binding Max}"
+                                                                                  TickFrequency="{Binding Stepping}"
+                                                                                  ValueChanged="Slider_ValueChanged"
+                                                                                  Initialized="Slider_Initialized"
+                                                                                  IsSnapToTickEnabled="True"
+                                                                                  Style="{StaticResource IMYA_SLIDER}"
+                                                                                  Foreground="{DynamicResource AccentColorBrush}"
+                                                                                  Background="{DynamicResource InteractiveComponentColorBrush_Light}"
+                                                                                  Content="{Binding Value, UpdateSourceTrigger=PropertyChanged}">
+                                                        </Components:ContentSlider>
+
+                                                        <TextBlock Grid.Column="2"
+                                                                   Style="{StaticResource IMYA_TEXT}"
+                                                                   VerticalAlignment="Center"
+                                                                   Margin="5"
+                                                                   MinWidth="25"
+                                                                   Text="{Binding Max}" />
+                                                    </Grid>
+                                                    <CheckBox Visibility="{Binding IsToggleType, Converter={StaticResource VisibleOnTrue}}"
+                                                              IsChecked="{Binding IsTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                              Grid.Column="1"
+                                                              Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                                              Initialized="CheckBox_Initialized">
+                                                    </CheckBox>
+
+                                                    <materialDesign:PackIcon Kind="InformationOutline"
+                                                                             Style="{StaticResource IMYA_ICON}"
+                                                                             Foreground="{DynamicResource AccentColorBrush}"
+                                                                             Grid.Column="2"
+                                                                             VerticalAlignment="Center"
+                                                                             HorizontalAlignment="Center"
+                                                                             ToolTipService.InitialShowDelay="0"
+                                                                             ToolTipService.Placement="Left">
+                                                        <materialDesign:PackIcon.ToolTip>
+                                                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                                       Text="{Binding Description}" />
+                                                        </materialDesign:PackIcon.ToolTip>
+                                                    </materialDesign:PackIcon>
+                                                    
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>

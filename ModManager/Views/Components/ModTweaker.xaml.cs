@@ -133,16 +133,48 @@ namespace Imya.UI.Components
             if (box.DataContext is not IExposedModValue value) return;
             if (!value.IsEnumType) return;
 
-            box.SelectedItem = box.ItemsSource.Cast<String>().Where(x => x.Equals(value.Value)).FirstOrDefault() ?? String.Empty;
+            //todo fallback if the itemssource does not offer the value, we need to display what is currently in there
+            box.SelectedItem = box.ItemsSource.Cast<String>().Where(x => x.Equals(value.Value)).FirstOrDefault() ?? value.Value;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender is not ComboBox box) return;
-            if (box.DataContext is not IExposedModValue value) return;
+            if (box.DataContext is not IExposedModValue value) return; 
+            if (!value.IsEnumType) return;
 
             if (box.SelectedItem is String stringval)
                 value.Value = stringval;
+        }
+
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sender is not Slider slider) return;
+            if (slider.DataContext is not IExposedModValue value) return;
+            if (!value.IsSliderType) return;
+
+            value.Value = slider.Value.ToString();
+        }
+
+        private void Slider_Initialized(object sender, EventArgs e)
+        {
+            if (sender is not Slider slider) return;
+            if (slider.DataContext is not IExposedModValue value) return;
+            if (!value.IsSliderType) return;
+
+            if (double.TryParse(value.Value, out var slider_val))
+                slider.Value = slider_val;
+        }
+
+        private void CheckBox_Initialized(object sender, EventArgs e)
+        {
+            if (sender is not CheckBox checkBox) return;
+            if (checkBox.DataContext is not IExposedModValue value) return;
+            if (!value.IsToggleType) return;
+
+            if (value is not ExposedToggleModValue togglevalue) return;
+
+            togglevalue.IsTrue = togglevalue.Value.Equals(togglevalue.TrueValue);
         }
     }
 }

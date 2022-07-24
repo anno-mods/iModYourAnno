@@ -5,12 +5,15 @@ using System.Xml;
 
 namespace Imya.Models.ModTweaker
 {
-    public class ExposedModValue : IExposedModValue
+    public class ExposedModValue : PropertyChangedNotifier, IExposedModValue
     {
         public String Path { get; init; }
         public String ModOpID { get; init; }
         public String ExposeID { get; init; }
+        public String? Description { get; init; }
+
         public ExposedModValueType ExposedModValueType { get; init; }
+        public ExposedModValueReplaceType ReplaceType { get; init; }
         public TweakerFile Parent { get; init; }
 
         public String Value
@@ -18,7 +21,7 @@ namespace Imya.Models.ModTweaker
             get => _value;
             set
             {
-                _value = value;
+                SetProperty(ref _value, value);
                 Parent.TweakStorage.SetTweakValue(Parent.FilePath, ExposeID, Value);
             }
         }
@@ -27,7 +30,14 @@ namespace Imya.Models.ModTweaker
         public ExposedModValue()
         {
             ExposedModValueType = ExposedModValueType.SimpleValue;
+            ReplaceType = ExposedModValueReplaceType.Text;
         }
+
+        public bool IsEnumType { get => ExposedModValueType == ExposedModValueType.Enum; }
+        public bool IsSimpleValue { get => ExposedModValueType == ExposedModValueType.SimpleValue; }
+        public bool IsSliderType { get => ExposedModValueType == ExposedModValueType.Slider; }
+        public bool IsToggleType { get => ExposedModValueType == ExposedModValueType.Toggle; }
+       
     }
 
 }

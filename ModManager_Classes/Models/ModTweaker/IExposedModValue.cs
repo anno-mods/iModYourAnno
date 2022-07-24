@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.ModTweaker
 {
-    public enum ExposedModValueType { SimpleValue, Enum }
+    public enum ExposedModValueType { SimpleValue, Enum, Slider, Toggle }
+
+    public enum ExposedModValueReplaceType { Text, Xml }
 
     public interface IExposedModValue
     {
@@ -14,12 +16,16 @@ namespace Imya.Models.ModTweaker
         public String ModOpID { get; init; }
         public String ExposeID { get; init; }
         public ExposedModValueType ExposedModValueType { get; init; }
+        public ExposedModValueReplaceType ReplaceType { get; init;}
         public TweakerFile Parent { get; init; }
+
+        public String? Description { get; init; }
 
         public String Value { get; set; }
 
-        public bool IsEnumType { get => ExposedModValueType == ExposedModValueType.Enum; }
-        public bool IsSimpleValue { get => ExposedModValueType == ExposedModValueType.SimpleValue; }
+        public bool IsEnumType { get; }
+        public bool IsSimpleValue { get; }
+        public bool IsSliderType { get; }
+        public bool IsToggleType { get; }
     }
-
 }
