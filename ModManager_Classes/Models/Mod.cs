@@ -106,7 +106,12 @@ namespace Imya.Models
             BasePath = basePath;
 
             // create metadata if needed
-            modinfo ??= new ();
+            if (modinfo is null)
+            {
+                modinfo = new();
+                Attributes.AddAttribute(MissingModinfoAttributeFactory.Get());
+            }
+            
             if (modinfo.ModName is null || !modinfo.ModName.HasAny())
             {
                 bool matches = MatchNameCategory(FolderName, out var _category, out var _name);
