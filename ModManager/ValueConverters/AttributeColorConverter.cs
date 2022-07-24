@@ -28,6 +28,7 @@ namespace Imya.UI.ValueConverters
                 case AttributeType.ModCompabilityIssue: return FindResourceBrush("ErrorColorBrush");
                 case AttributeType.UnresolvedDependencyIssue: return FindResourceBrush("ErrorColorBrush");
                 case AttributeType.TweakedMod: return FindResourceBrush("InformationColorBrush");
+                case AttributeType.MissingModinfo: return FindResourceBrush("InformationColorBrush");
             }
             return String.Empty;
         }
