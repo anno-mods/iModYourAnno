@@ -13,5 +13,10 @@ namespace Imya.Models.Attributes
         { 
             CompabilityIssues = issues;
         }
+
+        public ModCompabilityIssueAttribute()
+        { 
+            CompabilityIssues = Enumerable.Empty<Mod>();
+        }
     }
 }

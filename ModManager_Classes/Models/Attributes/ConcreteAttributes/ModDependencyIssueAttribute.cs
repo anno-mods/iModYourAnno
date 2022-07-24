@@ -18,5 +18,10 @@ namespace Imya.Models.Attributes
         {
             UnresolvedDependencies = issues;
         }
+
+        public ModDependencyIssueAttribute()
+        {
+            UnresolvedDependencies = Enumerable.Empty<String>();
+        }
     }
 }
