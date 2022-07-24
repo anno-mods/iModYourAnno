@@ -1261,6 +1261,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ATTRIBUTE_NOMODINFO": {
+    "Chinese": null,
+    "English": "This does not provide any info on Compabilities, Dependencies, Description or other Metadata.",
+    "French": null,
+    "German": "Dieser Mod stellt keine Metadaten zu Kompabilität, Abhängigkeiten, Beschreibung etc. bereit.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ATTRIBUTE_GAMESTART_WARNING": {
     "Chinese": null,
     "English": "You have unresolved Dependencies and/or Mod Incompabilities. WARNING: This might lead to critical errors ingame!!! \n\n Start Anyway?",
