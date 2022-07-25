@@ -18,6 +18,11 @@ namespace Imya.UI.Utils
 
         public async Task RunAuthenticate(GitHubClient Client)
         {
+            if (Client.Credentials.AuthenticationType != AuthenticationType.Anonymous) {
+                Console.WriteLine("Already logged in");
+                return;
+            }
+
             var token = await GetAuthToken(Client);
 
             if (token is OauthToken valid_token)
