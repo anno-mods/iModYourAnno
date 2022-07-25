@@ -1196,6 +1196,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ATTRIBUTE_STATUS_UPDATE": {
+    "Chinese": null,
+    "English": "Recently updated",
+    "French": null,
+    "German": "Aktualisiert",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "USERCODE_POPUP_MESSAGE": {
+    "Chinese": null,
+    "English": "You are being sent to Github Login in your Webbrowser. Please enter your authentication code there. Don't share your code with anyone!",
+    "French": null,
+    "German": "Du wirst im Browser zum Github-Login weitergeleitet. Bitte gib dort deinen Authentifizierungscode an. Teile diesen Code mit niemandem!",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ATTRIBUTE_COMPABILITYERROR": {
     "Chinese": null,
     "English": "Compability Issues: {0}",

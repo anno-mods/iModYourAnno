@@ -68,13 +68,14 @@
                  ItemsSource="{Binding Mods.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
                  SelectionChanged="SelectionChanged"
                  SelectionMode="Extended"
-                 Style="{StaticResource IMYA_LISTBOX}">
+                 Style="{StaticResource IMYA_LISTBOX}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal"
                                     Margin="5,3,0,3">
@@ -87,7 +88,7 @@
                                    FontWeight="ExtraBold" />
                             <TextBlock Text="{Binding Name.Text}"
                                    Style="{StaticResource IMYA_TEXT}"
-                                   MaxWidth="500"/>
+                                   TextWrapping="WrapWithOverflow" />
                         </StackPanel>
                         <ItemsControl ItemsSource="{Binding Attributes}"
                                       HorizontalAlignment="Right"
@@ -120,6 +121,8 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource IMYA_LISTBOXITEM}">
                     <Setter Property="IsSelected"
                             Value="{Binding IsSelected}" />
+                    <Setter Property="Width"
+                            Value="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollContentPresenter}}}" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>

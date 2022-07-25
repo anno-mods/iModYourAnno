@@ -87,6 +87,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Popup\AuthCodePopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Popup\GithubInstallPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -101,6 +104,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Popup\AuthCodePopup.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Popup\GithubInstallPopup.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

@@ -13,18 +13,20 @@ namespace Imya.UI.Utils
     {
         private String ClientID = "37a11ee844d5eea41346";
 
+        public event IAuthenticator.PopupRequestedEventHandler UserCodeReceived = delegate { };
+        public event IAuthenticator.AuthenticatedEventHandler AuthenticationSuccess = delegate { };
+
         public async Task RunAuthenticate(GitHubClient Client)
         {
             var token = await GetAuthToken(Client);
 
             if (token is OauthToken valid_token)
             {
-
                 var credentials = new Credentials(valid_token.AccessToken);
                 Client.Credentials = credentials;
 
                 var user = (await Client.User.Current());
-                Console.WriteLine("Authenticated as: " + user.Login);
+                AuthenticationSuccess?.Invoke(user.Login);
             }
         }
 
@@ -33,7 +35,7 @@ namespace Imya.UI.Utils
             var request = new OauthDeviceFlowRequest(ClientID);
 
             var deviceFlowResponse = await Client.Oauth.InitiateDeviceFlow(request);
-            Console.WriteLine(deviceFlowResponse.UserCode);
+            UserCodeReceived?.Invoke(deviceFlowResponse.UserCode);
             OpenInBrowser(deviceFlowResponse.VerificationUri);
 
             var token = await Client.Oauth.CreateAccessTokenForDeviceFlow(ClientID, deviceFlowResponse);

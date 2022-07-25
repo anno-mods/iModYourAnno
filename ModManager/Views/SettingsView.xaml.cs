@@ -9,6 +9,7 @@ using Imya.Utils;
 using Imya.Models;
 using System.Threading.Tasks;
 using Imya.UI.Utils;
+using Imya.UI.Popup;
 
 namespace Imya.UI.Views
 {
@@ -82,6 +83,8 @@ namespace Imya.UI.Views
         public List<ThemeSetting> Themes { get;  } = new List<ThemeSetting>();
         public List<LanguageSetting> Languages { get; } = new List<LanguageSetting>();
 
+        private AuthCodePopup? AuthCodePopup;
+
         public SettingsView()
         {
             InitializeComponent();
@@ -154,8 +157,36 @@ namespace Imya.UI.Views
             GithubClientProvider.Authenticator = Properties.Settings.Default.DevMode ?
                     new DeviceFlowAuthenticator() :
                     new DummyAuthenticator();
-            
-            Task.Run(() => GithubClientProvider.RunAuthenticate());
+
+            GithubClientProvider.Authenticator.UserCodeReceived += ShowAuthCodePopup;
+            GithubClientProvider.Authenticator.AuthenticationSuccess += CloseAuthCodePopup;
+
+            Task.Run(async () => await GithubClientProvider.RunAuthenticate())
+                .ContinueWith(_ =>
+                 {
+                     GithubClientProvider.Authenticator.UserCodeReceived -= ShowAuthCodePopup;
+                     GithubClientProvider.Authenticator.AuthenticationSuccess -= CloseAuthCodePopup;
+                 });
+        }
+
+        private void ShowAuthCodePopup(String AuthCode)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                if (AuthCodePopup is AuthCodePopup)
+                    AuthCodePopup.Close();
+                AuthCodePopup = new AuthCodePopup(AuthCode);
+                AuthCodePopup.Show();
+            } );
+        }
+
+        private void CloseAuthCodePopup(String Username)
+        {
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                Console.WriteLine("Authenticated as:" + Username);
+                AuthCodePopup?.Close();
+            });
         }
 
         //Apply new Mod Directory Name

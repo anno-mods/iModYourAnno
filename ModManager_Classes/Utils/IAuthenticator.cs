@@ -10,6 +10,12 @@ namespace Imya.Utils
 {
     public interface IAuthenticator
     {
+        public event PopupRequestedEventHandler UserCodeReceived;
+        public delegate void PopupRequestedEventHandler(String Context);
+
+        public event AuthenticatedEventHandler AuthenticationSuccess;
+        public delegate void AuthenticatedEventHandler(String Username);
+
         public Task RunAuthenticate(GitHubClient Client);
     }
 }
