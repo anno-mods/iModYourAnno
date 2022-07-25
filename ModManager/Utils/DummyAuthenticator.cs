@@ -10,6 +10,9 @@ namespace Imya.UI.Utils
 {
     internal class DummyAuthenticator : IAuthenticator
     {
+        public bool IsAuthenticated { get; set; }
+        public String? AuthenticatedUser { get; set; }
+
         public event IAuthenticator.PopupRequestedEventHandler UserCodeReceived = delegate { };
         public event IAuthenticator.AuthenticatedEventHandler AuthenticationSuccess = delegate { };
 

@@ -83,8 +83,6 @@ namespace Imya.UI.Views
         public List<ThemeSetting> Themes { get;  } = new List<ThemeSetting>();
         public List<LanguageSetting> Languages { get; } = new List<LanguageSetting>();
 
-        private AuthCodePopup? AuthCodePopup;
-
         public SettingsView()
         {
             InitializeComponent();
@@ -149,44 +147,6 @@ namespace Imya.UI.Views
             if (box?.SelectedItem is not ThemeSetting pair) return;
 
             ChangeColorTheme(pair);
-            
-        }
-
-        public void OnAuthenticate(object sender, RoutedEventArgs e)
-        {
-            GithubClientProvider.Authenticator = Properties.Settings.Default.DevMode ?
-                    new DeviceFlowAuthenticator() :
-                    new DummyAuthenticator();
-
-            GithubClientProvider.Authenticator.UserCodeReceived += ShowAuthCodePopup;
-            GithubClientProvider.Authenticator.AuthenticationSuccess += CloseAuthCodePopup;
-
-            Task.Run(async () => await GithubClientProvider.RunAuthenticate())
-                .ContinueWith(_ =>
-                 {
-                     GithubClientProvider.Authenticator.UserCodeReceived -= ShowAuthCodePopup;
-                     GithubClientProvider.Authenticator.AuthenticationSuccess -= CloseAuthCodePopup;
-                 });
-        }
-
-        private void ShowAuthCodePopup(String AuthCode)
-        {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                if (AuthCodePopup is AuthCodePopup)
-                    AuthCodePopup.Close();
-                AuthCodePopup = new AuthCodePopup(AuthCode);
-                AuthCodePopup.Show();
-            } );
-        }
-
-        private void CloseAuthCodePopup(String Username)
-        {
-            App.Current.Dispatcher.Invoke(() =>
-            {
-                Console.WriteLine("Authenticated as:" + Username);
-                AuthCodePopup?.Close();
-            });
         }
 
         //Apply new Mod Directory Name

@@ -29,11 +29,8 @@ namespace Imya.UI.Views
     {
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
-
         public ModInstallationOptions Options { get; } = new();
-
         public InstallationSetup Installer { get; } = new InstallationSetup();
-
         private InstallationStarter InstallerMiddleware;
 
         IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
@@ -60,6 +57,7 @@ namespace Imya.UI.Views
 
         #endregion
 
+
         public InstallationView()
         {
             InitializeComponent();
@@ -72,6 +70,7 @@ namespace Imya.UI.Views
             {
                 InstallStatus = ModLoaderStatus.Installed;
             }
+
         }
 
         private GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new GenericOkayPopup() { MESSAGE = new SimpleText("Installation is already running") };
@@ -193,11 +192,6 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
     /// <summary>

@@ -28,6 +28,7 @@ namespace Imya.UI
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
             AttributeCollectionFactory.AttributeCollectionType = typeof(ObservableAttributeCollection);
+            GithubClientProvider.Authenticator = new DeviceFlowAuthenticator();
 
             // init global mods
             ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollectionOptions()
