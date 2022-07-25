@@ -1,4 +1,6 @@
-﻿using Imya.UI.Popup;
+﻿using Imya.Models;
+using Imya.Models.NotifyPropertyChanged;
+using Imya.UI.Popup;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,14 +10,35 @@ using System.Threading.Tasks;
 
 namespace Imya.UI.Views.Models
 {
-    public class AuthenticationController
+    public class AuthenticationController : PropertyChangedNotifier
     {
         private AuthCodePopup? AuthCodePopup;
 
+        public bool IsAuthenticated
+        {
+            get => _isAuthenticated;
+            set => SetProperty(ref _isAuthenticated, value);
+        }
+        private bool _isAuthenticated = false;
+
+        public String? AuthenticatedUser
+        {
+            get => _authenticatedUser;
+            set => SetProperty(ref _authenticatedUser, value);
+        }
+        private String? _authenticatedUser;
+
+        public Uri? AvatarUri
+        {
+            get => _uri;
+            set => SetProperty(ref _uri, value);
+        }
+        private Uri? _uri;
+
         public AuthenticationController()
         {
-            GithubClientProvider.Authenticator.UserCodeReceived += ShowAuthCodePopup;
-            GithubClientProvider.Authenticator.AuthenticationSuccess += CloseAuthCodePopup;
+            GithubClientProvider.Authenticator.UserCodeReceived += OnAuthCodeReceived;
+            GithubClientProvider.Authenticator.AuthenticationSuccess += OnAuthSuccess;
         }
 
         public void Authenticate()
@@ -23,7 +46,18 @@ namespace Imya.UI.Views.Models
             Task.Run(async () => await GithubClientProvider.RunAuthenticate());
         }
 
-        private void ShowAuthCodePopup(String AuthCode)
+        public void Logout()
+        {
+            var dialogresult = new GenericOkayPopup() { MESSAGE = new SimpleText("Are you sure you want to log out?") }.ShowDialog();
+            if (dialogresult is false) return;
+
+            GithubClientProvider.Client.Credentials = Octokit.Credentials.Anonymous;
+            IsAuthenticated = false;
+            AvatarUri = null;
+            AuthenticatedUser = null;
+        }
+
+        private void OnAuthCodeReceived(String AuthCode)
         {
             App.Current.Dispatcher.Invoke(() =>
             {
@@ -34,13 +68,22 @@ namespace Imya.UI.Views.Models
             });
         }
 
-        private void CloseAuthCodePopup()
+        private void OnAuthSuccess()
         {
             App.Current.Dispatcher.Invoke(() =>
             {
-                Console.WriteLine("Authenticated as: " + GithubClientProvider.Authenticator.AuthenticatedUser);
+                IsAuthenticated = true;
                 AuthCodePopup?.Close();
+                Task.Run(async () => await UpdateUserLogin());
             });
+        }
+
+        private async Task UpdateUserLogin()
+        {
+            var user = await GithubClientProvider.Client.User.Current();
+            AuthenticatedUser = user.Login;
+            Console.WriteLine($"Authenticated as {AuthenticatedUser}");
+            AvatarUri = new Uri(user.AvatarUrl);
         }
     }
 }
