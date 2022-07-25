@@ -16,9 +16,6 @@ namespace Imya.Utils
         public event AuthenticatedEventHandler AuthenticationSuccess;
         public delegate void AuthenticatedEventHandler();
 
-        public bool IsAuthenticated { get; protected set; }
-        public String? AuthenticatedUser { get; protected set; }
-
         public Task RunAuthenticate(GitHubClient Client);
     }
 }
