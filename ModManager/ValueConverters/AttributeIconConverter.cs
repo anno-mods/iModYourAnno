@@ -24,6 +24,7 @@ namespace Imya.UI.ValueConverters
                 case AttributeType.ModCompabilityIssue: return "AlertBox";
                 case AttributeType.UnresolvedDependencyIssue: return "FileTree";
                 case AttributeType.TweakedMod: return "Tools";
+                case AttributeType.MissingModinfo: return "HelpBox";
             }
             return String.Empty;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Attributes
 {
-    public enum AttributeType { ModStatus, ModCompabilityIssue, UnresolvedDependencyIssue, TweakedMod }
+    public enum AttributeType { ModStatus, ModCompabilityIssue, UnresolvedDependencyIssue, TweakedMod, MissingModinfo }
 
     public interface IAttribute
     {

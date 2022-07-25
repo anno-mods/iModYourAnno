@@ -24,8 +24,9 @@
         </Grid.Resources>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition />
+                <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             <TextBox MinHeight="25"
                      Margin="0,2,10,5"
@@ -61,6 +62,16 @@
                                      Style="{StaticResource IMYA_ICON}"
                                      Foreground="{DynamicResource TextColorBrush}"
                                      Margin="0,0,5,0">
+            </materialDesign:PackIcon>
+            <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                     Grid.Column="2"
+                                     Kind="InformationCircleOutline"
+                                     Foreground="{DynamicResource TextColorBrush}"
+                                     VerticalAlignment="Center"
+                                     ToolTipService.InitialShowDelay="0">
+                <materialDesign:PackIcon.ToolTip>
+                    <local:AttributeStaticHelp />
+                </materialDesign:PackIcon.ToolTip>
             </materialDesign:PackIcon>
         </Grid>
         <ListBox Grid.Row="1"
