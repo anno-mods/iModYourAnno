@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using Imya.Models.Attributes;
 using System.Linq;
 using Imya.UI.Popup;
+using Imya.UI.Views.Models;
 
 namespace Imya.UI.Components
 {
@@ -25,6 +26,9 @@ namespace Imya.UI.Components
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
         public MainViewController MainViewController { get; } = MainViewController.Instance;
+
+        public AuthenticationController AuthenticationController { get; } = new AuthenticationController();
+        public IAuthenticator Authenticator { get; } = GithubClientProvider.Authenticator;
 
         public bool CanStartGame { 
             get => _canStartGame;
@@ -114,5 +118,15 @@ namespace Imya.UI.Components
             OnPropertyChanged(propertyName);
         }
         #endregion
-}
+
+        private void LoginButtonClick(object sender, RoutedEventArgs e)
+        {
+            AuthenticationController.Authenticate();
+        }
+
+        private void LogoutButtonClick(object sender, RoutedEventArgs e)
+        {
+            AuthenticationController.Logout();
+        }
+    }
 }
