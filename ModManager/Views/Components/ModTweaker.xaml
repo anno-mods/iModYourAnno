@@ -15,10 +15,12 @@
             <Converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue"
                                                           TrueValue="Visible"
                                                           FalseValue="Hidden" />
+            <Converters:NegateBoolConverter x:Key="NegateBool" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Border Background="{DynamicResource ComponentColorBrush}"
                 CornerRadius="3"
@@ -87,7 +89,8 @@
                                                              TextAlignment="Justify"
                                                              MinWidth="40"
                                                              Margin="0,4,4,4"
-                                                             Visibility="{Binding IsSimpleValue, Converter={StaticResource VisibleOnTrue}}"/>
+                                                             Visibility="{Binding IsSimpleValue, Converter={StaticResource VisibleOnTrue}}"
+                                                             IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}"/>
                                                     <ComboBox Grid.Column="1"
                                                               Margin="0,4,4,4"
                                                               Style="{StaticResource IMYA_COMBOBOX}"
@@ -95,7 +98,8 @@
                                                               ItemsSource="{Binding PredefinedValues}"
                                                               SelectionChanged="ComboBox_SelectionChanged"
                                                               Initialized="ComboBox_Initialized" 
-                                                              Visibility="{Binding IsEnumType, Converter={StaticResource VisibleOnTrue}}">
+                                                              Visibility="{Binding IsEnumType, Converter={StaticResource VisibleOnTrue}}"
+                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                         <ComboBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock Style="{StaticResource IMYA_TEXT}"
@@ -131,7 +135,8 @@
                                                                                   Style="{StaticResource IMYA_SLIDER}"
                                                                                   Foreground="{DynamicResource AccentColorBrush}"
                                                                                   Background="{DynamicResource InteractiveComponentColorBrush_Light}"
-                                                                                  Content="{Binding Value, UpdateSourceTrigger=PropertyChanged}">
+                                                                                  Content="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                                  IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                         </Components:ContentSlider>
 
                                                         <TextBlock Grid.Column="2"
@@ -145,7 +150,10 @@
                                                               IsChecked="{Binding IsTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                               Grid.Column="1"
                                                               Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                                              Initialized="CheckBox_Initialized">
+                                                              Initialized="CheckBox_Initialized"
+                                                              Checked="OnValueChanged"
+                                                              Unchecked="OnValueChanged"
+                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                     </CheckBox>
 
                                                     <materialDesign:PackIcon Kind="InformationOutline"
@@ -173,6 +181,61 @@
                 </ItemsControl>
             </Grid>
         </ScrollViewer>
-        
+
+        <Border Background="{DynamicResource ComponentColorBrush}"
+                Grid.Row="2"
+                Grid.Column="2"
+                CornerRadius="3"
+                Margin="0,5,0,0">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.25*" />
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource IMYA_BUTTON}"
+                        MinHeight="32"
+                        Click="SaveButtonClicked"
+                        Grid.Column="1"
+                        IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Margin="10,0,0,0">
+                        <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                 Kind="ContentSaveOutline"
+                                                 Foreground="LightGray" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Text="Save Tweaks"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="SaveProfileButton"
+                        Style="{StaticResource IMYA_BUTTON}"
+                        MinHeight="32"
+                        Grid.Column="2"
+                        Click="ResetButtonClicked"
+                        Foreground="{DynamicResource TextColorBrush}"
+                        Visibility="Collapsed">
+                    <DockPanel Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Stretch">
+                        <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                 Kind="ArrangeBringForward"
+                                                 DockPanel.Dock="Left"
+                                                 Foreground="LightGray" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Text="Discard Changes"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
+                    </DockPanel>
+                </Button>
+            </Grid>
+        </Border>
+
     </Grid>
 </UserControl>
