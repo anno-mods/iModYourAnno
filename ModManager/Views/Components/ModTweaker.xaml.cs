@@ -108,6 +108,7 @@ namespace Imya.UI.Components
 
         public void UpdateCurrentDisplay(Mod mod)
         {
+            CurrentMod = mod;
             if (IsVisible)
             {
                 LoadTweaks(mod);
@@ -117,14 +118,13 @@ namespace Imya.UI.Components
 
         public void OnLeave()
         {
-            if (!GameSetupManager.Instance.IsGameRunning)
+            Save();
+            /*
+             * This seems to keep the view alive sadly. 
+            if (HasUnsavedChanges)
             {
-                Save();
-            }
-            else
-            {
-                new GenericOkayPopup() { MESSAGE = new SimpleText("Changes cannot be saved ") };
-            }
+                AskDialogToSave();
+            }*/
         }
 
         public void OnAppExit(object sender, ExitEventArgs e)
@@ -134,6 +134,7 @@ namespace Imya.UI.Components
 
         private void Save()
         {
+            HasUnsavedChanges = false;
             var tweaks = Tweaks;
             ThreadPool.QueueUserWorkItem(o =>
             {
@@ -141,17 +142,23 @@ namespace Imya.UI.Components
             });
         }
 
+        private void AskDialogToSave()
+        {
+            var dialog = new GenericOkayPopup()
+            {
+                MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
+                OK_TEXT = new SimpleText("Save Now"),
+                CANCEL_TEXT = new SimpleText("Discard Changes")
+            }
+            .ShowDialog();
+            if (dialog is true) Save();
+        }
+
         private void LoadTweaks(Mod mod)
         {
             if (HasUnsavedChanges)
             {
-                HasUnsavedChanges = false;
-                var dialog = new GenericOkayPopup() { 
-                    MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
-                    OK_TEXT = new SimpleText("Save Now"),
-                    CANCEL_TEXT = new SimpleText("Discard Changes")}
-                .ShowDialog();
-                if (dialog is true) Save();
+                AskDialogToSave();
             }
 
             // make sure everything is secure from access from other threads
