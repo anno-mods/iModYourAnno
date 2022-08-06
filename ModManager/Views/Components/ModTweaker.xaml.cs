@@ -19,6 +19,7 @@ using System.Windows.Shapes;
 using Imya.Models;
 using Imya.Models.ModTweaker;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 using Newtonsoft.Json;
 
@@ -30,6 +31,7 @@ namespace Imya.UI.Components
     public partial class ModTweaker : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
+        public TweakManager TweakManager { get; } = TweakManager.Instance;
 
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
@@ -44,27 +46,6 @@ namespace Imya.UI.Components
         }
         private Mod? _currentMod;
 
-        public ModTweaks Tweaks
-        {
-            get => _tweaks;
-            private set
-            {
-                _tweaks = value;
-                OnPropertyChanged(nameof(Tweaks));
-            }
-        }
-        private ModTweaks _tweaks = new();
-
-        public bool HasUnsavedChanges
-        {
-            get => _hasUnsavedChanges;
-            set {
-                _hasUnsavedChanges = value;
-                OnPropertyChanged(nameof(HasUnsavedChanges));
-            }
-        }
-        private bool _hasUnsavedChanges;
-
         public ModTweaker()
         {
             InitializeComponent();
@@ -72,26 +53,6 @@ namespace Imya.UI.Components
             IsVisibleChanged += OnVisibleChanged;
 
             Application.Current.Exit += OnAppExit;
-
-            GameSetup.GameStarted += OnGameStarted;
-        }
-
-        private void OnGameStarted()
-        {
-            App.Current.Dispatcher.Invoke(
-            () =>
-            {
-                var dialog = new GenericOkayPopup()
-                {
-                    MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
-                    OK_TEXT = new SimpleText("Save Now"),
-                    CANCEL_TEXT = new SimpleText("Discard Changes")
-                }
-                .ShowDialog();
-
-                if (dialog is true) Save();
-            });
-            
         }
 
         private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -113,18 +74,12 @@ namespace Imya.UI.Components
             {
                 LoadTweaks(mod);
             }
-
         }
 
         public void OnLeave()
         {
-            Save();
-            /*
-             * This seems to keep the view alive sadly. 
-            if (HasUnsavedChanges)
-            {
-                AskDialogToSave();
-            }*/
+            if(!GameSetup.IsGameRunning)
+                TweakManager.Save();
         }
 
         public void OnAppExit(object sender, ExitEventArgs e)
@@ -132,52 +87,15 @@ namespace Imya.UI.Components
             OnLeave();
         }
 
-        private void Save()
-        {
-            HasUnsavedChanges = false;
-            var tweaks = Tweaks;
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                tweaks.Save();
-            });
-        }
-
-        private void AskDialogToSave()
-        {
-            var dialog = new GenericOkayPopup()
-            {
-                MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
-                OK_TEXT = new SimpleText("Save Now"),
-                CANCEL_TEXT = new SimpleText("Discard Changes")
-            }
-            .ShowDialog();
-            if (dialog is true) Save();
-        }
-
         private void LoadTweaks(Mod mod)
         {
-            if (HasUnsavedChanges)
+            if (TweakManager.HasUnsavedChanges)
             {
-                AskDialogToSave();
+                var dialog = PopupCreator.CreateSaveTweakPopup();
+                if (dialog.ShowDialog() is true) TweakManager.Save();
             }
 
-            // make sure everything is secure from access from other threads
-            var currentTweaks = Tweaks;
-            Tweaks = new();
-
-            ThreadPool.QueueUserWorkItem(o =>
-            {
-                ModTweaks tweaks = new();
-
-                if (mod is not null)
-                    tweaks.Load(mod);
-
-                Dispatcher.BeginInvoke(() =>
-                {
-                    Tweaks = tweaks;
-                    HasUnsavedChanges = false;
-                });
-            });
+            TweakManager.Load(mod);
         }
 
         #region INotifyPropertyChangedMembers
@@ -195,13 +113,13 @@ namespace Imya.UI.Components
 
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
-            HasUnsavedChanges = false;
-            Save();
+            TweakManager.HasUnsavedChanges = false;
+            TweakManager.Save();
         }
 
         private void ResetButtonClicked(object sender, RoutedEventArgs e)
         {
-            HasUnsavedChanges = false;
+            TweakManager.HasUnsavedChanges = false;
             if (CurrentMod is Mod)
                 LoadTweaks(CurrentMod);
         }
@@ -214,12 +132,12 @@ namespace Imya.UI.Components
 
             //todo fallback if the itemssource does not offer the value, we need to display what is currently in there
             box.SelectedItem = box.ItemsSource.Cast<String>().Where(x => x.Equals(value.Value)).FirstOrDefault() ?? value.Value;
-            HasUnsavedChanges = false;
+            TweakManager.HasUnsavedChanges = false;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            HasUnsavedChanges = true;
+            TweakManager.HasUnsavedChanges = true;
             if (sender is not ComboBox box) return;
             if (box.DataContext is not IExposedModValue value) return; 
             if (!value.IsEnumType) return;
@@ -230,7 +148,7 @@ namespace Imya.UI.Components
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            HasUnsavedChanges = true;
+            TweakManager.HasUnsavedChanges = true;
             if (sender is not Slider slider) return;
             if (slider.DataContext is not IExposedModValue value) return;
             if (!value.IsSliderType) return;
@@ -246,7 +164,7 @@ namespace Imya.UI.Components
 
             if (double.TryParse(value.Value, out var slider_val))
                 slider.Value = slider_val;
-            HasUnsavedChanges = false;
+            TweakManager.HasUnsavedChanges = false;
         }
 
         private void CheckBox_Initialized(object sender, EventArgs e)
@@ -257,12 +175,12 @@ namespace Imya.UI.Components
             if (value is not ExposedToggleModValue togglevalue) return;
 
             togglevalue.IsTrue = togglevalue.Value.Equals(togglevalue.TrueValue);
-            HasUnsavedChanges = false;
+            TweakManager.HasUnsavedChanges = false;
         }
 
         private void OnValueChanged(object sender, EventArgs e)
-        { 
-            HasUnsavedChanges = true;
+        {
+            TweakManager.HasUnsavedChanges = true;
         }
     }
 }

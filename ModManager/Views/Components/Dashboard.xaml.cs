@@ -65,18 +65,22 @@ namespace Imya.UI.Components
 
         public void ModInstallationClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.DUMMY);
 
-        public void StartGameClick(object sender, RoutedEventArgs e)
+        public async void StartGameClick(object sender, RoutedEventArgs e)
         {
             var withUnresolved = ModCollection.Global?.WithAttribute(AttributeType.UnresolvedDependencyIssue);
             var withIncompatibleIssue = ModCollection.Global?.WithAttribute(AttributeType.ModCompabilityIssue);
 
             if (withUnresolved?.Count() > 0 || withIncompatibleIssue?.Count() > 0)
             {
-                GenericOkayPopup popup = new GenericOkayPopup()
-                {
-                    MESSAGE = TextManager.GetText("ATTRIBUTE_GAMESTART_WARNING")
-                };
+                GenericOkayPopup popup = PopupCreator.CreateInvalidSetupPopup();
                 if (popup.ShowDialog() is false) return;
+            }
+
+            if (TweakManager.Instance.HasUnsavedChanges)
+            {
+                var dialog = PopupCreator.CreateSaveTweakPopup();
+                if (dialog.ShowDialog() is false) return;
+                await TweakManager.Instance.SaveAsync();
             }
 
             GameSetupManager.Instance.StartGame();

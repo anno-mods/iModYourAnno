@@ -47,9 +47,9 @@
                          Margin="0,20,0,0"
                          Style="{StaticResource IMYA_TEXT}"
                          Text="{Binding TextManager[TWEAKER_NO_FILES].Text}"
-                         Visibility="{Binding Tweaks.IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
+                        Visibility="{Binding TweakManager.Tweaks.IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
                 </TextBlock>
-                <ItemsControl ItemsSource="{Binding Tweaks.TweakerFiles, UpdateSourceTrigger=PropertyChanged}"
+                <ItemsControl ItemsSource="{Binding TweakManager.Tweaks.TweakerFiles, UpdateSourceTrigger=PropertyChanged}"
                               Margin="10"
                               x:Name="TweakFilesList">
                     <ItemsControl.ItemTemplate>
