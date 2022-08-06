@@ -61,10 +61,6 @@ namespace Imya.UI.Components
             {
                 UpdateCurrentDisplay(CurrentMod);
             }
-            else if (!IsVisible && CurrentMod is not null)
-            {
-                OnLeave();
-            }
         }
 
         public void UpdateCurrentDisplay(Mod mod)
@@ -76,15 +72,9 @@ namespace Imya.UI.Components
             }
         }
 
-        public void OnLeave()
-        {
-            if(!GameSetup.IsGameRunning)
-                TweakManager.Save();
-        }
-
         public void OnAppExit(object sender, ExitEventArgs e)
         {
-            OnLeave();
+            TweakManager.Save();
         }
 
         private void LoadTweaks(Mod mod)
