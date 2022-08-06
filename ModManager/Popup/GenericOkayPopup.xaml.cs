@@ -25,23 +25,24 @@ namespace Imya.UI.Popup
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
 
+        public Action? OkayAction { get; set; } = null;
+        public Action? CancelAction { get; set; } = null;
+
         public GenericOkayPopup()
         {
             InitializeComponent();
             DataContext = this;
-
-            MESSAGE = new SimpleText("Popup asking a theoretical yes/no question");
-            OK_TEXT = new SimpleText("OK");
-            CANCEL_TEXT = new SimpleText("Cancel");
         }
 
         private void OkayButtonClick(object sender, RoutedEventArgs e)
         {
+            OkayAction?.Invoke();
             DialogResult = true;
         }
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
+            CancelAction?.Invoke();
             DialogResult = false;
         }
     }

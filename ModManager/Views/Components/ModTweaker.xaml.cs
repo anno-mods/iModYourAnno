@@ -82,9 +82,8 @@ namespace Imya.UI.Components
             if (TweakManager.HasUnsavedChanges)
             {
                 var dialog = PopupCreator.CreateSaveTweakPopup();
-                if (dialog.ShowDialog() is true) TweakManager.Save();
+                dialog.ShowDialog();
             }
-
             TweakManager.Load(mod);
         }
 

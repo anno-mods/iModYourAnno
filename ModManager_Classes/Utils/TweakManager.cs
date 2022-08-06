@@ -13,7 +13,7 @@ namespace Imya.Utils
     {
         public static TweakManager Instance { get; } = new TweakManager();
 
-        public ModTweaks Tweaks
+        public ModTweaks? Tweaks
         {
             get => _tweaks;
             set
@@ -22,7 +22,7 @@ namespace Imya.Utils
                 OnPropertyChanged(nameof(Tweaks));
             }
         }
-        private ModTweaks _tweaks = new();
+        private ModTweaks? _tweaks = new();
 
         public bool HasUnsavedChanges
         {
@@ -35,37 +35,50 @@ namespace Imya.Utils
         }
         private bool _hasUnsavedChanges;
 
+        private bool IsSaving; 
+
         public void Save()
         {
             HasUnsavedChanges = false;
             var tweaks = Tweaks;
+            IsSaving = true;
             ThreadPool.QueueUserWorkItem(o =>
             {
-                tweaks.Save();
+                tweaks?.Save();
+                IsSaving = false;
             });
+        }
+
+        public void Unload()
+        {
+            if (IsSaving) throw new InvalidOperationException("Cannot unload while saving!");
+            Tweaks = null;
+            HasUnsavedChanges = false;
         }
 
         public async Task SaveAsync()
         {
+
+            IsSaving = true;
             HasUnsavedChanges = false;
             var tweaks = Tweaks;
-            await Task.Run(() => tweaks.Save());
+            await Task.Run(() => tweaks?.Save());
+            IsSaving = false;
         }
 
         public void Load(Mod mod, bool ClearCurrentWhileLoading = true)
         {
+            HasUnsavedChanges = false;
             // make sure everything is secure from access from other threads
             var currentTweaks = Tweaks;
             if(ClearCurrentWhileLoading)
-                Tweaks = new();
+                Tweaks = null;
             ThreadPool.QueueUserWorkItem(o =>
             {
                 ModTweaks tweaks = new();
-
                 if (mod is not null)
                     tweaks.Load(mod);
                 Tweaks = tweaks;
-                HasUnsavedChanges = false;
             });
         }
 

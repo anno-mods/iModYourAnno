@@ -18,7 +18,9 @@ namespace Imya.UI.Utils
             {
                 MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
                 OK_TEXT = new SimpleText("Save Now"),
-                CANCEL_TEXT = new SimpleText("Discard Changes")
+                CANCEL_TEXT = new SimpleText("Discard Changes"),
+                OkayAction = async () => await TweakManager.Instance.SaveAsync(),
+                CancelAction = () => TweakManager.Instance.Unload()
             };
             return dialog;
         }

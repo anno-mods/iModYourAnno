@@ -80,7 +80,6 @@ namespace Imya.UI.Components
             {
                 var dialog = PopupCreator.CreateSaveTweakPopup();
                 if (dialog.ShowDialog() is false) return;
-                await TweakManager.Instance.SaveAsync();
             }
 
             GameSetupManager.Instance.StartGame();
