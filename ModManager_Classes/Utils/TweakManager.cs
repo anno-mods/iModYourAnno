@@ -52,11 +52,12 @@ namespace Imya.Utils
             await Task.Run(() => tweaks.Save());
         }
 
-        public void Load(Mod mod)
+        public void Load(Mod mod, bool ClearCurrentWhileLoading = true)
         {
             // make sure everything is secure from access from other threads
             var currentTweaks = Tweaks;
-            Tweaks = new();
+            if(ClearCurrentWhileLoading)
+                Tweaks = new();
             ThreadPool.QueueUserWorkItem(o =>
             {
                 ModTweaks tweaks = new();

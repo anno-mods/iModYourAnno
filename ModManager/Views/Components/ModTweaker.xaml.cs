@@ -98,6 +98,12 @@ namespace Imya.UI.Components
             TweakManager.Load(mod);
         }
 
+        private void Reload()
+        {
+            if(CurrentMod is not null)
+                TweakManager.Load(CurrentMod, false);
+        }
+
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
 
@@ -113,15 +119,13 @@ namespace Imya.UI.Components
 
         private void SaveButtonClicked(object sender, RoutedEventArgs e)
         {
-            TweakManager.HasUnsavedChanges = false;
             TweakManager.Save();
         }
 
         private void ResetButtonClicked(object sender, RoutedEventArgs e)
         {
-            TweakManager.HasUnsavedChanges = false;
-            if (CurrentMod is Mod)
-                LoadTweaks(CurrentMod);
+            if (CurrentMod is Mod) 
+                Reload();
         }
 
         private void ComboBox_Initialized(object sender, EventArgs e)

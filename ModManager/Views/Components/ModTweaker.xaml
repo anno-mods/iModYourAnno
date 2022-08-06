@@ -34,7 +34,11 @@
                            Style="{StaticResource IMYA_TEXT}"
                            FontWeight="ExtraBold" />
                 <TextBlock Text="{Binding CurrentMod.Name.Text, UpdateSourceTrigger=PropertyChanged}"
-                           Style="{StaticResource IMYA_TEXT}" />
+                           Style="{StaticResource IMYA_TEXT}" 
+                           Margin="0,0,5,0"/>
+                <materialDesign:PackIcon Kind="ContentSaveOff" 
+                                         VerticalAlignment="Center"
+                                         Visibility="{Binding TweakManager.HasUnsavedChanges, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}"/>
             </StackPanel>
         </Border>
         <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}"
@@ -213,25 +217,24 @@
                                    Foreground="{DynamicResource TextColorBrush}" />
                     </StackPanel>
                 </Button>
-                <Button x:Name="SaveProfileButton"
-                        Style="{StaticResource IMYA_BUTTON}"
+                <Button Style="{StaticResource IMYA_BUTTON}"
                         MinHeight="32"
                         Grid.Column="2"
                         Click="ResetButtonClicked"
                         Foreground="{DynamicResource TextColorBrush}"
-                        Visibility="Collapsed">
+                        IsEnabled="{Binding TweakManager.HasUnsavedChanges, UpdateSourceTrigger=PropertyChanged}">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                                 Kind="ArrangeBringForward"
+                                                 Kind="FileDiscard"
                                                  DockPanel.Dock="Left"
                                                  Foreground="LightGray" />
                         <TextBlock Margin="10,0,0,0"
                                    Text="Discard Changes"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource IMYA_TEXT}"
-                                   Foreground="{DynamicResource TextColorBrush}" />
+                                   Foreground="{DynamicResource TextColorBrush}"/>
                     </DockPanel>
                 </Button>
             </Grid>
