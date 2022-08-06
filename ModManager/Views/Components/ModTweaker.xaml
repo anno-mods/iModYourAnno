@@ -20,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
         <Border Background="{DynamicResource ComponentColorBrush}"
                 CornerRadius="3"
@@ -43,7 +43,8 @@
         </Border>
         <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}"
                       Grid.Row="1"
-                      Background="{DynamicResource ComponentColorBrush}">
+                      Background="{DynamicResource ComponentColorBrush}"
+                      Margin="0,0,0,5">
             <Grid>
                 <TextBlock Background="Transparent"
                          HorizontalAlignment="Center"
