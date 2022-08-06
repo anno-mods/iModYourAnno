@@ -218,7 +218,7 @@
                     BorderThickness="2"
                     Margin="5">
                 <Border.Background>
-                    <ImageBrush ImageSource="{Binding AuthenticationController.AvatarUri}"
+                    <ImageBrush ImageSource="{Binding AuthenticationController.AvatarUri, UpdateSourceTrigger=PropertyChanged}"
                                 Stretch="UniformToFill" />
                 </Border.Background>
                 <Border.Effect>
