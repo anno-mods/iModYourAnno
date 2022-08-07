@@ -73,13 +73,15 @@ namespace Imya.Models.ModTweaker
                 }
                 else if (type == ExposedModValueType.Toggle)
                 {
-                    var trueval = Expose.SelectSingleNode("./TrueValue");
-                    var falseval = Expose.SelectSingleNode("./FalseValue");
+                    var falseval = Expose.SelectSingleNode($"./{TweakerConstants.ALT_TOGGLE_VAL}");
 
-                    if (trueval is XmlNode valid_trueval
-                        && falseval is XmlNode valid_falseval)
+                    Expose.TryGetAttribute(TweakerConstants.INVERTED, out var invert);
+
+                    bool IsInverted = invert?.Equals("True") ?? false;
+
+                    if (falseval is XmlNode valid_falseval)
                     {
-                        return new ExposedToggleModValue()
+                        var val = new ExposedToggleModValue()
                         {
                             Path = Path!,
                             ModOpID = ModOpID!,
@@ -87,8 +89,10 @@ namespace Imya.Models.ModTweaker
                             Parent = parent,
                             Description = Description,
                             FalseValue = valid_falseval.InnerXml,
-                            TrueValue = valid_trueval.InnerXml
+                            IsInverted = IsInverted
                         };
+                        val.InitTrueValue();
+                        return val; 
                     }
                 }
                 return new ExposedModValue()

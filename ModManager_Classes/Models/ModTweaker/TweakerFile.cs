@@ -20,6 +20,8 @@ namespace Imya.Models.ModTweaker
         public static readonly String DESCRIPTION = "Description";
         public static readonly String ENUM_HEADER = "FixedValues";
         public static readonly String ENUM_ENTRY = "Value";
+        public static readonly String ALT_TOGGLE_VAL = "AltValue";
+        public static readonly String INVERTED = "Invert";
 
         public static readonly String PATH = "Path";
         public static readonly String TYPE = "Type";
@@ -215,8 +217,8 @@ namespace Imya.Models.ModTweaker
             {
                 if(expose.ReplaceType == ExposedModValueReplaceType.Text)
                     n.InnerText = expose.Value;
-                else if (expose.ReplaceType == ExposedModValueReplaceType.Xml)
-                    n.InnerXml = expose.Value;
+                else if (expose.ReplaceType == ExposedModValueReplaceType.Xml && n.ParentNode is not null)
+                    n.ParentNode.InnerXml = expose.Value;
             }
             return true;
         }
