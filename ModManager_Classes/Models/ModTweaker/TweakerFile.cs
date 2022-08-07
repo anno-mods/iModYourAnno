@@ -156,25 +156,6 @@ namespace Imya.Models.ModTweaker
         }
 
         /// <summary>
-        /// Executes A collection of exposes on <paramref name="node"/>. 
-        /// </summary>
-        /// <param name="node"></param>
-        /// <param name="exposes"></param>
-        /// <param name="NewValue"></param>
-        /// <returns>Whether any exposes were executed on the node.</returns>
-        public bool ExecuteExposes(XmlNode node, IEnumerable<IExposedModValue> exposes, String NewValue)
-        {
-            bool AnyExecutes = false;
-            foreach (IExposedModValue x in exposes)
-            {
-                bool Executed = ExecuteExpose(node, x);
-                //if no executes were done yet, consider the current value, else stay true.
-                AnyExecutes = AnyExecutes ? true : Executed;
-            }
-            return AnyExecutes;
-        }
-
-        /// <summary>
         /// Ensures that an XML node has a skip attribute
         /// </summary>
         /// <param name="n"></param>
