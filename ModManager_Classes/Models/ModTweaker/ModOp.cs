@@ -23,8 +23,7 @@ namespace Imya.Models.ModTweaker
 
         public static ModOp? FromXmlNode(XmlNode ModOp)
         {
-            if (ModOp.HasChildNodes
-                && ModOp.TryGetAttribute(TweakerConstants.TYPE, out String? ModOpType))
+            if (ModOp.TryGetAttribute(TweakerConstants.TYPE, out String? ModOpType))
             {
                 ModOp.TryGetAttribute(TweakerConstants.GUID, out String? Guid);
                 ModOp.TryGetAttribute(TweakerConstants.PATH, out String? Path);

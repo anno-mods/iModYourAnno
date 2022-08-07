@@ -51,6 +51,12 @@ namespace Imya.Models.ModTweaker
                     if(edited_node is not null)
                         newNodes.Add(edited_node);
                 }
+                if (n.Code.Count() == 0 && !String.IsNullOrEmpty(expose.Value) && String.IsNullOrEmpty(expose.Path))
+                {
+                    var loadedNode = LoadXmlNodeFrom(expose.Value);
+                    if(loadedNode is not null)
+                        newNodes.Add(loadedNode);
+                }
                 n.Code = newNodes;
             }
         }
