@@ -105,8 +105,8 @@ namespace Imya.Models.ModTweaker
         /// <returns>The default value as String</returns>
         public String GetDefaultNodeValue(IExposedModValue expose)
         {
-            var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).First();
-
+            var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).FirstOrDefault();
+            if (op is null) return String.Empty;
             foreach (XmlNode x in op.Code)
             {
                 var node = x.SelectSingleNode(expose.Path);
