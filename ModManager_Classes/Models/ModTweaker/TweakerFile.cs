@@ -189,41 +189,7 @@ namespace Imya.Models.ModTweaker
         /// <param name="expose"></param>
         /// <param name="NewValue"></param>
         /// <returns>Whether the expose needed to be executed.</returns>
-        private bool ExecuteExpose(XmlNode node, IExposedModValue expose)
-        {
-            var nodesToEdit = node.SelectNodes(expose.Path);
-            if (nodesToEdit is null || nodesToEdit.Count == 0) return false;
-
-            foreach (XmlNode n in nodesToEdit)
-            {
-                if(expose.ReplaceType == ExposedModValueReplaceType.Text)
-                    n.InnerText = expose.Value;
-                else if (expose.ReplaceType == ExposedModValueReplaceType.Xml && n.ParentNode is not null)
-                    n.ParentNode.InnerXml = expose.Value;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Executes an Expose on the entire target document.
-        /// </summary>
-        /// <param name="expose"></param>
-        /// <returns>Whether the expose needed to be executed.</returns>
-        internal bool ExecuteExpose(IExposedModValue expose)
-        {
-            var ops = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID));
-
-            List<bool> SuccessTracker = new();
-            foreach (ModOp n in ops)
-            {
-                foreach (XmlNode x in n.Code)
-                {
-                    bool b = ExecuteExpose(x, expose);
-                    SuccessTracker.Add(b);
-                }
-            }
-            return SuccessTracker.Any(x => x == true);
-        }
+        
 
         #endregion
 
@@ -231,13 +197,12 @@ namespace Imya.Models.ModTweaker
 
         public void Export()
         {
-            foreach (IExposedModValue e in Exposes)
-            {
-                ExecuteExpose(e);
-            }
+            TweakExporter exporter = new TweakExporter(ModOps, Exposes);
+            var modops = exporter.GetExported();
+
             //ensure that the source document includes what we want.
             EnsureInclude();
-            foreach (ModOp op in ModOps)
+            foreach (ModOp op in modops)
             {
                 //ensure a skip in the source document.
                 OriginalDocument.TryGetModOpNode(op.ID!, out var modop);

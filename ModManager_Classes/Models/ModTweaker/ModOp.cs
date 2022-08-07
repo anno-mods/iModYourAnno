@@ -11,7 +11,7 @@ namespace Imya.Models.ModTweaker
     public class ModOp
     {
         public String? ID;
-        public XmlNodeList Code;
+        public IEnumerable<XmlNode> Code;
 
         //Mod Op related things
         public String Type;
@@ -32,13 +32,25 @@ namespace Imya.Models.ModTweaker
                 return new ModOp
                 {
                     ID = ID!,
-                    Code = ModOp.ChildNodes,
+                    Code = ModOp.ChildNodes.Cast<XmlNode>().ToList(),
                     Type = ModOpType!,
                     GUID = Guid,
                     Path = Path
                 };
             }
             return null;
+        }
+
+        public ModOp Clone()
+        {
+            return new ModOp()
+            {
+                ID = this.ID,
+                Code = this.Code.Select(x => x.CloneNode(true)).ToList(),
+                Type = this.Type,
+                GUID = this.GUID,
+                Path = this.Path
+            };        
         }
     }
 
