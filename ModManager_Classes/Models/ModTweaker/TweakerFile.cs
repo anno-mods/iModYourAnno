@@ -205,8 +205,11 @@ namespace Imya.Models.ModTweaker
             foreach (ModOp op in modops)
             {
                 //ensure a skip in the source document.
-                OriginalDocument.TryGetModOpNode(op.ID!, out var modop);
-                EnsureSkipFlag(modop);
+                if (OriginalDocument.TryGetModOpNodes(op.ID!, out var modop_nodes))
+                {
+                    foreach (XmlNode node in modop_nodes!)
+                        EnsureSkipFlag(node);
+                }
 
                 //generate the mod op in the target document
                 Generate(op);
