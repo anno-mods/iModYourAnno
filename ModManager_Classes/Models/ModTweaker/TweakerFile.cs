@@ -25,7 +25,7 @@ namespace Imya.Models.ModTweaker
         public static readonly String TYPE = "Type";
         public static readonly String GUID = "GUID";
     }
-    
+
     /// <summary>
     /// A collection of Exposed Mod Values in a File.
     /// 
@@ -64,7 +64,7 @@ namespace Imya.Models.ModTweaker
 
         private XmlDocument OriginalDocument { get; set; } = new XmlDocument();
         private XmlDocument TargetDocument { get; set; } = new XmlDocument();
-        private XmlNode TargetRoot { get; init; }
+        private XmlNode TargetRoot { get; set; }
 
         public ITweakStorage TweakStorage;
 
@@ -74,7 +74,11 @@ namespace Imya.Models.ModTweaker
             BasePath = _basepath;
 
             SourceFilename = Path.GetFileName(_filepath);
+        }
 
+        private void InitTargetDocument()
+        {
+            TargetDocument = new XmlDocument();
             var node = TargetDocument.CreateElement("ModOps");
             TargetDocument.AppendChild(node);
             TargetRoot = node;
@@ -263,6 +267,7 @@ namespace Imya.Models.ModTweaker
 
         public void Save(string basePath)
         {
+            InitTargetDocument();
             Export();
 
             try

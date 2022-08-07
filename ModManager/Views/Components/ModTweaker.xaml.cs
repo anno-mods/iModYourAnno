@@ -18,6 +18,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Models;
 using Imya.Models.ModTweaker;
+using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 using Newtonsoft.Json;
 
@@ -29,6 +31,9 @@ namespace Imya.UI.Components
     public partial class ModTweaker : UserControl, INotifyPropertyChanged
     {
         public TextManager TextManager { get; } = TextManager.Instance;
+        public TweakManager TweakManager { get; } = TweakManager.Instance;
+
+        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
         public Mod? CurrentMod
         {
@@ -40,17 +45,6 @@ namespace Imya.UI.Components
             }
         }
         private Mod? _currentMod;
-
-        public ModTweaks Tweaks
-        {
-            get => _tweaks;
-            private set
-            {
-                _tweaks = value;
-                OnPropertyChanged(nameof(Tweaks));
-            }
-        }
-        private ModTweaks _tweaks = new();
 
         public ModTweaker()
         {
@@ -67,51 +61,36 @@ namespace Imya.UI.Components
             {
                 UpdateCurrentDisplay(CurrentMod);
             }
-            else if (!IsVisible && CurrentMod is not null)
-            {
-                OnLeave();
-            }
         }
 
         public void UpdateCurrentDisplay(Mod mod)
         {
-            // make sure everything is secure from access from other threads
-            var currentTweaks = Tweaks;
-            Tweaks = new();
-
-            ThreadPool.QueueUserWorkItem(o =>
-                {
-                    ModTweaks tweaks = new();
-                    if (IsVisible)
-                    {
-                        currentTweaks.Save();
-                        
-                        if (mod is not null)
-                            tweaks.Load(mod);
-                    }
-
-                    Dispatcher.BeginInvoke(() =>
-                    {
-                        Tweaks = tweaks;
-                    });
-                });
-        }
-
-        public void OnLeave()
-        {
-            var tweaks = Tweaks;
-            Tweaks = new();
-            ThreadPool.QueueUserWorkItem(o =>
-                {
-                    tweaks.Save();
-                });
-
-            
+            CurrentMod = mod;
+            if (IsVisible)
+            {
+                LoadTweaks(mod);
+            }
         }
 
         public void OnAppExit(object sender, ExitEventArgs e)
         {
-            OnLeave();
+            TweakManager.Save();
+        }
+
+        private void LoadTweaks(Mod mod)
+        {
+            if (TweakManager.HasUnsavedChanges)
+            {
+                var dialog = PopupCreator.CreateSaveTweakPopup();
+                dialog.ShowDialog();
+            }
+            TweakManager.Load(mod);
+        }
+
+        private void Reload()
+        {
+            if(CurrentMod is not null)
+                TweakManager.Load(CurrentMod, false);
         }
 
         #region INotifyPropertyChangedMembers
@@ -127,6 +106,17 @@ namespace Imya.UI.Components
         }
         #endregion
 
+        private void SaveButtonClicked(object sender, RoutedEventArgs e)
+        {
+            TweakManager.Save();
+        }
+
+        private void ResetButtonClicked(object sender, RoutedEventArgs e)
+        {
+            if (CurrentMod is Mod) 
+                Reload();
+        }
+
         private void ComboBox_Initialized(object sender, EventArgs e)
         {
             if (sender is not ComboBox box) return;
@@ -135,10 +125,12 @@ namespace Imya.UI.Components
 
             //todo fallback if the itemssource does not offer the value, we need to display what is currently in there
             box.SelectedItem = box.ItemsSource.Cast<String>().Where(x => x.Equals(value.Value)).FirstOrDefault() ?? value.Value;
+            TweakManager.HasUnsavedChanges = false;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            TweakManager.HasUnsavedChanges = true;
             if (sender is not ComboBox box) return;
             if (box.DataContext is not IExposedModValue value) return; 
             if (!value.IsEnumType) return;
@@ -149,6 +141,7 @@ namespace Imya.UI.Components
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
+            TweakManager.HasUnsavedChanges = true;
             if (sender is not Slider slider) return;
             if (slider.DataContext is not IExposedModValue value) return;
             if (!value.IsSliderType) return;
@@ -164,6 +157,7 @@ namespace Imya.UI.Components
 
             if (double.TryParse(value.Value, out var slider_val))
                 slider.Value = slider_val;
+            TweakManager.HasUnsavedChanges = false;
         }
 
         private void CheckBox_Initialized(object sender, EventArgs e)
@@ -171,10 +165,15 @@ namespace Imya.UI.Components
             if (sender is not CheckBox checkBox) return;
             if (checkBox.DataContext is not IExposedModValue value) return;
             if (!value.IsToggleType) return;
-
             if (value is not ExposedToggleModValue togglevalue) return;
 
             togglevalue.IsTrue = togglevalue.Value.Equals(togglevalue.TrueValue);
+            TweakManager.HasUnsavedChanges = false;
+        }
+
+        private void OnValueChanged(object sender, EventArgs e)
+        {
+            TweakManager.HasUnsavedChanges = true;
         }
     }
 }

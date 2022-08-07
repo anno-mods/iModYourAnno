@@ -1,4 +1,6 @@
-﻿using Imya.UI.Views;
+﻿using Imya.UI.Utils;
+using Imya.UI.Views;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,6 +67,15 @@ namespace Imya.UI
 
         public void SetView(View view)
         {
+            if (GetView() == View.TWEAKER && view != View.TWEAKER)
+            {
+                if (TweakManager.Instance.HasUnsavedChanges)
+                {
+                    var dialog = PopupCreator.CreateSaveTweakPopup();
+                    if (dialog.ShowDialog() is true)
+                        TweakManager.Instance.Save();
+                }
+            }
             switch (view)
             {
                 case View.MOD_ACTIVATION: CurrentView = ModActivationView; break;
@@ -75,17 +86,16 @@ namespace Imya.UI
 
                 default: CurrentView = DummyControl; break;
             }
-
             ViewChanged(view);
         }
 
         public View GetView()
         {
-            if (DummyControl is ModActivationView) return View.MOD_ACTIVATION;
-            if (DummyControl is SettingsView) return View.SETTINGS;
-            if (DummyControl is ModTweakerView) return View.TWEAKER;
-            if (DummyControl is GameSetupView) return View.GAME_SETUP;
-            if (DummyControl is ModinfoCreatorView) return View.MODINFO_CREATOR;
+            if (CurrentView is ModActivationView) return View.MOD_ACTIVATION;
+            if (CurrentView is SettingsView) return View.SETTINGS;
+            if (CurrentView is ModTweakerView) return View.TWEAKER;
+            if (CurrentView is GameSetupView) return View.GAME_SETUP;
+            if (CurrentView is ModinfoCreatorView) return View.MODINFO_CREATOR;
 
             return View.DUMMY;
         }
