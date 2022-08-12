@@ -13,8 +13,8 @@ namespace Imya.Models.ModTweaker
         IEnumerable<IExposedModValue> ExposedModValues;
 
         public TweakExporter(IEnumerable<ModOp> modops, IEnumerable<IExposedModValue> exposes) {
-            ModOps = modops.Select(x => x.Clone()).ToList();
-            ExposedModValues = exposes;
+            ModOps = modops is not null ? modops.Select(x => x.Clone()).ToList() : Enumerable.Empty<ModOp>();
+            ExposedModValues = exposes is not null ? exposes : Enumerable.Empty<IExposedModValue>();
         }
 
         public IEnumerable<ModOp> GetExported() 
