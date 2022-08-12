@@ -20,6 +20,8 @@ namespace Imya.Models.ModTweaker
         public static readonly String DESCRIPTION = "Description";
         public static readonly String ENUM_HEADER = "FixedValues";
         public static readonly String ENUM_ENTRY = "Value";
+        public static readonly String ALT_TOGGLE_VAL = "AltValue";
+        public static readonly String INVERTED = "Invert";
 
         public static readonly String PATH = "Path";
         public static readonly String TYPE = "Type";
@@ -103,8 +105,8 @@ namespace Imya.Models.ModTweaker
         /// <returns>The default value as String</returns>
         public String GetDefaultNodeValue(IExposedModValue expose)
         {
-            var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).First();
-
+            var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).FirstOrDefault();
+            if (op is null) return String.Empty;
             foreach (XmlNode x in op.Code)
             {
                 var node = x.SelectSingleNode(expose.Path);
@@ -154,25 +156,6 @@ namespace Imya.Models.ModTweaker
         }
 
         /// <summary>
-        /// Executes A collection of exposes on <paramref name="node"/>. 
-        /// </summary>
-        /// <param name="node"></param>
-        /// <param name="exposes"></param>
-        /// <param name="NewValue"></param>
-        /// <returns>Whether any exposes were executed on the node.</returns>
-        public bool ExecuteExposes(XmlNode node, IEnumerable<IExposedModValue> exposes, String NewValue)
-        {
-            bool AnyExecutes = false;
-            foreach (IExposedModValue x in exposes)
-            {
-                bool Executed = ExecuteExpose(node, x);
-                //if no executes were done yet, consider the current value, else stay true.
-                AnyExecutes = AnyExecutes ? true : Executed;
-            }
-            return AnyExecutes;
-        }
-
-        /// <summary>
         /// Ensures that an XML node has a skip attribute
         /// </summary>
         /// <param name="n"></param>
@@ -206,41 +189,7 @@ namespace Imya.Models.ModTweaker
         /// <param name="expose"></param>
         /// <param name="NewValue"></param>
         /// <returns>Whether the expose needed to be executed.</returns>
-        private bool ExecuteExpose(XmlNode node, IExposedModValue expose)
-        {
-            var nodesToEdit = node.SelectNodes(expose.Path);
-            if (nodesToEdit is null || nodesToEdit.Count == 0) return false;
-
-            foreach (XmlNode n in nodesToEdit)
-            {
-                if(expose.ReplaceType == ExposedModValueReplaceType.Text)
-                    n.InnerText = expose.Value;
-                else if (expose.ReplaceType == ExposedModValueReplaceType.Xml)
-                    n.InnerXml = expose.Value;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Executes an Expose on the entire target document.
-        /// </summary>
-        /// <param name="expose"></param>
-        /// <returns>Whether the expose needed to be executed.</returns>
-        internal bool ExecuteExpose(IExposedModValue expose)
-        {
-            var ops = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID));
-
-            List<bool> SuccessTracker = new();
-            foreach (ModOp n in ops)
-            {
-                foreach (XmlNode x in n.Code)
-                {
-                    bool b = ExecuteExpose(x, expose);
-                    SuccessTracker.Add(b);
-                }
-            }
-            return SuccessTracker.Any(x => x == true);
-        }
+        
 
         #endregion
 
@@ -248,17 +197,19 @@ namespace Imya.Models.ModTweaker
 
         public void Export()
         {
-            foreach (IExposedModValue e in Exposes)
-            {
-                ExecuteExpose(e);
-            }
+            TweakExporter exporter = new TweakExporter(ModOps, Exposes);
+            var modops = exporter.GetExported();
+
             //ensure that the source document includes what we want.
             EnsureInclude();
-            foreach (ModOp op in ModOps)
+            foreach (ModOp op in modops)
             {
                 //ensure a skip in the source document.
-                OriginalDocument.TryGetModOpNode(op.ID!, out var modop);
-                EnsureSkipFlag(modop);
+                if (OriginalDocument.TryGetModOpNodes(op.ID!, out var modop_nodes))
+                {
+                    foreach (XmlNode node in modop_nodes!)
+                        EnsureSkipFlag(node);
+                }
 
                 //generate the mod op in the target document
                 Generate(op);

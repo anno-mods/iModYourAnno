@@ -23,9 +23,12 @@ namespace Imya.Utils
             m.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
             if (!TweakStorageShelf.Global.IsStored(m.FolderName)) return;
 
-            ModTweaks tweaks = new ModTweaks();
-            tweaks.Load(m);
-            tweaks.Save();
+            Task.Run(() =>
+            {
+                ModTweaks tweaks = new ModTweaks();
+                tweaks.Load(m);
+                tweaks.Save();
+            });
         }
 
         public void UpdateCompabilityCheck()
