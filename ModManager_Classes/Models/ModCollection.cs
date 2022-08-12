@@ -112,7 +112,10 @@ namespace Imya.Models
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
             DisplayedMods = new ObservableCollection<Mod>(Mods);
-
+            foreach (var mod in Mods)
+            {
+                ModAdded.Invoke(mod);
+            }
             Updated();
         }
 
@@ -133,10 +136,6 @@ namespace Imya.Models
                     if (File.Exists(imagepath))
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
-            }
-            foreach (var mod in mods)
-            {
-                ModAdded(mod);
             }
             Updated();
             return mods;
@@ -265,7 +264,7 @@ namespace Imya.Models
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
 
-            ModAdded(reparsed);
+            ModAdded.Invoke(reparsed);
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
