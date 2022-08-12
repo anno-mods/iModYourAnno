@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Imya.UI.Components"
+             xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              mc:Ignorable="d"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
@@ -12,9 +13,11 @@
             <RowDefinition Height="80" />
             <RowDefinition Height="80" />
             <RowDefinition />
+            <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <Converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Collapsed" FalseValue="Visible" />
         </Grid.Resources>
         <!-- Headline Dashboard -->
         <DockPanel HorizontalAlignment="Left"
@@ -79,28 +82,10 @@
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
                                Text="{Binding TextManager[DASHBOARD_MOD_ACTIVATION].Text, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center" 
-                               Style="{StaticResource IMYA_TEXT}"/>
+                               VerticalAlignment="Center"
+                               Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
             </RadioButton>
-            <!--<RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
-                         MinWidth="200"
-                         MinHeight="32"
-                         Margin="5,4,4,0"
-                         Click="GameSetupClick">
-                <StackPanel Margin="5,0,0,0"
-                            HorizontalAlignment="Left"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Stretch">
-                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                             Kind="DataUsage"
-                                             Foreground="{DynamicResource TextColorBrush}" />
-                    <TextBlock Margin="10,0,0,0"
-                               Text="{Binding TextManager[DASHBOARD_GAME_SETUP].Text, UpdateSourceTrigger=PropertyChanged}"
-                               VerticalAlignment="Center"
-                               Style="{StaticResource IMYA_TEXT}"/>
-                </StackPanel>
-            </RadioButton>-->
             <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
                          MinWidth="200"
                          MinHeight="32"
@@ -182,34 +167,85 @@
             </RadioButton>
         </StackPanel>
 
-        <!-- <ItemsControl ItemsSource="{Binding Views, UpdateSourceTrigger=PropertyChanged}"
-                      HorizontalAlignment="Left"
-                      Grid.Row="2"
-                      VerticalAlignment="Top"
-                      x:Name="ViewSelection">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <RadioButton MinWidth="200"
-                                 MinHeight="32"
-                                 Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
-                                 VerticalContentAlignment="Center"
-                                 Margin="5,4,4,0"
-                                 Click="OnViewSelectionClick">
-                        <StackPanel Margin="5,0,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Stretch"
-                                    Orientation="Horizontal">
-                            <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                                     Kind="{Binding Icon}"
-                                                     Foreground="{DynamicResource TextColorBrush}" />
-                            <TextBlock Margin="10,0,0,0"
-                                       Text="{Binding Title.Text, UpdateSourceTrigger=PropertyChanged}"
-                                       VerticalAlignment="Center"
-                                       Style="{StaticResource IMYA_TEXT}" />
-                        </StackPanel>
-                    </RadioButton>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
+        <Grid Grid.Row="3"
+              Margin="5" 
+              Visibility="{Binding AuthenticationController.IsAuthenticated, Converter={StaticResource NegateBoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <materialDesign:PackIcon Kind="Github"
+                                     Style="{StaticResource IMYA_ICON}"
+                                     VerticalAlignment="Center"
+                                     HorizontalAlignment="Center">
+
+            </materialDesign:PackIcon>
+            <TextBlock Text="Login with Github"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource IMYA_TEXT}">
+                
+            </TextBlock>
+            
+            <Button Style="{StaticResource IMYA_BUTTON}"
+                    Background="{DynamicResource BackgroundColorBrush}"
+                    Grid.Column="2"
+                    Margin="5"
+                    Click="LoginButtonClick">
+                <Grid>
+                    <materialDesign:PackIcon Kind="Login"
+                                             Style="{StaticResource IMYA_ICON}"
+                                             Height="32"
+                                             Width="32">
+                    </materialDesign:PackIcon>
+                </Grid>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="3"
+              Margin="5"
+              Visibility="{Binding AuthenticationController.IsAuthenticated, Converter={StaticResource BoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="45" />
+            </Grid.ColumnDefinitions>
+            <!-- User Login Image -->
+            <Border BorderBrush="{DynamicResource AccentColorBrush}"
+                    CornerRadius="5"
+                    BorderThickness="2"
+                    Margin="5">
+                <Border.Background>
+                    <ImageBrush ImageSource="{Binding AuthenticationController.AvatarUri, UpdateSourceTrigger=PropertyChanged}"
+                                Stretch="UniformToFill" />
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0" BlurRadius="4"/>
+                </Border.Effect>
+            </Border>
+            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                       Text="taubenangriff"
+                       Grid.Column="1"
+                       VerticalAlignment="Center"
+                       Margin="5"></TextBlock>
+            <Button Style="{StaticResource IMYA_BUTTON}"
+                    Background="{DynamicResource BackgroundColorBrush}"
+                    Grid.Column="2"
+                    Margin="5"
+                    Click="LogoutButtonClick"
+                    ToolTip="Logout">
+                <Grid>
+                    <materialDesign:PackIcon Kind="Logout"
+                                             Style="{StaticResource IMYA_ICON}"
+                                             Height="32"
+                                             Width="32"
+                                             HorizontalAlignment="Center">
+                    </materialDesign:PackIcon>
+                </Grid>
+            </Button>
+        </Grid>
+
     </Grid>
 </UserControl>

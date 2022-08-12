@@ -7,6 +7,9 @@ using System.Windows.Media;
 using System.Collections.Generic;
 using Imya.Utils;
 using Imya.Models;
+using System.Threading.Tasks;
+using Imya.UI.Utils;
+using Imya.UI.Popup;
 
 namespace Imya.UI.Views
 {
@@ -144,7 +147,6 @@ namespace Imya.UI.Views
             if (box?.SelectedItem is not ThemeSetting pair) return;
 
             ChangeColorTheme(pair);
-            
         }
 
         //Apply new Mod Directory Name
