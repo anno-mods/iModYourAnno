@@ -37,12 +37,12 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(AssetsXML);
 
-            TweakerFile.TryInit("tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
             //assets.xml only has one value
-            tweakerFile.Save("tmp");
+            tweakerFile.Save("tweak_tmp");
 
             XmlDocument AssetsWithExpectedSkip = new XmlDocument();
-            AssetsWithExpectedSkip.Load("tmp/assets.xml");
+            AssetsWithExpectedSkip.Load("tweak_tmp/assets.xml");
             var node = AssetsWithExpectedSkip.SelectSingleNode("/ModOps/ModOp");
 
             Assert.Equal("ModOp", node?.Name);
@@ -76,12 +76,12 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(AssetsXML);
 
-            TweakerFile.TryInit("tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
             //assets.xml only has one value
-            tweakerFile.Save("tmp");
+            tweakerFile.Save("tweak_tmp");
 
             XmlDocument AssetsWithExpectedInclude = new XmlDocument();
-            AssetsWithExpectedInclude.Load("tmp/assets.xml");
+            AssetsWithExpectedInclude.Load("tweak_tmp/assets.xml");
             var node = AssetsWithExpectedInclude.SelectSingleNode("/ModOps/Include");
 
             Assert.Equal(IncludeXML, node?.OuterXml);
@@ -111,14 +111,14 @@ namespace Imya.UnitTests
 
             LoadAssets(AssetsXML_XmlReplace);
 
-            TweakerFile.TryInit("tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
             //assets.xml only has one value
             var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
             toggleVal!.IsTrue = false;
-            tweakerFile.Save("tmp");
+            tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
             var node = ChangedAssets.SelectSingleNode("/ModOps/ModOp/Standard/GUID");
 
             Assert.Equal("1337", node?.InnerText);
@@ -140,13 +140,13 @@ namespace Imya.UnitTests
             String NewValue = "Some other Text";
             LoadAssets(AssetsXML_TextReplace);
 
-            TweakerFile.TryInit("tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
             //assets.xml only has one value
             tweakerFile.Exposes.First().Value = NewValue;
-            tweakerFile.Save("tmp");
+            tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
             var node = ChangedAssets.SelectSingleNode("/ModOps/ModOp/Text");
 
             Assert.Equal(NewValue, node?.InnerText);
@@ -174,12 +174,12 @@ namespace Imya.UnitTests
 
             LoadAssets(AssetsXML_TextReplace);
 
-            TweakerFile.TryInit("tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
             //assets.xml only has one value
-            tweakerFile.Save("tmp");
+            tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
             var node = ChangedAssets.FirstChild;
 
             Assert.Equal(ImyaTweakXML, node?.OuterXml);
@@ -191,17 +191,17 @@ namespace Imya.UnitTests
         /// </summary>
         private void InitWorkingDirectory()
         {
-            DirectoryEx.EnsureDeleted("tmp");
-            Directory.CreateDirectory("tmp");
-            File.Create("tmp/assets.xml").Close();
-            File.Create("tmp/assets.imyatweak.xml").Close();
+            DirectoryEx.EnsureDeleted("tweak_tmp");
+            Directory.CreateDirectory("tweak_tmp");
+            File.Create("tweak_tmp/assets.xml").Close();
+            File.Create("tweak_tmp/assets.imyatweak.xml").Close();
         }
 
         private void LoadAssets(String AssetsXML)
         {
             XmlDocument Assets = new XmlDocument();
             Assets.LoadXml(AssetsXML);
-            Assets.Save("tmp/assets.xml");
+            Assets.Save("tweak_tmp/assets.xml");
         }
     }
 }
