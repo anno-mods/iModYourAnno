@@ -23,8 +23,6 @@ namespace Imya.GithubIntegration.Download
     {
         public GithubDownloaderOptions Options = new GithubDownloaderOptions();
 
-        IRepositoryProvider releaseProvider = new RepositoryProvider();
-
         public GithubDownloader(GithubDownloaderOptions _options)
         {
             Options = _options;
@@ -63,18 +61,17 @@ namespace Imya.GithubIntegration.Download
             }
         }
 
-        public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo mod, IProgress<float>? progress = null)
+        public async Task<DownloadResult> DownloadRepoInfoAsync(GithubRepoInfo repoInfo, IProgress<float>? progress = null)
         {
-            var release = await releaseProvider.FetchLatestReleaseAsync(mod);
-            var ReleaseAsset = release?.Assets.FirstOrDefault(x => x.Name.Equals(mod.GetReleaseAssetName()));
+            var releaseAsset = await repoInfo.GetReleaseAssetAsync();
 
-            if (release is null || ReleaseAsset is null)
+            if (releaseAsset is null)
             {
                 //return new DownloadResult { DownloadSuccessful = false };
-                throw new InstallationException($"Could not fetch any Release for {mod}");
+                throw new InstallationException($"Could not fetch any Release for {repoInfo}");
             }
 
-            return await DownloadReleaseAssetAsync(ReleaseAsset, progress);
+            return await DownloadReleaseAssetAsync(releaseAsset, progress);
         }
     }
 

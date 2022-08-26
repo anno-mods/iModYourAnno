@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Octokit;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,35 +12,37 @@ namespace Imya.GithubIntegration
     {
         public String Name { get; init; }
         public String Owner { get; init; }
+        public String ReleaseID { get; init; }
 
-        public String ReleaseAssetName { get => GetReleaseAssetName(); }
         public String ReadmeMarkdownFilepath { get => GetMarkdownReadmeFilepath(); }
 
-        private IReleaseAssetNameStrategy _releaseAssetNameStrategy;
+        private IReleaseAssetStrategy _releaseAssetStrategy;
         private IReadmeFilepathStrategy _readmeFilepathStrategy;
 
         public GithubRepoInfo(
-            IReleaseAssetNameStrategy releaseAssetNameStrategy,
+            IReleaseAssetStrategy releaseAssetStrategy,
             IReadmeFilepathStrategy readmeFilepathStrategy,
             String owner, 
-            String repoName)
+            String repoName,
+            String releaseID)
         {
             Name = repoName;
             Owner = owner;
+            ReleaseID = releaseID;
 
-            _releaseAssetNameStrategy = releaseAssetNameStrategy;
+            _releaseAssetStrategy = releaseAssetStrategy;
             _readmeFilepathStrategy = readmeFilepathStrategy;
         }
 
         public override bool Equals([NotNullWhen(true)] object? obj)
         {
             if (obj is not GithubRepoInfo other) return false;
-            return Name == other.Name && Owner == other.Owner && GetReleaseAssetName() == other.GetReleaseAssetName();
+            return Name == other.Name && Owner == other.Owner && ReleaseID == other.ReleaseID;
         }
 
-        public String GetReleaseAssetName()
+        public async Task<ReleaseAsset?> GetReleaseAssetAsync()
         {
-            return _releaseAssetNameStrategy.GetReleaseAssetName();
+            return await _releaseAssetStrategy.GetReleaseAssetAsync(this);
         }
 
         public String GetMarkdownReadmeFilepath()
@@ -49,7 +52,7 @@ namespace Imya.GithubIntegration
 
         public override String ToString()
         {
-            return $"{Owner}/{Name} : {GetReleaseAssetName()}";
+            return $"{Owner}/{Name} : {ReleaseID}";
         }
     }
 

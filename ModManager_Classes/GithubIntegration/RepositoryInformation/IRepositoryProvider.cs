@@ -12,5 +12,7 @@ namespace Imya.GithubIntegration.RepositoryInformation
         Task<Release?> FetchLatestReleaseAsync(GithubRepoInfo repoInfo);
 
         Task<Repository?> FetchRepositoryAsync(GithubRepoInfo repoInfo);
+
+        Task<IReadOnlyList<Release>?> FetchReleasesAsync(GithubRepoInfo repoInfo);
     }
 }

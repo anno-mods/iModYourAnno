@@ -22,8 +22,11 @@ namespace Imya.Models.Installation
             AdditionalText = new SimpleText(repoInfo.ToString());
             Options = options;
 
+            //sanitize releaseid just in case
+            string CleanReleaseID = String.Concat(RepositoryToInstall.ReleaseID.Split(Path.GetInvalidFileNameChars()));
+
             //preemtively set this for later error handling
-            DownloadDestination = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, RepositoryToInstall.GetReleaseAssetName());
+            DownloadDestination = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, CleanReleaseID);
         }
 
         public override Task Finalize()
