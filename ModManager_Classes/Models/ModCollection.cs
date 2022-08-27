@@ -61,9 +61,15 @@ namespace Imya.Models
         private int _installedSizeInMBs = 0;
         #endregion
 
+        /// <summary>
+        /// Triggers when a not yet loaded mod has been added.
+        /// </summary>
         public event ModAddedEventHandler ModAdded = delegate { };
         public delegate void ModAddedEventHandler(Mod m);
 
+        /// <summary>
+        /// Triggers when mods have fully been loaded.
+        /// </summary>
         public event UpdatedEventHandler Updated = delegate { };
         public delegate void UpdatedEventHandler();
 

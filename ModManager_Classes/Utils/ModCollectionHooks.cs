@@ -1,6 +1,7 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Models.ModTweaker;
+using Imya.Utils.Validation;
 
 namespace Imya.Utils
 {
@@ -8,9 +9,23 @@ namespace Imya.Utils
     {
         ModCompabilityValidator compabilityValidator = new ModCompabilityValidator();
 
-        private ModCollectionHooks() {
-            ModCollection.Global!.ModAdded += UpdateWithTweak;
-            ModCollection.Global!.Updated += UpdateCompabilityCheck;
+        private ModCollectionHooks()
+        {
+            if (ModCollection.Global is null)
+                return; // TODO should not be possible, but make it noticable somehow
+
+            ModCollection.Global.ModAdded += UpdateWithTweak;
+            ModCollection.Global.ModAdded += ValidateOnAdd;
+            ModCollection.Global.Updated += UpdateCompabilityCheck;
+        }
+
+        private void ValidateOnAdd(Mod mod)
+        {
+            IModValidator[] validators = new[] { new ModContentValidator() };
+            foreach (var validator in validators)
+            {
+                validator.Validate(mod);
+            }
         }
 
         public static void Initialize()

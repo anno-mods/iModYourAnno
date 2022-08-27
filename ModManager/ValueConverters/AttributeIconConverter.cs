@@ -16,17 +16,19 @@ namespace Imya.UI.ValueConverters
     {
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
-            if (value is not IAttribute attrib) return String.Empty;
+            if (value is not IAttribute attrib) return
+                string.Empty;
 
-            switch (attrib.AttributeType)
+            return attrib.AttributeType switch
             {
-                case AttributeType.ModStatus: return ConvertModStatus((attrib as ModStatusAttribute)?.Status);
-                case AttributeType.ModCompabilityIssue: return "AlertBox";
-                case AttributeType.UnresolvedDependencyIssue: return "FileTree";
-                case AttributeType.TweakedMod: return "Tools";
-                case AttributeType.MissingModinfo: return "HelpBox";
-            }
-            return String.Empty;
+                AttributeType.ModStatus => ConvertModStatus((attrib as ModStatusAttribute)?.Status),
+                AttributeType.ModCompabilityIssue => "AlertBox",
+                AttributeType.UnresolvedDependencyIssue => "FileTree",
+                AttributeType.TweakedMod => "Tools",
+                AttributeType.MissingModinfo => "HelpBox",
+                AttributeType.ModContentInSubfolder => "AlertBox",
+                _ => "InformationOutline",
+            };
         }
 
         private String ConvertModStatus(ModStatus? status)

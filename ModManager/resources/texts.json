@@ -1300,6 +1300,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ATTRIBUTE_MODCONTENTSUBFOLDER": {
+    "Chinese": null,
+    "English": "Wrong installation. The mod is in a subfolder. Please install them directly in to the mod folder.",
+    "French": null,
+    "German": "Falsche Installation. Die Mod befindet sich in einem Unterverzeichnis. Installiere die Mod direkt im Modsverzeichnis.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ATTRIBUTE_STATICHELP_UPDATEDMOD": {
     "Chinese": null,
     "English": "Indicates that the mod was updated in a recent installation.",

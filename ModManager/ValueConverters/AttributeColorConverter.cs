@@ -22,15 +22,16 @@ namespace Imya.UI.ValueConverters
         {
             if (value is not IAttribute attrib) return String.Empty;
 
-            switch (attrib.AttributeType)
+            return attrib.AttributeType switch
             {
-                case AttributeType.ModStatus: return ConvertModStatus((attrib as ModStatusAttribute)?.Status);
-                case AttributeType.ModCompabilityIssue: return FindResourceBrush("ErrorColorBrush");
-                case AttributeType.UnresolvedDependencyIssue: return FindResourceBrush("ErrorColorBrush");
-                case AttributeType.TweakedMod: return FindResourceBrush("InformationColorBrush");
-                case AttributeType.MissingModinfo: return FindResourceBrush("InformationColorBrush");
-            }
-            return String.Empty;
+                AttributeType.ModStatus => ConvertModStatus((attrib as ModStatusAttribute)?.Status),
+                AttributeType.ModCompabilityIssue => FindResourceBrush("ErrorColorBrush"),
+                AttributeType.UnresolvedDependencyIssue => FindResourceBrush("ErrorColorBrush"),
+                AttributeType.TweakedMod => FindResourceBrush("InformationColorBrush"),
+                AttributeType.MissingModinfo => FindResourceBrush("InformationColorBrush"),
+                AttributeType.ModContentInSubfolder => FindResourceBrush("ErrorColorBrush"),
+                _ => FindResourceBrush("TextColorBrush"),
+            };
         }
 
         private SolidColorBrush ConvertModStatus(ModStatus? status)
