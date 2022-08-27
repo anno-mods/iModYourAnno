@@ -7,6 +7,12 @@ namespace Imya.Utils
 {
     public class ModCollectionHooks
     {
+        private readonly IModValidator[] validators = new IModValidator[]
+            {
+                new ModContentValidator(),
+                new ModCompatibilityValidator()
+            };
+
         private ModCollectionHooks()
         {
             if (ModCollection.Global is null)
@@ -17,18 +23,10 @@ namespace Imya.Utils
 
         private void ValidateOnChange(ModCollection.CollectionChangeAction action, IEnumerable<Mod> mods)
         {
-            var validators = new IModValidator[]
-            { 
-                new ModContentValidator(),
-                new ModCompatibilityValidator()
-            };
-
             foreach (var mod in mods)
             {
                 foreach (var validator in validators)
-                {
                     validator.Validate(mod, ModCollection.Global);
-                }
 
                 UpdateWithTweak(mod);
             }
