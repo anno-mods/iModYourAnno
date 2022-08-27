@@ -9,8 +9,10 @@ namespace Imya.Utils.Validation
     /// </summary>
     public class ModContentValidator : IModValidator
     {
-        public void Validate(Mod mod)
+        public void Validate(Mod mod, ModCollection? collection)
         {
+            mod.Attributes.RemoveAttributesByType(AttributeType.ModContentInSubfolder);
+
             string dataPath = Path.Combine(mod.FullModPath, "data");
             if (!Directory.Exists(dataPath))
             {

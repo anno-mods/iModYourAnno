@@ -4,6 +4,6 @@ namespace Imya.Utils.Validation
 {
     public interface IModValidator
     {
-        void Validate(Mod mod);
+        void Validate(Mod mod, ModCollection? collection = null);
     }
 }

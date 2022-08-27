@@ -62,16 +62,15 @@ namespace Imya.Models
         #endregion
 
         /// <summary>
-        /// Triggers when a not yet loaded mod has been added.
+        /// Triggers after added mods are loaded.
         /// </summary>
-        public event ModAddedEventHandler ModAdded = delegate { };
-        public delegate void ModAddedEventHandler(Mod m);
-
-        /// <summary>
-        /// Triggers when mods have fully been loaded.
-        /// </summary>
-        public event UpdatedEventHandler Updated = delegate { };
-        public delegate void UpdatedEventHandler();
+        public event UpdatedEventHandler CollectionChanged;
+        public delegate void UpdatedEventHandler(CollectionChangeAction action, IEnumerable<Mod> mods);
+        public enum CollectionChangeAction
+        {
+            Add,
+            Reset
+        }
 
         public string ModsPath { get; private set; }
 
@@ -118,11 +117,7 @@ namespace Imya.Models
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
             DisplayedMods = new ObservableCollection<Mod>(Mods);
-            foreach (var mod in Mods)
-            {
-                ModAdded.Invoke(mod);
-            }
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Add, Mods);
         }
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
@@ -143,7 +138,6 @@ namespace Imya.Models
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
             }
-            Updated();
             return mods;
         }
 
@@ -192,8 +186,6 @@ namespace Imya.Models
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
-
-                Updated();
             }
 
         }
@@ -208,9 +200,6 @@ namespace Imya.Models
         {
             Directory.CreateDirectory(ModsPath);
 
-            // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
-            // TODO external issue handling
-            // done, boss! :kekw:
             try
             {
                 foreach (var sourceMod in source.Mods)
@@ -228,7 +217,7 @@ namespace Imya.Models
                 DisplayedMods = new ObservableCollection<Mod>(Mods);
             }
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
@@ -270,7 +259,7 @@ namespace Imya.Models
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
 
-            ModAdded.Invoke(reparsed);
+            CollectionChanged?.Invoke(CollectionChangeAction.Add, new Mod[] { reparsed });
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -302,7 +291,7 @@ namespace Imya.Models
             foreach (var mod in mods)
                 await DeleteAsync(mod);
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         /// <summary>
@@ -360,7 +349,7 @@ namespace Imya.Models
                     await mod.ChangeActivationAsync(active);
             }
 
-            Updated();
+            CollectionChanged(CollectionChangeAction.Reset, Mods);
         }
 
         public async Task DeactivateAllAsync()
@@ -368,7 +357,7 @@ namespace Imya.Models
             foreach (Mod mod in Mods)
                 await mod.ChangeActivationAsync(false);
 
-            Updated();
+            CollectionChanged(CollectionChangeAction.Reset, Mods);
         }
         #endregion
 
