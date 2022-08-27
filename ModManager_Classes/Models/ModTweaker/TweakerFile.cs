@@ -41,6 +41,8 @@ namespace Imya.Models.ModTweaker
         public String SourceFilename { get; private set; }
         public String EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.xml";
 
+        public string Title { get; private set; }
+
         public ObservableCollection<IExposedModValue> Exposes
         {
             get => _exposes;
@@ -73,6 +75,7 @@ namespace Imya.Models.ModTweaker
         private TweakerFile(String _filepath, String _basepath)
         {
             FilePath = _filepath;
+            Title = Path.GetFileName(FilePath);
             BasePath = _basepath;
 
             SourceFilename = Path.GetFileName(_filepath);
@@ -241,11 +244,12 @@ namespace Imya.Models.ModTweaker
             {
                 tweakerFile.OriginalDocument = doc;
                 tweakerFile.BasePath = Path.GetFileName(basePath);
-
+                
                 tweakerFile.TweakStorage = tweakStorage;
 
                 var parser = new XmlPatchParser(doc);
                 var editables = parser.FetchExposes(tweakerFile);
+                tweakerFile.Title = parser.FetchTweakerFileSettings() ?? tweakerFile.Title;
 
                 tweakerFile.ModOps = new ObservableCollection<ModOp>(parser.FetchModOps(tweakerFile.TargetDocument));
 

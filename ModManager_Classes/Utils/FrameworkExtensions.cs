@@ -57,11 +57,27 @@ namespace Imya.Utils
         /// <summary>
         /// Delete folder if it exists.
         /// </summary>
-        /// <param name="path"></param>
         public static void EnsureDeleted(string path)
         {
             if (Directory.Exists(path))
                 Directory.Delete(path, true);
+        }
+
+        /// <summary>
+        /// Delete folder if it exists. No Exceptions
+        /// </summary>
+        public static bool TryDelete(string path)
+        {
+            try
+            {
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 
