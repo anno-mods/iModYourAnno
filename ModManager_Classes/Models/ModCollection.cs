@@ -230,6 +230,11 @@ namespace Imya.Models
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
+
+                // trigger changed events for activation/deactivation
+                // the easiest way to ensure we capture all events is by looking at the stats
+                // TODO not the best way to handle as this may also lead to double trigger
+                CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
             }
 
         }
@@ -393,7 +398,7 @@ namespace Imya.Models
                     await mod.ChangeActivationAsync(active);
             }
 
-            CollectionChanged(CollectionChangeAction.Reset, Mods);
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         public async Task DeactivateAllAsync()
@@ -401,7 +406,7 @@ namespace Imya.Models
             foreach (Mod mod in Mods)
                 await mod.ChangeActivationAsync(false);
 
-            CollectionChanged(CollectionChangeAction.Reset, Mods);
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
         #endregion
 

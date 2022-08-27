@@ -27,7 +27,7 @@ namespace Imya.Utils
             {
                 foreach (var validator in validators)
                 {
-                    validator.Validate(mod);
+                    validator.Validate(mod, ModCollection.Global);
                 }
 
                 UpdateWithTweak(mod);
