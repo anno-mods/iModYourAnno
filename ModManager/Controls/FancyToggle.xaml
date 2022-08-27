@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Imya.UI.Controls.FancyToggle"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Imya.UI.Controls"
+             xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="120">
+    <Grid>
+        <Grid.Resources>
+            <!-- use Hide to make ensure parent of on/off text doesn't change size -->
+            <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue" TrueValue="Visible" FalseValue="Hidden" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnFalse" TrueValue="Hidden" FalseValue="Visible" />
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            Style="{StaticResource IMYA_TEXT}"
+            Margin="3,6"
+            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=Label, UpdateSourceTrigger=PropertyChanged}"/>
+        <CheckBox
+            Grid.Column="1"
+            Style="{StaticResource IMYA_TOGGLESWITCH}"
+            Margin="8,0,8,0"
+            HorizontalAlignment="Right"
+            FlowDirection="RightToLeft"
+            IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <CheckBox.Content>
+                <Grid>
+                    <TextBlock 
+                        Name="OnTextBlock"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource IMYA_TEXT}"
+                        Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=OnText, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=IsChecked, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock 
+                        Name="OffTextBlock"
+                        HorizontalAlignment="Left"
+                        Style="{StaticResource IMYA_TEXT}"
+                        Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=OffText, UpdateSourceTrigger=PropertyChanged}"
+                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type local:FancyToggle}}, Path=IsChecked, Converter={StaticResource VisibleOnFalse}, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </CheckBox.Content>
+        </CheckBox>
+    </Grid>
+</UserControl>

@@ -66,5 +66,14 @@ namespace Imya.Models.ModTweaker
                 if (op is not null && op.HasID) yield return op;
             }
         }
+
+        public string? FetchTweakerFileSettings()
+        {
+            var tweaks = Document.SelectSingleNode("/ModOps/ImyaTweaks");
+            if (tweaks is null)
+                return null;
+
+            return tweaks.Attributes?["Title"]?.Value;
+        }
     }
 }

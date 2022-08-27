@@ -11,8 +11,6 @@ namespace Imya.Models.Options
 
     public class GithubDownloaderOptions
     {
-        public int DownloadBufferSize { get; set; } = 81920;
-        public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(10);
         public String DownloadDirectory { get; set; } = ImyaSetupManager.Instance.DownloadDirectoryPath;
     }
 

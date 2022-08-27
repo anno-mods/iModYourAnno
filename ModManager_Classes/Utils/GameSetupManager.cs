@@ -188,10 +188,7 @@ namespace Imya.Utils
         public void DeleteCache()
         {
             var cache = Path.Combine(GetModDirectory(), ".cache");
-            if (Directory.Exists(cache))
-            {
-                Directory.Delete(cache, true);
-            }
+            _ = DirectoryEx.TryDelete(cache);
         }
 
         private void ActivateModloader()

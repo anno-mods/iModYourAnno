@@ -62,7 +62,7 @@
                             <Expander IsExpanded="True">
                                 <Expander.Header>
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding FilePath, Converter={StaticResource FileNameConverter}}"
+                                               Text="{Binding Title}"
                                                Margin="5">
                                     </TextBlock>
                                 </Expander.Header>

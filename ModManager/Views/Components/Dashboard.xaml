@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Imya.UI.Controls"
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              mc:Ignorable="d"
@@ -57,11 +58,10 @@
                                Style="{StaticResource IMYA_TEXT}"/>
                 </DockPanel>
             </Button>
-            <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
-                      Content="Modloader"
-                      Margin="10,3,0,0"
-                      IsChecked="{Binding GameSetupManager.ModloaderActivationDesiredOnStart, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-            </CheckBox>
+            <controls:FancyToggle 
+                Label="{Binding TextManager[DASHBOARD_MODLOADER].Text, UpdateSourceTrigger=PropertyChanged}"
+                Margin="10,3,0,0"
+                IsChecked="{Binding GameSetupManager.ModloaderActivationDesiredOnStart, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Left"
                     Grid.Row="2"

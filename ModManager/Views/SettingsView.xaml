@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:Imya.UI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -100,14 +101,16 @@
                                    VerticalAlignment="Center"
                                    Margin="5">
                         </TextBlock>
-                        <CheckBox Margin="5"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Left"
-                                  Grid.Column="1"
-                                  Foreground="{DynamicResource AccentColorBrush}"
-                                  Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                  IsChecked="{Binding ShowConsole, Mode=TwoWay}">
-                        </CheckBox>
+                        <controls:FancyToggle
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Grid.Column="1"
+                            OnText="{Binding TextManager[CONTROLS_TOGGLE_SHOW].Text}"
+                            OffText="{Binding TextManager[CONTROLS_TOGGLE_HIDE].Text}"
+                            Foreground="{DynamicResource AccentColorBrush}"
+                            IsChecked="{Binding ShowConsole, Mode=TwoWay}">
+                        </controls:FancyToggle>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -121,14 +124,14 @@
                                    Margin="5"
                                    TextWrapping="Wrap">
                         </TextBlock>
-                        <CheckBox Margin="5"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Left"
-                                  Grid.Column="1"
-                                  Foreground="{DynamicResource AccentColorBrush}"
-                                  Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                  IsChecked="{Binding ModCreatorMode, Mode=TwoWay}">
-                        </CheckBox>
+                        <controls:FancyToggle
+                            Margin="5"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Grid.Column="1"
+                            Foreground="{DynamicResource AccentColorBrush}"
+                            IsChecked="{Binding ModCreatorMode, Mode=TwoWay}">
+                        </controls:FancyToggle>
                     </Grid>
                 </StackPanel>
             </Border>

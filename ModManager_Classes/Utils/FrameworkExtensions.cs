@@ -64,9 +64,25 @@ namespace Imya.Utils
         }
 
         /// <summary>
+        /// Delete folder if it exists. No Exceptions
+        /// </summary>
+        public static bool TryDelete(string path)
+        {
+            try
+            {
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
+        }        
+
+        /// <summary>
         /// Find paths with a folder name.
         /// </summary>
-        /// <returns></returns>
         public static IEnumerable<string> FindFolder(string path, string folderName)
         {
             List<string> result = new();
