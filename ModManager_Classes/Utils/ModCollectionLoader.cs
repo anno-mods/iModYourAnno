@@ -31,7 +31,7 @@ namespace Imya.Utils
 
             progress?.SetProgressRange(0.9f, 1);
 
-            var collection = new ModCollection(extractTarget);
+            var collection = new ModCollection(extractTarget, autofixSubfolder: true);
             await collection.LoadModsAsync();
 
             progress?.Report(1f);

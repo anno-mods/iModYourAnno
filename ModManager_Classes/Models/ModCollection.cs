@@ -64,7 +64,7 @@ namespace Imya.Models
         /// <summary>
         /// Triggers after added mods are loaded.
         /// </summary>
-        public event UpdatedEventHandler CollectionChanged;
+        public event UpdatedEventHandler? CollectionChanged;
         public delegate void UpdatedEventHandler(CollectionChangeAction action, IEnumerable<Mod> mods);
         public enum CollectionChangeAction
         {
@@ -80,7 +80,9 @@ namespace Imya.Models
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
 
-        private readonly ModCollectionOptions _options;
+        private readonly bool _normalize;
+        private readonly bool _loadImages;
+        private readonly bool _autofixSubfolder;
 
         public IModComparer ModComparer { get; set; } = new NameComparer();
 
@@ -88,18 +90,17 @@ namespace Imya.Models
         /// Open mod collection from folder.
         /// </summary>
         /// <param name="path">Path to mods.</param>
-        /// <param name="options.Normalize">Remove duplicate "-"</param>
-        /// <param name="options.LoadImages">Load image files into memory</param>
-        public ModCollection(string path, ModCollectionOptions? options = null)
+        /// <param name="normalize">Remove duplicate "-"</param>
+        /// <param name="loadImages">Load image files into memory</param>
+        /// <param name="autofixSubfolder">find data/ in subfolder and move up</param>
+        public ModCollection(string path, bool normalize = false, bool loadImages = false, bool autofixSubfolder = false)
         {
             ModsPath = path;
-            _options = new () {
-                Normalize = options?.Normalize ?? false,
-                LoadImages = options?.LoadImages ?? false,
-            };
+            _normalize = normalize;
+            _loadImages = loadImages;
+            _autofixSubfolder = autofixSubfolder;
         }
 
-        
         /// <summary>
         /// Load all mods.
         /// </summary>
@@ -112,6 +113,9 @@ namespace Imya.Models
                 return;
             }
 
+            if (_autofixSubfolder)
+                AutofixSubfolders(ModsPath);
+
             _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                 .Where(x => !Path.GetFileName(x).StartsWith(".")));
 
@@ -120,15 +124,54 @@ namespace Imya.Models
             CollectionChanged?.Invoke(CollectionChangeAction.Add, Mods);
         }
 
+        /// <summary>
+        /// If there's no data/ top-level, move all data/ folders up - no matter how deep they are.
+        /// Obviously ignore data/ under data/ like in data/abc/data/ situations
+        /// </summary>
+        private static void AutofixSubfolders(string modsPath)
+        {
+            foreach (var folder in Directory.EnumerateDirectories(modsPath))
+            {
+                if (Directory.Exists(Path.Combine(folder, "data")))
+                    continue;
+
+                var potentialMods = DirectoryEx.FindFolder(folder, "data").Select(x => Path.GetDirectoryName(x)!);
+                foreach (var potentialMod in potentialMods)
+                {
+                    try
+                    {
+                        DirectoryEx.CleanMove(potentialMod, Path.Combine(modsPath, Path.GetFileName(potentialMod)));
+                    }
+                    catch
+                    {
+                        // TODO should we say something?
+                    }
+                }
+
+                // only remove the parent folder if all content has been moved
+                if (!Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories).Any())
+                {
+                    try
+                    {
+                        Directory.Delete(folder, true);
+                    }
+                    catch
+                    {
+                        // tough luck, but not harmful
+                    }
+                }
+            }
+        }
+
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
         {
             var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
-            if (_options.Normalize)
+            if (_normalize)
             {
                 foreach (var mod in mods)
                     await mod.NormalizeAsync();
             }
-            if (_options.LoadImages)
+            if (_loadImages)
             {
                 foreach (var mod in mods)
                 {

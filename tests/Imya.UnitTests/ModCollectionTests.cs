@@ -7,6 +7,7 @@ using Imya.Utils;
 using System.Linq;
 using Imya.Models.Attributes;
 using Imya.UnitTests.Models;
+using System.Collections.Generic;
 
 namespace Imya.UnitTests
 {
@@ -45,6 +46,42 @@ namespace Imya.UnitTests
             var col = new ModCollection("tmp\\asdf");
             col.LoadModsAsync().Wait();
             Assert.Empty(col.Mods);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void LoadMods_AutofixSubfolder(bool autofixSubfolder)
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create source
+            const string firstLevel = @"tmp\source\collection\[a] mod1\data";
+            Directory.CreateDirectory(firstLevel);
+            File.WriteAllText($@"{firstLevel}\random.txt", "");
+            const string secondLevel = @"tmp\source\collection\deep\-[a] mod2\data";
+            Directory.CreateDirectory(secondLevel);
+            File.WriteAllText($@"{secondLevel}\random.txt", "");
+            var source = new ModCollection(@"tmp\source", autofixSubfolder: autofixSubfolder);
+            source.LoadModsAsync().Wait();
+
+            if (autofixSubfolder)
+            {
+                // paths should be corrected
+                var sorted = new SortedSet<string>(source.Mods.Select(x => x.FullModPath)).ToArray();
+                Assert.Equal(2, sorted.Length);
+                Assert.Equal(@"tmp\source\-[a] mod2", sorted[0]);
+                Assert.Equal(@"tmp\source\[a] mod1", sorted[1]);
+
+                // empty collection should be removed
+                Assert.False(Directory.Exists(@"tmp\source\collection"));
+            }
+            else
+            {
+                // path should be same
+                Assert.Equal(1, source.Mods.Count);
+                Assert.Equal(@"tmp\source\collection", source.Mods[0].FullModPath);
+            }
         }
 
         /// <summary>
