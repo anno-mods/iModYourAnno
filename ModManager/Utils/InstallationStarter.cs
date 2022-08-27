@@ -97,6 +97,10 @@ namespace Imya.UI.Utils
             {
                 return new InstallationResult(InstallationResultType.Exception, ex);
             }
+            catch (Exception e)
+            {
+                return new InstallationResult(InstallationResultType.Exception, new InstallationException("An unknown exception occured."));
+            }
             finally
             {
                 if (installation is Task<IInstallation>)

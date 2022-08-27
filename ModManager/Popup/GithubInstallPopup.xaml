@@ -126,7 +126,7 @@
                                        Padding="5,0"></TextBlock>
                         </StackPanel>
 
-                        <TextBlock Text="{Binding ReleaseAssetName}"
+                        <TextBlock Text="{Binding ReleaseID}"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Grid.Row="2"
                                    HorizontalAlignment="Left"

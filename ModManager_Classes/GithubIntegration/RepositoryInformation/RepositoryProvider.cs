@@ -25,6 +25,19 @@ namespace Imya.GithubIntegration.RepositoryInformation
             return null;
         }
 
+        public async Task<IReadOnlyList<Release>?> FetchReleasesAsync(GithubRepoInfo repository)
+        {
+            try
+            {
+                return await _githubClient.Repository.Release.GetAll(repository.Owner, repository.Name);
+            }
+            catch (ApiException e)
+            {
+
+            }
+            return null;
+        }
+
         public async Task<Repository?> FetchRepositoryAsync(GithubRepoInfo repoInfo)
         {
             try
