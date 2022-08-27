@@ -71,8 +71,7 @@
                             </Border.RenderTransform>
                         </Border>
                         </Grid>
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Margin="8,0,0,0">
+                        <TextBlock Style="{StaticResource IMYA_TEXT}">
                             <ContentPresenter
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 Content="{TemplateBinding Content}"
