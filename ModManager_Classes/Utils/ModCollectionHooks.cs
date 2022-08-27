@@ -10,7 +10,7 @@ namespace Imya.Utils
         private ModCollectionHooks()
         {
             if (ModCollection.Global is null)
-                return; // TODO should not be possible, but make it noticable somehow
+                throw new Exception("ModCollection.Global is null. Should not happen, hence something is very wrong.");
 
             ModCollection.Global.CollectionChanged += ValidateOnChange;
         }

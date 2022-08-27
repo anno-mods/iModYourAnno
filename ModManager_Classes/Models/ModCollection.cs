@@ -62,7 +62,8 @@ namespace Imya.Models
         #endregion
 
         /// <summary>
-        /// Triggers after added mods are loaded.
+        /// Triggers after any change of the collection.
+        /// Mods are fully loaded at this point.
         /// </summary>
         public event UpdatedEventHandler? CollectionChanged;
         public delegate void UpdatedEventHandler(CollectionChangeAction action, IEnumerable<Mod> mods);
