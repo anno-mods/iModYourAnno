@@ -17,7 +17,6 @@ using Imya.GithubIntegration;
 using Imya.UI.Utils;
 using Imya.Models.Options;
 using Imya.GithubIntegration.Download;
-using Imya.GithubIntegration.StaticData;
 
 namespace Imya.UI.Views
 {
@@ -34,8 +33,6 @@ namespace Imya.UI.Views
         private InstallationStarter InstallerMiddleware;
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
-
-        IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
         #region notifyable properties
 

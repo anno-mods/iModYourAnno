@@ -1,0 +1,29 @@
+﻿{
+  "packages": [
+    {
+      "repo": "Spice-it-Up",
+      "owner": "anno-mods",
+      "download": "Spice-it-Up.zip"
+    },
+    {
+      "repo": "New-World-Tourism",
+      "owner": "anno-mods",
+      "download": "Gameplay.New.World.Tourism.zip"
+    },
+    {
+      "repo": "anno-1800-jakobs-mods",
+      "owner": "jakobharder",
+      "download": "Jakobs-Collection-v*.zip"
+    },
+    {
+      "repo": "WholesomeHaciendaHaul",
+      "owner": "Taludas",
+      "download": "TheWholesomeHaciendaHaul_v*.zip"
+    },
+    {
+      "repo": "SmallModsCollection",
+      "owner": "Taludas",
+      "download": "SmallModsCollection_v*.zip"
+    }
+  ]
+}

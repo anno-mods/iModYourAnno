@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
 using Imya.Utils;
@@ -6,25 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Imya.UI.Popup
 {
-    /// <summary>
-    /// Interaktionslogik für GenericOkayPopup.xaml
-    /// </summary>
     public partial class GithubInstallPopup : Window, INotifyPropertyChanged
     {
         public IText MESSAGE { get; set; }
@@ -62,8 +52,6 @@ namespace Imya.UI.Popup
 
         public TextManager TextManager { get;} = TextManager.Instance;
 
-        IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
-
         public GithubInstallPopup()
         {
             InitializeComponent();
@@ -72,7 +60,15 @@ namespace Imya.UI.Popup
             OK_TEXT = new SimpleText("OK");
             CANCEL_TEXT = new SimpleText("Cancel");
 
-            AllRepositories = new ObservableCollection<GithubRepoInfo>(RepoInfoProvider.GetAll());
+            try
+            {
+                var repoInfoProvider = new JsonRepoInfoSource(File.ReadAllText("resources/modindex.json"));
+                AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
+            }
+            catch
+            {
+                AllRepositories = new ();
+            }
 
             DisplayedRepositories = AllRepositories;
 
