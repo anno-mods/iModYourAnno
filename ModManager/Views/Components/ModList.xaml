@@ -80,32 +80,45 @@
                  SelectionChanged="SelectionChanged"
                  SelectionMode="Extended"
                  Style="{StaticResource IMYA_LISTBOX}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="5,3,0,3">
-                            <materialDesign:PackIcon Margin="0,0,5,0"
-                                                 Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
-                                                 Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock Text="{Binding Category.Text}"
-                                   Style="{StaticResource IMYA_TEXT}"
-                                   Margin="0,0,5,0"
-                                   FontWeight="ExtraBold" />
-                            <TextBlock Text="{Binding Name.Text}"
-                                   Style="{StaticResource IMYA_TEXT}"
-                                   TextWrapping="WrapWithOverflow" />
-                        </StackPanel>
-                        <ItemsControl ItemsSource="{Binding Attributes}"
-                                      HorizontalAlignment="Right"
-                                      Grid.Column="1"
-                                      Margin="0,3,0,3"
-                                      Visibility="{Binding Path=DataContext.ShowAttributes, Converter={StaticResource BoolToVis}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModList}}}">
+                        <materialDesign:PackIcon 
+                            VerticalAlignment="Center"
+                            Margin="5,0"
+                            Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
+                            Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <Grid
+                            VerticalAlignment="Center"
+                            Grid.Column="1"
+                            Margin="0,3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{Binding Category.Text}"
+                                Style="{StaticResource IMYA_TEXT}"
+                                FontWeight="ExtraBold" />
+                            <TextBlock 
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                Text="{Binding Name.Text}"
+                                Style="{StaticResource IMYA_TEXT}"
+                                TextWrapping="WrapWithOverflow" />
+                        </Grid>
+                        <ItemsControl 
+                            ItemsSource="{Binding Attributes}"
+                            HorizontalAlignment="Right"
+                            Grid.Column="2"
+                            Margin="0,3,0,3"
+                            Visibility="{Binding Path=DataContext.ShowAttributes, Converter={StaticResource BoolToVis}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModList}}}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"></StackPanel>
@@ -132,8 +145,6 @@
                 <Style TargetType="ListBoxItem" BasedOn="{StaticResource IMYA_LISTBOXITEM}">
                     <Setter Property="IsSelected"
                             Value="{Binding IsSelected}" />
-                    <Setter Property="Width"
-                            Value="{Binding Path=ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ScrollContentPresenter}}}" />
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
