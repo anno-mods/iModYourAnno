@@ -80,6 +80,8 @@ namespace Imya.Utils
         }
         private String _modDirectoryName;
 
+        public string ModindexLocation { get; set; }
+
         public bool IsValidSetup
         {
             get { return _isValid; }
