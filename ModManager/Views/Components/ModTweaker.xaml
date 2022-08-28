@@ -16,6 +16,7 @@
                                                           TrueValue="Visible"
                                                           FalseValue="Hidden" />
             <Converters:NegateBoolConverter x:Key="NegateBool" />
+            <Converters:IsEmptyToVisibility x:Key="CollapsedOnEmpty" OnEmpty="Collapsed" OnElse="Visible" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -165,6 +166,7 @@
                                                                              Style="{StaticResource IMYA_ICON}"
                                                                              Foreground="{DynamicResource AccentColorBrush}"
                                                                              Grid.Column="2"
+                                                                             Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
                                                                              VerticalAlignment="Center"
                                                                              HorizontalAlignment="Center"
                                                                              ToolTipService.InitialShowDelay="0"
