@@ -35,5 +35,8 @@
     <Setting Name="Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)">DarkGreen</Value>
     </Setting>
+    <Setting Name="ModindexLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)">resources/modindex.json</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

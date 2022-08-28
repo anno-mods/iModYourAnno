@@ -60,15 +60,8 @@ namespace Imya.UI.Popup
             OK_TEXT = new SimpleText("OK");
             CANCEL_TEXT = new SimpleText("Cancel");
 
-            try
-            {
-                var repoInfoProvider = new JsonRepoInfoSource(File.ReadAllText("resources/modindex.json"));
-                AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
-            }
-            catch
-            {
-                AllRepositories = new ();
-            }
+            var repoInfoProvider = new AutoRepoInfoSource(GameSetupManager.Instance.ModindexLocation);
+            AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
 
             DisplayedRepositories = AllRepositories;
 

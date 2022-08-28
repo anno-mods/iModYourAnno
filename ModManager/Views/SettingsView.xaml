@@ -178,6 +178,30 @@
                                     Click="GameModDirectory_ButtonClick" />
                         </Grid>
                     </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Text="Modindex:"
+                            Style="{StaticResource IMYA_TEXT}"
+                            Margin="5"
+                            VerticalAlignment="Center" />
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox 
+                                Style="{StaticResource IMYA_TEXTBOX}"
+                                Text="{Binding GameSetup.ModindexLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                Margin="0,0,10,0"
+                                IsReadOnly="False"
+                                Name="ModindexTextbox" />
+                        </Grid>
+                    </Grid>
                 </StackPanel>
 
             </Border>

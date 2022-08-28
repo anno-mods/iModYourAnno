@@ -28,25 +28,44 @@ namespace Imya.GithubIntegration.JsonData
         }
 #pragma warning restore 0649
 
-        private readonly IEnumerable<GithubRepoInfo> repositories;
+        public static readonly JsonRepoInfoSource Empty = new();
+        private IEnumerable<GithubRepoInfo> repositories = Array.Empty<GithubRepoInfo>();
 
-        public JsonRepoInfoSource(string jsonFile)
+        public JsonRepoInfoSource(string json)
         {
-            var index = JsonConvert.DeserializeObject<RepoIndex>(jsonFile, new JsonSerializerSettings()
+            _ = Parse(json);
+        }
+
+        protected JsonRepoInfoSource()
+        {
+            // empty source
+        }
+
+        protected bool Parse(string json)
+        {
+            RepoIndex index;
+            try
             {
-                MissingMemberHandling = MissingMemberHandling.Ignore
-            });
+                index = JsonConvert.DeserializeObject<RepoIndex>(json, new JsonSerializerSettings()
+                {
+                    MissingMemberHandling = MissingMemberHandling.Ignore
+                });
+            }
+            catch
+            {
+                index.packages = null;
+            }
 
             if (index.packages is null)
             {
-                repositories = Array.Empty<GithubRepoInfo>();
-                return;
+                return false;
             }
 
             // TODO static is hardcoded now, but shouldn't as soon as we support the others
             var packages = index.packages.Where(x => x.repo is not null && x.owner is not null && x.download is not null);
             repositories = packages.Select(x =>
                 StaticNameGithubRepoInfoFactory.CreateWithStaticName(x.repo!, x.owner!, x.download!));
+            return true;
         }
 
         private readonly Random random = new();
