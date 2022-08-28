@@ -4,6 +4,8 @@
            TargetType="TextBox">
         <Setter Property="Foreground"
                 Value="{DynamicResource TextColorBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource TextBoxBackgroundBrush}" />
         <Setter Property="Height"
                 Value="32" />
         <Setter Property="Template">
@@ -12,7 +14,7 @@
                     <Border CornerRadius="3"
                             Background="{TemplateBinding Background}"
                             x:Name="border"
-                            BorderBrush="{TemplateBinding Background}"
+                            BorderBrush="{DynamicResource InteractiveComponentColorBrush}"
                             BorderThickness="2"
                             VerticalAlignment="Center"
                             Height="{TemplateBinding Height}"
@@ -22,24 +24,28 @@
                                       Margin="1" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver"
-                                 Value="true">
-                            <Setter Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource AccentColorBrush_Dark}" />
-                        </Trigger>
-                        <Trigger Property="IsFocused"
-                                 Value="true">
-                            <Setter Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{DynamicResource AccentColorBrush}" />
-                        </Trigger>
-                        <Trigger Property="IsReadOnly"
-                                 Value="true">
-                            <Setter Property="BorderBrush"
-                                    TargetName="border"
-                                    Value="{Binding RelativeSource={RelativeSource Self}, Path=Background}" />
-                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="True" />
+                                <Condition Property="IsReadOnly" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="{DynamicResource AccentColorBrush_Dark}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="True" />
+                                <Condition Property="IsReadOnly" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="BorderBrush"
+                                        TargetName="border"
+                                        Value="{DynamicResource AccentColorBrush}" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

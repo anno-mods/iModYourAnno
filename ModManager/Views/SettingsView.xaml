@@ -165,7 +165,6 @@
                                 <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                                     Background="{DynamicResource InteractiveComponentColorBrush}"
                                      Text="{Binding GameSetup.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                      Margin="0,0,10,0"
                                      IsReadOnly="False"

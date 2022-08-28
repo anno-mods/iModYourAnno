@@ -4,26 +4,30 @@
             Components that display something -> ComponentColorBrush
             Components that are clickable -> InteractiveComponentColorBrush
         -->
-    <SolidColorBrush x:Key="ComponentColorBrush">#C0C0C0</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush">#fff</SolidColorBrush>
     <SolidColorBrush x:Key="ComponentColorBrush_Light">#C5C5C5</SolidColorBrush>
 
-    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#B0B0B0</SolidColorBrush>
+    <!-- TODO rename into ButtonBackgroundBrush -->
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#ccc</SolidColorBrush>
     <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#B5B5B5</SolidColorBrush>
-    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Dark">#909090</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Dark">#aaa</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush">#fff</SolidColorBrush>
 
     <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
     <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#F5F5F5</SolidColorBrush>
 
-    <SolidColorBrush x:Key="AccentColorBrush">#bdae51</SolidColorBrush>
-    <SolidColorBrush x:Key="AccentColorBrush_Dark">#f7eb99</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorBrush">#8c3bf0</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorBrush_Dark">#808c3bf0</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorContrastBrush">#fff</SolidColorBrush>
 
-    <SolidColorBrush x:Key="BackgroundColorBrush">LightGray</SolidColorBrush>
-    <SolidColorBrush x:Key="TextColorBrush">#120A24</SolidColorBrush>
+    <SolidColorBrush x:Key="BackgroundColorBrush">#fff</SolidColorBrush>
+    <SolidColorBrush x:Key="TextColorBrush">#333</SolidColorBrush>
+    <SolidColorBrush x:Key="MutedTextColorBrush">#888</SolidColorBrush>
 
-    <SolidColorBrush x:Key="ModActiveColorBrush">#120A24</SolidColorBrush>
-    <SolidColorBrush x:Key="ModInactiveColorBrush">#2E0E18</SolidColorBrush>
+    <SolidColorBrush x:Key="ModActiveColorBrush">#333</SolidColorBrush> <!-- text color -->
+    <SolidColorBrush x:Key="ModInactiveColorBrush">#888</SolidColorBrush> <!-- muted text color -->
 
-    <SolidColorBrush x:Key="ErrorColorBrush">Red</SolidColorBrush>
-    <SolidColorBrush x:Key="InformationColorBrush">LightGreen</SolidColorBrush>
-    <SolidColorBrush x:Key="HighlightColorBrush">LightBlue</SolidColorBrush>
+    <SolidColorBrush x:Key="ErrorColorBrush">#e83333</SolidColorBrush>
+    <SolidColorBrush x:Key="InformationColorBrush">#292</SolidColorBrush>
+    <SolidColorBrush x:Key="HighlightColorBrush">#48f</SolidColorBrush>
 </ResourceDictionary>
