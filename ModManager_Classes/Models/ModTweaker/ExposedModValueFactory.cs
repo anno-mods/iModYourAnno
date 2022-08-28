@@ -17,7 +17,8 @@ namespace Imya.Models.ModTweaker
                 && Expose.TryGetAttribute(TweakerConstants.MODOP_ID, out String? ModOpID)
                 && Expose.TryGetAttribute(TweakerConstants.EXPOSE_ATTR, out String? ExposeID))
             {
-                Expose.TryGetAttribute(TweakerConstants.DESCRIPTION, out String? Description);
+                Expose.TryGetAttribute(TweakerConstants.DESCRIPTION, out String? description);
+                Expose.TryGetAttribute(TweakerConstants.TOOLTIP, out String? tooltip);
 
                 ExposedModValueType type = ExposedModValueType.SimpleValue;
                 Expose.TryGetAttribute(TweakerConstants.KIND, out String? Kind);
@@ -40,7 +41,8 @@ namespace Imya.Models.ModTweaker
                             ModOpID = ModOpID!,
                             ExposeID = ExposeID!,
                             Parent = parent,
-                            Description = Description,
+                            Description = description,
+                            Tooltip = tooltip,
                             PredefinedValues = predefined_vals
                         };
                     }
@@ -64,7 +66,8 @@ namespace Imya.Models.ModTweaker
                             ModOpID = ModOpID!,
                             ExposeID = ExposeID!,
                             Parent = parent,
-                            Description = Description,
+                            Description = description,
+                            Tooltip = tooltip,
                             Min = min,
                             Max = max,
                             Stepping = stepping
@@ -87,7 +90,8 @@ namespace Imya.Models.ModTweaker
                             ModOpID = ModOpID!,
                             ExposeID = ExposeID!,
                             Parent = parent,
-                            Description = Description,
+                            Description = description,
+                            Tooltip = tooltip,
                             FalseValue = valid_falseval.InnerXml,
                             IsInverted = IsInverted
                         };

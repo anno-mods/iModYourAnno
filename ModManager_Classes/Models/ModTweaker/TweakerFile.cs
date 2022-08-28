@@ -18,6 +18,7 @@ namespace Imya.Models.ModTweaker
         public static readonly String MODOP_ID = "ModOpID";
         public static readonly String KIND = "Kind";
         public static readonly String DESCRIPTION = "Description";
+        public static readonly String TOOLTIP = "Tooltip";
         public static readonly String ENUM_HEADER = "FixedValues";
         public static readonly String ENUM_ENTRY = "Value";
         public static readonly String ALT_TOGGLE_VAL = "AltValue";

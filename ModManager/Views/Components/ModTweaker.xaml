@@ -8,7 +8,7 @@
              xmlns:Components="clr-namespace:Imya.UI.Views.Components"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
         <Grid.Resources>
             <Converters:FileNameConverter x:Key="FileNameConverter" />
@@ -16,6 +16,7 @@
                                                           TrueValue="Visible"
                                                           FalseValue="Hidden" />
             <Converters:NegateBoolConverter x:Key="NegateBool" />
+            <Converters:IsEmptyToVisibility x:Key="CollapsedOnEmpty" OnEmpty="Collapsed" OnElse="Visible" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -70,51 +71,53 @@
                                 <ItemsControl ItemsSource="{Binding Exposes}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border HorizontalAlignment="Stretch"
-                                                    Background="{StaticResource ComponentColorBrush_Light}"
-                                                    CornerRadius="3"
-                                                    Margin="0,5,-10,5"
-                                                    BorderBrush="{DynamicResource AccentColorBrush}"
-                                                    BorderThickness="2">
+                                            <Border
+                                                Name="HoverBorder"
+                                                Background="{DynamicResource ComponentColorBrush}">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition />
                                                         <ColumnDefinition Width="2*" />
                                                         <ColumnDefinition Width="35" />
                                                     </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    
                                                     <TextBlock Text="{Binding ExposeID}"
-                                                               Style="{StaticResource IMYA_TEXT}"
-                                                               VerticalAlignment="Center"
-                                                               Margin="10,0,0,0"
-                                                               MinWidth="150" />
+                                                                Style="{StaticResource IMYA_TEXT}"
+                                                                VerticalAlignment="Center"
+                                                                Margin="10,0,0,0"
+                                                                MinWidth="150" />
                                                     <TextBox Grid.Column="1"
                                                              Style="{StaticResource IMYA_TEXTBOX}"
                                                              Text="{Binding Value, Mode=TwoWay}"
                                                              TextAlignment="Justify"
                                                              MinWidth="40"
-                                                             Margin="0,4,4,4"
+                                                             Margin="0,0,4,0"
                                                              Visibility="{Binding IsSimpleValue, Converter={StaticResource VisibleOnTrue}}"
                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}"/>
                                                     <ComboBox Grid.Column="1"
-                                                              Margin="0,4,4,4"
-                                                              Style="{StaticResource IMYA_COMBOBOX}"
-                                                              Background="{DynamicResource InteractiveComponentColorBrush}"
-                                                              ItemsSource="{Binding PredefinedValues}"
-                                                              SelectionChanged="ComboBox_SelectionChanged"
-                                                              Initialized="ComboBox_Initialized" 
-                                                              Visibility="{Binding IsEnumType, Converter={StaticResource VisibleOnTrue}}"
-                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
+                                                                Margin="0,0,4,0"
+                                                                Style="{StaticResource IMYA_COMBOBOX}"
+                                                                Background="{DynamicResource InteractiveComponentColorBrush}"
+                                                                ItemsSource="{Binding PredefinedValues}"
+                                                                SelectionChanged="ComboBox_SelectionChanged"
+                                                                Initialized="ComboBox_Initialized" 
+                                                                Visibility="{Binding IsEnumType, Converter={StaticResource VisibleOnTrue}}"
+                                                                IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                         <ComboBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                                           Text="{Binding}" />
+                                                                            Text="{Binding}" />
                                                             </DataTemplate>
                                                         </ComboBox.ItemTemplate>
                                                     </ComboBox>
                                                     <Grid Grid.Column="1"
-                                                          VerticalAlignment="Center"
-                                                          HorizontalAlignment="Stretch"
-                                                          Visibility="{Binding IsSliderType, Converter={StaticResource VisibleOnTrue}}">
+                                                            VerticalAlignment="Center"
+                                                            HorizontalAlignment="Stretch"
+                                                            Visibility="{Binding IsSliderType, Converter={StaticResource VisibleOnTrue}}">
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="30"/>
                                                             <ColumnDefinition />
@@ -122,60 +125,79 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                                   VerticalAlignment="Center"
-                                                                   Margin="5"
-                                                                   Text="{Binding Min}"
-                                                                   Grid.Column="0"
-                                                                   MinWidth="25"/>
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="5,0"
+                                                                    Text="{Binding Min}"
+                                                                    Grid.Column="0"
+                                                                    MinWidth="25"/>
                                                         
                                                         <Components:ContentSlider Grid.Column="1" 
-                                                                                  Margin="0,4,4,4"
-                                                                                  Minimum="{Binding Min}"
-                                                                                  Maximum="{Binding Max}"
-                                                                                  TickFrequency="{Binding Stepping}"
-                                                                                  ValueChanged="Slider_ValueChanged"
-                                                                                  Initialized="Slider_Initialized"
-                                                                                  IsSnapToTickEnabled="True"
-                                                                                  Style="{StaticResource IMYA_SLIDER}"
-                                                                                  Foreground="{DynamicResource AccentColorBrush}"
-                                                                                  Background="{DynamicResource InteractiveComponentColorBrush_Light}"
-                                                                                  Content="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
-                                                                                  IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
+                                                                                    Margin="0,0,4,0"
+                                                                                    Minimum="{Binding Min}"
+                                                                                    Maximum="{Binding Max}"
+                                                                                    TickFrequency="{Binding Stepping}"
+                                                                                    ValueChanged="Slider_ValueChanged"
+                                                                                    Initialized="Slider_Initialized"
+                                                                                    IsSnapToTickEnabled="True"
+                                                                                    Style="{StaticResource IMYA_SLIDER}"
+                                                                                    Foreground="{DynamicResource AccentColorBrush}"
+                                                                                    Background="{DynamicResource InteractiveComponentColorBrush_Light}"
+                                                                                    Content="{Binding Value, UpdateSourceTrigger=PropertyChanged}"
+                                                                                    IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                         </Components:ContentSlider>
 
                                                         <TextBlock Grid.Column="2"
-                                                                   Style="{StaticResource IMYA_TEXT}"
-                                                                   VerticalAlignment="Center"
-                                                                   Margin="5"
-                                                                   MinWidth="25"
-                                                                   Text="{Binding Max}" />
+                                                                    Style="{StaticResource IMYA_TEXT}"
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="5,0"
+                                                                    MinWidth="25"
+                                                                    Text="{Binding Max}" />
                                                     </Grid>
                                                     <CheckBox Visibility="{Binding IsToggleType, Converter={StaticResource VisibleOnTrue}}"
-                                                              IsChecked="{Binding IsTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                                              Grid.Column="1"
-                                                              Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                                              Initialized="CheckBox_Initialized"
-                                                              Checked="OnValueChanged"
-                                                              Unchecked="OnValueChanged"
-                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
+                                                                IsChecked="{Binding IsTrue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                                                Grid.Column="1"
+                                                                Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                                                Initialized="CheckBox_Initialized"
+                                                                Checked="OnValueChanged"
+                                                                Unchecked="OnValueChanged"
+                                                                IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                     </CheckBox>
 
+                                                    <!-- tooltip -->
                                                     <materialDesign:PackIcon Kind="InformationOutline"
-                                                                             Style="{StaticResource IMYA_ICON}"
-                                                                             Foreground="{DynamicResource AccentColorBrush}"
-                                                                             Grid.Column="2"
-                                                                             VerticalAlignment="Center"
-                                                                             HorizontalAlignment="Center"
-                                                                             ToolTipService.InitialShowDelay="0"
-                                                                             ToolTipService.Placement="Left">
+                                                                                Style="{StaticResource IMYA_ICON}"
+                                                                                Foreground="{DynamicResource AccentColorBrush}"
+                                                                                Grid.Column="2"
+                                                                                Visibility="{Binding Tooltip, Converter={StaticResource CollapsedOnEmpty}}"
+                                                                                VerticalAlignment="Center"
+                                                                                HorizontalAlignment="Center"
+                                                                                ToolTipService.InitialShowDelay="0"
+                                                                                ToolTipService.Placement="Left">
                                                         <materialDesign:PackIcon.ToolTip>
                                                             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                                       Text="{Binding Description}" />
+                                                                        Text="{Binding Tooltip}" />
                                                         </materialDesign:PackIcon.ToolTip>
                                                     </materialDesign:PackIcon>
-                                                    
+
+                                                    <!-- description -->
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="3"
+                                                        Margin="10,0,0,5"
+                                                        TextWrapping="WrapWithOverflow"
+                                                        Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
+                                                        Style="{StaticResource IMYA_TEXT}"
+                                                        Text="{Binding Description}" />
                                                 </Grid>
                                             </Border>
+                                            <DataTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter
+                                                        TargetName="HoverBorder"
+                                                        Property="Background"
+                                                        Value="{DynamicResource ComponentColorBrush_Light}" />
+                                                </Trigger>
+                                            </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

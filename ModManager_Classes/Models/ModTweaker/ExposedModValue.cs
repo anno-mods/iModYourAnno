@@ -11,6 +11,7 @@ namespace Imya.Models.ModTweaker
         public String ModOpID { get; init; }
         public String ExposeID { get; init; }
         public String? Description { get; init; }
+        public String? Tooltip { get; init; }
 
         public ExposedModValueType ExposedModValueType { get; init; }
         public ExposedModValueReplaceType ReplaceType { get; init; }
