@@ -35,7 +35,7 @@ namespace Imya.Models
         public ObservableCollection<Mod> DisplayedMods
         {
             get => _displayedMods;
-            set => SetDisplayMods(value);
+            private set => SetDisplayMods(value);
         }
         private ObservableCollection<Mod> _displayedMods = new();
 
@@ -204,7 +204,7 @@ namespace Imya.Models
             return -1;
         }
 
-        private void SetDisplayMods(ObservableCollection<Mod> value)
+        private void SetDisplayMods(ObservableCollection<Mod> value, bool updateStats = true)
         {
             // TODO display mods should move to a separate wrapper around ModCollection
 
@@ -217,16 +217,22 @@ namespace Imya.Models
             // register for stat changes
             foreach (var mod in _displayedMods)
                 mod.StatsChanged += OnModStatsChanged;
-            OnModStatsChanged();
+            if (updateStats)
+                OnModStatsChanged();
             OnPropertyChanged(nameof(DisplayedMods));
         }
 
         private void OnModStatsChanged()
         {
-            var newActive = _mods.Count(x => x.IsActive);
-            if (newActive != ActiveMods)
+            // remove mods with IssueModRemoved attribute
+            int removedModCount = _mods.RemoveAll(x => x.Attributes.HasAttribute(AttributeType.IssueModRemoved));
+
+            SetDisplayMods(new ObservableCollection<Mod>(_mods), updateStats: false);
+
+            int newActiveCount = _mods.Count(x => x.IsActive);
+            if (removedModCount > 0 || ActiveMods != newActiveCount)
             {
-                ActiveMods = newActive;
+                ActiveMods = newActiveCount;
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");

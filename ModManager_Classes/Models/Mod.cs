@@ -27,7 +27,7 @@ namespace Imya.Models
         public bool IsActive
         {
             get => _isActive;
-            set
+            private set
             {
                 _isActive = value;
                 OnPropertyChanged(nameof(IsActive));
@@ -194,9 +194,18 @@ namespace Imya.Models
                     var verb = active ? "Activate" : "Deactivate";
                     Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    // TODO invoking stats change is stretching it
+                    Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModRemoved, Description = SimpleText.Empty });
+                    StatsChanged?.Invoke();
+                    Console.WriteLine($"Mod not found: {FolderName}");
+                }
                 catch (Exception e)
                 {
                     var verb = active ? "activate" : "deactivate";
+                    Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModAccess, Description = SimpleText.Empty });
+                    StatsChanged?.Invoke();
                     Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
                 }
             });
