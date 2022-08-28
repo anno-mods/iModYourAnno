@@ -28,7 +28,8 @@ namespace Imya.Utils
                 foreach (var validator in validators)
                     validator.Validate(mod, ModCollection.Global);
 
-                UpdateWithTweak(mod);
+                if (action == ModCollection.CollectionChangeAction.Add)
+                    UpdateWithTweak(mod);
             }
         }
 
@@ -40,11 +41,14 @@ namespace Imya.Utils
         private static void UpdateWithTweak(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
-            if (!TweakStorageShelf.Global.IsStored(mod.FolderName)) return;
+            if (!TweakStorageShelf.Global.IsStored(mod.FolderName))
+                return;
 
+            // TODO double access is unprotected
+            // TODO all validation should be offloaded to async, not tweaks individually
             Task.Run(() =>
             {
-                ModTweaks tweaks = new ModTweaks();
+                ModTweaks tweaks = new();
                 tweaks.Load(mod);
                 tweaks.Save();
             });
