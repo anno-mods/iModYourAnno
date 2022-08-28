@@ -5,6 +5,7 @@ using Imya.Utils;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -72,13 +73,24 @@ namespace Imya.UI.Views
 
         private void OnDelete(object sender, RoutedEventArgs e)
         {
-            GenericOkayPopup dialog = new();
-            dialog.OK_TEXT = new SimpleText("Okay");
-            dialog.CANCEL_TEXT = new SimpleText("Cancel");
-            dialog.MESSAGE = new SimpleText("This will irreversibly delete all selected mods from the mods folder. Are you sure?");
-            dialog.ShowDialog();
+            bool hasModsWorthyAsking = ModList.CurrentlySelectedMods?.Any(x => !x.IsRemoved) ?? false;
+            bool deleteMods = !hasModsWorthyAsking;
 
-            if (dialog.DialogResult is true) ModList.DeleteSelection();
+            if (hasModsWorthyAsking)
+            {
+                GenericOkayPopup dialog = new()
+                {
+                    OK_TEXT = new SimpleText("Okay"),
+                    CANCEL_TEXT = new SimpleText("Cancel"),
+                    MESSAGE = new SimpleText("This will irreversibly delete all selected mods from the mods folder. Are you sure?")
+                };
+                dialog.ShowDialog();
+
+                deleteMods = dialog.DialogResult ?? false;
+            }
+
+            if (deleteMods)
+                ModList.DeleteSelection();
         }
 
         private async void LoadProfileClick(object sender, RoutedEventArgs e)

@@ -13,12 +13,9 @@ namespace Imya.Validation
                 new ModCompatibilityValidator()
             };
 
-        private ModCollectionHooks()
+        public ModCollectionHooks(ModCollection mods)
         {
-            if (ModCollection.Global is null)
-                throw new Exception("ModCollection.Global is null. Should not happen, hence something is very wrong.");
-
-            ModCollection.Global.CollectionChanged += ValidateOnChange;
+            mods.CollectionChanged += ValidateOnChange;
         }
 
         private void ValidateOnChange(object? sender, NotifyCollectionChangedEventArgs e)
@@ -35,11 +32,6 @@ namespace Imya.Validation
                 foreach (var mod in changed)
                     UpdateWithTweak(mod);
             }
-        }
-
-        public static void Initialize()
-        {
-            new ModCollectionHooks();
         }
 
         private static void UpdateWithTweak(Mod mod)

@@ -8,12 +8,14 @@ namespace Imya.Models.Attributes
 {
     public enum AttributeType
     {
-        ModStatus = 0,
-        ModCompabilityIssue = 1,
-        UnresolvedDependencyIssue = 2,
-        TweakedMod = 3,
-        MissingModinfo = 4,
-        ModContentInSubfolder = 5
+        ModStatus,
+        ModCompabilityIssue,
+        UnresolvedDependencyIssue,
+        TweakedMod,
+        MissingModinfo,
+        ModContentInSubfolder,
+        IssueModRemoved,
+        IssueModAccess
     }
 
     public interface IAttribute

@@ -90,11 +90,13 @@
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon 
+                            Name="ModActivationIcon"
                             VerticalAlignment="Center"
                             Margin="5,0"
                             Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
                             Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
                         <Grid
+                            Name="ModEntry"
                             VerticalAlignment="Center"
                             Grid.Column="1"
                             Margin="0,3">
@@ -103,15 +105,15 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                Text="{Binding Category.Text}"
+                                Name="ModCategoryName"
                                 Style="{StaticResource IMYA_TEXT}"
-                                FontWeight="ExtraBold" />
-                            <TextBlock 
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                Text="{Binding Name.Text}"
-                                Style="{StaticResource IMYA_TEXT}"
-                                TextWrapping="WrapWithOverflow" />
+                                TextWrapping="WrapWithOverflow">
+                                <Run
+                                    Text="{Binding Category.Text, Mode=OneWay}"
+                                    FontWeight="ExtraBold" />
+                                <Run
+                                    Text="{Binding Name.Text, Mode=OneWay}" />
+                            </TextBlock>
                         </Grid>
                         <ItemsControl 
                             ItemsSource="{Binding Attributes}"
@@ -139,6 +141,22 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsRemoved}" Value="True">
+                            <Setter
+                                TargetName="ModEntry"
+                                Property="Opacity"
+                                Value="0.5" />
+                            <Setter
+                                TargetName="ModCategoryName"
+                                Property="TextDecorations"
+                                Value="StrikeThrough" />
+                            <Setter
+                                TargetName="ModActivationIcon"
+                                Property="Visibility"
+                                Value="Hidden" />
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

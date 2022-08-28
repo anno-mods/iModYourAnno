@@ -17,8 +17,10 @@ namespace Imya.UI
     /// </summary>
     public partial class App : Application
     {
-       public App()
-       {
+        private ModCollectionHooks _hooks;
+
+        public App()
+        {
             // load localized text first
             var text = TextManager.Instance;
             text.LoadLanguageFile(Settings.Default.LanguageFilePath);
@@ -33,7 +35,7 @@ namespace Imya.UI
 
             // init global mods
             ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
-            ModCollectionHooks.Initialize();
+            _hooks = new(ModCollection.Global);
             Task.Run(() => ModCollection.Global.LoadModsAsync());
         }
     }

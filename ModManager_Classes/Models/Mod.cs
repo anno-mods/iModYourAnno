@@ -27,9 +27,30 @@ namespace Imya.Models
         public bool IsActive
         {
             get => _isActive;
-            set => SetProperty(ref _isActive, value);
+            private set => SetProperty(ref _isActive, value);
         }
         private bool _isActive;
+
+        /// <summary>
+        /// "-" activation and valid.
+        /// </summary>
+        public bool IsActiveAndValid => _isActive && !IsRemoved;
+
+        /// <summary>
+        /// Mod disappeared.
+        /// </summary>
+        public bool IsRemoved
+        {
+            get => Attributes.HasAttribute(AttributeType.IssueModRemoved);
+            set
+            {
+                if (IsRemoved == value)
+                    return;
+                Attributes.Clear();
+                Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModRemoved, Description = new SimpleText("This mod has been by another program.") });
+                OnPropertyChanged(nameof(IsRemoved));
+            }
+        }
 
         /// <summary>
         /// Full path to mod folder.
@@ -162,7 +183,8 @@ namespace Imya.Models
         /// </summary>
         public async Task ChangeActivationAsync(bool active)
         {
-            if (IsActive == active) return;
+            if (IsActive == active || IsRemoved)
+                return;
 
             await Task.Run(() =>
             {
@@ -172,15 +194,19 @@ namespace Imya.Models
                 try
                 {
                     DirectoryEx.CleanMove(sourcePath, targetPath);
+                    IsActive = active;
+                    Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    IsRemoved = true;
+                    Console.WriteLine($"Mod not found: {FolderName}");
                 }
                 catch (Exception e)
                 {
-                    
+                    Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModAccess, Description = SimpleText.Empty });
                     Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
-                    return;
                 }
-                IsActive = active;
-                Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
             });
         }
 
@@ -269,7 +295,7 @@ namespace Imya.Models
         /// </summary>
         public bool IsUpdateOf(Mod? target)
         {
-            if (target is null)
+            if (target is null || target.IsRemoved)
                 return true;
             if (target.Modinfo.ModID != Modinfo.ModID)
                 return false;
