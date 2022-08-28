@@ -33,6 +33,8 @@ namespace Imya.UI.Views
         public InstallationSetup Installer { get; } = new InstallationSetup();
         private InstallationStarter InstallerMiddleware;
 
+        public Properties.Settings Settings { get; } = Properties.Settings.Default;
+
         IRepoInfoSource RepoInfoProvider = new StaticRepoInfoSource();
 
         #region notifyable properties

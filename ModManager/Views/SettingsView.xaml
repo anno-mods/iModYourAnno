@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Imya.UI.Controls"
+             xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -18,6 +19,7 @@
 
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue" TrueValue="Visible" FalseValue="Collapsed" />
         </Grid.Resources>
 
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
@@ -112,7 +114,7 @@
                             IsChecked="{Binding ShowConsole, Mode=TwoWay}">
                         </controls:FancyToggle>
                     </Grid>
-                    <Grid>
+                    <Grid Visibility="{Binding DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="5*" />
