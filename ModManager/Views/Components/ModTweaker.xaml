@@ -80,6 +80,11 @@
                                                         <ColumnDefinition Width="2*" />
                                                         <ColumnDefinition Width="35" />
                                                     </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="auto" />
+                                                    </Grid.RowDefinitions>
+                                                    
                                                     <TextBlock Text="{Binding ExposeID}"
                                                                 Style="{StaticResource IMYA_TEXT}"
                                                                 VerticalAlignment="Center"
@@ -159,20 +164,31 @@
                                                                 IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                     </CheckBox>
 
+                                                    <!-- tooltip -->
                                                     <materialDesign:PackIcon Kind="InformationOutline"
                                                                                 Style="{StaticResource IMYA_ICON}"
                                                                                 Foreground="{DynamicResource AccentColorBrush}"
                                                                                 Grid.Column="2"
-                                                                                Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
+                                                                                Visibility="{Binding Tooltip, Converter={StaticResource CollapsedOnEmpty}}"
                                                                                 VerticalAlignment="Center"
                                                                                 HorizontalAlignment="Center"
                                                                                 ToolTipService.InitialShowDelay="0"
                                                                                 ToolTipService.Placement="Left">
                                                         <materialDesign:PackIcon.ToolTip>
                                                             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                                        Text="{Binding Description}" />
+                                                                        Text="{Binding Tooltip}" />
                                                         </materialDesign:PackIcon.ToolTip>
                                                     </materialDesign:PackIcon>
+
+                                                    <!-- description -->
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Grid.ColumnSpan="3"
+                                                        Margin="10,0,0,5"
+                                                        TextWrapping="WrapWithOverflow"
+                                                        Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
+                                                        Style="{StaticResource IMYA_TEXT}"
+                                                        Text="{Binding Description}" />
                                                 </Grid>
                                             </Border>
                                             <DataTemplate.Triggers>
