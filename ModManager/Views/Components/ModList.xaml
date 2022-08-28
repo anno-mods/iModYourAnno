@@ -32,7 +32,6 @@
                      Margin="0,2,10,5"
                      TextChanged="OnSearchRequest"
                      x:Name="SearchTextBox"
-                     Background="{DynamicResource InteractiveComponentColorBrush}"
                      Style="{StaticResource IMYA_TEXTBOX}">
             </TextBox>
             <TextBlock IsHitTestVisible="False"

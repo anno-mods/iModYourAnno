@@ -7,5 +7,7 @@
                 Value="24" />
         <Setter Property="Width"
                 Value="24" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource TextColorBrush}" />
     </Style>
 </ResourceDictionary>

@@ -142,8 +142,7 @@
                                 VerticalAlignment="Stretch"
                                 Margin="10,0,0,0">
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                                 Kind="ContentSaveOutline"
-                                                 Foreground="LightGray" />
+                                                 Kind="ContentSaveOutline" />
                         <TextBlock Margin="10,0,0,0"
                                    Text="{Binding TextManager[MODLIST_LOAD_PROFILE].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
@@ -162,8 +161,7 @@
                                VerticalAlignment="Stretch">
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="ArrangeBringForward"
-                                                 DockPanel.Dock="Left"
-                                                 Foreground="LightGray" />
+                                                 DockPanel.Dock="Left" />
                         <TextBlock Margin="10,0,0,0"
                                    Text="{Binding TextManager[MODLIST_SAVE_PROFILE].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"

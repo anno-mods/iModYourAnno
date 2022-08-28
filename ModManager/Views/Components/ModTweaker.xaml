@@ -89,7 +89,6 @@
                                                                MinWidth="150" />
                                                     <TextBox Grid.Column="1"
                                                              Style="{StaticResource IMYA_TEXTBOX}"
-                                                             Background="{DynamicResource InteractiveComponentColorBrush}"
                                                              Text="{Binding Value, Mode=TwoWay}"
                                                              TextAlignment="Justify"
                                                              MinWidth="40"
@@ -209,8 +208,7 @@
                                 VerticalAlignment="Stretch"
                                 Margin="10,0,0,0">
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                                 Kind="ContentSaveOutline"
-                                                 Foreground="LightGray" />
+                                                 Kind="ContentSaveOutline" />
                         <TextBlock Margin="10,0,0,0"
                                    Text="Save Tweaks"
                                    VerticalAlignment="Center"
@@ -229,8 +227,7 @@
                                VerticalAlignment="Stretch">
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="FileDiscard"
-                                                 DockPanel.Dock="Left"
-                                                 Foreground="LightGray" />
+                                                 DockPanel.Dock="Left" />
                         <TextBlock Margin="10,0,0,0"
                                    Text="Discard Changes"
                                    VerticalAlignment="Center"
