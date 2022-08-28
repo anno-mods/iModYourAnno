@@ -1,16 +1,35 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Models.ModTweaker;
+using Imya.Utils.Validation;
 
 namespace Imya.Utils
 {
     public class ModCollectionHooks
     {
-        ModCompabilityValidator compabilityValidator = new ModCompabilityValidator();
+        private readonly IModValidator[] validators = new IModValidator[]
+            {
+                new ModContentValidator(),
+                new ModCompatibilityValidator()
+            };
 
-        private ModCollectionHooks() {
-            ModCollection.Global!.ModAdded += UpdateWithTweak;
-            ModCollection.Global!.Updated += UpdateCompabilityCheck;
+        private ModCollectionHooks()
+        {
+            if (ModCollection.Global is null)
+                throw new Exception("ModCollection.Global is null. Should not happen, hence something is very wrong.");
+
+            ModCollection.Global.CollectionChanged += ValidateOnChange;
+        }
+
+        private void ValidateOnChange(ModCollection.CollectionChangeAction action, IEnumerable<Mod> mods)
+        {
+            foreach (var mod in mods)
+            {
+                foreach (var validator in validators)
+                    validator.Validate(mod, ModCollection.Global);
+
+                UpdateWithTweak(mod);
+            }
         }
 
         public static void Initialize()
@@ -18,39 +37,17 @@ namespace Imya.Utils
             new ModCollectionHooks();
         }
 
-        public void UpdateWithTweak(Mod m)
+        private static void UpdateWithTweak(Mod mod)
         {
-            m.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
-            if (!TweakStorageShelf.Global.IsStored(m.FolderName)) return;
+            mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
+            if (!TweakStorageShelf.Global.IsStored(mod.FolderName)) return;
 
             Task.Run(() =>
             {
                 ModTweaks tweaks = new ModTweaks();
-                tweaks.Load(m);
+                tweaks.Load(mod);
                 tweaks.Save();
             });
-        }
-
-        public void UpdateCompabilityCheck()
-        {
-            foreach (Mod mod in ModCollection.Global!.Mods)
-            {
-                UpdateCompability(mod);
-            }
-        }
-
-        private void UpdateCompability(Mod m)
-        {
-            var unresolvedDeps = compabilityValidator.GetUnresolvedDependencies(m);
-            m.Attributes.RemoveAttributesByType(AttributeType.UnresolvedDependencyIssue);
-            if (unresolvedDeps.Any())
-                m.Attributes.AddAttribute(new ModDependencyIssueAttribute(unresolvedDeps));
-
-            var incompatibles = compabilityValidator.GetIncompatibleMods(m);
-            m.Attributes.RemoveAttributesByType(AttributeType.ModCompabilityIssue);
-            if (incompatibles.Any())
-                m.Attributes.AddAttribute(new ModCompabilityIssueAttribute(incompatibles));
-
         }
     }
 }

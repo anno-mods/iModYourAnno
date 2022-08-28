@@ -31,11 +31,7 @@ namespace Imya.UI
             GithubClientProvider.Authenticator = new DeviceFlowAuthenticator();
 
             // init global mods
-            ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), new ModCollectionOptions()
-            {
-                Normalize = true,
-                LoadImages = true
-            });
+            ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
             ModCollectionHooks.Initialize();
             Task.Run(() => ModCollection.Global.LoadModsAsync());
         }

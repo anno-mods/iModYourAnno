@@ -78,6 +78,29 @@ namespace Imya.Utils
                 return false;
             }
             return true;
+        }        
+
+        /// <summary>
+        /// Find paths with a folder name.
+        /// </summary>
+        public static IEnumerable<string> FindFolder(string path, string folderName)
+        {
+            List<string> result = new();
+            Queue<string> queue = new(Directory.EnumerateDirectories(path));
+            while (queue.Count > 0)
+            {
+                string folder = queue.Dequeue();
+                if (Path.GetFileName(folder) == folderName)
+                {
+                    result.Add(folder);
+                }
+                else
+                {
+                    foreach (var add in Directory.EnumerateDirectories(folder))
+                        queue.Enqueue(add);
+                }
+            }
+            return result;
         }
     }
 

@@ -61,11 +61,17 @@ namespace Imya.Models
         private int _installedSizeInMBs = 0;
         #endregion
 
-        public event ModAddedEventHandler ModAdded = delegate { };
-        public delegate void ModAddedEventHandler(Mod m);
-
-        public event UpdatedEventHandler Updated = delegate { };
-        public delegate void UpdatedEventHandler();
+        /// <summary>
+        /// Triggers after any change of the collection.
+        /// Mods are fully loaded at this point.
+        /// </summary>
+        public event UpdatedEventHandler? CollectionChanged;
+        public delegate void UpdatedEventHandler(CollectionChangeAction action, IEnumerable<Mod> mods);
+        public enum CollectionChangeAction
+        {
+            Add,
+            Reset
+        }
 
         public string ModsPath { get; private set; }
 
@@ -75,7 +81,9 @@ namespace Imya.Models
         public IEnumerable<String> ModIDs { get => _modids; }
         private List<String> _modids = new();
 
-        private readonly ModCollectionOptions _options;
+        private readonly bool _normalize;
+        private readonly bool _loadImages;
+        private readonly bool _autofixSubfolder;
 
         public IModComparer ModComparer { get; set; } = new NameComparer();
 
@@ -83,18 +91,17 @@ namespace Imya.Models
         /// Open mod collection from folder.
         /// </summary>
         /// <param name="path">Path to mods.</param>
-        /// <param name="options.Normalize">Remove duplicate "-"</param>
-        /// <param name="options.LoadImages">Load image files into memory</param>
-        public ModCollection(string path, ModCollectionOptions? options = null)
+        /// <param name="normalize">Remove duplicate "-"</param>
+        /// <param name="loadImages">Load image files into memory</param>
+        /// <param name="autofixSubfolder">find data/ in subfolder and move up</param>
+        public ModCollection(string path, bool normalize = false, bool loadImages = false, bool autofixSubfolder = false)
         {
             ModsPath = path;
-            _options = new () {
-                Normalize = options?.Normalize ?? false,
-                LoadImages = options?.LoadImages ?? false,
-            };
+            _normalize = normalize;
+            _loadImages = loadImages;
+            _autofixSubfolder = autofixSubfolder;
         }
 
-        
         /// <summary>
         /// Load all mods.
         /// </summary>
@@ -107,27 +114,65 @@ namespace Imya.Models
                 return;
             }
 
+            if (_autofixSubfolder)
+                AutofixSubfolders(ModsPath);
+
             _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                 .Where(x => !Path.GetFileName(x).StartsWith(".")));
 
             // TODO option without UI related stuff? having UI classes on top of the model seems better
             DisplayedMods = new ObservableCollection<Mod>(Mods);
-            foreach (var mod in Mods)
+            CollectionChanged?.Invoke(CollectionChangeAction.Add, Mods);
+        }
+
+        /// <summary>
+        /// If there's no data/ top-level, move all data/ folders up - no matter how deep they are.
+        /// Obviously ignore data/ under data/ like in data/abc/data/ situations
+        /// </summary>
+        private static void AutofixSubfolders(string modsPath)
+        {
+            foreach (var folder in Directory.EnumerateDirectories(modsPath))
             {
-                ModAdded.Invoke(mod);
+                if (Directory.Exists(Path.Combine(folder, "data")))
+                    continue;
+
+                var potentialMods = DirectoryEx.FindFolder(folder, "data").Select(x => Path.GetDirectoryName(x)!);
+                foreach (var potentialMod in potentialMods)
+                {
+                    try
+                    {
+                        DirectoryEx.CleanMove(potentialMod, Path.Combine(modsPath, Path.GetFileName(potentialMod)));
+                    }
+                    catch
+                    {
+                        // TODO should we say something?
+                    }
+                }
+
+                // only remove the parent folder if all content has been moved
+                if (!Directory.EnumerateFiles(folder, "*", SearchOption.AllDirectories).Any())
+                {
+                    try
+                    {
+                        Directory.Delete(folder, true);
+                    }
+                    catch
+                    {
+                        // tough luck, but not harmful
+                    }
+                }
             }
-            Updated();
         }
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
         {
             var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
-            if (_options.Normalize)
+            if (_normalize)
             {
                 foreach (var mod in mods)
                     await mod.NormalizeAsync();
             }
-            if (_options.LoadImages)
+            if (_loadImages)
             {
                 foreach (var mod in mods)
                 {
@@ -137,7 +182,6 @@ namespace Imya.Models
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
                 }
             }
-            Updated();
             return mods;
         }
 
@@ -187,7 +231,10 @@ namespace Imya.Models
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
 
-                Updated();
+                // trigger changed events for activation/deactivation
+                // the easiest way to ensure we capture all events is by looking at the stats
+                // TODO not the best way to handle as this may also lead to double trigger
+                CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
             }
 
         }
@@ -202,9 +249,6 @@ namespace Imya.Models
         {
             Directory.CreateDirectory(ModsPath);
 
-            // TODO status should be handled outside of this function. it unnecessarily drives complexity here.
-            // TODO external issue handling
-            // done, boss! :kekw:
             try
             {
                 foreach (var sourceMod in source.Mods)
@@ -222,7 +266,7 @@ namespace Imya.Models
                 DisplayedMods = new ObservableCollection<Mod>(Mods);
             }
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
@@ -264,7 +308,7 @@ namespace Imya.Models
             _mods.Add(reparsed);
             reparsed.StatsChanged += OnModStatsChanged;
 
-            ModAdded.Invoke(reparsed);
+            CollectionChanged?.Invoke(CollectionChangeAction.Add, new Mod[] { reparsed });
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -296,7 +340,7 @@ namespace Imya.Models
             foreach (var mod in mods)
                 await DeleteAsync(mod);
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         /// <summary>
@@ -354,7 +398,7 @@ namespace Imya.Models
                     await mod.ChangeActivationAsync(active);
             }
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
 
         public async Task DeactivateAllAsync()
@@ -362,7 +406,7 @@ namespace Imya.Models
             foreach (Mod mod in Mods)
                 await mod.ChangeActivationAsync(false);
 
-            Updated();
+            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
         }
         #endregion
 
