@@ -13,7 +13,7 @@
         <Grid.Resources>
             <conv:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue"
                                                     TrueValue="Visible"
-                                                    FalseValue="Hidden" />
+                                                    FalseValue="Collapsed" />
             <conv:NegateBoolConverter x:Key="NegateBool" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -113,7 +113,7 @@
                             </StackPanel>
                         </Button>
                     </Grid>
-                    <Grid>
+                    <Grid Visibility="{Binding Settings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15" />
                             <ColumnDefinition />
@@ -179,7 +179,8 @@
                                           Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
                                           IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           Margin="2" />
-                                <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                <CheckBox Visibility="{Binding Settings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}"
+                                          Style="{StaticResource IMYA_TOGGLESWITCH}"
                                           Content="{Binding TextManager[MODS_AUTOUPDATES].Text}"
                                           Margin="2" />
                             </StackPanel>
