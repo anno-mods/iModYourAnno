@@ -157,7 +157,7 @@ namespace Imya.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("resources/modindex.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://raw.githubusercontent.com/anno-mods/Packages/main/packages.json")]
         public string ModindexLocation {
             get {
                 return ((string)(this["ModindexLocation"]));

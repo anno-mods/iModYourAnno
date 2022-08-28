@@ -36,7 +36,7 @@
       <Value Profile="(Default)">DarkGreen</Value>
     </Setting>
     <Setting Name="ModindexLocation" Type="System.String" Scope="User">
-      <Value Profile="(Default)">resources/modindex.json</Value>
+      <Value Profile="(Default)">https://raw.githubusercontent.com/anno-mods/Packages/main/packages.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>
