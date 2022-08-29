@@ -13,6 +13,9 @@ namespace Imya.UI.Models
     {
         public void AddAttribute(IAttribute attrib)
         {
+            if (!attrib.MultipleAllowed && this.Any(x => x.AttributeType == attrib.AttributeType))
+                return;
+
             App.Current.Dispatcher.Invoke(() => this.Add(attrib));
         }
 

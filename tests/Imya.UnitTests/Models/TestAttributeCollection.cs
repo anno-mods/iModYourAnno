@@ -11,45 +11,67 @@ namespace Imya.UnitTests.Models
 {
     internal class TestAttributeCollection : IAttributeCollection
     {
-        private ConcurrentDictionary<Guid, IAttribute> Attributes = new();
+        // TODO ObservableCollection in UI is not thread-safe, so why should this?...
+        // TODO test should not rely on it's own collection implementation
+        // TODO what actually is needed is a sorted list on attributetype with multiple values per key
+        private readonly List<IAttribute>[] Attributes;
+
+        public TestAttributeCollection()
+        {
+            var types = Enum.GetValues(typeof(AttributeType));
+            Attributes = new List<IAttribute>[types.Length];
+            for (int i = 0; i < types.Length; i++)
+                Attributes[i] = new List<IAttribute>();
+        }
 
         public void AddAttribute(IAttribute attrib)
         {
-            Attributes.TryAdd(Guid.NewGuid(), attrib);
+            //lock (this)
+            {
+                if (!attrib.MultipleAllowed && Attributes[(int)attrib.AttributeType].Count > 0)
+                    return;
+
+                Attributes[(int)attrib.AttributeType].Add(attrib);
+            }
         }
 
         public IAttribute? GetByType(AttributeType type)
         {
-            return Attributes.Values.FirstOrDefault(x => x.AttributeType == type);
+            //lock (this)
+                return Attributes[(int)type].FirstOrDefault();
         }
 
         public IEnumerator<IAttribute> GetEnumerator()
         {
-            return Attributes.Values.GetEnumerator();
+            //lock (this)
+                return Attributes.SelectMany(x => x).GetEnumerator();
         }
 
         public bool HasAttribute(AttributeType type)
         {
-            return (Attributes.Values.Any(x => x.AttributeType == type));
+            //lock (this)
+                return Attributes[(int)type].Count > 0;
         }
 
         public void RemoveAttribute(IAttribute attrib)
         {
-            var items = Attributes.Where(x => x.Value == attrib).ToList();
-            foreach (var item in items)
-                Attributes.Remove(item.Key, out var _);
+            //lock (this)
+            {
+                Attributes[(int)attrib.AttributeType].Remove(attrib);
+            }
         }
 
         public void RemoveAttributesByType(AttributeType type)
         {
-            var items = Attributes.Where(x => x.Value.AttributeType == type).ToList();
-            foreach (var item in items)
-                Attributes.Remove(item.Key, out var _);
+            //lock (this)
+            {
+                Attributes[(int)type].Clear();
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return Attributes.Values.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }
