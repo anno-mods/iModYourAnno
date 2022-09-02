@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Imya.Models.Options;
 using Imya.Models.Attributes;
 using Imya.UI.Models;
+using Imya.Validation;
 
 namespace Imya.UI
 {
@@ -28,7 +29,6 @@ namespace Imya.UI
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
             gameSetup.ModindexLocation = Settings.Default.ModindexLocation;
 
-            AttributeCollectionFactory.AttributeCollectionType = typeof(ObservableAttributeCollection);
             GithubClientProvider.Authenticator = new DeviceFlowAuthenticator();
 
             // init global mods

@@ -75,10 +75,11 @@
         </Grid>
         <ListBox Grid.Row="1"
                  x:Name="ListBox_ModList"
-                 ItemsSource="{Binding Mods.DisplayedMods, UpdateSourceTrigger=PropertyChanged}"
+                 ItemsSource="{Binding Mods, UpdateSourceTrigger=PropertyChanged}"
                  SelectionChanged="SelectionChanged"
                  SelectionMode="Extended"
                  Style="{StaticResource IMYA_LISTBOX}"
+                 ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -140,14 +141,6 @@
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem" BasedOn="{StaticResource IMYA_LISTBOXITEM}">
-                    <Setter Property="IsSelected"
-                            Value="{Binding IsSelected}" />
-                </Style>
-            </ListBox.ItemContainerStyle>
         </ListBox>
-        
-
     </Grid>
 </UserControl>

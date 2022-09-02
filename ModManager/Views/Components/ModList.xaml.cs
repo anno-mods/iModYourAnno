@@ -1,15 +1,11 @@
 ﻿using Imya.Models;
-using Imya.Models.Attributes;
+using Imya.UI.Models;
 using Imya.Utils;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Imya.UI.Components
 {
@@ -28,12 +24,14 @@ namespace Imya.UI.Components
         public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
         public bool HasSelection => CurrentlySelectedMod is not null;
 
-        public ModCollection? Mods { get; private set; } = ModCollection.Global;
+        public BindableModCollection Mods { get; init; }
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
         public ModList()
         {
+            Mods = new BindableModCollection(ModCollection.Global ?? ModCollection.Empty, this);
+
             InitializeComponent();
             DataContext = this;
             OnSelectionChanged();
@@ -52,56 +50,31 @@ namespace Imya.UI.Components
 
         private void OnSelectionChanged()
         {
-            var selectedItems = ListBox_ModList.SelectedItems.Cast<Mod>().ToList();
-            
-            CurrentlySelectedMod = ListBox_ModList.SelectedItems.Count > 0 ? 
-                GetHighestIndexMod(selectedItems) as Mod :
-                ListBox_ModList.SelectedItem as Mod;
-            
-            
-            CurrentlySelectedMods = selectedItems;
+            var selectedItems = ListBox_ModList.SelectedItems.OfType<BindableMod>();
 
+            CurrentlySelectedMods = selectedItems.Select(x => x.Model).OrderBy(x => x, Mods.Order ?? CompareByActiveCategoryName.Default);
+            CurrentlySelectedMod = CurrentlySelectedMods.FirstOrDefault();
 
             ModList_SelectionChanged?.Invoke(CurrentlySelectedMod);
         }
 
-        private Mod? GetHighestIndexMod(IEnumerable<Mod> mods)
-        {
-            if (mods.Count() <= 0 || Mods is null) return null;
-
-            Mod? ModHigh = null;
-            int IndexHigh = -1;
-
-            foreach (Mod m in mods)
-            {
-                var i = Mods!.IndexOf(m);
-                if (IndexHigh < i)
-                {
-                    ModHigh = m;
-                    IndexHigh = i;
-                }
-            }
-
-            return ModHigh;
-        }
-
         public async void ActivateSelection()
         {
-            foreach (Mod m in ListBox_ModList.SelectedItems)
-                await m.ChangeActivationAsync(true);
+            foreach (Mod mod in ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray())
+                await mod.ChangeActivationAsync(true);
             OnSelectionChanged(); 
         }
 
         public async void DeactivateSelection()
         {
-            foreach (Mod m in ListBox_ModList.SelectedItems)
-                await m.ChangeActivationAsync(false);
+            foreach (Mod mod in ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray())
+                await mod.ChangeActivationAsync(false);
             OnSelectionChanged();
         }
 
         public async void DeleteSelection()
         {
-            await Mods!.DeleteAsync(ListBox_ModList.SelectedItems.Cast<Mod>().ToList());
+            await Mods.Model.DeleteAsync(ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray());
             OnSelectionChanged();
         }
 
@@ -118,7 +91,7 @@ namespace Imya.UI.Components
         private void OnSearchRequest(object sender, TextChangedEventArgs e)
         {
             string filterText = SearchTextBox.Text;
-            ModCollection.Global?.FilterMods(x => x.HasKeywords(filterText));
+            Mods.Filter = string.IsNullOrWhiteSpace(filterText) ? null : x => x.HasKeywords(filterText);
         }
 
         public bool AnyActiveSelected()
@@ -131,7 +104,7 @@ namespace Imya.UI.Components
             return CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
         }
 
-        public event ModListSelectionChangedHandler ModList_SelectionChanged;
+        public event ModListSelectionChangedHandler? ModList_SelectionChanged;
         public delegate void ModListSelectionChangedHandler(Mod? mod);
 
         #region INotifyPropertyChangedMembers

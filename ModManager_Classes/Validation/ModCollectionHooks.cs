@@ -1,9 +1,9 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Models.ModTweaker;
-using Imya.Utils.Validation;
+using System.Collections.Specialized;
 
-namespace Imya.Utils
+namespace Imya.Validation
 {
     public class ModCollectionHooks
     {
@@ -21,14 +21,18 @@ namespace Imya.Utils
             ModCollection.Global.CollectionChanged += ValidateOnChange;
         }
 
-        private void ValidateOnChange(ModCollection.CollectionChangeAction action, IEnumerable<Mod> mods)
+        private void ValidateOnChange(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            foreach (var mod in mods)
-            {
-                foreach (var validator in validators)
-                    validator.Validate(mod, ModCollection.Global);
+            if (sender is not ModCollection collection)
+                return;
 
-                if (action == ModCollection.CollectionChangeAction.Add)
+            IEnumerable<Mod> changed = e.NewItems?.OfType<Mod>() ?? collection.Mods;
+            foreach (var validator in validators)
+                validator.Validate(changed, collection.Mods);
+
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var mod in changed)
                     UpdateWithTweak(mod);
             }
         }

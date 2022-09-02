@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using Imya.Models.Attributes;
 using System.Linq;
 using Imya.UI.Popup;
-using Imya.UI.Views.Models;
+using Imya.UI.Models;
 
 namespace Imya.UI.Components
 {
