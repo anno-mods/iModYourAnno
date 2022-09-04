@@ -1,12 +1,7 @@
 ﻿using Imya.UI.Utils;
 using Imya.UI.Views;
 using Imya.Utils;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace Imya.UI
@@ -17,29 +12,34 @@ namespace Imya.UI
         TWEAKER,
         GAME_SETUP,
         MODINFO_CREATOR,
-        DUMMY
+        MOD_INSTALLATION,
+        GITHUB_BROWSER,
     }
 
     public class MainViewController : INotifyPropertyChanged
     {
-        private static ModActivationView ModActivationView = new ModActivationView();
-        private static SettingsView SettingsView = new SettingsView();
-        private static ModTweakerView TweakerView = new ModTweakerView();
-        private static GameSetupView GameSetupView = new GameSetupView();
-        private static ModinfoCreatorView ModinfoCreatorView = new ModinfoCreatorView();
+        private static readonly ModActivationView _modActivation = new();
+        private static readonly SettingsView _settings = new();
+        private static readonly ModTweakerView _tweaker = new();
+        private static readonly GameSetupView _gameSetup = new();
+        private static readonly ModinfoCreatorView _modinfoCreator = new();
+        private static readonly InstallationView _modInstallation = new();
+        private static readonly GithubBrowserView _githubBrowser = new();
 
-        private static UserControl DummyControl = new InstallationView();
-
-        public static MainViewController Instance { get; private set; }
+        public static MainViewController Instance { get; } = new();
 
         public delegate void ViewChangedEventHandler(View view);
         public event ViewChangedEventHandler ViewChanged = delegate { };
 
-        public MainViewController()
+        public static readonly View DefaultView = View.MOD_ACTIVATION;
+        public static readonly UserControl DefaultControl = _modInstallation;
+
+        private MainViewController()
         {
-            Instance ??= this;
+            _currentView = GetViewControl(DefaultView);
         }
 
+        private View _lastView = DefaultView;
         private UserControl _currentView;
         public UserControl CurrentView
         {
@@ -52,22 +52,21 @@ namespace Imya.UI
         }
 
         #region INotifyPropertyChangedMembers
-
-        public event PropertyChangedEventHandler? PropertyChanged = delegate { };
-
+        public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler is PropertyChangedEventHandler)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
 
         public void SetView(View view)
         {
-            if (GetView() == View.TWEAKER && view != View.TWEAKER)
+            View currentView = GetView();
+            if (view == currentView)
+                return;
+            _lastView = currentView;
+
+            if (currentView == View.TWEAKER && view != View.TWEAKER)
             {
                 if (TweakManager.Instance.HasUnsavedChanges)
                 {
@@ -76,28 +75,47 @@ namespace Imya.UI
                         TweakManager.Instance.Save();
                 }
             }
-            switch (view)
-            {
-                case View.MOD_ACTIVATION: CurrentView = ModActivationView; break;
-                case View.SETTINGS: CurrentView = SettingsView; break;
-                case View.TWEAKER: CurrentView = TweakerView; break;
-                case View.GAME_SETUP: CurrentView = GameSetupView; break;
-                case View.MODINFO_CREATOR: CurrentView = ModinfoCreatorView; break;
+            CurrentView = GetViewControl(view);
 
-                default: CurrentView = DummyControl; break;
-            }
+            if (CurrentView is IViewPage page)
+                page.OnLoad();
             ViewChanged(view);
+        }
+
+        private static UserControl GetViewControl(View view)
+        {
+            return view switch
+            {
+                View.MOD_ACTIVATION => _modActivation,
+                View.SETTINGS => _settings,
+                View.TWEAKER => _tweaker,
+                View.GAME_SETUP => _gameSetup,
+                View.MODINFO_CREATOR => _modinfoCreator,
+                View.GITHUB_BROWSER => _githubBrowser,
+                View.MOD_INSTALLATION => _modInstallation,
+                _ => DefaultControl,
+            };
+        }
+
+        public void GoToLastView()
+        {
+            SetView(_lastView);
+            _lastView = DefaultView;
         }
 
         public View GetView()
         {
-            if (CurrentView is ModActivationView) return View.MOD_ACTIVATION;
-            if (CurrentView is SettingsView) return View.SETTINGS;
-            if (CurrentView is ModTweakerView) return View.TWEAKER;
-            if (CurrentView is GameSetupView) return View.GAME_SETUP;
-            if (CurrentView is ModinfoCreatorView) return View.MODINFO_CREATOR;
-
-            return View.DUMMY;
+            return CurrentView switch
+            {
+                ModActivationView => View.MOD_ACTIVATION,
+                SettingsView => View.SETTINGS,
+                ModTweakerView => View.TWEAKER,
+                GameSetupView => View.GAME_SETUP,
+                ModinfoCreatorView => View.MODINFO_CREATOR,
+                GithubBrowserView => View.GITHUB_BROWSER,
+                InstallationView => View.MOD_INSTALLATION,
+                _ => DefaultView,
+            };
         }
     }
 }

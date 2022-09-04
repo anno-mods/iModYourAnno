@@ -1,15 +1,13 @@
-﻿<Window x:Class="Imya.UI.Popup.GithubInstallPopup"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:Imya.UI.Popup"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
-        mc:Ignorable="d" 
-            Height="500" Width="700"
-            WindowStartupLocation="CenterScreen"
-             d:DesignHeight="200" d:DesignWidth="375">
+﻿<UserControl 
+    x:Class="Imya.UI.Views.GithubBrowserView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
+    mc:Ignorable="d"
+    d:DesignHeight="200" d:DesignWidth="375">
     <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.Resources>
             <md:Markdown x:Key="Markdown"
@@ -166,4 +164,4 @@
         
 
     </Grid>
-</Window>
+</UserControl>

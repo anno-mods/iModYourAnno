@@ -2,25 +2,24 @@
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Imya.UI.Popup
+namespace Imya.UI.Views
 {
-    public partial class GithubInstallPopup : Window, INotifyPropertyChanged
+    public partial class GithubBrowserView : UserControl, INotifyPropertyChanged, IViewPage
     {
         public IText MESSAGE { get; set; }
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
-
 
         public bool HasRepoSelection => SelectedRepo is not null;
 
@@ -47,36 +46,55 @@ namespace Imya.UI.Popup
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
-
-        StaticReadmeProvider ReadmeProvider = new StaticReadmeProvider();
+        private readonly StaticReadmeProvider ReadmeProvider = new();
 
         public TextManager TextManager { get;} = TextManager.Instance;
 
-        public GithubInstallPopup()
+        public GithubBrowserView()
         {
             InitializeComponent();
             DataContext = this;
 
-            OK_TEXT = new SimpleText("OK");
+            OK_TEXT = new SimpleText("Download");
             CANCEL_TEXT = new SimpleText("Cancel");
-
-            var repoInfoProvider = new AutoRepoInfoSource(GameSetupManager.Instance.ModindexLocation);
-            AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
-
-            DisplayedRepositories = AllRepositories;
 
             RepoSelection.SelectionChanged += UpdateReadmeForSelection;
         }
 
-        private void OkayButtonClick(object sender, RoutedEventArgs e)
+        public void OnLoad()
+        {
+            var repoInfoProvider = new AutoRepoInfoSource(GameSetupManager.Instance.ModindexLocation);
+            AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
+            DisplayedRepositories = AllRepositories;
+        }
+
+        private async void OkayButtonClick(object sender, RoutedEventArgs e)
         {
             SelectedRepo = RepoSelection.SelectedItem as GithubRepoInfo;
-            DialogResult = true;
+            if (SelectedRepo is null || InstallationView.Instance is null)
+                return;
+
+            MainViewController.Instance.SetView(View.MOD_INSTALLATION);
+
+            var Result = await InstallationView.Instance.InstallerMiddleware.RunGithubInstallAsync(SelectedRepo, InstallationView.Instance.Options);
+
+            switch (Result.ResultType)
+            {
+                case InstallationResultType.InstallationAlreadyRunning:
+                    InstallationView.Instance.CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    break;
+                case InstallationResultType.Exception:
+                    InstallationView.Instance.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
+                    break;
+                default:
+                    Console.WriteLine("Installation successful");
+                    break;
+            };
         }
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            DialogResult = false;
+            MainViewController.Instance.GoToLastView();
         }
 
         private async void UpdateReadmeForSelection(object sender, SelectionChangedEventArgs e)

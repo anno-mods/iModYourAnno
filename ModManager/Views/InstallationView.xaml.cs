@@ -26,11 +26,13 @@ namespace Imya.UI.Views
     /// 
     public partial class InstallationView : UserControl, INotifyPropertyChanged
     {
+        public static InstallationView? Instance { get; private set; }
+
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
         public ModInstallationOptions Options { get; } = new();
         public InstallationSetup Installer { get; } = new InstallationSetup();
-        private InstallationStarter InstallerMiddleware;
+        public InstallationStarter InstallerMiddleware { get; private set; }
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
@@ -59,6 +61,8 @@ namespace Imya.UI.Views
 
         public InstallationView()
         {
+            Instance = this;
+
             InitializeComponent();
             DataContext = this;
 
@@ -72,15 +76,9 @@ namespace Imya.UI.Views
 
         }
 
-        private GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new GenericOkayPopup() { MESSAGE = new SimpleText("Installation is already running") };
+        public GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new() { MESSAGE = new SimpleText("Installation is already running") };
 
-        private GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new GenericOkayPopup() { MESSAGE = new SimpleText(e.Message) };
-
-        private GithubInstallPopup CreateGithubInstallPopup()
-        {
-            GithubInstallPopup popup = new GithubInstallPopup();
-            return popup;
-        }
+        public GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() { MESSAGE = new SimpleText(e.Message) };
 
         private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
         {
@@ -105,27 +103,9 @@ namespace Imya.UI.Views
             }
         }
 
-        private async void OnInstallFromGithub(object sender, RoutedEventArgs e)
+        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
         {
-            var popup = CreateGithubInstallPopup();
-            if ((popup.ShowDialog() is not bool okay) || !okay)
-                return;
-
-            if (!popup.HasRepoSelection) return;
-            var Result = await InstallerMiddleware.RunGithubInstallAsync(popup.SelectedRepo!, Options);
-
-            switch (Result.ResultType)
-            {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                case InstallationResultType.Exception:
-                    CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
-                    break;
-                default:
-                    Console.WriteLine("Installation successful");
-                    break;
-            }
+            MainViewController.Instance.SetView(View.GITHUB_BROWSER);
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)

@@ -26,7 +26,7 @@ namespace Imya.UI.Utils
         }
     }
     
-    internal class InstallationStarter
+    public class InstallationStarter
     {
         public InstallationSetup Installer { get; init; }
 

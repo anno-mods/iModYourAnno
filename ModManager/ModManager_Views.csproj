@@ -93,7 +93,7 @@
     <Compile Update="Popup\AuthCodePopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Popup\GithubInstallPopup.xaml.cs">
+    <Compile Update="Views\GithubBrowserView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
@@ -111,7 +111,7 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Popup\GithubInstallPopup.xaml">
+    <Page Update="Views\GithubBrowserView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
