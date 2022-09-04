@@ -35,7 +35,7 @@ jobs:
 
     - name: Package
       run: |
-        tar -c -a -f iModYourAnno.zip Build
+        tar -caf iModYourAnno.zip -C ./Build/ *
     
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2.2.4
