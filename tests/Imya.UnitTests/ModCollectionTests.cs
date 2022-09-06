@@ -6,7 +6,6 @@ using Imya.Models;
 using Imya.Utils;
 using System.Linq;
 using Imya.Models.Attributes;
-using Imya.UnitTests.Models;
 using System.Collections.Generic;
 
 namespace Imya.UnitTests
@@ -14,11 +13,6 @@ namespace Imya.UnitTests
     // Note: don't use await, debug doesn't work well with it
     public class ModCollectionTests
     {
-        public ModCollectionTests()
-        {
-            AttributeCollectionFactory.AttributeCollectionType = typeof(TestAttributeCollection); 
-        }
-
         [Fact]
         public void Single()
         {

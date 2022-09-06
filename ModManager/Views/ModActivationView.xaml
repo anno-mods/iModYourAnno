@@ -41,7 +41,7 @@
                                  UpdateSourceTrigger="PropertyChanged" />
                         <Binding Path="Mods.ActiveSizeInMBs"
                                  UpdateSourceTrigger="PropertyChanged" />
-                        <Binding Path="Mods.DisplayedMods.Count"
+                        <Binding Path="Mods.Count"
                                  UpdateSourceTrigger="PropertyChanged" />
                         <Binding Path="Mods.InstalledSizeInMBs"
                                  UpdateSourceTrigger="PropertyChanged" />

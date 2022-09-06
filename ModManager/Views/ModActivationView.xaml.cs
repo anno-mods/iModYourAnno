@@ -60,16 +60,6 @@ namespace Imya.UI.Views
             GameSetupManager.Instance.GameClosed += (x, y) => UpdateButtons();
         }
 
-        private void OnGameStart()
-        { 
-        
-        }
-
-        private void OnGameClose(int exitcode, bool RegularClose)
-        { 
-        
-        }
-
         private void OnActivate(object sender, RoutedEventArgs e)
         {
             ModList.ActivateSelection();

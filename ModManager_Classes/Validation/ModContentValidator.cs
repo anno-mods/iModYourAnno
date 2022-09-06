@@ -1,7 +1,8 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
+using Imya.Utils;
 
-namespace Imya.Utils.Validation
+namespace Imya.Validation
 {
     /// <summary>
     /// Checks if data/ is located in the first subfolder.
@@ -9,7 +10,13 @@ namespace Imya.Utils.Validation
     /// </summary>
     public class ModContentValidator : IModValidator
     {
-        public void Validate(Mod mod, ModCollection? collection)
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        {
+            foreach (var mod in changed)
+                ValidateSingle(mod);
+        }
+
+        private static void ValidateSingle(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.ModContentInSubfolder);
 

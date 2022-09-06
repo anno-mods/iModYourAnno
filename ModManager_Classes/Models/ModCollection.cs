@@ -1,13 +1,15 @@
 ﻿using Imya.Models.Attributes;
 using Imya.Models.NotifyPropertyChanged;
-using Imya.Models.Options;
 using Imya.Utils;
-using System.Collections.ObjectModel;
+using System.Collections;
+using System.Collections.Specialized;
 
 namespace Imya.Models
 {
-    public class ModCollection : PropertyChangedNotifier
+    public class ModCollection : PropertyChangedNotifier, IReadOnlyCollection<Mod>, INotifyCollectionChanged
     {
+        public static readonly ModCollection Empty = new("");
+
         #region global active collection
         public static ModCollection? Global
         {
@@ -32,13 +34,6 @@ namespace Imya.Models
         #endregion
 
         #region UI related
-        public ObservableCollection<Mod> DisplayedMods
-        {
-            get => _displayedMods;
-            set => SetDisplayMods(value);
-        }
-        private ObservableCollection<Mod> _displayedMods = new();
-
         public int ActiveMods
         {
             get => _activeMods;
@@ -65,13 +60,7 @@ namespace Imya.Models
         /// Triggers after any change of the collection.
         /// Mods are fully loaded at this point.
         /// </summary>
-        public event UpdatedEventHandler? CollectionChanged;
-        public delegate void UpdatedEventHandler(CollectionChangeAction action, IEnumerable<Mod> mods);
-        public enum CollectionChangeAction
-        {
-            Add,
-            Reset
-        }
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
         public string ModsPath { get; private set; }
 
@@ -84,8 +73,6 @@ namespace Imya.Models
         private readonly bool _normalize;
         private readonly bool _loadImages;
         private readonly bool _autofixSubfolder;
-
-        public IModComparer ModComparer { get; set; } = new NameComparer();
 
         /// <summary>
         /// Open mod collection from folder.
@@ -107,22 +94,22 @@ namespace Imya.Models
         /// </summary>
         public async Task LoadModsAsync()
         {
-            if (!Directory.Exists(ModsPath))
+            if (Directory.Exists(ModsPath))
+            {
+                if (_autofixSubfolder)
+                    AutofixSubfolders(ModsPath);
+
+                _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
+                    .Where(x => !Path.GetFileName(x).StartsWith(".")));
+                foreach (var mod in _mods)
+                    mod.PropertyChanged += Mod_PropertyChanged;
+            }
+            else
             {
                 _mods = new();
-                DisplayedMods = new();
-                return;
             }
 
-            if (_autofixSubfolder)
-                AutofixSubfolders(ModsPath);
-
-            _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
-                .Where(x => !Path.GetFileName(x).StartsWith(".")));
-
-            // TODO option without UI related stuff? having UI classes on top of the model seems better
-            DisplayedMods = new ObservableCollection<Mod>(Mods);
-            CollectionChanged?.Invoke(CollectionChangeAction.Add, Mods);
+            OnActivationChanged(null);
         }
 
         /// <summary>
@@ -193,38 +180,18 @@ namespace Imya.Models
             await LoadModsAsync();
         }
 
-        /// <summary>
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns>index of <paramref name="m"/> in the DisplayedMods property</returns>
-        public int IndexOf(Mod m)
-        { 
-            if(DisplayedMods.Contains(m)) return DisplayedMods.IndexOf(m);
-
-            return -1;
-        }
-
-        private void SetDisplayMods(ObservableCollection<Mod> value)
+        private void Mod_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            // TODO display mods should move to a separate wrapper around ModCollection
-
-            // clear out old mods
-            foreach (var mod in _displayedMods)
-                mod.StatsChanged -= OnModStatsChanged;
-
-            _displayedMods = new ObservableCollection<Mod>(value.OrderBy(x => x, ModComparer));
-
-            // register for stat changes
-            foreach (var mod in _displayedMods)
-                mod.StatsChanged += OnModStatsChanged;
-            OnModStatsChanged();
-            OnPropertyChanged(nameof(DisplayedMods));
+            if (e.PropertyName == nameof(Mod.IsActive))
+            {
+                OnActivationChanged(sender as Mod);
+            }
         }
 
-        private void OnModStatsChanged()
+        private void OnActivationChanged(Mod? sender)
         {
             var newActive = _mods.Count(x => x.IsActive);
-            if (newActive != ActiveMods)
+            //if (newActive != ActiveMods)
             {
                 ActiveMods = newActive;
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
@@ -232,11 +199,11 @@ namespace Imya.Models
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
 
                 // trigger changed events for activation/deactivation
-                // the easiest way to ensure we capture all events is by looking at the stats
-                // TODO not the best way to handle as this may also lead to double trigger
-                CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
+                if (sender is null)
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                else
+                    CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender));
             }
-
         }
 
         #region Add, remove mods
@@ -263,10 +230,9 @@ namespace Imya.Models
             finally
             {
                 Directory.Delete(source.ModsPath, true);
-                DisplayedMods = new ObservableCollection<Mod>(Mods);
             }
 
-            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
         }
 
         private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
@@ -301,14 +267,14 @@ namespace Imya.Models
             if (targetMod is not null)
             {
                 _mods.Remove(targetMod);
-                targetMod.StatsChanged -= OnModStatsChanged;
+                targetMod.PropertyChanged -= Mod_PropertyChanged;
             }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
             reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
-            reparsed.StatsChanged += OnModStatsChanged;
+            reparsed.PropertyChanged += Mod_PropertyChanged;
 
-            CollectionChanged?.Invoke(CollectionChangeAction.Add, new Mod[] { reparsed });
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new Mod[] { reparsed }));
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -337,10 +303,12 @@ namespace Imya.Models
         /// </summary>
         public async Task DeleteAsync(IEnumerable<Mod> mods)
         {
+            var deleted = mods.ToList();
+
             foreach (var mod in mods)
                 await DeleteAsync(mod);
 
-            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, deleted));
         }
 
         /// <summary>
@@ -356,9 +324,7 @@ namespace Imya.Models
 
                     // remove from the mod lists to prevent access.
                     _mods.Remove(mod);
-                    mod.StatsChanged -= OnModStatsChanged;
-                    // remove on DisplayMods cannot be than from non-Dispatcher threads
-                    DisplayedMods = new ObservableCollection<Mod>(Mods);
+                    mod.PropertyChanged -= Mod_PropertyChanged;
                 }
                 catch (Exception e)
                 {
@@ -398,27 +364,16 @@ namespace Imya.Models
                     await mod.ChangeActivationAsync(active);
             }
 
-            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
-        }
-
-        public async Task DeactivateAllAsync()
-        {
-            foreach (Mod mod in Mods)
-                await mod.ChangeActivationAsync(false);
-
-            CollectionChanged?.Invoke(CollectionChangeAction.Reset, Mods);
-        }
-        #endregion
-
-        #region ModListFilter
-
-        public delegate bool ModListFilter(Mod m);
-        public void FilterMods(ModListFilter filter)
-        {
-            DisplayedMods = new ObservableCollection<Mod>(Mods.Where(x => filter(x)).ToList());
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, Mods.ToList()));
         }
         #endregion
 
         public IEnumerable<Mod> WithAttribute(AttributeType attributeType) => Mods.Where(x => x.Attributes.HasAttribute(attributeType));
+
+        #region IReadOnlyCollection
+        public int Count => _mods.Count;
+        public IEnumerator<Mod> GetEnumerator() => _mods.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => _mods.GetEnumerator();
+        #endregion
     }
 }

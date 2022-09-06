@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Imya.UI.Views.Models
+namespace Imya.UI.Models
 {
     public class AuthenticationController : PropertyChangedNotifier
     {
@@ -21,12 +21,12 @@ namespace Imya.UI.Views.Models
         }
         private bool _isAuthenticated = false;
 
-        public String? AuthenticatedUser
+        public string? AuthenticatedUser
         {
             get => _authenticatedUser;
             set => SetProperty(ref _authenticatedUser, value);
         }
-        private String? _authenticatedUser;
+        private string? _authenticatedUser;
 
         public Uri? AvatarUri
         {
@@ -57,9 +57,9 @@ namespace Imya.UI.Views.Models
             AuthenticatedUser = null;
         }
 
-        private void OnAuthCodeReceived(String AuthCode)
+        private void OnAuthCodeReceived(string AuthCode)
         {
-            App.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 if (AuthCodePopup is AuthCodePopup)
                     AuthCodePopup.Close();
@@ -70,7 +70,7 @@ namespace Imya.UI.Views.Models
 
         private void OnAuthSuccess()
         {
-            App.Current.Dispatcher.Invoke(() =>
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
                 IsAuthenticated = true;
                 AuthCodePopup?.Close();

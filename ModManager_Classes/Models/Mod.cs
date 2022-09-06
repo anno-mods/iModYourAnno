@@ -27,13 +27,7 @@ namespace Imya.Models
         public bool IsActive
         {
             get => _isActive;
-            set
-            {
-                _isActive = value;
-                OnPropertyChanged(nameof(IsActive));
-                StatsChanged?.Invoke();
-            }
-
+            set => SetProperty(ref _isActive, value);
         }
         private bool _isActive;
 
@@ -72,19 +66,9 @@ namespace Imya.Models
 
         public float SizeInMB { get; private set; }
 
-        public delegate void ModStatsChangedHandler();
-        public event ModStatsChangedHandler? StatsChanged;
+        public Attributes.AttributeCollection Attributes { get; } = new();
 
-        #region UI info
-        // TODO selection is UI code. 
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => SetProperty(ref _isSelected, value);
-        }
-        private bool _isSelected;
-        #endregion
-
+        #region loading
         public static Mod? TryFromFolder(string modFolderPath)
         {
             var basePath = Path.GetDirectoryName(modFolderPath);
@@ -94,9 +78,6 @@ namespace Imya.Models
             return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
         }
 
-        public IAttributeCollection Attributes { get; } = AttributeCollectionFactory.GetNew();
-
-        #region loading
         /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
         /// <param name="basePath">absolute path without folderName</param>
         public Mod (string folderName, Modinfo? modinfo, string basePath)
@@ -187,18 +168,19 @@ namespace Imya.Models
             {
                 string sourcePath = Path.Combine(BasePath, FullFolderName);
                 string targetPath = Path.Combine(BasePath, (active ? "" : "-") + FolderName);
+                var verb = active ? "activate" : "deactivate";
                 try
                 {
                     DirectoryEx.CleanMove(sourcePath, targetPath);
-                    IsActive = active;
-                    var verb = active ? "Activate" : "Deactivate";
-                    Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
                 }
                 catch (Exception e)
                 {
-                    var verb = active ? "activate" : "deactivate";
+                    
                     Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
+                    return;
                 }
+                IsActive = active;
+                Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
             });
         }
 

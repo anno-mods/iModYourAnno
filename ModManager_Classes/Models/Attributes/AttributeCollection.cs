@@ -1,19 +1,14 @@
-﻿using Imya.Models.Attributes;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
 
-namespace Imya.UI.Models
+namespace Imya.Models.Attributes
 {
-    public class ObservableAttributeCollection : ObservableCollection<IAttribute>, IAttributeCollection
+    public class AttributeCollection : ObservableCollection<IAttribute>
     {
         public void AddAttribute(IAttribute attrib)
         {
-            App.Current.Dispatcher.Invoke(() => this.Add(attrib));
+            Add(attrib);
         }
 
         public IAttribute? GetByType(AttributeType type)
@@ -28,17 +23,14 @@ namespace Imya.UI.Models
 
         public void RemoveAttribute(IAttribute attrib)
         {
-            App.Current.Dispatcher.Invoke(() => this.Remove(attrib));
+            Remove(attrib);
         }
 
         public void RemoveAttributesByType(AttributeType type)
         {
             var items = this.Where(x => x.AttributeType == type).ToArray();
-            foreach(var item in items)
-            {
-                App.Current.Dispatcher.Invoke(() => this.Remove(item));
-            }
-                
+            foreach (var item in items)
+                Remove(item);
         }
     }
 }
