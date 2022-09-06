@@ -147,16 +147,22 @@ namespace Imya.UI.Components
 
         public void UpdateDescription()
         {
-            if (Mod?.HasDescription ?? false)
+            UseMarkdownDescription = false;
+            MarkdownDescription = null;
+
+            if (Mod is null || !Mod.HasDescription || Mod.Modinfo.Description?.Text is not String description)
+                return;
+
+            if (description.StartsWith("file::"))
             {
-                var description = Mod.Modinfo.Description?.Text;
-
-                String? full_path = description is not null ? Path.Combine(Mod.FullModPath, description) : null;
-
-                bool exists = full_path is not null && File.Exists(full_path!) && full_path!.EndsWith(".md");
-                UseMarkdownDescription = exists;
-                MarkdownDescription = exists ? File.ReadAllText(full_path!) : null;
+                 string descAsPath = Path.Combine(Mod.FullModPath, description.Substring(6));
+                 if(File.Exists(descAsPath))
+                     MarkdownDescription = File.ReadAllText(descAsPath);
             }
+            else if (description.StartsWith("md::"))
+                MarkdownDescription = description.Substring(4);
+
+            UseMarkdownDescription = MarkdownDescription is not null;
         }
 
         public void OnCopyModIDClick(object sender, RoutedEventArgs e)

@@ -62,8 +62,7 @@
                       >
             <StackPanel Orientation="Vertical">
 
-                <Border BorderThickness="2"
-                        Margin="5"
+                <Border Margin="5"
                         CornerRadius="4"
                         BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
                         Visibility="{Binding ShowImage, Converter={StaticResource BoolToVis}}"
