@@ -40,7 +40,7 @@
                     </ControlTemplate.Resources>
                     <StackPanel x:Name="stackPanel"
                                 Orientation="Horizontal">
-                        <Grid>
+                        <Grid FlowDirection="LeftToRight">
                             <Border 
                                 Margin="2,4"
                                 Width="32"
