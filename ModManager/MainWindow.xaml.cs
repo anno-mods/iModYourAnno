@@ -13,7 +13,7 @@ namespace Imya.UI
     {
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
-        public MainViewController MainViewController { get; set; } = new MainViewController();
+        public MainViewController MainViewController { get; } = MainViewController.Instance;
 
         public MainWindow()
         {

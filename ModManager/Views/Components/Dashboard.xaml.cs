@@ -67,7 +67,7 @@ namespace Imya.UI.Components
 
         public void MetadataClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.MODINFO_CREATOR);
 
-        public void ModInstallationClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.DUMMY);
+        public void ModInstallationClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.MOD_INSTALLATION);
 
         public async void StartGameClick(object sender, RoutedEventArgs e)
         {
