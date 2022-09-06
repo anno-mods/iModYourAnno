@@ -153,13 +153,14 @@ namespace Imya.UI.Components
             if (Mod is null || !Mod.HasDescription || Mod.Modinfo.Description?.Text is not String description)
                 return;
 
-            string tryDescAsPath = Path.Combine(Mod.FullModPath, description);
-            if (tryDescAsPath.EndsWith(".md") && File.Exists(tryDescAsPath))
-                MarkdownDescription = File.ReadAllText(tryDescAsPath);
-
-            // assume it's markdown if it starts with a level 1 header
-            if (description.StartsWith("# "))
-                MarkdownDescription = description;
+            if (description.StartsWith("file::"))
+            {
+                 string descAsPath = Path.Combine(Mod.FullModPath, description.Substring(6));
+                 if(File.Exists(descAsPath))
+                     MarkdownDescription = File.ReadAllText(descAsPath);
+            }
+            else if (description.StartsWith("md::"))
+                MarkdownDescription = description.Substring(4);
 
             UseMarkdownDescription = MarkdownDescription is not null;
         }
