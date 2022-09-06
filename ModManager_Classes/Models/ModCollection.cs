@@ -164,9 +164,15 @@ namespace Imya.Models
                 foreach (var mod in mods)
                 {
                     // TODO async and move into class Mod
-                    var imagepath = Path.Combine(mod.FullModPath, "banner.png");
+                    var imagepath = Path.Combine(mod.FullModPath, "banner.jpg");
                     if (File.Exists(imagepath))
                         mod.InitImageAsFilepath(Path.Combine(imagepath));
+                    else
+                    {
+                        imagepath = Path.Combine(mod.FullModPath, "banner.png");
+                        if (File.Exists(imagepath))
+                            mod.InitImageAsFilepath(Path.Combine(imagepath));
+                    }
                 }
             }
             return mods;
