@@ -9,7 +9,7 @@ namespace Imya.Models.Attributes
            {
                AttributeType = AttributeType.IssueModAccess,
                //Description = TextManager.Instance.GetText("ATTRIBUTE_NOMODINFO")
-               Description = IText.Empty
+               Description = new SimpleText("Access to the Folder is denied. Please close all programs accessing this folder and retry.")
            };
 
         static GenericAttribute ModAccessIssue_NoDeleteAttribute =
