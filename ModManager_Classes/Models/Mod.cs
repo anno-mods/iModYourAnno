@@ -47,7 +47,7 @@ namespace Imya.Models
                 if (IsRemoved == value)
                     return;
                 Attributes.Clear();
-                Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModRemoved, Description = new SimpleText("This mod has been by another program.") });
+                Attributes.AddAttribute(RemovedFolderAttributeFactory.Get());
                 OnPropertyChanged(nameof(IsRemoved));
             }
         }
@@ -204,7 +204,7 @@ namespace Imya.Models
                 }
                 catch (Exception e)
                 {
-                    Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.IssueModAccess, Description = SimpleText.Empty });
+                    Attributes.AddAttribute(ModAccessIssueAttributeFactory.Get());
                     Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
                 }
             });

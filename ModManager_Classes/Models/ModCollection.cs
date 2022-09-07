@@ -343,7 +343,7 @@ namespace Imya.Models
                 }
                 catch (Exception e)
                 {
-                    mod.Attributes.Add(new GenericAttribute() { AttributeType = AttributeType.IssueModAccess, Description = new SimpleText("Could not delete this mod.") });
+                    mod.Attributes.Add(ModAccessIssueAttributeFactory.GetNoDelete());
                     Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
                 }
             });
