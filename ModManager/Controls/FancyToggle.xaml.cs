@@ -53,16 +53,20 @@ namespace Imya.UI.Controls
             OnTextBlock.SizeChanged += OnTextBlock_SizeChanged;
             OffTextBlock.SizeChanged += OnTextBlock_SizeChanged;
 
-            Binding onBinding = new();
-            onBinding.Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_ONTEXT") as LocalizedText;
-            onBinding.Path = new PropertyPath("Text");
-            onBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            Binding onBinding = new()
+            {
+                Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_ONTEXT") as LocalizedText,
+                Path = new PropertyPath("Text"),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
             SetBinding(OnTextProperty, onBinding);
 
-            Binding offBinding = new();
-            offBinding.Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_OFFTEXT") as LocalizedText;
-            offBinding.Path = new PropertyPath("Text");
-            offBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            Binding offBinding = new()
+            {
+                Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_OFFTEXT") as LocalizedText,
+                Path = new PropertyPath("Text"),
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
             SetBinding(OffTextProperty, offBinding);   
         }
 
