@@ -64,11 +64,13 @@ namespace Imya.UI.Views
         private void OnActivate(object sender, RoutedEventArgs e)
         {
             ModList.ActivateSelection();
+            UpdateButtons();
         }
 
         private void OnDeactivate(object sender, RoutedEventArgs e)
         {
             ModList.DeactivateSelection();
+            UpdateButtons();
         }
 
         private void OnDelete(object sender, RoutedEventArgs e)
@@ -154,6 +156,12 @@ namespace Imya.UI.Views
             CanActivate = ModList.AnyInactiveSelected() && !GameSetupManager.Instance.IsGameRunning;
             CanDeactivate = ModList.AnyActiveSelected() && !GameSetupManager.Instance.IsGameRunning;
             CanDelete = ModList.HasSelection && !GameSetupManager.Instance.IsGameRunning;
+
+            if (ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count())
+            {
+                CanActivate = false;
+                CanDeactivate = false;
+            }
 
             CanLoadProfile = !GameSetupManager.Instance.IsGameRunning;
         }
