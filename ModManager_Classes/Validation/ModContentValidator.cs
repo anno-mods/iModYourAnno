@@ -20,6 +20,12 @@ namespace Imya.Validation
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.ModContentInSubfolder);
 
+            if (mod.IsRemoved || !Directory.Exists(mod.FullModPath))
+            {
+                mod.IsRemoved = true;
+                return;
+            }
+
             string dataPath = Path.Combine(mod.FullModPath, "data");
             if (!Directory.Exists(dataPath))
             {

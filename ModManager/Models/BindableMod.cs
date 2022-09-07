@@ -11,6 +11,7 @@ namespace Imya.UI.Models
     public class BindableMod : Bindable<Mod>
     {
         public bool IsActive => Model.IsActive;
+        public bool IsRemoved => Model.IsRemoved;
         public IText Name => Model.Name;
         public IText Category => Model.Category;
         public BindableCollection<IAttribute> Attributes { get; private set; }

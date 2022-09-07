@@ -13,12 +13,16 @@ namespace Imya.Models.Attributes
         UnresolvedDependencyIssue,
         TweakedMod,
         MissingModinfo,
-        ModContentInSubfolder
+        ModContentInSubfolder,
+        IssueModRemoved,
+        IssueModAccess
     }
 
     public interface IAttribute
     {
         AttributeType AttributeType { get; }
         IText Description { get; }
+
+        bool MultipleAllowed { get; }
     }
 }

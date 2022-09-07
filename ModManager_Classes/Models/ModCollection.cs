@@ -196,10 +196,13 @@ namespace Imya.Models
 
         private void OnActivationChanged(Mod? sender)
         {
-            var newActive = _mods.Count(x => x.IsActive);
-            //if (newActive != ActiveMods)
+            // remove mods with IssueModRemoved attribute
+            int removedModCount = _mods.Count(x => x.Attributes.HasAttribute(AttributeType.IssueModRemoved));
+
+            int newActiveCount = _mods.Count(x => x.IsActive);
+            if (removedModCount > 0 || ActiveMods != newActiveCount)
             {
-                ActiveMods = newActive;
+                ActiveMods = newActiveCount;
                 ActiveSizeInMBs = (int)Math.Round(_mods.Sum(x => x.IsActive ? x.SizeInMB : 0));
                 InstalledSizeInMBs = (int)Math.Round(_mods.Sum(x => x.SizeInMB));
                 Console.WriteLine($"{ActiveMods} active mods. {_mods.Count} total found.");
@@ -218,7 +221,7 @@ namespace Imya.Models
         /// Source collection folder will be deleted afterwards.
         /// Existing mods will be overwriten, old names with same mod id deactivated.
         /// </summary>
-        public async Task MoveIntoAsync(ModCollection source, bool AllowOldToOverwrite = false)
+        public async Task MoveIntoAsync(ModCollection source, bool allowOldToOverwrite = false)
         {
             Directory.CreateDirectory(ModsPath);
 
@@ -226,7 +229,7 @@ namespace Imya.Models
             {
                 foreach (var sourceMod in source.Mods)
                 {
-                    await MoveSingleModIntoAsync(sourceMod, source.ModsPath, AllowOldToOverwrite);
+                    await MoveSingleModIntoAsync(sourceMod, source.ModsPath, allowOldToOverwrite);
                 }
             }
             catch (Exception e)
@@ -241,11 +244,11 @@ namespace Imya.Models
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
         }
 
-        private async Task MoveSingleModIntoAsync(Mod sourceMod, String SourceModsPath, bool AllowOldToOverwrite)
+        private async Task MoveSingleModIntoAsync(Mod sourceMod, string sourceModsPath, bool allowOldToOverwrite)
         {
             var (targetMod, targetModPath) = SelectTargetMod(sourceMod);
 
-            if (!AllowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
+            if (!allowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
             {
                 Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
                 return;
@@ -255,7 +258,7 @@ namespace Imya.Models
             var status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
             sourceMod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
 
-            DirectoryEx.CleanMove(Path.Combine(SourceModsPath, sourceMod.FullFolderName), targetModPath);
+            DirectoryEx.CleanMove(Path.Combine(sourceModsPath, sourceMod.FullFolderName), targetModPath);
             Console.WriteLine($"{sourceMod.Attributes.GetByType(AttributeType.ModStatus)}: {sourceMod.FolderName}");
 
             // mark all duplicate id mods as obsolete
@@ -332,8 +335,15 @@ namespace Imya.Models
                     _mods.Remove(mod);
                     mod.PropertyChanged -= Mod_PropertyChanged;
                 }
+                catch (DirectoryNotFoundException)
+                {
+                    // remove from the mod lists to prevent access.
+                    _mods.Remove(mod);
+                    mod.PropertyChanged -= Mod_PropertyChanged;
+                }
                 catch (Exception e)
                 {
+                    mod.Attributes.Add(ModAccessIssueAttributeFactory.GetNoDelete());
                     Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
                 }
             });

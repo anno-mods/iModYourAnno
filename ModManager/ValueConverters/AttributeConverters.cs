@@ -21,6 +21,8 @@ namespace Imya.UI.ValueConverters
                 AttributeType.TweakedMod => ("Tools", FindResourceBrush("InformationColorBrush")),
                 AttributeType.MissingModinfo => ("HelpBox", FindResourceBrush("InformationColorBrush")),
                 AttributeType.ModContentInSubfolder => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
+                AttributeType.IssueModRemoved => ("TrashCanOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeType.IssueModAccess => ("FolderAlertOutline", FindResourceBrush("ErrorColorBrush")),
                 _ => ("InformationOutline", FindResourceBrush("TextColorBrush")),
             };
         }

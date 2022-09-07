@@ -18,7 +18,7 @@ namespace Imya.Validation
             mod.Attributes.RemoveAttributesByType(AttributeType.ModCompabilityIssue);
 
             // skip dependency check if inactive or standalone
-            if (!mod.IsActive || collection is null)
+            if (!mod.IsActiveAndValid || collection is null)
                 return;
 
             var unresolvedDeps = GetUnresolvedDependencies(mod.Modinfo, collection);
@@ -37,7 +37,7 @@ namespace Imya.Validation
 
             foreach (var dep in modinfo.ModDependencies)
             {
-                if (!collection.Any(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(dep) && x.IsActive))
+                if (!collection.Any(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(dep) && x.IsActiveAndValid))
                     yield return dep;
             }
         }
@@ -49,7 +49,7 @@ namespace Imya.Validation
             
             foreach (var inc in modinfo.IncompatibleIds)
             {
-                var incompatibles = collection.Where(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(inc) && x.IsActive);
+                var incompatibles = collection.Where(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(inc) && x.IsActiveAndValid);
                 foreach (var result in incompatibles)
                     yield return result;
             }

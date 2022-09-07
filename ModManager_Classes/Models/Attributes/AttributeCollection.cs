@@ -8,6 +8,8 @@ namespace Imya.Models.Attributes
     {
         public void AddAttribute(IAttribute attrib)
         {
+            if (!attrib.MultipleAllowed && this.Any(x => x.AttributeType == attrib.AttributeType))
+                return;
             Add(attrib);
         }
 

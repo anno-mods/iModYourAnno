@@ -10,6 +10,8 @@ namespace Imya.Models
 {
     public class SimpleText : PropertyChangedNotifier, IText
     {
+        public readonly static SimpleText Empty = new(string.Empty);
+
         public String Text { 
             get => _text; 
             set

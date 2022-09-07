@@ -7,6 +7,8 @@ namespace Imya.Models.Attributes
         public AttributeType AttributeType { get; } = AttributeType.ModCompabilityIssue;
         public IText Description { get => new SimpleText(String.Format(TextManager.Instance.GetText("ATTRIBUTE_COMPABILITYERROR").Text, String.Join(',', CompabilityIssues.Select(x => $"{x.Category} {x.Name}")))); }
 
+        bool IAttribute.MultipleAllowed => true;
+
         public IEnumerable<Mod> CompabilityIssues { get; }
 
         public ModCompabilityIssueAttribute(IEnumerable<Mod> issues)

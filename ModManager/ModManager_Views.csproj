@@ -176,8 +176,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Models\" />
-  </ItemGroup>
-
 </Project>

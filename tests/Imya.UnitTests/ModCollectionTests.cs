@@ -425,7 +425,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
-            target.MoveIntoAsync(source, AllowOldToOverwrite: true).Wait();
+            target.MoveIntoAsync(source, allowOldToOverwrite: true).Wait();
             Assert.Equal(ModStatus.Updated, target.Mods.First().GetStatus());
             Assert.Equal("{\"Version\": \"1\"}", File.ReadAllText($"{targetMod}\\modinfo.json"));
 
@@ -436,7 +436,7 @@ namespace Imya.UnitTests
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
-            target.MoveIntoAsync(source, AllowOldToOverwrite: true).Wait();
+            target.MoveIntoAsync(source, allowOldToOverwrite: true).Wait();
             Assert.Equal(ModStatus.Updated, target.Mods.First().GetStatus());
             Assert.Equal("{\"Version\": null}", File.ReadAllText($"{targetMod}\\modinfo.json"));
         }

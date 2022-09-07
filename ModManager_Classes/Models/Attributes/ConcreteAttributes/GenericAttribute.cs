@@ -10,5 +10,7 @@ namespace Imya.Models.Attributes
     {
         public AttributeType AttributeType { get; init; }
         public IText Description { get; init; }
+
+        bool IAttribute.MultipleAllowed => false;
     }
 }
