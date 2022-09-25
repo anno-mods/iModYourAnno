@@ -34,7 +34,7 @@ namespace Imya.Models.ModTweaker
             if (mod is null) return; 
 
             _mod = mod;
-            var files = mod.GetFilesWithExtension("xml").Where(x => !x.EndsWith("imyatweak.xml")).Select(x => Path.GetRelativePath(mod.FullModPath, x)).ToArray();
+            var files = mod.GetFilesWithExtension("xml").Where(x => !x.EndsWith("imyatweak.include.xml")).Select(x => Path.GetRelativePath(mod.FullModPath, x)).ToArray();
             var list = new ObservableCollection<TweakerFile>();
 
             TweakStorage = TweakFileStorage.LoadOrCreate(ModBaseName!);

@@ -27,7 +27,7 @@ namespace Imya.Validation
             foreach (var validator in validators)
                 validator.Validate(changed, collection.Mods);
 
-            if (e.Action == NotifyCollectionChangedAction.Add)
+            if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 foreach (var mod in changed)
                     UpdateWithTweak(mod);
