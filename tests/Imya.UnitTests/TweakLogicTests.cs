@@ -71,7 +71,7 @@ namespace Imya.UnitTests
                     "<ImyaExpose Path = \"self::Text\" ModOpID = \"SomeID\" ExposeID = \"Text\" />" +
                 "</ModOps>";
 
-            const String IncludeXML = "<Include File=\"../assets.imyatweak.xml\" />";
+            const String IncludeXML = "<Include File=\"./assets.imyatweak.include.xml\" />";
 
             InitWorkingDirectory();
             LoadAssets(AssetsXML);
@@ -118,7 +118,7 @@ namespace Imya.UnitTests
             tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.include.xml");
             var node = ChangedAssets.SelectSingleNode("/ModOps/ModOp/Standard/GUID");
 
             Assert.Equal("1337", node?.InnerText);
@@ -146,7 +146,7 @@ namespace Imya.UnitTests
             tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.include.xml");
             var node = ChangedAssets.SelectSingleNode("/ModOps/ModOp/Text");
 
             Assert.Equal(NewValue, node?.InnerText);
@@ -179,7 +179,7 @@ namespace Imya.UnitTests
             tweakerFile.Save("tweak_tmp");
 
             XmlDocument ChangedAssets = new XmlDocument();
-            ChangedAssets.Load("tweak_tmp/assets.imyatweak.xml");
+            ChangedAssets.Load("tweak_tmp/assets.imyatweak.include.xml");
             var node = ChangedAssets.FirstChild;
 
             Assert.Equal(ImyaTweakXML, node?.OuterXml);
@@ -187,14 +187,14 @@ namespace Imya.UnitTests
 
 
         /// <summary>
-        /// Creates a clean structure of assets.xml and assets.imyatweak.xml to work on.
+        /// Creates a clean structure of assets.xml and assets.imyatweak.include.xml to work on.
         /// </summary>
         private void InitWorkingDirectory()
         {
             DirectoryEx.EnsureDeleted("tweak_tmp");
             Directory.CreateDirectory("tweak_tmp");
             File.Create("tweak_tmp/assets.xml").Close();
-            File.Create("tweak_tmp/assets.imyatweak.xml").Close();
+            File.Create("tweak_tmp/assets.imyatweak.include.xml").Close();
         }
 
         private void LoadAssets(String AssetsXML)
