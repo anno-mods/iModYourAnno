@@ -213,7 +213,7 @@
                                     HorizontalContentAlignment="Center"
                                     Margin="5"
                                     IsEnabled="{Binding IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}}" />
-                            <Button Margin="5"
+                            <!--<Button Margin="5"
                                     Grid.Column="1"
                                     Style="{StaticResource IMYA_BUTTON}"
                                     Click="OnInstallFromGithub"
@@ -227,7 +227,7 @@
                                                VerticalAlignment="Center"
                                                Padding="5" />
                                 </StackPanel>
-                            </Button>
+                            </Button>-->
                         </Grid>
                         
                     </Grid>

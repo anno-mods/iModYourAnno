@@ -42,19 +42,9 @@
                 Height="30"
                 MaxWidth="250"
                 Foreground="{StaticResource TextColorBrush}"
-                Content="{Binding OK_TEXT.Text}"
+                Content="Add to Download Queue"
                 HorizontalContentAlignment="Center"
                 Click="OkayButtonClick"/>
-        <Button Style="{StaticResource IMYA_BUTTON}"
-                Grid.Row="2" 
-                Grid.Column="1" 
-                Margin="15,0"
-                Height="30"
-                MaxWidth="250"
-                Foreground="{StaticResource TextColorBrush}"
-                Content="{Binding CANCEL_TEXT.Text}"
-                HorizontalContentAlignment="Center"
-                Click="CancelButtonClick"/>
 
         
         <Grid Grid.Row="0"

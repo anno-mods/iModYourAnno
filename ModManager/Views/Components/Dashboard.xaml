@@ -90,6 +90,25 @@
                          MinWidth="200"
                          MinHeight="32"
                          Margin="5,4,4,0"
+                         Click="BrowserClick"
+                         x:Name="ModBrowserButton">
+                <StackPanel Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            Orientation="Horizontal">
+                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                             Kind="MicrosoftGithub"
+                                             Foreground="{DynamicResource TextColorBrush}" />
+                    <TextBlock Margin="10,0,0,0"
+                               Text="Mod Browser"
+                               VerticalAlignment="Center"
+                               Style="{StaticResource IMYA_TEXT}" />
+                </StackPanel>
+            </RadioButton>
+            <RadioButton Style="{StaticResource IMYA_RADIO_BUTTON_DASHBOARD}"
+                         MinWidth="200"
+                         MinHeight="32"
+                         Margin="5,4,4,0"
                          Click="ModInstallationClick"
                          x:Name="ModInstallationButton">
                 <StackPanel Margin="5,0,0,0"
@@ -97,10 +116,10 @@
                             VerticalAlignment="Stretch"
                             Orientation="Horizontal">
                     <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                             Kind="FolderZipOutline"
+                                             Kind="Downloads"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="{Binding TextManager[DASHBOARD_MOD_INSTALLATION].Text, UpdateSourceTrigger=PropertyChanged}"
+                               Text="Download"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
