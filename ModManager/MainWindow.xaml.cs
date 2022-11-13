@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using Imya.UI.Properties;
+using Imya.Utils;
 
 namespace Imya.UI
 {
@@ -32,6 +34,11 @@ namespace Imya.UI
 #if DEBUG
             Properties.Settings.Default.DevMode = true;
 #endif
+
+            if (GithubClientProvider.Authenticator.HasStoredLoginInfo())
+            {
+                Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
+            }
         }
 
         public void SetUpEmbeddedConsole()

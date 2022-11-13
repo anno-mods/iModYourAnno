@@ -16,10 +16,5 @@ namespace Imya.Utils
         public static GitHubClient Client { get; } = new GitHubClient(new ProductHeaderValue("iModYourAnno"));
 
         public static IAuthenticator Authenticator { get; set; }
-
-        public static async Task RunAuthenticate()
-        {
-            await Authenticator.RunAuthenticate(Client);
-        }
     }
 }
