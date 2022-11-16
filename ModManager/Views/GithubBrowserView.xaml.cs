@@ -1,7 +1,9 @@
 ﻿using Imya.GithubIntegration;
+using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
+using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
 using System;
@@ -74,23 +76,55 @@ namespace Imya.UI.Views
             if (SelectedRepo is null || InstallationView.Instance is null)
                 return;
 
-            MainViewController.Instance.SetView(View.MOD_INSTALLATION);
-
-            var Result = await InstallationView.Instance.InstallerMiddleware.RunGithubInstallAsync(SelectedRepo, InstallationView.Instance.Options);
+            var Result = await InstallationManager.Instance.RunGithubInstallAsync(SelectedRepo, AppSettings.Instance.InstallationOptions);
 
             switch (Result.ResultType)
             {
                 case InstallationResultType.InstallationAlreadyRunning:
-                    InstallationView.Instance.CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
                     break;
                 case InstallationResultType.Exception:
-                    InstallationView.Instance.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
+                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
                     break;
                 default:
                     Console.WriteLine("Installation successful");
                     break;
             };
         }
+
+        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
+        {
+            if (ModCollection.Global is null) return;
+
+            var dialog = CreateOpenFileDialog();
+            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                return;
+
+            var Results = await InstallationManager.Instance.RunZipInstallAsync(dialog.FileNames, AppSettings.Instance.InstallationOptions);
+
+            foreach (var Result in Results)
+            {
+                switch (Result.ResultType)
+                {
+                    case InstallationResultType.InstallationAlreadyRunning:
+                        PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
+                        break;
+                    default: break;
+                }
+            }
+        }
+
+
+        private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
+        {
+            return new System.Windows.Forms.OpenFileDialog
+            {
+                Filter = "Zip Archives (*.zip)|*.zip",
+                RestoreDirectory = true, // TODO keep location separate from game path dialog, it's annoying!
+                Multiselect = true
+            };
+        }
+
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
@@ -133,6 +167,11 @@ namespace Imya.UI.Views
             var keywords = valid_textbox.Text.Split(' ').Where(x => x != String.Empty);
 
             Filter(keywords);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

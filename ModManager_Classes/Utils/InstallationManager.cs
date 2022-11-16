@@ -1,16 +1,17 @@
 ﻿using Imya.GithubIntegration;
 using Imya.GithubIntegration.Download;
 using Imya.Models.Installation;
-using Imya.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Imya.UI.Utils
+using Imya.Models.Options;
+
+namespace Imya.Utils
 {
-    public enum InstallationResultType { SuccessfulInstallation, InstallationAlreadyRunning, Exception}
+    public enum InstallationResultType { SuccessfulInstallation, InstallationAlreadyRunning, Exception }
 
     public class InstallationResult
     {
@@ -21,23 +22,27 @@ namespace Imya.UI.Utils
 
         public InstallationResult(InstallationResultType _type, InstallationException? e)
         {
-            ResultType=_type;
+            ResultType = _type;
             Exception = e;
         }
     }
-    
-    public class InstallationStarter
+
+    public class InstallationManager
     {
+        public static InstallationManager Instance { get; private set; }
+
         public InstallationSetup Installer { get; init; }
 
-        public InstallationStarter(InstallationSetup installer)
+        public InstallationManager()
         {
-            Installer = installer;
+            Instance ??= this;
+            Installer = new InstallationSetup();
         }
 
-        public InstallationStarter()
+        public InstallationManager(InstallationSetup installer)
         {
-            Installer = new InstallationSetup();
+            Instance ??= this;
+            Installer = installer;
         }
 
         public async Task<IEnumerable<InstallationResult>> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)

@@ -30,9 +30,8 @@ namespace Imya.UI.Views
 
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
-        public ModInstallationOptions Options { get; } = new();
         public InstallationSetup Installer { get; } = new InstallationSetup();
-        public InstallationStarter InstallerMiddleware { get; private set; }
+        public InstallationManager InstallationManager { get; private set; }
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
@@ -66,7 +65,7 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            InstallerMiddleware = new InstallationStarter(Installer);
+            InstallationManager = new InstallationManager(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -76,58 +75,12 @@ namespace Imya.UI.Views
 
         }
 
-        public GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new() { MESSAGE = new SimpleText("Installation is already running") };
 
-        public GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() { MESSAGE = new SimpleText(e.Message) };
-
-        private System.Windows.Forms.OpenFileDialog CreateOpenFileDialog()
-        {
-            return new System.Windows.Forms.OpenFileDialog
-            {
-                Filter = "Zip Archives (*.zip)|*.zip",
-                RestoreDirectory = true, // TODO keep location separate from game path dialog, it's annoying!
-                Multiselect = true
-            };
-        }
-
-        public void OnOpenGamePath(object sender, RoutedEventArgs e)
-        {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                GameSetup.SetGamePath(dialog.SelectedPath);
-                // TODO validity feedback?
-                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
-                Properties.Settings.Default.Save();
-            }
-        }
+        
 
         private void OnInstallFromGithub(object sender, RoutedEventArgs e)
         {
             MainViewController.Instance.SetView(View.GITHUB_BROWSER);
-        }
-
-        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
-        {
-            if (ModCollection.Global is null) return;
-
-            var dialog = CreateOpenFileDialog();
-            if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                return;
-
-            var Results = await InstallerMiddleware.RunZipInstallAsync(dialog.FileNames, Options);
-
-            foreach (var Result in Results)
-            {
-                switch (Result.ResultType)
-                {
-                    case InstallationResultType.InstallationAlreadyRunning:
-                        CreateInstallationAlreadyRunningPopup().ShowDialog();
-                        break;
-                    default: break;
-                }
-            }
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
@@ -136,15 +89,15 @@ namespace Imya.UI.Views
             ModloaderDownloadButton.IsEnabled = false;
             InstallStatus = ModLoaderStatus.Installing;
 
-            var Result = await InstallerMiddleware.RunModloaderInstallAsync();
+            var Result = await InstallationManager.RunModloaderInstallAsync();
 
             switch (Result.ResultType)
             {
                 case InstallationResultType.InstallationAlreadyRunning:
-                    CreateInstallationAlreadyRunningPopup().ShowDialog();
+                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
                     break;
                 case InstallationResultType.Exception:
-                    CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
+                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
                     break;
                 default:
                     Console.WriteLine("Installation successful");

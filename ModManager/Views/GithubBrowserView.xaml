@@ -31,32 +31,25 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
-            <RowDefinition />
+            <RowDefinition Height="45" />
             <RowDefinition Height="40" />
+            <RowDefinition />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="15" />
         </Grid.RowDefinitions>
 
-        <Button Style="{StaticResource IMYA_BUTTON}"
-                Grid.Row="2" 
-                Margin="15,0"
-                Height="30"
-                MaxWidth="250"
-                Foreground="{StaticResource TextColorBrush}"
-                Content="Add to Download Queue"
-                HorizontalContentAlignment="Center"
-                Click="OkayButtonClick"/>
-
-        
-        <Grid Grid.Row="0"
-              Margin="10,10,0,0">
+        <!-- Search Text Box-->
+        <Grid Grid.Row="1"
+              Margin="0,0,5,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             <TextBox MinHeight="25"
                         Margin="0,2,10,5"
                         x:Name="SearchTextBox"
-                        Background="{DynamicResource InteractiveComponentColorBrush}"
+                        Background="{DynamicResource ComponentColorBrush}"
                         Style="{StaticResource IMYA_TEXTBOX}"
                      TextChanged="SearchTextBox_TextChanged">
             </TextBox>
@@ -95,15 +88,15 @@
                  Style="{StaticResource IMYA_LISTBOX}"
                  ItemsSource="{Binding DisplayedRepositories, UpdateSourceTrigger=PropertyChanged}"
                  ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}"
-                 Grid.Row="1"
-                 Margin="10,0,5,5">
+                 Grid.Row="2"
+                 Margin="0,0,5,5">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="8">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <TextBlock Text="{Binding Owner}"
@@ -112,14 +105,20 @@
                             <TextBlock Text="{Binding Name}"
                                        Style="{StaticResource IMYA_TEXT}"
                                        Padding="5,0"></TextBlock>
+                            
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Grid.Column="2">
+                            <Rectangle Width="2"
+                                       Fill="{DynamicResource ComponentColorBrush_Inactive}"
+                                       Margin="10,0,10,0" />
+                            <TextBlock Text="{Binding ReleaseID}"
+                                       Style="{StaticResource IMYA_TEXT}"
+                                       HorizontalAlignment="Left"
+                                       FontWeight="ExtraLight"></TextBlock>
                         </StackPanel>
 
-                        <TextBlock Text="{Binding ReleaseID}"
-                                   Style="{StaticResource IMYA_TEXT}"
-                                   Grid.Row="2"
-                                   HorizontalAlignment="Left"
-                                   Margin="2"
-                                   FontWeight="ExtraLight"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -128,7 +127,8 @@
         <Border Background="{DynamicResource ComponentColorBrush}"
                 CornerRadius="3"
                 Grid.Column="2"
-                Margin="5,15,10,10">
+                Grid.Row="1"
+                Margin="5,5,5,5">
             <TextBlock Text="{Binding SelectedRepo.Name, UpdateSourceTrigger=PropertyChanged}"
                        Style="{StaticResource IMYA_TEXT}"
                        HorizontalAlignment="Center"
@@ -136,12 +136,11 @@
                        FontWeight="DemiBold">
             </TextBlock>
         </Border>
-
         <Border CornerRadius="3"
                 Background="{DynamicResource ComponentColorBrush}"
                 Grid.Column="2"
-                Grid.Row="1"
-                Margin="5,0,10,5">
+                Grid.Row="2"
+                Margin="5,0,5,5">
             <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}">
                 <FlowDocumentScrollViewer IsEnabled="False"
                                           Style="{StaticResource FlowDocumentScrollViewer}"
@@ -151,7 +150,96 @@
                 </FlowDocumentScrollViewer>
             </ScrollViewer>
         </Border>
-        
 
+        <Border Background="{DynamicResource ComponentColorBrush}"
+                Grid.Row="3"
+                Grid.Column="0"
+                CornerRadius="3"
+                Margin="0,5,5,0">
+            <Grid VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.25*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0.25*" />
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource IMYA_BUTTON}"
+                        Grid.Column="1"
+                        MinHeight="32"
+                        Foreground="{StaticResource TextColorBrush}"
+                        HorizontalContentAlignment="Center"
+                        Click="OkayButtonClick">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Margin="0,0,10,0">
+                        <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                 Kind="Queue" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Text="Add to Download Queue"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
+                    </StackPanel>
+                </Button>
+                
+                <Button Style="{StaticResource IMYA_BUTTON}"
+                        Grid.Column="2"
+                        MinHeight="32"
+                        Foreground="{StaticResource TextColorBrush}"
+                        HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Margin="0,0,10,0">
+                        <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                 Kind="GitHub" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Text="View on Github"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+        </Border>
+        <Border Background="{DynamicResource ComponentColorBrush}"
+                Grid.Row="3"
+                Grid.Column="1"
+                CornerRadius="3"
+                Margin="5,5,5,0">
+            <StackPanel Orientation="Horizontal"
+                        Margin="15,5"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="You already downloaded a mod?"
+                           Margin="0,0,5,0"
+                           Style="{StaticResource IMYA_TEXT}"
+                           VerticalAlignment="Center">
+                </TextBlock>
+                <Button Style="{StaticResource IMYA_BUTTON}"
+                        Grid.Row="3"
+                        Height="30"
+                        MaxWidth="200"
+                        MinWidth="200"
+                        Foreground="{StaticResource TextColorBrush}"
+                        HorizontalContentAlignment="Center"
+                        Click="OnInstallFromZipAsync">
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Stretch"
+                                Margin="0,0,10,0"
+                                >
+                        <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                                 Kind="FolderZipOutline" />
+                        <TextBlock Margin="10,0,0,0"
+                                   Text="Select archive to install"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Foreground="{DynamicResource TextColorBrush}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
