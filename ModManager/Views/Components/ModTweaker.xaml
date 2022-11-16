@@ -83,6 +83,7 @@
                                         <DataTemplate>
                                             <Border
                                                 Name="HoverBorder"
+                                                Margin="2"
                                                 Background="{DynamicResource ComponentColorBrush}">
                                                 <Grid Margin="5">
                                                     <Grid.ColumnDefinitions>
@@ -99,7 +100,8 @@
                                                                 Style="{StaticResource IMYA_TEXT}"
                                                                 VerticalAlignment="Center"
                                                                 Margin="10,0,0,0"
-                                                                MinWidth="150" />
+                                                                MinWidth="150"
+                                                               FontWeight="SemiBold"/>
                                                     <TextBox Grid.Column="1"
                                                              Style="{StaticResource IMYA_TEXTBOX}"
                                                              Text="{Binding Value, Mode=TwoWay}"
@@ -193,11 +195,11 @@
                                                     <TextBlock
                                                         Grid.Row="1"
                                                         Grid.ColumnSpan="3"
-                                                        Margin="10,0,0,5"
+                                                        Margin="10,2,0,5"
                                                         TextWrapping="WrapWithOverflow"
                                                         Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
                                                         Style="{StaticResource IMYA_TEXT}"
-                                                        Text="{Binding Description}" />
+                                                        Text="{Binding Description}"/>
                                                 </Grid>
                                             </Border>
                                             <DataTemplate.Triggers>
