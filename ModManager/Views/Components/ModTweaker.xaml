@@ -7,6 +7,7 @@
              xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:Components="clr-namespace:Imya.UI.Views.Components"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:fontAwesome="http://schemas.fontawesome.io/icons/"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
@@ -55,6 +56,15 @@
                          Text="{Binding TextManager[TWEAKER_NO_FILES].Text}"
                         Visibility="{Binding TweakManager.Tweaks.IsEmpty, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
                 </TextBlock>
+                <Grid
+                    Visibility="{Binding TweakManager.IsLoading, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
+                    <fontAwesome:ImageAwesome Icon="CircleOutlineNotch"
+                                              Spin="True"
+                                              SpinDuration="0.3" 
+                                              Height="42"
+                                              Foreground="{DynamicResource TextColorBrush}"
+                                              />
+                </Grid>
                 <ItemsControl ItemsSource="{Binding TweakManager.Tweaks.TweakerFiles, UpdateSourceTrigger=PropertyChanged}"
                               Margin="10"
                               x:Name="TweakFilesList">
@@ -74,7 +84,7 @@
                                             <Border
                                                 Name="HoverBorder"
                                                 Background="{DynamicResource ComponentColorBrush}">
-                                                <Grid>
+                                                <Grid Margin="5">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition />
                                                         <ColumnDefinition Width="2*" />
