@@ -187,7 +187,9 @@
                         Grid.Column="2"
                         MinHeight="32"
                         Foreground="{StaticResource TextColorBrush}"
-                        HorizontalContentAlignment="Center">
+                        HorizontalContentAlignment="Center"
+                        Click="OnOpenGithubClick"
+                        IsEnabled="{Binding HasRepoSelection, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Stretch"

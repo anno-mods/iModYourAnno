@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -22,8 +23,6 @@ namespace Imya.UI.Views
         public IText MESSAGE { get; set; }
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
-
-        public bool HasRepoSelection => SelectedRepo is not null;
 
         #region Notifying
         public ObservableCollection<GithubRepoInfo> DisplayedRepositories 
@@ -42,9 +41,19 @@ namespace Imya.UI.Views
 
         public GithubRepoInfo? SelectedRepo {
             get => _selectedRepo;
-            private set => SetProperty(ref _selectedRepo, value);
+            private set {
+                SetProperty(ref _selectedRepo, value);
+                HasRepoSelection = value is not null;
+            }
         }
         private GithubRepoInfo? _selectedRepo;
+
+        public bool HasRepoSelection
+        {
+            get => _hasRepoSelection;
+            set => SetProperty(ref _hasRepoSelection, value);
+        }
+        private bool _hasRepoSelection;
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
@@ -169,8 +178,16 @@ namespace Imya.UI.Views
             Filter(keywords);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OnOpenGithubClick(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                Process.Start(new ProcessStartInfo(@$"https://github.com/{SelectedRepo!.Owner}/{SelectedRepo!.Name}") { UseShellExecute = true});
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Could not open Repository on Github: {SelectedRepo!.Owner}/{SelectedRepo!.Name}");
+            }
 
         }
     }
