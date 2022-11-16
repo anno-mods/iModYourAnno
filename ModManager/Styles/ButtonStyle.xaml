@@ -4,6 +4,8 @@
            TargetType="Button">
         <Setter Property="BorderThickness"
                 Value="0" />
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
         <Setter Property="HorizontalAlignment"
                 Value="Stretch" />
         <Setter Property="HorizontalContentAlignment"
@@ -24,14 +26,21 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Background="{TemplateBinding Background}"
-                            SnapsToDevicePixels="true">
+                            SnapsToDevicePixels="True"
+                            UseLayoutRounding="True">
+                        
                         <ContentPresenter x:Name="contentPresenter"
                                           Focusable="False"
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           Margin="{TemplateBinding Padding}"
                                           RecognizesAccessKey="True"
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          SnapsToDevicePixels="True"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0"
+                                              BlurRadius="5"
+                                              Opacity="0.3" />
+                        </Border.Effect>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsDefaulted"
