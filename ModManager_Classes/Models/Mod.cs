@@ -75,6 +75,8 @@ namespace Imya.Models
         public LocalizedModinfo Modinfo { get; private init; }
         public ImyaImageSource? Image { get; private set; }
 
+        public Version? Version { get; private init; }
+
         public bool HasVersion { get => Modinfo.Version is not null; }
         public bool HasDescription { get => Modinfo.Description is not null; }
         public bool HasKnownIssues { get => Modinfo.KnownIssues is not null && Modinfo.KnownIssues.Length > 0; }
@@ -130,6 +132,9 @@ namespace Imya.Models
                 Image = new ImyaImageSource();
                 Image.ConstructAsBase64Image(Modinfo.Image);
             }
+
+            if (VersionEx.TryParse(Modinfo.Version, out var version))
+                Version = version;
 
             // Just get the size
             // TODO move to separate async?
@@ -301,24 +306,19 @@ namespace Imya.Models
                 return false;
 
             // compare content when unversioned
-            if (target.Modinfo.Version is null && Modinfo.Version is null)
+            if (target.Version is null && Version is null)
                 return !HasSameContentAs(target); // consider same as outdated
 
             // prefer versioned mods
-            if (target.Modinfo.Version is null)
+            if (target.Version is null)
                 return true;
-            if (Modinfo.Version is null)
+            if (Version is null)
                 return false;
 
-            // can't compare not parsable versions
-            if (!VersionEx.TryParse(target.Modinfo.Version, out var targetVersion) ||
-                !VersionEx.TryParse(Modinfo.Version, out var sourceVersion))
+            if (Version == target.Version)
                 return !HasSameContentAs(target); // consider same as outdated
 
-            if (sourceVersion == targetVersion)
-                return !HasSameContentAs(target); // consider same as outdated
-
-            return sourceVersion > targetVersion;
+            return Version > target.Version;
         }
         #endregion
 
