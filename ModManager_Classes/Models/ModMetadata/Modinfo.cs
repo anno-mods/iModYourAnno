@@ -9,6 +9,7 @@ namespace Imya.Models.ModMetadata
         public string? Version { get; set; }
         public string? ModID { get; set; }
         public string[]? IncompatibleIds { get; set; }
+        public string[]? DeprecateIds { get; set; }
         public string[]? ModDependencies { get; set; }
         public Localized? Category { get; set; }
         public Localized? ModName { get; set; }
@@ -32,6 +33,7 @@ namespace Imya.Models.ModMetadata
             Version = modinfo?.Version;
             ModID = modinfo?.ModID;
             IncompatibleIds = modinfo?.IncompatibleIds;
+            DeprecateIds = modinfo?.DeprecateIds;
             ModDependencies = modinfo?.ModDependencies;
             DLCDependencies = modinfo?.DLCDependencies;
             CreatorName = modinfo?.CreatorName;
