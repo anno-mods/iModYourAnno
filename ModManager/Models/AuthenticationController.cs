@@ -43,7 +43,7 @@ namespace Imya.UI.Models
 
         public void Authenticate()
         {
-            Task.Run(async () => await GithubClientProvider.RunAuthenticate());
+            Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
         }
 
         public void Logout()
@@ -55,6 +55,7 @@ namespace Imya.UI.Models
             IsAuthenticated = false;
             AvatarUri = null;
             AuthenticatedUser = null;
+            GithubClientProvider.Authenticator.RemoveAuthentication();
         }
 
         private void OnAuthCodeReceived(string AuthCode)

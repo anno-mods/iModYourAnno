@@ -8,42 +8,50 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using CredentialManagement;
+
 namespace Imya.UI.Utils
 {
     public class DeviceFlowAuthenticator : IAuthenticator
     {
         private String ClientID = "37a11ee844d5eea41346";
+        private const String tokenCredentialId = "IMYA_OAUTH_TOKEN";
 
         public event IAuthenticator.PopupRequestedEventHandler UserCodeReceived = delegate { };
         public event IAuthenticator.AuthenticatedEventHandler AuthenticationSuccess = delegate { };
 
-        public async Task RunAuthenticate(GitHubClient Client)
+        public async Task StartAuthentication()
         {
-            if (Client.Credentials.AuthenticationType != AuthenticationType.Anonymous) {
+            if (GithubClientProvider.Client.Credentials.AuthenticationType != AuthenticationType.Anonymous) {
                 Console.WriteLine("Already logged in");
                 return;
             }
 
-            var token = await GetAuthToken(Client);
-
-            if (token is OauthToken valid_token)
+            String? access_token = null;
+            //use saved token. if it doesn't exist, create a token request and save the result.
+            if (!TryGetSavedOauthToken(out access_token))
             {
-                var credentials = new Credentials(valid_token.AccessToken);
-                Client.Credentials = credentials;
-                AuthenticationSuccess?.Invoke();
+                var token = await GetAuthToken();
+                if (!(token is OauthToken valid_token))
+                    return;
+
+                access_token = valid_token.AccessToken;
+                SaveOauthToken(access_token);
             }
+            var credentials = new Credentials(access_token);
+            GithubClientProvider.Client.Credentials = credentials;
+            AuthenticationSuccess?.Invoke();
         }
 
-        private async Task<OauthToken?> GetAuthToken(GitHubClient Client)
+        private async Task<OauthToken?> GetAuthToken()
         {
             var request = new OauthDeviceFlowRequest(ClientID);
 
-            var deviceFlowResponse = await Client.Oauth.InitiateDeviceFlow(request);
+            var deviceFlowResponse = await GithubClientProvider.Client.Oauth.InitiateDeviceFlow(request);
             UserCodeReceived?.Invoke(deviceFlowResponse.UserCode);
             OpenInBrowser(deviceFlowResponse.VerificationUri);
 
-            var token = await Client.Oauth.CreateAccessTokenForDeviceFlow(ClientID, deviceFlowResponse);
-
+            var token = await GithubClientProvider.Client.Oauth.CreateAccessTokenForDeviceFlow(ClientID, deviceFlowResponse);
             return token;
         }
 
@@ -62,6 +70,50 @@ namespace Imya.UI.Utils
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        public bool HasStoredLoginInfo()
+        {
+            using (var cred = new Credential() { Target = tokenCredentialId })
+            {
+                return cred.Exists();
+            }
+        }
+
+        private void SaveOauthToken(String token)
+        {
+            using (var cred = new Credential() { Target = tokenCredentialId })
+            {
+                cred.Password = token;
+                cred.Type = CredentialType.Generic;
+                cred.PersistanceType = PersistanceType.LocalComputer;
+                cred.Save();
+            }
+        }
+
+        private bool TryGetSavedOauthToken(out String token)
+        {
+            using (var cred = new Credential() { Target = tokenCredentialId })
+            {
+                token = "";
+                if (!cred.Exists()) return false;
+                cred.Load();
+                token = cred.Password;
+                return true;
+            }
+        }
+
+        private void CleanSavedOauthToken()
+        {
+            using (var cred = new Credential() { Target = tokenCredentialId })
+            {
+                cred.Delete();
+            }
+        }
+
+        public void RemoveAuthentication()
+        {
+            CleanSavedOauthToken();
         }
     }
 }

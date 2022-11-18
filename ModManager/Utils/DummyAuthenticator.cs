@@ -16,7 +16,17 @@ namespace Imya.UI.Utils
         public event IAuthenticator.PopupRequestedEventHandler UserCodeReceived = delegate { };
         public event IAuthenticator.AuthenticatedEventHandler AuthenticationSuccess = delegate { };
 
-        public async Task RunAuthenticate(GitHubClient Client)
+        public bool HasStoredLoginInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveAuthentication()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task StartAuthentication()
         {
             Console.WriteLine("Authentication is not supported currently!");
         }
