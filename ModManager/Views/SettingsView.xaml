@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:Imya.UI.Controls"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -24,6 +25,17 @@
 
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
             <!-- manager settings -->
+            <Border CornerRadius="3" 
+                    Background="{DynamicResource ComponentColorBrush}" 
+                    BorderThickness="0"
+                    Margin="0,0,0,6"
+                    MinHeight="30">
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="General"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"></TextBlock>
+            </Border>
             <Border CornerRadius="3" Background="{DynamicResource ComponentColorBrush}" BorderThickness="0">
                 <StackPanel Orientation="Vertical">
                     <Grid>
@@ -43,7 +55,7 @@
                                   SelectionChanged="RequestLanguageChange"
                                   ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
-                                  MinHeight="30">
+                                  MinHeight="32">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding LanguageName}"
@@ -70,7 +82,7 @@
                                   SelectionChanged="RequestThemeChange"
                                   ItemsSource="{Binding Themes, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
-                                  MinHeight="30">
+                                  MinHeight="32">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -137,17 +149,135 @@
                     </Grid>
                 </StackPanel>
             </Border>
+            <!-- manager settings -->
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Margin="0,12,0,6"
+                    MinHeight="30">
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="Installation and Download"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"></TextBlock>
+            </Border>
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5"
+                                   TextWrapping="Wrap">
+                        </TextBlock>
+                        <controls:FancyToggle Margin="5"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Grid.Column="1"
+                                              Foreground="{DynamicResource AccentColorBrush}"
+                                              IsChecked="{Binding AppSettings.InstallationOptions.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        </controls:FancyToggle>
+                    </Grid>
+                    <Grid Visibility="{Binding DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="200" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[MODS_AUTOUPDATES].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5"
+                                   TextWrapping="WrapWithOverflow">
+                        </TextBlock>
+                        <controls:FancyToggle Margin="5"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Grid.Column="1"
+                                              Foreground="{DynamicResource AccentColorBrush}">
+                        </controls:FancyToggle>
+                    </Grid>
+                    <!-- Always visible info because important -->
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                Margin="5,5,0,0">
+                        <materialDesign:PackIcon Kind="InfoCircleOutline"
+                                                 VerticalAlignment="Center">
+
+                        </materialDesign:PackIcon>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
+                                   VerticalAlignment="Center"
+                                   Margin="5">
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            
         </StackPanel>
 
         <!-- debug settings -->
         <StackPanel Orientation="Vertical"
                     Margin="5"
                     Grid.Row="1"
-                    Grid.Column="1"
-                    Visibility="{Binding DevMode, Converter={StaticResource BoolToVis}}">
+                    Grid.Column="1">
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Margin="0,0,0,6"
+                    MinHeight="30">
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="Game"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"></TextBlock>
+            </Border>
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0">
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="5*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Margin="5"
+                                   VerticalAlignment="Center" />
+                        <Grid Grid.Column="1"
+                              Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                                     Text="{Binding GameSetup.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Margin="0,0,10,0"
+                                     IsReadOnly="True" />
+                            <Button Grid.Column="1"
+                                    Style="{StaticResource IMYA_BUTTON}"
+                                    Foreground="{DynamicResource TextColorBrush}"
+                                    Content=". . ."
+                                    HorizontalContentAlignment="Center"
+                                    Margin="0"
+                                    Click="OnOpenGamePath">
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Visibility="{Binding DevMode, Converter={StaticResource BoolToVis}}">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>

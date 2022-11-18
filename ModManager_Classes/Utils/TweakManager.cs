@@ -37,6 +37,12 @@ namespace Imya.Utils
 
         private bool IsSaving; 
 
+        public bool IsLoading { 
+            get => _isLoading;
+            set => SetProperty(ref _isLoading, value);
+        }
+        private bool _isLoading = false; 
+
         public void Save()
         {
             HasUnsavedChanges = false;
@@ -68,6 +74,7 @@ namespace Imya.Utils
 
         public void Load(Mod mod, bool ClearCurrentWhileLoading = true)
         {
+            IsLoading = true;
             HasUnsavedChanges = false;
             // make sure everything is secure from access from other threads
             var currentTweaks = Tweaks;
@@ -79,6 +86,7 @@ namespace Imya.Utils
                 if (mod is not null)
                     tweaks.Load(mod);
                 Tweaks = tweaks;
+                IsLoading = false;
             });
         }
 

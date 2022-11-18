@@ -25,11 +25,13 @@ namespace Imya.UI
             var text = TextManager.Instance;
             text.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
+
             var gameSetup = GameSetupManager.Instance;
             //gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
             gameSetup.ModindexLocation = Settings.Default.ModindexLocation;
+            var appSettings = new AppSettings();
 
             GithubClientProvider.Authenticator = new DeviceFlowAuthenticator();
 
@@ -37,6 +39,7 @@ namespace Imya.UI
             ModCollection.Global = new ModCollection(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
             _hooks = new(ModCollection.Global);
             Task.Run(() => ModCollection.Global.LoadModsAsync());
+
         }
     }
 }

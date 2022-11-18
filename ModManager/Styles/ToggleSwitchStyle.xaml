@@ -41,12 +41,18 @@
                     <StackPanel x:Name="stackPanel"
                                 Orientation="Horizontal">
                         <Grid FlowDirection="LeftToRight">
-                            <Border 
-                                Margin="2,4"
-                                Width="32"
-                                Height="16"
-                                CornerRadius="8"
-                                Background="{DynamicResource InteractiveComponentColorBrush}" />
+                            <Border Margin="2,4"
+                                    Width="32"
+                                    Height="16"
+                                    CornerRadius="8"
+                                    Background="{DynamicResource InteractiveComponentColorBrush}">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0"
+                                                      BlurRadius="5"
+                                                      Opacity="0.1" />
+                                </Border.Effect>
+                            </Border>
+
                             <Border
                                 x:Name="bar"
                                 Margin="2,4"
@@ -55,6 +61,11 @@
                                 CornerRadius="8"
                                 Opacity="0"
                                 Background="{DynamicResource AccentColorBrush}">
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0"
+                                                      BlurRadius="5"
+                                                      Opacity="0.1" />
+                                </Border.Effect>
                             </Border>
                             <Border
                                 x:Name="slider"
@@ -64,12 +75,18 @@
                                 CornerRadius="6"
                                 RenderTransformOrigin="0.5,0.5"
                                 Background="{DynamicResource AccentColorContrastBrush}">
-                            <Border.RenderTransform>
-                                <TransformGroup>
-                                    <TranslateTransform X="4" Y="0" />
-                                </TransformGroup>
-                            </Border.RenderTransform>
-                        </Border>
+                                <Border.RenderTransform>
+                                    <TransformGroup>
+                                        <TranslateTransform X="4"
+                                                            Y="0" />
+                                    </TransformGroup>
+                                </Border.RenderTransform>
+                                <Border.Effect>
+                                    <DropShadowEffect ShadowDepth="0"
+                                                      BlurRadius="5"
+                                                      Opacity="0.1" />
+                                </Border.Effect>
+                            </Border>
                         </Grid>
                         <TextBlock Style="{StaticResource IMYA_TEXT}">
                             <ContentPresenter

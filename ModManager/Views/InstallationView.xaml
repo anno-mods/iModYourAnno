@@ -30,45 +30,6 @@
             <Border CornerRadius="3"
                     Margin="0,0,0,8"
                     Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0"
-                    Height="45">
-                <StackPanel Orientation="Vertical"
-                            VerticalAlignment="Center">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="3*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding TextManager[SETTINGS_GAMEPATH].Text}"
-                                   Style="{StaticResource IMYA_TEXT}"
-                                   Margin="5"
-                                   VerticalAlignment="Center" />
-                        <Grid Grid.Column="1"
-                              Margin="0,5,5,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="50" />
-                            </Grid.ColumnDefinitions>
-                            <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                                     Text="{Binding GameSetup.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                                     Margin="0,0,10,0"
-                                     IsReadOnly="True" />
-                            <Button Grid.Column="1"
-                                    Style="{StaticResource IMYA_BUTTON}"
-                                    Foreground="{DynamicResource TextColorBrush}"
-                                    Content=". . ."
-                                    HorizontalContentAlignment="Center"
-                                    Margin="0"
-                                    Click="OnOpenGamePath">
-                            </Button>
-                        </Grid>
-                    </Grid>
-
-                </StackPanel>
-            </Border>
-            <Border CornerRadius="3"
-                    Margin="0,0,0,8"
-                    Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0">
                 <StackPanel>
                     <Grid>
@@ -136,19 +97,6 @@
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="{Binding TextManager[ZIP_INSTALLER_TITLE].Text}"
-                                   VerticalAlignment="Center"
-                                   Margin="5"
-                                   FontWeight="DemiBold">
-                        </TextBlock>
-                    </Grid>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
@@ -158,56 +106,13 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0"
-                                    Grid.Column="1">
-                            
-                            <!-- Expandable Options -->
-                            <!--<Expander IsExpanded="False"
-                                      Grid.Column="0"
-                                      Grid.ColumnSpan="2">
-                                <Expander.Header>
-                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="Options"
-                                               Margin="5">
-                                    </TextBlock>
-                                </Expander.Header>
-                            </Expander>-->
-
-                            <StackPanel>
-                                <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                          Content="{Binding TextManager[INSTALL_ALLOW_OLD_TO_OVERWRITE].Text}"
-                                          IsChecked="{Binding Options.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          Margin="2" />
-                                <CheckBox Visibility="{Binding Settings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}"
-                                          Style="{StaticResource IMYA_TOGGLESWITCH}"
-                                          Content="{Binding TextManager[MODS_AUTOUPDATES].Text}"
-                                          Margin="2" />
-                            </StackPanel>
-
-                            <!-- Always visible info because important -->
-                            <StackPanel Orientation="Horizontal"
-                                        Grid.Column="2"
-                                        Grid.Row="1"
-                                        Margin="5,0,0,0">
-                                <materialDesign:PackIcon Kind="InfoCircleOutline"
-                                                         VerticalAlignment="Center">
-
-                                </materialDesign:PackIcon>
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="{Binding TextManager[INSTALL_CLEANMOVE_NOTE].Text}"
-                                           VerticalAlignment="Center"
-                                           Margin="5">
-                                </TextBlock>
-                            </StackPanel>
-                        </StackPanel>
-
                         <Grid Grid.Row="2"
                               Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Button Style="{StaticResource IMYA_BUTTON}"
+                            <!--<Button Style="{StaticResource IMYA_BUTTON}"
                                     Content="{Binding TextManager[MODS_INSTALLATION_ZIP].Text}"
                                     Click="OnInstallFromZipAsync"
                                     HorizontalContentAlignment="Center"
@@ -227,7 +132,7 @@
                                                VerticalAlignment="Center"
                                                Padding="5" />
                                 </StackPanel>
-                            </Button>
+                            </Button>-->
                         </Grid>
                         
                     </Grid>
