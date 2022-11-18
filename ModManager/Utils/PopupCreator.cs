@@ -1,4 +1,5 @@
-﻿using Imya.Models;
+﻿using Imya.GithubIntegration.Download;
+using Imya.Models;
 using Imya.UI.Popup;
 using Imya.Utils;
 using System;
@@ -33,5 +34,10 @@ namespace Imya.UI.Utils
             };
             return popup;
         }
+
+        public static GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new() { MESSAGE = new SimpleText("Installation is already running") };
+
+        public static GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() { MESSAGE = new SimpleText(e.Message) };
+
     }
 }

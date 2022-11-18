@@ -175,6 +175,7 @@ namespace Imya.Models
                     }
                 }
             }
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, mods));
             return mods;
         }
 
@@ -241,7 +242,8 @@ namespace Imya.Models
                 Directory.Delete(source.ModsPath, true);
             }
 
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
+            //this will lead to the collectionchanged being triggered twice.
+            //CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
         }
 
         private async Task MoveSingleModIntoAsync(Mod sourceMod, string sourceModsPath, bool allowOldToOverwrite)
@@ -270,6 +272,14 @@ namespace Imya.Models
                 // mark mod as updated, since there was the same modid already there
                 if (sameModIDs.Any())
                     status = ModStatus.Updated;
+            }
+
+            // mark deprecated ids as obsolete
+            if (sourceMod.Modinfo.DeprecateIds != null)
+            {
+                var deprecateIDs = sourceMod.Modinfo.DeprecateIds.SelectMany(x => WhereByModID(x));
+                foreach (var mod in deprecateIDs)
+                    await mod.MakeObsoleteAsync(ModsPath);
             }
 
             // update mod list, only remove in case of same folder

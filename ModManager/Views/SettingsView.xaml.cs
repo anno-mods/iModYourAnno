@@ -62,6 +62,8 @@ namespace Imya.UI.Views
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
+        public AppSettings AppSettings { get; set; } = AppSettings.Instance;
+
         #region Notifiable Properties
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new(propertyName));
@@ -183,6 +185,19 @@ namespace Imya.UI.Views
 
             Properties.Settings.Default.Theme = theme.ThemeID;
             Properties.Settings.Default.Save();
+        }
+
+        public void OnOpenGamePath(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                GameSetup.SetGamePath(dialog.SelectedPath);
+                // TODO validity feedback?
+                Properties.Settings.Default.GameRootPath = dialog.SelectedPath;
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

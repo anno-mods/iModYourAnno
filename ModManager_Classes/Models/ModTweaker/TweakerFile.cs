@@ -40,7 +40,7 @@ namespace Imya.Models.ModTweaker
         public String FilePath { get; private set; }
         public String BaseFilePath => Path.GetDirectoryName(FilePath);
         public String SourceFilename { get; private set; }
-        public String EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.xml";
+        public String EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.include.xml";
 
         public string Title { get; private set; }
 
@@ -174,7 +174,7 @@ namespace Imya.Models.ModTweaker
 
         public void EnsureInclude()
         {
-            String Filepath = $"../{EditFilename}";
+            String Filepath = $"./{EditFilename}";
             if (OriginalDocument.SelectSingleNode($"/ModOps/Include[@File = '{Filepath}']") is not null) return;
 
             var n = OriginalDocument.CreateElement("Include");

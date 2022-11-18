@@ -42,6 +42,11 @@
                             Background="{DynamicResource InteractiveComponentColorBrush}"
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0"
+                                              BlurRadius="5"
+                                              Opacity="0.2" />
+                        </Border.Effect>
                         <Grid>
                             <ToggleButton x:Name="ToggleButton"
                                           Template="{StaticResource ComboBoxToggleButton}"

@@ -46,6 +46,11 @@
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </StackPanel>
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="0"
+                                              BlurRadius="3"
+                                              Opacity="0.3" />
+                        </Border.Effect>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver"

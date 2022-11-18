@@ -6,7 +6,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
                     <Border CornerRadius="3"
-                            Background="{TemplateBinding Background}">
+                            Background="{TemplateBinding Background}"
+                            BorderThickness="1"
+                            BorderBrush="{DynamicResource ComponentColorBrush_Light}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />

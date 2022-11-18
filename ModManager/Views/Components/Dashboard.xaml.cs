@@ -61,6 +61,8 @@ namespace Imya.UI.Components
 
         public void ModManagementClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.MOD_ACTIVATION);
 
+        public void BrowserClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GITHUB_BROWSER);
+
         public void GameSetupClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GAME_SETUP);
 
         public void ModTweakerClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.TWEAKER);

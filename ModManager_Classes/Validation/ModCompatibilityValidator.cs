@@ -1,6 +1,7 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Models.ModMetadata;
+using System.Collections.Immutable;
 
 namespace Imya.Validation
 {
@@ -28,6 +29,12 @@ namespace Imya.Validation
             var incompatibles = GetIncompatibleMods(mod.Modinfo, collection);
             if (incompatibles.Any())
                 mod.Attributes.AddAttribute(new ModCompabilityIssueAttribute(incompatibles));
+
+            if (HasBeenDeprecated(mod.Modinfo, collection))
+                mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+
+            if (!IsNewestOfID(mod, collection))
+                mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
         }
 
         private static IEnumerable<string> GetUnresolvedDependencies(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
@@ -53,6 +60,23 @@ namespace Imya.Validation
                 foreach (var result in incompatibles)
                     yield return result;
             }
+        }
+
+        private static bool HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+        {
+            if (collection is null || modinfo.ModID is null)
+                return false;
+
+            return collection.FirstOrDefault(x => x.Modinfo?.DeprecateIds?.Contains(modinfo.ModID) ?? false) is not null;
+        }
+
+        private static bool IsNewestOfID(Mod mod, IReadOnlyCollection<Mod> collection)
+        {
+            if (collection is null || mod.Modinfo.ModID is null)
+                return true;
+
+            var newest = collection.Where(x => x.Modinfo.ModID == mod.Modinfo.ModID).OrderBy(x => x.Version).LastOrDefault();
+            return (newest is null || newest == mod);
         }
     }
 }
