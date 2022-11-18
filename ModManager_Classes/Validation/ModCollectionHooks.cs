@@ -2,11 +2,13 @@
 using Imya.Models.Attributes;
 using Imya.Models.ModTweaker;
 using System.Collections.Specialized;
+using System.Threading;
 
 namespace Imya.Validation
 {
     public class ModCollectionHooks
     {
+        private SemaphoreSlim _tweaksave_sem;
         private readonly IModValidator[] validators = new IModValidator[]
             {
                 new ModContentValidator(),
@@ -15,6 +17,7 @@ namespace Imya.Validation
 
         public ModCollectionHooks(ModCollection mods)
         {
+            _tweaksave_sem = new SemaphoreSlim(1);
             mods.CollectionChanged += ValidateOnChange;
         }
 
@@ -35,7 +38,7 @@ namespace Imya.Validation
             }
         }
 
-        private static void UpdateWithTweak(Mod mod)
+        private void UpdateWithTweak(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
             if (!TweakStorageShelf.Global.IsStored(mod.FolderName))
@@ -47,7 +50,9 @@ namespace Imya.Validation
             {
                 ModTweaks tweaks = new();
                 tweaks.Load(mod);
+                _tweaksave_sem.Wait();
                 tweaks.Save();
+                _tweaksave_sem.Release();
             });
         }
     }
