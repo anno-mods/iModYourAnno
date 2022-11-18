@@ -390,7 +390,7 @@ namespace Imya.Models
                     await mod.ChangeActivationAsync(active);
             }
 
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset, Mods.ToList()));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
         #endregion
 
