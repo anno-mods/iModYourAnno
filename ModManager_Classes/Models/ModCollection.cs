@@ -274,6 +274,14 @@ namespace Imya.Models
                     status = ModStatus.Updated;
             }
 
+            // mark deprecated ids as obsolete
+            if (sourceMod.Modinfo.DeprecateIds != null)
+            {
+                var deprecateIDs = sourceMod.Modinfo.DeprecateIds.SelectMany(x => WhereByModID(x));
+                foreach (var mod in deprecateIDs)
+                    await mod.MakeObsoleteAsync(ModsPath);
+            }
+
             // update mod list, only remove in case of same folder
             if (targetMod is not null)
             {

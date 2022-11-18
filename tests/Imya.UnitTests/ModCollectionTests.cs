@@ -218,7 +218,7 @@ namespace Imya.UnitTests
         /// Deactivate old folder name, place mod with new folder name.
         /// </summary>
         [Fact]
-        public void MoveInto_UpdateWithDifferentFolder()
+        public void MoveInto_SameModIDDifferentFolder()
         {
             DirectoryEx.EnsureDeleted("tmp");
 
@@ -257,6 +257,52 @@ namespace Imya.UnitTests
             Assert.Equal("old text", File.ReadAllText($"{disabledMod}\\update.txt"));
             Assert.Equal(ModStatus.Obsolete, target.Mods.First(x => x.FolderName == "[a] mod1 oldname").GetStatus());
         }
+
+
+        /// <summary>
+        /// Deactivate old folder name, place mod with new folder name.
+        /// </summary>
+        [Fact]
+        public void MoveInto_DeprecateOtherMod()
+        {
+            DirectoryEx.EnsureDeleted("tmp");
+
+            // create obsolete target
+            const string obsoleteMod = "tmp\\target\\[a] mod1 oldname";
+            Directory.CreateDirectory(obsoleteMod);
+            File.WriteAllText($"{obsoleteMod}\\remove.txt", "");
+            File.WriteAllText($"{obsoleteMod}\\update.txt", "old text");
+            File.WriteAllText($"{obsoleteMod}\\modinfo.json", "{\"ModID\": \"mod1\"}");
+            var target = new ModCollection("tmp\\target");
+            target.LoadModsAsync().Wait();
+
+            // verify obsolete target
+            const string targetMod = "tmp\\target\\[a] mod1";
+            Assert.False(Directory.Exists(targetMod));
+
+            // create source
+            const string sourceMod = "tmp\\source\\[a] mod1";
+            Directory.CreateDirectory(sourceMod);
+            File.WriteAllText($"{sourceMod}\\add.txt", "");
+            File.WriteAllText($"{sourceMod}\\update.txt", "new text");
+            File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"ModID\":\"mod2\", \"DeprecateIds\": [ \"mod1\" ]}");
+            var source = new ModCollection("tmp\\source");
+            source.LoadModsAsync().Wait();
+
+            // verify results
+            target.MoveIntoAsync(source).Wait();
+            Assert.True(File.Exists($"{targetMod}\\add.txt"));
+            Assert.False(File.Exists($"{targetMod}\\remove.txt"));
+            Assert.Equal("new text", File.ReadAllText($"{targetMod}\\update.txt"));
+            Assert.Equal(ModStatus.New, target.Mods.First(x => x.FolderName == "[a] mod1").GetStatus());
+            // obsolete mod is unmodified but disabled
+            const string disabledMod = "tmp\\target\\-[a] mod1 oldname";
+            Assert.False(File.Exists($"{disabledMod}\\add.txt"));
+            Assert.True(File.Exists($"{disabledMod}\\remove.txt"));
+            Assert.Equal("old text", File.ReadAllText($"{disabledMod}\\update.txt"));
+            Assert.Equal(ModStatus.Obsolete, target.Mods.First(x => x.FolderName == "[a] mod1 oldname").GetStatus());
+        }
+
 
         /// <summary>
         /// Overwrite active mod from inactive source.
