@@ -4,17 +4,17 @@
             Components that display something -> ComponentColorBrush
             Components that are clickable -> InteractiveComponentColorBrush
         -->
-    <SolidColorBrush x:Key="ComponentColorBrush">#fff</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush">#fafafa</SolidColorBrush>
     <SolidColorBrush x:Key="ComponentColorBrush_Light">#C5C5C5</SolidColorBrush>
 
     <!-- TODO rename into ButtonBackgroundBrush -->
-    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#ccc</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#F5F5F5</SolidColorBrush>
     <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#B5B5B5</SolidColorBrush>
     <SolidColorBrush x:Key="InteractiveComponentColorBrush_Dark">#aaa</SolidColorBrush>
     <SolidColorBrush x:Key="TextBoxBackgroundBrush">#fff</SolidColorBrush>
 
     <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
-    <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#F5F5F5</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#ccc</SolidColorBrush>
 
     <SolidColorBrush x:Key="AccentColorBrush">#8c3bf0</SolidColorBrush>
     <SolidColorBrush x:Key="AccentColorBrush_Dark">#808c3bf0</SolidColorBrush>
