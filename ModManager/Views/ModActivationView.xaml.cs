@@ -47,7 +47,7 @@ namespace Imya.UI.Views
             get => _canLoadProfile;
             private set => SetProperty(ref _canLoadProfile, value);
         }
-        private bool _canLoadProfile = false;
+        private bool _canLoadProfile = true;
         #endregion
 
         public ModActivationView()
@@ -101,9 +101,9 @@ namespace Imya.UI.Views
 
             var Dialog = new ProfilesLoadPopup();
 
-            Dialog.ShowDialog();
+            var dialogResult = Dialog.ShowDialog();
 
-            if (Dialog.DialogResult is true && Dialog.SelectedProfile is not null)
+            if (dialogResult is true && Dialog.SelectedProfile is not null)
             {
                 await Mods.LoadProfileAsync(Dialog.SelectedProfile);
             }
