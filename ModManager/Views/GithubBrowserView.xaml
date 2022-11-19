@@ -177,7 +177,7 @@
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="Queue" />
                         <TextBlock Margin="10,0,0,0"
-                                   Text="Add to Download Queue"
+                                   Text="{Binding TextManager[GITBROWSER_ADDTOQUEUE].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Foreground="{DynamicResource TextColorBrush}" />
@@ -198,7 +198,7 @@
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="GitHub" />
                         <TextBlock Margin="10,0,0,0"
-                                   Text="View on Github"
+                                   Text="{Binding TextManager[GITBROWSER_VIEWONGITHUB].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Foreground="{DynamicResource TextColorBrush}" />
@@ -211,11 +211,13 @@
                 Grid.Row="3"
                 Grid.Column="1"
                 CornerRadius="3"
-                Margin="5,5,5,0">
+                Margin="5,5,5,0"
+                BorderThickness="1"
+                BorderBrush="{StaticResource AccentColorBrush}">
             <StackPanel Orientation="Horizontal"
                         Margin="15,5"
                         HorizontalAlignment="Center">
-                <TextBlock Text="You already downloaded a mod?"
+                <TextBlock Text="{Binding TextManager[GITBROWSER_ZIPHINT].Text, UpdateSourceTrigger=PropertyChanged}"
                            Margin="0,0,5,0"
                            Style="{StaticResource IMYA_TEXT}"
                            VerticalAlignment="Center">
@@ -236,7 +238,7 @@
                         <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                  Kind="FolderZipOutline" />
                         <TextBlock Margin="10,0,0,0"
-                                   Text="Select archive to install"
+                                   Text="{Binding TextManager[GITBROWSER_SELECTZIP].Text, UpdateSourceTrigger=PropertyChanged}"
                                    VerticalAlignment="Center"
                                    Style="{StaticResource IMYA_TEXT}"
                                    Foreground="{DynamicResource TextColorBrush}" />

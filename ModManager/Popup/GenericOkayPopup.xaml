@@ -10,6 +10,9 @@
             WindowStartupLocation="CenterScreen"
              d:DesignHeight="200" d:DesignWidth="375">
     <Grid Background="{DynamicResource BackgroundColorBrush}">
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -37,7 +40,8 @@
                 Foreground="{StaticResource TextColorBrush}"
                 Content="{Binding OK_TEXT.Text}"
                 HorizontalContentAlignment="Center"
-                Click="OkayButtonClick"/>
+                Click="OkayButtonClick"
+                Visibility="{Binding HasOkayButton, Converter={StaticResource BoolToVis}}"/>
         <Button Style="{StaticResource IMYA_BUTTON}"
                 Grid.Row="1" 
                 Grid.Column="1" 
@@ -46,6 +50,7 @@
                 Foreground="{StaticResource TextColorBrush}"
                 Content="{Binding CANCEL_TEXT.Text}"
                 HorizontalContentAlignment="Center"
-                Click="CancelButtonClick"/>
+                Click="CancelButtonClick"
+                Visibility="{Binding HasCancelButton, Converter={StaticResource BoolToVis}}" />
     </Grid>
 </Window>
