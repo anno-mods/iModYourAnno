@@ -1248,6 +1248,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ATTRIBUTE_REPLACEDBY": {
+    "Chinese": null,
+    "English": "This mod is old.\nIt has been replaced by '{0}'.",
+    "French": null,
+    "German": "Diese Mod ist alt.\nSie wurde durch '{0}' ersetzt.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ATTRIBUTE_STATUS_OBSOLETE": {
     "Chinese": null,
     "English": "Obsolete",

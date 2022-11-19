@@ -17,6 +17,7 @@ namespace Imya.Validation
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.UnresolvedDependencyIssue);
             mod.Attributes.RemoveAttributesByType(AttributeType.ModCompabilityIssue);
+            mod.Attributes.RemoveAttributesByType(AttributeType.ModReplacedByIssue);
 
             // skip dependency check if inactive or standalone
             if (!mod.IsActiveAndValid || collection is null)
@@ -30,11 +31,9 @@ namespace Imya.Validation
             if (incompatibles.Any())
                 mod.Attributes.AddAttribute(new ModCompabilityIssueAttribute(incompatibles));
 
-            if (HasBeenDeprecated(mod.Modinfo, collection))
-                mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
-
-            if (!IsNewestOfID(mod, collection))
-                mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+            Mod? newReplacementMod = HasBeenDeprecated(mod.Modinfo, collection) ?? IsNewestOfID(mod, collection);
+            if (newReplacementMod is not null && newReplacementMod != mod)
+                mod.Attributes.AddAttribute(new ModReplacedByIssue(newReplacementMod));
         }
 
         private static IEnumerable<string> GetUnresolvedDependencies(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
@@ -62,21 +61,20 @@ namespace Imya.Validation
             }
         }
 
-        private static bool HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+        private static Mod? HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
         {
             if (collection is null || modinfo.ModID is null)
-                return false;
+                return null;
 
-            return collection.FirstOrDefault(x => x.Modinfo?.DeprecateIds?.Contains(modinfo.ModID) ?? false) is not null;
+            return collection.FirstOrDefault(x => x.Modinfo?.DeprecateIds?.Contains(modinfo.ModID) ?? false);
         }
 
-        private static bool IsNewestOfID(Mod mod, IReadOnlyCollection<Mod> collection)
+        private static Mod? IsNewestOfID(Mod mod, IReadOnlyCollection<Mod> collection)
         {
             if (collection is null || mod.Modinfo.ModID is null)
-                return true;
+                return null;
 
-            var newest = collection.Where(x => x.Modinfo.ModID == mod.Modinfo.ModID).OrderBy(x => x.Version).LastOrDefault();
-            return (newest is null || newest == mod);
+            return collection.Where(x => x.Modinfo.ModID == mod.Modinfo.ModID).OrderBy(x => x.Version).LastOrDefault();
         }
     }
 }
