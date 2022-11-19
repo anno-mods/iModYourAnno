@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.ModTweaker
 {
-    public enum ExposedModValueType { SimpleValue, Enum, Slider, Toggle }
+    public enum ExposedModValueType { SimpleValue, Enum, Slider, Toggle, SkipToggle }
 
     public enum ExposedModValueReplaceType { Text, Xml }
 

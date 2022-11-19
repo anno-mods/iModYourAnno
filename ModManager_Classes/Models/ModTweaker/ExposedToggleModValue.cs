@@ -9,8 +9,8 @@ namespace Imya.Models.ModTweaker
 {
     public class ExposedToggleModValue : ExposedModValue
     {
-        public String TrueValue { get; private set; }
-        public String FalseValue { get; init; }
+        public String TrueValue { get; set; }
+        public String FalseValue { get; set; }
 
         public bool IsTrue {
             get => _isTrue;
