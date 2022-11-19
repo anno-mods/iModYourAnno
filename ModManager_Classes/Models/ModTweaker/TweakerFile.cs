@@ -183,7 +183,7 @@ namespace Imya.Models.ModTweaker
             attrib.Value = Filepath;
             n.Attributes!.Append(attrib);
 
-            OriginalDocument.FirstChild?.AppendChild(n);
+            OriginalDocument.SelectSingleNode("/ModOps")?.AppendChild(n);
         }
 
         /// <summary>
