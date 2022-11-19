@@ -15,7 +15,8 @@ namespace Imya.Models.Attributes
         MissingModinfo,
         ModContentInSubfolder,
         IssueModRemoved,
-        IssueModAccess
+        IssueModAccess,
+        ModReplacedByIssue
     }
 
     public interface IAttribute
