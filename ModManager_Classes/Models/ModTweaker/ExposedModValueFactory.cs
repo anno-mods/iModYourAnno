@@ -99,6 +99,23 @@ namespace Imya.Models.ModTweaker
                         return val; 
                     }
                 }
+                else if (type == ExposedModValueType.SkipToggle)
+                {
+                    var val = new ExposedToggleModValue()
+                    {
+                        Path = Path!,
+                        ModOpID = ModOpID!,
+                        ExposeID = ExposeID!,
+                        Parent = parent,
+                        Description = description,
+                        Tooltip = tooltip,
+                        FalseValue = "1",
+                        TrueValue = "0",
+                        IsInverted = false,
+                        ExposedModValueType = ExposedModValueType.SkipToggle
+                    };
+                    return val;
+                }
                 return new ExposedModValue()
                 {
                     Path = Path!,

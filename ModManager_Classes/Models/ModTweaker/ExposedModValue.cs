@@ -37,7 +37,7 @@ namespace Imya.Models.ModTweaker
         public bool IsEnumType { get => ExposedModValueType == ExposedModValueType.Enum; }
         public bool IsSimpleValue { get => ExposedModValueType == ExposedModValueType.SimpleValue; }
         public bool IsSliderType { get => ExposedModValueType == ExposedModValueType.Slider; }
-        public bool IsToggleType { get => ExposedModValueType == ExposedModValueType.Toggle; }
+        public bool IsToggleType { get => ExposedModValueType == ExposedModValueType.Toggle || ExposedModValueType == ExposedModValueType.SkipToggle; }
        
     }
 
