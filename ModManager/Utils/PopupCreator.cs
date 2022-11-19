@@ -17,9 +17,9 @@ namespace Imya.UI.Utils
         {
             var dialog = new GenericOkayPopup()
             {
-                MESSAGE = new SimpleText("You have unsaved changes. Save now?"),
-                OK_TEXT = new SimpleText("Save Now"),
-                CANCEL_TEXT = new SimpleText("Discard Changes"),
+                MESSAGE = TextManager.GetText("TWEAK_UNSAVED_CHANGES"),
+                OK_TEXT = TextManager.GetText("TWEAK_SAVE"),
+                CANCEL_TEXT = TextManager.GetText("TWEAK_DISCARD"),
                 OkayAction = async () => await TweakManager.Instance.SaveAsync(),
                 CancelAction = () => TweakManager.Instance.Unload()
             };
@@ -30,14 +30,32 @@ namespace Imya.UI.Utils
         {
             GenericOkayPopup popup = new GenericOkayPopup()
             {
-                MESSAGE = TextManager.GetText("ATTRIBUTE_GAMESTART_WARNING")
+                MESSAGE = TextManager.GetText("ATTRIBUTE_GAMESTART_WARNING"),
+                CANCEL_TEXT = TextManager.GetText("DIALOG_CANCEL"),
+                OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
             };
             return popup;
         }
 
-        public static GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new() { MESSAGE = new SimpleText("Installation is already running") };
+        public static GenericOkayPopup CreateInstallationAlreadyRunningPopup() => new() 
+        {
+            MESSAGE = TextManager.GetText("POPUP_INSTALLATION_ALREADY_RUNNING"),
+            OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
+            HasCancelButton = false
+        };
 
-        public static GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() { MESSAGE = new SimpleText(e.Message) };
+        public static GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() 
+        { 
+            MESSAGE = new SimpleText(e.Message) 
+        };
+
+        public static GenericOkayPopup CreateLogoutPopup() => new() 
+        { 
+            MESSAGE = TextManager.GetText("DASHBOARD_LOGOUTCONFIRMATION"),
+            CANCEL_TEXT = TextManager.GetText("DIALOG_CANCEL"),
+            OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
+
+        };
 
     }
 }
