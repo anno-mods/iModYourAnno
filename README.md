@@ -12,6 +12,8 @@ Anno is a trademark of Ubisoft GmbH in the US and/or other countries.
 - Start iModYourAnno
 - Install modloader and mods using the manager
 
+> If you are on Windows 10, or the app does not launch, you might need to install the [.NET 6 runtime](https://dotnet.microsoft.com/en-us/download/dotnet/6.0/runtime)
+
 ## Credits
  
 This project uses 
@@ -20,5 +22,7 @@ This project uses
 - [theunrepentantgeek/Markdown.XAML](https://github.com/theunrepentantgeek/Markdown.XAML) with some little manual edits.
 - [Octokit](https://github.com/octokit/octokit.net)
 - [Newtonsoft.Json](https://www.newtonsoft.com/json)
+- [FontAwesome.WPF](https://github.com/charri/Font-Awesome-WPF)
+- [CredentialManagement](https://github.com/ilyalozovyy/credentialmanagement)
 
 Default Mod Banner created by Alucard King Of Darkniss.
