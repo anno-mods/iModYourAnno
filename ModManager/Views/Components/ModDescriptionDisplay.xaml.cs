@@ -159,8 +159,8 @@ namespace Imya.UI.Components
                  if(File.Exists(descAsPath))
                      MarkdownDescription = File.ReadAllText(descAsPath);
             }
-            else if (description.StartsWith("md::"))
-                MarkdownDescription = description.Substring(4);
+            else if (description.StartsWith("# "))
+                MarkdownDescription = description;
 
             UseMarkdownDescription = MarkdownDescription is not null;
         }
