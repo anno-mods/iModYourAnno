@@ -151,31 +151,23 @@
                     <!-- Description -->
 
                     <Grid Visibility="{Binding ShowDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
+                        <!--<TextBlock Text="{Binding TextManager[HEADER_DESCRIPTION].Text}"
                                    Margin="2,8,2,0"
                                    Style="{StaticResource IMYA_TEXT}"
-                                   FontWeight="SemiBold" />
-                        
+                                   FontWeight="SemiBold" />-->
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Left"
                                    Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
                                    Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
-                                   Margin="2,8,2,8"
-                                   Grid.Row="1"/>
-
+                                   Margin="2,8,2,8" />
                         <FlowDocumentScrollViewer Visibility="{Binding UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                                   IsEnabled="False"
                                                   Style="{StaticResource FlowDocumentScrollViewer}"
                                                   Document="{Binding MarkdownDescription, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextToFlowDocumentConverter}}"
                                                   Margin="-15,0,0,0"
-                                                  x:Name="DescriptionFlowViewer"
-                                                  Grid.Row="1">
+                                                  x:Name="DescriptionFlowViewer">
                         </FlowDocumentScrollViewer>
                     </Grid>
 
