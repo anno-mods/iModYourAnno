@@ -63,7 +63,7 @@
             <controls:FancyToggle 
                 Label="{Binding TextManager[DASHBOARD_MODLOADER].Text, UpdateSourceTrigger=PropertyChanged}"
                 Margin="10,3,0,0"
-                IsChecked="{Binding GameSetupManager.ModloaderActivationDesiredOnStart, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                IsChecked="{Binding AppSettings.ModloaderEnabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         </StackPanel>
         <StackPanel HorizontalAlignment="Left"
                     Grid.Row="2"

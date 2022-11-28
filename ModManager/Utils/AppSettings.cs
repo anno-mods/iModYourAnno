@@ -128,8 +128,13 @@ namespace Imya.UI.Utils
 
         public bool ModloaderEnabled
         {
-            get; 
-            set;
+            get => Properties.Settings.Default.ModloaderEnabled;
+            set
+            {
+                Properties.Settings.Default.ModloaderEnabled = value;
+                Properties.Settings.Default.Save();
+                OnPropertyChanged(nameof(ModloaderEnabled));
+            }
         }
 
         public LanguageSetting Language
