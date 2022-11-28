@@ -17,6 +17,7 @@ using Imya.GithubIntegration;
 using Imya.UI.Utils;
 using Imya.Models.Options;
 using Imya.GithubIntegration.Download;
+using Imya.GithubIntegration.StaticData;
 
 namespace Imya.UI.Views
 {
@@ -30,10 +31,12 @@ namespace Imya.UI.Views
 
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
-        public InstallationSetup Installer { get; } = new InstallationSetup();
-        public InstallationManager InstallationManager { get; private set; }
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
+
+        InstallationManager InstallationManager { get; } = InstallationManager.Instance;
+
+        public ObservableCollection<IDownloadableUnpackable> PendingDownloads { get; }
 
         #region notifyable properties
 
@@ -57,15 +60,15 @@ namespace Imya.UI.Views
 
         #endregion
 
-
         public InstallationView()
         {
             Instance = this;
 
+            PendingDownloads = new ObservableCollection<IDownloadableUnpackable>(InstallationManager.PendingDownloads);
+
             InitializeComponent();
             DataContext = this;
 
-            InstallationManager = new InstallationManager(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -73,40 +76,13 @@ namespace Imya.UI.Views
                 InstallStatus = ModLoaderStatus.Installed;
             }
 
-        }
 
-
-        
-
-        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
-        {
-            MainViewController.Instance.SetView(View.GITHUB_BROWSER);
+           
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Installing Modloader");
-            ModloaderDownloadButton.IsEnabled = false;
-            InstallStatus = ModLoaderStatus.Installing;
-
-            var Result = await InstallationManager.RunModloaderInstallAsync();
-
-            switch (Result.ResultType)
-            {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                case InstallationResultType.Exception:
-                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
-                    break;
-                default:
-                    Console.WriteLine("Installation successful");
-                    break;
-            }
-
-            ModloaderDownloadButton.IsEnabled = true;
-            GameSetup.UpdateModloaderInstallStatus();
-            InstallStatus = GameSetup.IsModloaderInstalled ? ModLoaderStatus.Installed : ModLoaderStatus.NotInstalled;
+            Console.WriteLine("This does fucking nothing right now");
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)

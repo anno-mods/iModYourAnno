@@ -3,6 +3,7 @@ using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
+using Imya.Models.Installation;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -60,6 +61,7 @@ namespace Imya.UI.Views
         private readonly StaticReadmeProvider ReadmeProvider = new();
 
         public TextManager TextManager { get;} = TextManager.Instance;
+        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
 
         public GithubBrowserView()
         {
@@ -85,20 +87,12 @@ namespace Imya.UI.Views
             if (SelectedRepo is null || InstallationView.Instance is null)
                 return;
 
-            var Result = await InstallationManager.Instance.RunGithubInstallAsync(SelectedRepo, AppSettings.Instance.InstallationOptions);
+            var install = await GithubInstallationBuilder
+                .Create()
+                .WithRepoInfo(SelectedRepo)
+                .BuildAsync();
 
-            switch (Result.ResultType)
-            {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                case InstallationResultType.Exception:
-                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
-                    break;
-                default:
-                    Console.WriteLine("Installation successful");
-                    break;
-            };
+            InstallationManager.EnqueueGithubInstallation(install);
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -109,17 +103,14 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var Results = await InstallationManager.Instance.RunZipInstallAsync(dialog.FileNames, AppSettings.Instance.InstallationOptions);
-
-            foreach (var Result in Results)
+            foreach (String filename in dialog.FileNames)
             {
-                switch (Result.ResultType)
-                {
-                    case InstallationResultType.InstallationAlreadyRunning:
-                        PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                        break;
-                    default: break;
-                }
+                var install = ZipInstallationBuilder
+                    .Create()
+                    .WithSource(filename)
+                    .Build();
+
+                InstallationManager.EnqueueZipInstallation(install);
             }
         }
 

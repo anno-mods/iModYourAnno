@@ -3,13 +3,11 @@ using Imya.Utils;
 
 namespace Imya.Models.Installation
 {
-    public class ZipInstallation : Installation, IModInstallation
+    public class ZipInstallation : Installation, IUnpackable
     {
+        public String SourceFilepath { get; set; }
+        public String UnpackTargetPath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public String SourceFilepath { get; }
-        public String UnpackDirectoryName { get; private set; }
-
-        #region NotifiableProperties
 
         public new ZipInstallationStatus Status
         {
@@ -20,46 +18,14 @@ namespace Imya.Models.Installation
                 OnPropertyChanged(nameof(Status));
             }
         }
+
         private ZipInstallationStatus _status = ZipInstallationStatus.NotStarted;
 
-        public ModCollection? Result { get; set; }
-        public ModInstallationOptions Options { get; init; }
-
-        #endregion
-        internal ZipInstallation(String source_file_path, ModInstallationOptions options)
+        public ZipInstallation() 
         {
-            SourceFilepath = source_file_path;
-            Options = options;
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD");
             AdditionalText = new SimpleText(SourceFilepath);
         }
-
-        public override Task<IInstallation> Setup()
-        {
-            IsInstalling = true;
-            Status = ZipInstallationStatus.Unpacking;
-
-            return Task.Run(async () =>
-            {
-                Console.WriteLine($"Extract zip: {SourceFilepath}");
-                Result = await ModCollectionLoader.ExtractZipAsync(SourceFilepath,
-                    Options.UnpackDirectory,
-                    this);
-                return this as IInstallation;
-            }
-            );
-        }
-
-        public override Task Finalize()
-        {
-            return this.RunMoveInto();
-        }
-
-        public override void CleanUp()
-        { 
-        
-        }
-
         public override string ToString() => $"InstallationTask of {SourceFilepath}";
     }
 

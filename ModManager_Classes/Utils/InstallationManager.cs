@@ -1,5 +1,5 @@
-﻿using Imya.GithubIntegration;
-using Imya.GithubIntegration.Download;
+﻿using Imya.Models;
+using Imya.Models.Collections;
 using Imya.Models.Installation;
 using System;
 using System.Collections.Generic;
@@ -7,133 +7,151 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Imya.Models.Options;
+using Downloader;
+using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Utils
 {
-    public enum InstallationResultType { SuccessfulInstallation, InstallationAlreadyRunning, Exception }
-
-    public class InstallationResult
+    public class InstallationManager : PropertyChangedNotifier
     {
-        public InstallationResultType ResultType { get; init; }
-        public InstallationException? Exception { get; init; }
+        public static InstallationManager Instance { get; private set; } = new InstallationManager();
 
-        public InstallationResult(InstallationResultType _type) : this(_type, null) { }
+        public List<IUnpackable> Unpacks { get; private set; }
 
-        public InstallationResult(InstallationResultType _type, InstallationException? e)
+        //we want a special queue that we can manipulate later on. 
+        public IQueue<IDownloadableUnpackable> PendingDownloads { get; private set; }
+        public IDownloadable? CurrentDownload { get; private set; }
+
+        public DownloadService DownloadService;
+
+        private Semaphore _moveIntoSem;
+        private Semaphore _downloadSem;
+
+        private event InstallAddedEventHandler FreshGithubInstallAdded = delegate { };
+        private delegate void InstallAddedEventHandler();
+
+        public event InstallFailedEventHandler InstallFailedWithException = delegate { };
+        public delegate void InstallFailedEventHandler(Exception exception_context);
+
+        public double BytesPerSecondSpeed 
         {
-            ResultType = _type;
-            Exception = e;
+            get => _bytesPerSecondSpeed;
+            set => SetProperty(ref _bytesPerSecondSpeed, value);
         }
-    }
+        private double _bytesPerSecondSpeed;
 
-    public class InstallationManager
-    {
-        public static InstallationManager Instance { get; private set; }
-
-        public InstallationSetup Installer { get; init; }
+        public double ProgressPercentage
+        {
+            get => _progressPercentage;
+            set => SetProperty(ref _progressPercentage, value);
+        }
+        private double _progressPercentage;
 
         public InstallationManager()
         {
-            Instance ??= this;
-            Installer = new InstallationSetup();
+            _moveIntoSem = new Semaphore(1, 1);
+            _downloadSem = new Semaphore(1, 1);
+
+            PendingDownloads = new WrappedQueue<IDownloadableUnpackable>();
+            Unpacks = new List<IUnpackable>();
+
+            //TODO add options
+            DownloadService = new();
+            DownloadService.DownloadProgressChanged += OnDownloadProgressChanged; 
+
+            //when an install gets added, we invoke process with next download, semaphore does the rest for us. 
+            FreshGithubInstallAdded += async () => await ProceedWithNextDownloadAsync();
         }
 
-        public InstallationManager(InstallationSetup installer)
+        public void EnqueueGithubInstallation(GithubInstallation githubInstallation)
         {
-            Instance ??= this;
-            Installer = installer;
+            PendingDownloads.Enqueue(githubInstallation);
+
+            //If no downloads are here
+            FreshGithubInstallAdded?.Invoke();
         }
 
-        public async Task<IEnumerable<InstallationResult>> RunZipInstallAsync(IEnumerable<String> Filenames, ModInstallationOptions Options)
+        public void EnqueueZipInstallation(ZipInstallation zipInstallation)
         {
-            List<Task<IInstallation>> installations = new();
-            List<InstallationResult> results = new();
-
-            foreach (var Filename in Filenames)
+            Unpacks.Add(zipInstallation);
+            Task.Run(async () =>
             {
-                var installation = Installer.SetupZipInstallationTask(Filename, Options);
-                if (installation is Task<IInstallation> valid_install)
-                {
-                    installations.Add(valid_install);
-                }
-                else
-                {
-                    results.Add(new InstallationResult(InstallationResultType.InstallationAlreadyRunning));
-                }
-            }
-
-            while (installations.Count > 0)
-            {
-                var installation = await Task.WhenAny(installations);
-                try
-                {
-                    await Installer.ProcessAsync(installation);
-                    results.Add(new InstallationResult(InstallationResultType.SuccessfulInstallation));
-                }
-                catch (InstallationException ex)
-                {
-                    results.Add(new InstallationResult(InstallationResultType.Exception, ex));
-                }
-                finally
-                {
-                    if (installation is Task<IInstallation>)
-                        Installer.CleanInstallation(installation);
-                    installations.Remove(installation);
-                }
-            }
-
-            return results;
+                await UnpackAsync(zipInstallation);
+                await MoveModsAsync(zipInstallation);
+                CleanUpUnpackable(zipInstallation);
+            });
         }
 
-        public async Task<InstallationResult> RunGithubInstallAsync(GithubRepoInfo repo, ModInstallationOptions Options)
+        private async Task ProceedWithNextDownloadAsync()
         {
-            Task<IInstallation>? installation = null;
-            try
-            {
-                installation = Installer.SetupModInstallationTask(repo, Options);
-                if (installation is Task<IInstallation> valid_install)
-                    await Installer.ProcessAsync(valid_install);
-                else
-                    return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
-                return new InstallationResult(InstallationResultType.SuccessfulInstallation);
-            }
-            catch (InstallationException ex)
-            {
-                return new InstallationResult(InstallationResultType.Exception, ex);
-            }
-            catch (Exception e)
-            {
-                return new InstallationResult(InstallationResultType.Exception, new InstallationException("An unknown exception occured."));
-            }
-            finally
-            {
-                if (installation is Task<IInstallation>)
-                    Installer.CleanInstallation(installation);
-            }
+            //wait for the current download to finish;
+            await Task.Run(() => _downloadSem.WaitOne());
+            if (PendingDownloads.Count() == 0) return;
+
+            //get the next download
+            Console.WriteLine("Starting Download");
+            var unpackable_downloadable = PendingDownloads.Dequeue();
+
+            await DownloadAsync(unpackable_downloadable);
+            _downloadSem.Release();
+
+            Console.WriteLine("Starting Unpack");
+            Unpacks.Add(unpackable_downloadable);
+            await UnpackAsync(unpackable_downloadable);
+
+            Console.WriteLine("Moving Mods");
+            await MoveModsAsync(unpackable_downloadable);
+
+            CleanUpUnpackable(unpackable_downloadable);
+            CleanUpDownloadable(unpackable_downloadable);
         }
 
-        public async Task<InstallationResult> RunModloaderInstallAsync()
+        private async Task UnpackAsync(IUnpackable zipInstallation)
         {
-            Task<IInstallation>? installation = null;
-            try
+            await Task.Run(() =>
             {
-                installation = Installer.SetupModloaderInstallationTask();
-                if (installation is Task<IInstallation> valid_install)
-                    await Installer.ProcessAsync(valid_install);
-                else
-                    return new InstallationResult(InstallationResultType.InstallationAlreadyRunning);
-                return new InstallationResult(InstallationResultType.SuccessfulInstallation);
-            }
-            catch (InstallationException ex)
-            {
-                return new InstallationResult(InstallationResultType.Exception, ex);
-            }
-            finally
-            {
-                if (installation is Task<IInstallation>)
-                    Installer.CleanInstallation(installation);
-            }
+                if (Directory.Exists(zipInstallation.UnpackTargetPath))
+                    Directory.Delete(zipInstallation.UnpackTargetPath, true);
+                using (FileStream fs = File.OpenRead(zipInstallation.SourceFilepath))
+                    fs.ExtractZipFile(zipInstallation.UnpackTargetPath, overwrite: true);
+            });            
         }
+
+        private async Task MoveModsAsync(IUnpackable unpackable)
+        {
+            var newCollection = await ModCollectionLoader.LoadFrom(unpackable.UnpackTargetPath);
+            _moveIntoSem.WaitOne();
+            await ModCollection.Global!.MoveIntoAsync(newCollection);
+            _moveIntoSem.Release();
+            Unpacks.Remove(unpackable);
+        }
+
+        private async Task DownloadAsync(IDownloadable downloadable)
+        {
+            CurrentDownload = downloadable;
+            await DownloadService.DownloadFileTaskAsync(downloadable.DownloadUrl, downloadable.DownloadTargetFilename);
+            CurrentDownload = null; 
+        }
+
+        private void CleanUpUnpackable(IUnpackable unpackable)
+        {
+            if(Directory.Exists(unpackable.UnpackTargetPath))
+                Directory.Delete(unpackable.UnpackTargetPath);
+            if(File.Exists(unpackable.SourceFilepath))
+                File.Delete(unpackable.SourceFilepath);
+        }
+
+        private void CleanUpDownloadable(IDownloadable downloadable)
+        {
+            if (File.Exists(downloadable.DownloadTargetFilename))
+                File.Delete(downloadable.DownloadTargetFilename);
+        }
+
+        private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
+        {
+            BytesPerSecondSpeed = e.BytesPerSecondSpeed;
+            ProgressPercentage = e.ProgressPercentage;
+        }
+
     }
 }

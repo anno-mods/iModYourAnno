@@ -9,8 +9,7 @@ namespace Imya.Models.Installation
 {
     public abstract class Installation : 
         Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier,
-        IProgress<float>,
-        IInstallation
+        IProgress<float>
     {
         public float Progress
         {
@@ -68,11 +67,6 @@ namespace Imya.Models.Installation
             _progressRange = (Min, Max);
             Report(Progress);
         }
-
-        public abstract Task<IInstallation> Setup();
-        public abstract Task Finalize();
-
-        public abstract void CleanUp();
     }
 
     public interface IInstallationStatus

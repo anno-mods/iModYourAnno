@@ -205,10 +205,19 @@ namespace Imya.Utils
             }
         }
     }
-    
+
+    public static class FileStreamExtensions
+    {
+        public static void ExtractZipFile(this Stream fs, String extractTarget, IProgress<float>? progress = null, bool overwrite = false)
+        {
+            using (ZipArchive archive = new ZipArchive(fs, ZipArchiveMode.Read))
+            {
+                archive.ExtractToDirectory(extractTarget, progress, overwrite);
+            }
+        }
+    }
 
     //https://stackoverflow.com/questions/43661211/extract-an-archive-with-progress-bar
-
     public static class ZipArchiveExtensions
     {
         public static void ExtractToDirectory(this ZipArchive source, string destinationDirectoryName, IProgress<float>? progress = null, bool overwrite = false)
