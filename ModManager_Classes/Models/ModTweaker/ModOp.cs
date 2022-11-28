@@ -12,6 +12,7 @@ namespace Imya.Models.ModTweaker
     {
         public String? ID;
         public IEnumerable<XmlNode> Code;
+        public string? Skip;
 
         //Mod Op related things
         public String Type;
@@ -23,7 +24,13 @@ namespace Imya.Models.ModTweaker
 
         public static ModOp? FromXmlNode(XmlNode ModOp)
         {
-            if (ModOp.TryGetAttribute(TweakerConstants.TYPE, out String? ModOpType))
+            string? type = null;
+            if (ModOp.Name.ToLower() == "include")
+                type = "include";
+            if (type is null && ModOp.TryGetAttribute(TweakerConstants.TYPE, out string? ModOpType))
+                type = ModOpType;
+
+            if (type is not null)
             {
                 ModOp.TryGetAttribute(TweakerConstants.GUID, out String? Guid);
                 ModOp.TryGetAttribute(TweakerConstants.PATH, out String? Path);
@@ -32,9 +39,10 @@ namespace Imya.Models.ModTweaker
                 {
                     ID = ID!,
                     Code = ModOp.ChildNodes.Cast<XmlNode>().ToList(),
-                    Type = ModOpType!,
+                    Type = type,
                     GUID = Guid,
-                    Path = Path
+                    Path = Path,
+                    Skip = ModOp.Attributes?["Skip"]?.Value
                 };
             }
             return null;

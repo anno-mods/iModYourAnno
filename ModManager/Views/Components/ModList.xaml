@@ -62,6 +62,7 @@
                                      Foreground="{DynamicResource TextColorBrush}"
                                      Margin="0,0,5,0">
             </materialDesign:PackIcon>
+            <!--
             <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                      Grid.Column="2"
                                      Kind="InformationCircleOutline"
@@ -71,7 +72,7 @@
                 <materialDesign:PackIcon.ToolTip>
                     <local:AttributeStaticHelp />
                 </materialDesign:PackIcon.ToolTip>
-            </materialDesign:PackIcon>
+            </materialDesign:PackIcon>-->
         </Grid>
         <ListBox Grid.Row="1"
                  x:Name="ListBox_ModList"
@@ -131,10 +132,13 @@
                                     <materialDesign:PackIcon Margin="0,0,5,0"
                                                              Kind="{Binding Path=. ,Converter={StaticResource AttribIconConverter}}"
                                                              Foreground="{Binding Path=. , Converter={StaticResource AttribColorConverter}}"
-                                                             Padding="5">
+                                                             Padding="5"
+                                                             ToolTipService.InitialShowDelay="0">
                                         <materialDesign:PackIcon.ToolTip>
                                             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                       Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}"/>
+                                                       Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}"
+                                                       MaxWidth="400"
+                                                       TextWrapping="Wrap"/>
                                         </materialDesign:PackIcon.ToolTip>
                                     </materialDesign:PackIcon>
                                 </DataTemplate>

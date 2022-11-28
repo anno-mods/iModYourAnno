@@ -102,7 +102,7 @@
                                              Kind="MicrosoftGithub"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="Mod Browser"
+                               Text="{Binding TextManager[DASHBOARD_MODBROWSER].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
@@ -121,7 +121,7 @@
                                              Kind="Downloads"
                                              Foreground="{DynamicResource TextColorBrush}" />
                     <TextBlock Margin="10,0,0,0"
-                               Text="Download"
+                               Text="{Binding TextManager[DASHBOARD_DOWNLOAD].Text, UpdateSourceTrigger=PropertyChanged}"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}" />
                 </StackPanel>
@@ -229,7 +229,7 @@
                             Grid.Column="2"
                             Margin="5"
                             Click="LogoutButtonClick"
-                            ToolTip="Logout">
+                            ToolTip="{Binding TextManager[DASHBOARD_LOGOUT].Text, UpdateSourceTrigger=PropertyChanged}">
                         <Grid>
                             <materialDesign:PackIcon Kind="Logout"
                                                      Style="{StaticResource IMYA_ICON}"
@@ -256,7 +256,7 @@
                                              HorizontalAlignment="Center">
 
                     </materialDesign:PackIcon>
-                    <TextBlock Text="Login with Github"
+                    <TextBlock Text="{Binding TextManager[DASHBOARD_LOGIN].Text, UpdateSourceTrigger=PropertyChanged}"
                                Grid.Column="1"
                                VerticalAlignment="Center"
                                Style="{StaticResource IMYA_TEXT}">

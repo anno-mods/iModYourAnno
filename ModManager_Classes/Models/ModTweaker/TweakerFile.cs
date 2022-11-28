@@ -107,16 +107,24 @@ namespace Imya.Models.ModTweaker
         /// </summary>
         /// <param name="expose"></param>
         /// <returns>The default value as String</returns>
-        public String GetDefaultNodeValue(IExposedModValue expose)
+        public string GetDefaultNodeValue(IExposedModValue expose)
         {
             var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).FirstOrDefault();
-            if (op is null) return String.Empty;
+            if (op is null) 
+                return string.Empty;
             foreach (XmlNode x in op.Code)
             {
                 var node = x.SelectSingleNode(expose.Path);
-                if (node is not null) return node.InnerText;
+                if (node is not null)
+                    return node.InnerText;
             }
-            return String.Empty;
+
+            if (expose.ExposedModValueType == ExposedModValueType.SkipToggle)
+            {
+                return op.Skip ?? string.Empty;
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -126,6 +134,9 @@ namespace Imya.Models.ModTweaker
         /// <returns>The xml node that was generated</returns>
         public XmlNode? Generate(ModOp modop)
         {
+            if (modop.Type.ToLower() == "include")
+                return null;
+
             var elem = TargetDocument.CreateElement("ModOp");
 
             if (modop.Path is not null)
@@ -162,20 +173,35 @@ namespace Imya.Models.ModTweaker
         /// <summary>
         /// Ensures that an XML node has a skip attribute
         /// </summary>
-        /// <param name="n"></param>
-        public void EnsureSkipFlag(XmlNode? n)
+        /// <param name="modop"></param>
+        public void EnsureSkipFlag(XmlNode? modop, bool value)
         {
-            if (n is null || n.OwnerDocument is null || n.TryGetAttribute("Skip", out var _)) return;
+            if (modop is null || modop.OwnerDocument is null || modop.Attributes is null)
+                return;
 
-            var attrib = n.OwnerDocument!.CreateAttribute("Skip");
-            attrib.Value = "1";
-            n.Attributes!.Append(attrib);
+            //if (modop.Name.ToLower() == "include" || modop.Name.ToLower() == "disabled")
+            //{
+            //    // modloader doesn't support `Skip` on include yet
+            //    modop.ParentNode.
+            //    modop.Name = value ? "Include" : "Disabled";
+            //    return;
+            //}
+            
+            XmlAttribute? skipAttrib = modop.Attributes["Skip"];
+            if (skipAttrib is null)
+            {
+                skipAttrib = modop.OwnerDocument.CreateAttribute("Skip");
+                modop.Attributes.Append(skipAttrib);
+            }
+
+            skipAttrib.Value = value ? "1" : "0";
         }
 
         public void EnsureInclude()
         {
             String Filepath = $"./{EditFilename}";
-            if (OriginalDocument.SelectSingleNode($"/ModOps/Include[@File = '{Filepath}']") is not null) return;
+            if (OriginalDocument.SelectSingleNode($"/ModOps/Include[@File = '{Filepath}']") is not null)
+                return;
 
             var n = OriginalDocument.CreateElement("Include");
 
@@ -183,7 +209,7 @@ namespace Imya.Models.ModTweaker
             attrib.Value = Filepath;
             n.Attributes!.Append(attrib);
 
-            OriginalDocument.FirstChild?.AppendChild(n);
+            OriginalDocument.SelectSingleNode("/ModOps")?.AppendChild(n);
         }
 
         /// <summary>
@@ -201,22 +227,32 @@ namespace Imya.Models.ModTweaker
 
         public void Export()
         {
-            TweakExporter exporter = new TweakExporter(ModOps, Exposes);
+            TweakExporter exporter = new(ModOps, Exposes);
             var modops = exporter.GetExported();
 
-            //ensure that the source document includes what we want.
-            EnsureInclude();
             foreach (ModOp op in modops)
             {
-                //ensure a skip in the source document.
-                if (OriginalDocument.TryGetModOpNodes(op.ID!, out var modop_nodes))
+                if (op.ID is null)
+                    continue;
+
+                // ensure a skip in the source document.
+                if (OriginalDocument.TryGetModOpNodes(op.ID, out var modopNodes) && modopNodes is not null)
                 {
-                    foreach (XmlNode node in modop_nodes!)
-                        EnsureSkipFlag(node);
+                    // get the expose of includes because we just toggle them inline
+                    var expose = op.Type == "include" ? Exposes.FirstOrDefault(x => x.ModOpID == op.ID) as ExposedToggleModValue : null;
+
+                    foreach (XmlNode node in modopNodes)
+                        EnsureSkipFlag(node, !expose?.IsTrue ?? true);
                 }
 
-                //generate the mod op in the target document
-                Generate(op);
+                // generate the mod op in the target document
+                _ = Generate(op);
+            }
+
+            if (NeedsIncludeFile())
+            {
+                // ensure that the source document includes what we want.
+                EnsureInclude();
             }
         }
 
@@ -228,7 +264,9 @@ namespace Imya.Models.ModTweaker
             try
             {
                 OriginalDocument.Save(Path.Combine(basePath, BaseFilePath, SourceFilename));
-                TargetDocument.Save(Path.Combine(basePath, BaseFilePath, EditFilename));
+
+                if (NeedsIncludeFile())
+                    TargetDocument.Save(Path.Combine(basePath, BaseFilePath, EditFilename));
             }
             catch (IOException e)
             {
@@ -283,6 +321,11 @@ namespace Imya.Models.ModTweaker
                 return false;
             }
             return true;
+        }
+
+        private bool NeedsIncludeFile()
+        {
+            return TargetDocument.SelectSingleNode($"/ModOps/ModOp") is not null;
         }
 
         #endregion

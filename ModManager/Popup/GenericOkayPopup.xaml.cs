@@ -28,6 +28,9 @@ namespace Imya.UI.Popup
         public Action? OkayAction { get; set; } = null;
         public Action? CancelAction { get; set; } = null;
 
+        public bool HasOkayButton { get; set; } = true;
+        public bool HasCancelButton { get; set; } = true;
+
         public GenericOkayPopup()
         {
             InitializeComponent();

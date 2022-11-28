@@ -57,13 +57,16 @@ namespace Imya.Models.ModTweaker
 
         internal IEnumerable<ModOp> FetchModOps(XmlDocument ImportDocument)
         { 
-            var ModOps = Document.SelectNodes("/ModOps/ModOp");
+            var modOps = Document.SelectNodes("/ModOps/ModOp | /ModOps/Include");
+            if (modOps is null)
+                yield break;
 
-            foreach (XmlNode _ModOp in ModOps)
+            foreach (XmlNode modOp in modOps)
             {
-                var Imported = ImportDocument.ImportNode(_ModOp, true);
-                ModOp? op = ModOp.FromXmlNode(Imported);
-                if (op is not null && op.HasID) yield return op;
+                var imported = ImportDocument.ImportNode(modOp, true);
+                ModOp? op = ModOp.FromXmlNode(imported);
+                if (op is not null && op.HasID)
+                    yield return op;
             }
         }
 

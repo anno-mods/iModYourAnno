@@ -17,6 +17,7 @@ namespace Imya.UI.ValueConverters
                 AttributeType.ModStatus when status == ModStatus.New => ("Download", FindResourceBrush("HighlightColorBrush")),
                 AttributeType.ModStatus when status == ModStatus.Obsolete => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.ModCompabilityIssue => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
+                AttributeType.ModReplacedByIssue => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.UnresolvedDependencyIssue => ("FileTree", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.TweakedMod => ("Tools", FindResourceBrush("InformationColorBrush")),
                 AttributeType.MissingModinfo => ("HelpBox", FindResourceBrush("InformationColorBrush")),

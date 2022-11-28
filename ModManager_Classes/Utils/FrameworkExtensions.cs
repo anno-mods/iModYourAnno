@@ -162,7 +162,7 @@ namespace Imya.Utils
 
         public static bool TryGetModOpNodes(this XmlDocument Document, String ModOpId, out XmlNodeList? ModOps)
         {
-            ModOps = Document.SelectNodes($@"/ModOps/ModOp[@{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include') and @{TweakerConstants.MODOP_ID} = '{ModOpId}']");
             return ModOps is not null && ModOps.Count > 0;
         }
     }
