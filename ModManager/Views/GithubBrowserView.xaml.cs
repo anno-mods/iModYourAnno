@@ -87,12 +87,19 @@ namespace Imya.UI.Views
             if (SelectedRepo is null || InstallationView.Instance is null)
                 return;
 
-            var install = await GithubInstallationBuilder
-                .Create()
-                .WithRepoInfo(SelectedRepo)
-                .BuildAsync();
+            try
+            {
+                var install = await GithubInstallationBuilder
+                    .Create()
+                    .WithRepoInfo(SelectedRepo)
+                    .BuildAsync();
 
-            InstallationManager.EnqueueGithubInstallation(install);
+                InstallationManager.EnqueueGithubInstallation(install);
+            }
+            catch (InstallationException ex)
+            {
+                PopupCreator.CreateGithubExceptionPopup(ex).ShowDialog();
+            }
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration.Download
 {
-    [Obsolete]
     public class InstallationException : Exception
     {
         public String TextKey { get; }

@@ -1,4 +1,5 @@
 ﻿using Imya.GithubIntegration;
+using Imya.GithubIntegration.Download;
 using Imya.Utils;
 
 namespace Imya.Models.Installation
@@ -57,7 +58,7 @@ namespace Imya.Models.Installation
             {
                 var releaseasset = await _repoInfoToInstall.GetReleaseAssetAsync();
                 if (releaseasset is null)
-                    throw new InvalidOperationException($"Could not fetch any release for {_repoInfoToInstall}");
+                    throw new InstallationException($"Could not fetch any release for {_repoInfoToInstall}");
                 _url = releaseasset.BrowserDownloadUrl;
                 _download_size = releaseasset.Size;
             }
