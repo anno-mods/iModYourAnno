@@ -38,5 +38,8 @@
     <Setting Name="ModindexLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)">https://raw.githubusercontent.com/anno-mods/Packages/main/packages.json</Value>
     </Setting>
+    <Setting Name="ModloaderEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
