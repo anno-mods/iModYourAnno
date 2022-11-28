@@ -17,31 +17,4 @@ internal class GithubDevTester
         var file = new FileInfo("fuck/Spice-it-Up.zip");
         Console.WriteLine($"Download Success: { file.Exists && file.Length != 0 }");
     }
-
-    internal async static Task DownloadModloader2()
-    {
-        GameSetupManager.Instance.SetGamePath("dummygamepath");
-        var Installer = new InstallationSetup();
-
-        var installation = await Installer.SetupModloaderInstallationTask();
-        await installation.Finalize();
-    }
-
-    internal class ModloaderInstallation : Installation
-    {
-        public override void CleanUp()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task Finalize()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IInstallation> Setup()
-        {
-            throw new NotImplementedException();
-        }
-    }
 }
