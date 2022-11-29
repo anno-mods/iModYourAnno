@@ -14,8 +14,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 
 namespace Imya.UI.Views
 {
@@ -65,9 +68,8 @@ namespace Imya.UI.Views
 
         public GithubBrowserView()
         {
-            InitializeComponent();
             DataContext = this;
-
+            InitializeComponent();
             OK_TEXT = new SimpleText("Download");
             CANCEL_TEXT = new SimpleText("Cancel");
 
@@ -147,6 +149,7 @@ namespace Imya.UI.Views
             SelectedRepo = repoInfo;
         }
 
+
         public void Filter(IEnumerable<string> keywords)
         { 
             var selection = AllRepositories.Where(repoInfo =>
@@ -188,5 +191,15 @@ namespace Imya.UI.Views
             }
 
         }
+
+        #region hacky_image_size_correction
+        private async void DescriptionFlowViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (DescriptionFlowViewer.Document is null)
+                return;
+            //rerender the flow document cuz images 
+            await Application.Current.Dispatcher.BeginInvoke(() => DescriptionFlowViewer.Document.PageWidth = DescriptionFlowViewer.Document.PageWidth);
+        }
+        #endregion
     }
 }

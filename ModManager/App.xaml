@@ -96,9 +96,7 @@
                         Value="UniformToFill">
                 </Setter>
                 <Setter Property="MaxWidth"
-                        Value="500">
-                    
-                </Setter>
+                        Value="{Binding ElementName=DescriptionFlowViewer, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"></Setter>
                 <Style.Triggers>
                     <Trigger Property="Tag"
                              Value="imageright">
