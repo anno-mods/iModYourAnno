@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using Downloader;
 using Imya.Models.NotifyPropertyChanged;
+using System.Collections.ObjectModel;
 
 namespace Imya.Utils
 {
@@ -22,13 +23,22 @@ namespace Imya.Utils
         public IQueue<IDownloadableUnpackable> PendingDownloads { get; private set; }
         public IDownloadable? CurrentDownload { get; private set; }
 
-        public DownloadService DownloadService;
+        public ObservableCollection<IUnpackable> ActiveInstallations { get; private set; }
+
+        public DownloadService DownloadService {
+            get => _downloadService;
+            set => SetProperty(ref _downloadService, value);
+        }
+        private DownloadService _downloadService;
 
         private Semaphore _moveIntoSem;
         private Semaphore _downloadSem;
 
-        private event InstallAddedEventHandler FreshGithubInstallAdded = delegate { };
-        private delegate void InstallAddedEventHandler();
+        private event GithubInstallAddedEventHandler GithubInstallAdded = delegate { };
+        private event ZipInstallAddedEventHandler ZipInstallAdded = delegate { };
+
+        private delegate void GithubInstallAddedEventHandler(GithubInstallation githubInstallation);
+        private delegate void ZipInstallAddedEventHandler(ZipInstallation zipInstallation);
 
         public event InstallFailedEventHandler InstallFailedWithException = delegate { };
         public delegate void InstallFailedEventHandler(Exception exception_context);
@@ -54,32 +64,40 @@ namespace Imya.Utils
 
             PendingDownloads = new WrappedQueue<IDownloadableUnpackable>();
             Unpacks = new List<IUnpackable>();
+            ActiveInstallations = new();
 
             //TODO add options
             DownloadService = new();
             DownloadService.DownloadProgressChanged += OnDownloadProgressChanged; 
 
             //when an install gets added, we invoke process with next download, semaphore does the rest for us. 
-            FreshGithubInstallAdded += async () => await ProceedWithNextDownloadAsync();
+            GithubInstallAdded += async (x) => await ProceedWithNextDownloadAsync();
+            ZipInstallAdded += async (x) => await ExecuteZipInstall(x);
         }
 
         public void EnqueueGithubInstallation(GithubInstallation githubInstallation)
         {
             PendingDownloads.Enqueue(githubInstallation);
-
-            //If no downloads are here
-            FreshGithubInstallAdded?.Invoke();
+            //Signal that a github install was added.
+            GithubInstallAdded?.Invoke(githubInstallation);
         }
 
         public void EnqueueZipInstallation(ZipInstallation zipInstallation)
         {
             Unpacks.Add(zipInstallation);
-            Task.Run(async () =>
+            ZipInstallAdded?.Invoke(zipInstallation);
+        }
+
+        private async Task ExecuteZipInstall(IUnpackable zipInstallation)
+        {
+            ActiveInstallations.Add(zipInstallation);
+            await Task.Run(async () =>
             {
                 await UnpackAsync(zipInstallation);
                 await MoveModsAsync(zipInstallation);
                 CleanUpUnpackable(zipInstallation);
             });
+            ActiveInstallations.Remove(zipInstallation);
         }
 
         private async Task ProceedWithNextDownloadAsync()
@@ -92,6 +110,7 @@ namespace Imya.Utils
             Console.WriteLine("Starting Download");
             var unpackable_downloadable = PendingDownloads.Dequeue();
 
+            ActiveInstallations.Add(unpackable_downloadable);
             await DownloadAsync(unpackable_downloadable);
             _downloadSem.Release();
 
@@ -104,6 +123,7 @@ namespace Imya.Utils
 
             CleanUpUnpackable(unpackable_downloadable);
             CleanUpDownloadable(unpackable_downloadable);
+            ActiveInstallations.Remove(unpackable_downloadable);
         }
 
         private async Task UnpackAsync(IUnpackable zipInstallation)
@@ -120,7 +140,8 @@ namespace Imya.Utils
         private async Task MoveModsAsync(IUnpackable unpackable)
         {
             var newCollection = await ModCollectionLoader.LoadFrom(unpackable.UnpackTargetPath);
-            _moveIntoSem.WaitOne();
+            //async waiting
+            await Task.Run(() => _moveIntoSem.WaitOne());
             await ModCollection.Global!.MoveIntoAsync(newCollection);
             _moveIntoSem.Release();
             Unpacks.Remove(unpackable);
@@ -137,8 +158,6 @@ namespace Imya.Utils
         {
             if(Directory.Exists(unpackable.UnpackTargetPath))
                 Directory.Delete(unpackable.UnpackTargetPath);
-            if(File.Exists(unpackable.SourceFilepath))
-                File.Delete(unpackable.SourceFilepath);
         }
 
         private void CleanUpDownloadable(IDownloadable downloadable)

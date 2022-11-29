@@ -5,9 +5,8 @@ namespace Imya.Models.Installation
 {
     public class ZipInstallation : Installation, IUnpackable
     {
-        public String SourceFilepath { get; set; }
-        public String UnpackTargetPath { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+        public String SourceFilepath { get; init; }
+        public String UnpackTargetPath { get; init; }
 
         public new ZipInstallationStatus Status
         {

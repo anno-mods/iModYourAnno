@@ -18,6 +18,7 @@ using Imya.UI.Utils;
 using Imya.Models.Options;
 using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.StaticData;
+using Downloader;
 
 namespace Imya.UI.Views
 {
@@ -34,7 +35,7 @@ namespace Imya.UI.Views
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
-        InstallationManager InstallationManager { get; } = InstallationManager.Instance;
+        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
 
         public ObservableCollection<IDownloadableUnpackable> PendingDownloads { get; }
 
@@ -64,8 +65,6 @@ namespace Imya.UI.Views
         {
             Instance = this;
 
-            PendingDownloads = new ObservableCollection<IDownloadableUnpackable>(InstallationManager.PendingDownloads);
-
             InitializeComponent();
             DataContext = this;
 
@@ -76,8 +75,7 @@ namespace Imya.UI.Views
                 InstallStatus = ModLoaderStatus.Installed;
             }
 
-
-           
+            InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)

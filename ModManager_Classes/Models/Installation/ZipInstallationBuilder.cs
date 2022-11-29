@@ -29,11 +29,12 @@ namespace Imya.Models.Installation
             if(_source is null)
                 throw new Exception("Please set a source path before building!");
 
-            var installation = new ZipInstallation();
-
             var guid = Guid.NewGuid().ToString();
-            installation.SourceFilepath = _source;
-            installation.UnpackTargetPath = Path.Combine(ImyaSetupManager.Instance.UnpackDirectoryPath, guid);
+            var installation = new ZipInstallation()
+            {
+                SourceFilepath = _source,
+                UnpackTargetPath = Path.Combine(ImyaSetupManager.Instance.UnpackDirectoryPath, guid)
+            };
             return installation;
         }
     }

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Imya.Models.NotifyPropertyChanged;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace Imya.Models.Collections
@@ -9,17 +11,28 @@ namespace Imya.Models.Collections
     {
         private Queue<T> _queue;
 
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
         public WrappedQueue()
-        { 
+        {
             _queue = new Queue<T>();
         }
 
         public void Enqueue(T item)
-        { 
+        {
             _queue.Enqueue(item);
+            CollectionChanged?.Invoke(this, 
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
         }
 
-        public T Dequeue() => _queue.Dequeue();
+        public T Dequeue() 
+        {
+            var item = _queue.Dequeue();
+            CollectionChanged?.Invoke(this,
+                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, 0));
+            return item;
+        }
+
 
         public int Count() => _queue.Count();
 
