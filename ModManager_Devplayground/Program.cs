@@ -9,7 +9,5 @@ public class Program
     {
         GameSetupManager gsm = GameSetupManager.Instance;
         gsm.SetGamePath(@"F:\Spiele\Anno 1800");
-
-        await GithubDevTester.DownloadSpice();
     }
 }
