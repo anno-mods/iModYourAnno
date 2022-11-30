@@ -151,7 +151,7 @@ namespace Imya.Models
             }
         }
 
-        private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders)
+        private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders, bool invokeEvents = true)
         {
             var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
             if (_normalize)
@@ -175,7 +175,11 @@ namespace Imya.Models
                     }
                 }
             }
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, mods));
+            if (invokeEvents)
+            {
+                CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, mods));
+            }
+            
             return mods;
         }
 
@@ -230,7 +234,9 @@ namespace Imya.Models
             {
                 foreach (var sourceMod in source.Mods)
                 {
-                    await MoveSingleModIntoAsync(sourceMod, source.ModsPath, allowOldToOverwrite);
+                    await Task.Run( 
+                        async () => await MoveSingleModIntoAsync(sourceMod, source.ModsPath, allowOldToOverwrite)
+                    );
                 }
             }
             catch (Exception e)
@@ -242,8 +248,7 @@ namespace Imya.Models
                 Directory.Delete(source.ModsPath, true);
             }
 
-            //this will lead to the collectionchanged being triggered twice.
-            //CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, Mods.ToList()));
         }
 
         private async Task MoveSingleModIntoAsync(Mod sourceMod, string sourceModsPath, bool allowOldToOverwrite)
@@ -288,12 +293,10 @@ namespace Imya.Models
                 _mods.Remove(targetMod);
                 targetMod.PropertyChanged -= Mod_PropertyChanged;
             }
-            var reparsed = (await LoadModsAsync(new string[] { targetModPath })).First();
+            var reparsed = (await LoadModsAsync(new string[] { targetModPath }, false)).First();
             reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
             reparsed.PropertyChanged += Mod_PropertyChanged;
-
-            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new Mod[] { reparsed }));
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
