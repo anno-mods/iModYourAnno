@@ -9,7 +9,7 @@ using Octokit;
 
 namespace Imya.Models.Installation
 {
-    public class GithubInstallation : Installation, IDownloadableUnpackable
+    public class GithubInstallation : Installation, IInstallation
     {
         public GithubRepoInfo RepositoryToInstall { get; init; }
 

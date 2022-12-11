@@ -10,7 +10,10 @@
             BorderBrush="{DynamicResource ComponentColorBrush}"
             BorderThickness="1">
         <Canvas SizeChanged="Canvas_SizeChanged"
-                Background="{DynamicResource BackgroundColorBrush}">
+                Background="{DynamicResource BackgroundColorBrush}"
+                x:Name="canvas"
+                Margin="2"
+                Visibility="{Binding ShowValues}">
             <Path Data="{Binding PathGeometry, UpdateSourceTrigger=PropertyChanged}"
                   x:Name="DownloadSpeedVisualization"
                   Stroke="{DynamicResource AccentColorBrush}" 
@@ -26,10 +29,10 @@
                 <Ellipse Fill="AliceBlue" Width="8" Height="8" 
                          VerticalAlignment="Center"
                          HorizontalAlignment="Center" />
-                <TextBlock Text="[3 MB]"
+                <TextBlock Text="{Binding CurrentValue, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource IMYA_TEXT}"
                            Grid.Column="1"
-                           VerticalAlignment="Center" />
+                           VerticalAlignment="Center"/>
             </Grid>
         </Canvas>  
     </Border>

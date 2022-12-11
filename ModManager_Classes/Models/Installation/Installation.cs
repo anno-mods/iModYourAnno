@@ -34,12 +34,14 @@ namespace Imya.Models.Installation
         }
         protected bool _isAbortable = false;
 
+        public String ID { get; init; }
+
         public IInstallationStatus? Status { get; }
 
         public IText? HeaderText 
         { 
             get => _headerText;
-            protected set 
+            set 
             {
                 SetProperty(ref _headerText, value);
                 OnPropertyChanged(nameof(HeaderText));
@@ -50,7 +52,7 @@ namespace Imya.Models.Installation
         public IText? AdditionalText
         {
             get => _additional_text;
-            protected set
+            set
             {
                 SetProperty(ref _additional_text, value);
                 OnPropertyChanged(nameof(AdditionalText));

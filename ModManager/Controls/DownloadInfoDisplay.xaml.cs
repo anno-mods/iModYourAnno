@@ -35,6 +35,14 @@ namespace Imya.UI.Controls
                  DependencyProperty.Register("MaxDisplayedValues", typeof(object),
                typeof(DownloadInfoDisplay), new UIPropertyMetadata(0));
 
+        public static readonly DependencyProperty CurrentValueProperty =
+                 DependencyProperty.Register("CurrentValue", typeof(object),
+               typeof(DownloadInfoDisplay), new UIPropertyMetadata(String.Empty));
+
+        public static readonly DependencyProperty ShowValuesProperty =
+                 DependencyProperty.Register("ShowValues", typeof(object),
+               typeof(DownloadInfoDisplay), new UIPropertyMetadata(false));
+
         public DownloadService DownloadService
         {
             get => (DownloadService)GetValue(DownloadServiceProperty);
@@ -49,6 +57,18 @@ namespace Imya.UI.Controls
         {
             get => Application.Current.Dispatcher.Invoke(() => (int)GetValue(MaxDisplayedValuesProperty));
             set => Application.Current.Dispatcher.Invoke(() => SetValue(MaxDisplayedValuesProperty, value)); 
+        }
+
+        public String CurrentValue
+        {
+            get => Application.Current.Dispatcher.Invoke(() => (String)GetValue(CurrentValueProperty));
+            set => Application.Current.Dispatcher.Invoke(() => SetValue(CurrentValueProperty, value));
+        }
+
+        public bool ShowValues
+        {
+            get => Application.Current.Dispatcher.Invoke(() => (bool)GetValue(ShowValuesProperty));
+            set => Application.Current.Dispatcher.Invoke(() => SetValue(ShowValuesProperty, value));
         }
         #endregion
 
@@ -85,8 +105,7 @@ namespace Imya.UI.Controls
         {
             InitializeComponent();
             DiscreteSpeedValues = new();
-            DownloadSpeedVisualization.DataContext = this;
-            DownloadSpeedText.DataContext = this;
+            canvas.DataContext = this;
 
             stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -123,8 +142,8 @@ namespace Imya.UI.Controls
         private PathGeometry? ComputeCurve()
         {
             if (DiscreteSpeedValues.Count() == 0) return null; 
-            var height = RenderSize.Height;
-            var width = RenderSize.Width;
+            var height = canvas.RenderSize.Height;
+            var width = canvas.RenderSize.Width;
             var stepping = width * 2/3 / MaxDisplayedValues;
 
             IEnumerable<double> InterpolatedSpeedValues = DiscreteSpeedValues.Select(x => CurveHelper.InterpolateX(MaxValueSoFar, height, x));

@@ -37,7 +37,7 @@ namespace Imya.UI.Views
 
         public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
 
-        public ObservableCollection<IDownloadableUnpackable> PendingDownloads { get; }
+        public ObservableCollection<IInstallation> PendingDownloads { get; }
 
         #region notifyable properties
 
@@ -52,12 +52,13 @@ namespace Imya.UI.Views
         }
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
 
-        public bool IsInstalling
+
+        public double CurrentDownloadSpeedPerSecond
         {
-            get => _isInstalling;
-            set => SetProperty(ref _isInstalling, value);
+            get => _currentDownloadSpeedPerSecond;
+            set => SetProperty(ref _currentDownloadSpeedPerSecond, value);
         }
-        private bool _isInstalling = false;
+        private double _currentDownloadSpeedPerSecond;
 
         #endregion
 
@@ -75,7 +76,13 @@ namespace Imya.UI.Views
                 InstallStatus = ModLoaderStatus.Installed;
             }
 
+            InstallationManager.DownloadService.DownloadProgressChanged += OnDownloadProgressChanged;
             InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
+        }
+
+        private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
+        {
+            CurrentDownloadSpeedPerSecond = e.BytesPerSecondSpeed;
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)

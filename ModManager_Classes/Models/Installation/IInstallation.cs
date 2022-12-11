@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
-    public  interface IDownloadableUnpackable : IDownloadable, IUnpackable
+    public interface IInstallation : IDownloadable, IUnpackable
     {
+        IText? HeaderText { get; }
+        IText? AdditionalText { get; }
+
+        String ID { get; }
     }
 }

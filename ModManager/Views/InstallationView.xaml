@@ -16,6 +16,7 @@
                                                     TrueValue="Visible"
                                                     FalseValue="Collapsed" />
             <conv:NegateBoolConverter x:Key="NegateBool" />
+            <conv:SpeedConverter x:Key="DownloadSpeed" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*" />
@@ -80,6 +81,8 @@
             </TextBlock>-->
             <controls:DownloadInfoDisplay x:Name="DownloadInfoDisplay"
                                           MaxDisplayedValues = "15"
+                                          ShowValues="{Binding InstallationManager.IsInstalling, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}"
+                                          CurrentValue="{Binding CurrentDownloadSpeedPerSecond, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DownloadSpeed}}"
                                           DownloadService="{Binding InstallationManager.DownloadService, UpdateSourceTrigger=PropertyChanged}"/>
         </Border>
 
@@ -110,11 +113,11 @@
 
                                 <StackPanel Orientation="Vertical"
                                             Grid.RowSpan="2">
-                                    <TextBlock Text="[Repository Name]"
+                                    <TextBlock Text="{Binding HeaderText.Text}"
                                                FontWeight="Bold"
                                                Style="{StaticResource IMYA_TEXT}"
                                                Margin="5"></TextBlock>
-                                    <TextBlock Text="[Repository Owner]"
+                                    <TextBlock Text="{Binding AdditionalText.Text}"
                                                Grid.Row="1"
                                                Style="{StaticResource IMYA_TEXT}"
                                                Margin="5"></TextBlock>
@@ -193,13 +196,13 @@
                                                          Grid.RowSpan="2">
                                 </materialDesign:PackIcon>
                                 <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="[Repository Name]"
+                                           Text="{Binding HeaderText.Text}"
                                            FontWeight="Bold"
                                            HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            Grid.Column="1"/>
                                 <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="[Package ID]"
+                                           Text="{Binding AdditionalText.Text}"
                                            Grid.Column="1"
                                            Grid.Row="2"
                                            HorizontalAlignment="Center"

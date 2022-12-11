@@ -54,6 +54,11 @@ namespace Imya.GithubIntegration
         {
             return $"{Owner}/{Name} : {ReleaseID}";
         }
+
+        public String GetID()
+        {
+            return $"{Owner}_{Name}_{ReleaseID}";
+        }
     }
 
 }

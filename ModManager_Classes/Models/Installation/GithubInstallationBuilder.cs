@@ -64,8 +64,12 @@ namespace Imya.Models.Installation
             }
 
             var installationGuid = Guid.NewGuid().ToString();
-
             var sourceFilepath = Path.Combine(ImyaSetupManager.Instance.DownloadDirectoryPath, installationGuid + ".zip");
+
+            var header = $"{_repoInfoToInstall.Owner}/{_repoInfoToInstall.Name}";
+            var additional = $"{_repoInfoToInstall.ReleaseID}";
+
+            var id = _repoInfoToInstall.GetID();
 
             _installation = new GithubInstallation()
             {
@@ -74,7 +78,10 @@ namespace Imya.Models.Installation
                 DownloadTargetFilename = sourceFilepath,
                 UnpackTargetPath = Path.Combine(ImyaSetupManager.Instance.UnpackDirectoryPath, installationGuid),
                 DownloadUrl = _url,
-                DownloadSize = _download_size
+                DownloadSize = _download_size,
+                HeaderText = new SimpleText(header),
+                AdditionalText = new SimpleText(additional),
+                ID = id
             };    
             return _installation;
         }

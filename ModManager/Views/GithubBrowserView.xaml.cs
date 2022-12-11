@@ -45,19 +45,16 @@ namespace Imya.UI.Views
 
         public GithubRepoInfo? SelectedRepo {
             get => _selectedRepo;
-            private set {
-                SetProperty(ref _selectedRepo, value);
-                HasRepoSelection = value is not null;
-            }
+            private set => SetProperty(ref _selectedRepo, value);
         }
         private GithubRepoInfo? _selectedRepo;
 
-        public bool HasRepoSelection
+        public bool CanAddToDownloads
         {
-            get => _hasRepoSelection;
-            set => SetProperty(ref _hasRepoSelection, value);
+            get => _canAddToDownloads;
+            set => SetProperty(ref _canAddToDownloads, value);
         }
-        private bool _hasRepoSelection;
+        private bool _canAddToDownloads;
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
@@ -73,7 +70,7 @@ namespace Imya.UI.Views
             OK_TEXT = new SimpleText("Download");
             CANCEL_TEXT = new SimpleText("Cancel");
 
-            RepoSelection.SelectionChanged += UpdateReadmeForSelection;
+            InstallationManager.InstallationCompleted += ValidateCanAddToDownloads;
         }
 
         public void OnLoad()
@@ -97,6 +94,7 @@ namespace Imya.UI.Views
                     .BuildAsync();
 
                 InstallationManager.EnqueueGithubInstallation(install);
+                ValidateCanAddToDownloads();
             }
             catch (InstallationException ex)
             {
@@ -140,15 +138,21 @@ namespace Imya.UI.Views
             MainViewController.Instance.GoToLastView();
         }
 
-        private async void UpdateReadmeForSelection(object sender, SelectionChangedEventArgs e)
+        private async void OnRepoSelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
             var repoInfo = RepoSelection.SelectedItem as GithubRepoInfo;
             if (repoInfo is null) return;
-            ReadmeText = await ReadmeProvider.GetReadmeAsync(repoInfo);
-
             SelectedRepo = repoInfo;
+
+            ValidateCanAddToDownloads();
+            ReadmeText = await ReadmeProvider.GetReadmeAsync(SelectedRepo);
+
         }
 
+        private void ValidateCanAddToDownloads()
+        {
+            CanAddToDownloads = RepoSelection is not null && !InstallationManager.Instance.IsProcessingInstallWithID(SelectedRepo.GetID());
+        }
 
         public void Filter(IEnumerable<string> keywords)
         { 
@@ -169,6 +173,7 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
+
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -195,11 +200,16 @@ namespace Imya.UI.Views
         #region hacky_image_size_correction
         private async void DescriptionFlowViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (DescriptionFlowViewer.Document is null)
-                return;
             //rerender the flow document cuz images 
-            await Application.Current.Dispatcher.BeginInvoke(() => DescriptionFlowViewer.Document.PageWidth = DescriptionFlowViewer.Document.PageWidth);
+            await Application.Current.Dispatcher.BeginInvoke(
+                () =>
+                {
+                    if (DescriptionFlowViewer.Document is null)
+                        return;
+                    DescriptionFlowViewer.Document.PageWidth = DescriptionFlowViewer.Document.PageWidth;
+                });
         }
         #endregion
+
     }
 }

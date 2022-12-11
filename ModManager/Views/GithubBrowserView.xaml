@@ -88,6 +88,7 @@
                  Style="{StaticResource IMYA_LISTBOX}"
                  ItemsSource="{Binding DisplayedRepositories, UpdateSourceTrigger=PropertyChanged}"
                  ItemContainerStyle="{StaticResource IMYA_LISTBOXITEM}"
+                 SelectionChanged="OnRepoSelectionChanged"
                  Grid.Row="2"
                  Margin="0,0,5,5">
             <ListBox.ItemTemplate>
@@ -171,7 +172,7 @@
                         Foreground="{StaticResource TextColorBrush}"
                         HorizontalContentAlignment="Center"
                         Click="OkayButtonClick"
-                        IsEnabled="{Binding HasRepoSelection, UpdateSourceTrigger=PropertyChanged}">
+                        IsEnabled="{Binding CanAddToDownloads, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Stretch"

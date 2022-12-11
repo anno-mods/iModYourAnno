@@ -20,10 +20,11 @@ namespace Imya.Utils
         public List<IUnpackable> Unpacks { get; private set; }
 
         //we want a special queue that we can manipulate later on. 
-        public IQueue<IDownloadableUnpackable> PendingDownloads { get; private set; }
+        public IQueue<IInstallation> PendingDownloads { get; private set; }
         public IDownloadable? CurrentDownload { get; private set; }
 
         public ObservableCollection<IUnpackable> ActiveInstallations { get; private set; }
+        public List<String> CurrentGithubInstallsIDs { get; private set; }
 
         public DownloadService DownloadService {
             get => _downloadService;
@@ -36,9 +37,11 @@ namespace Imya.Utils
 
         private event GithubInstallAddedEventHandler GithubInstallAdded = delegate { };
         private event ZipInstallAddedEventHandler ZipInstallAdded = delegate { };
+        public event InstallationCompletedEventHandler InstallationCompleted = delegate { }; 
 
         private delegate void GithubInstallAddedEventHandler(GithubInstallation githubInstallation);
         private delegate void ZipInstallAddedEventHandler(ZipInstallation zipInstallation);
+        public delegate void InstallationCompletedEventHandler();
 
         public event InstallFailedEventHandler InstallFailedWithException = delegate { };
         public delegate void InstallFailedEventHandler(Exception exception_context);
@@ -57,14 +60,33 @@ namespace Imya.Utils
         }
         private double _progressPercentage;
 
+        public bool IsInstalling
+        {
+            get => _isInstalling;
+            set => SetProperty(ref _isInstalling, value);
+        }
+        private bool _isInstalling = false;
+
+        public int TotalInstallationCount
+        {
+            get =>_totalInstallationCount;
+            set
+            {
+                IsInstalling = value > 0;
+                SetProperty(ref _totalInstallationCount, value);
+            } 
+        }
+        private int _totalInstallationCount;
+
         public InstallationManager()
         {
             _moveIntoSem = new Semaphore(1, 1);
             _downloadSem = new Semaphore(1, 1);
 
-            PendingDownloads = new WrappedQueue<IDownloadableUnpackable>();
+            PendingDownloads = new WrappedQueue<IInstallation>();
             Unpacks = new List<IUnpackable>();
             ActiveInstallations = new();
+            CurrentGithubInstallsIDs = new();
 
             //TODO add options
             DownloadService = new();
@@ -77,15 +99,23 @@ namespace Imya.Utils
 
         public void EnqueueGithubInstallation(GithubInstallation githubInstallation)
         {
+            TotalInstallationCount++;
             PendingDownloads.Enqueue(githubInstallation);
+            CurrentGithubInstallsIDs.Add(githubInstallation.RepositoryToInstall.GetID());
             //Signal that a github install was added.
             GithubInstallAdded?.Invoke(githubInstallation);
         }
 
         public void EnqueueZipInstallation(ZipInstallation zipInstallation)
         {
+            TotalInstallationCount++;
             Unpacks.Add(zipInstallation);
             ZipInstallAdded?.Invoke(zipInstallation);
+        }
+
+        public bool IsProcessingInstallWithID(String id)
+        {
+            return CurrentGithubInstallsIDs.Any(x => x == id);
         }
 
         private async Task ExecuteZipInstall(IUnpackable zipInstallation)
@@ -98,6 +128,7 @@ namespace Imya.Utils
                 CleanUpUnpackable(zipInstallation);
             });
             ActiveInstallations.Remove(zipInstallation);
+            TotalInstallationCount--;
         }
 
         private async Task ProceedWithNextDownloadAsync()
@@ -108,22 +139,25 @@ namespace Imya.Utils
 
             //get the next download
             Console.WriteLine("Starting Download");
-            var unpackable_downloadable = PendingDownloads.Dequeue();
+            var installation = PendingDownloads.Dequeue();
 
-            ActiveInstallations.Add(unpackable_downloadable);
-            await DownloadAsync(unpackable_downloadable);
+            ActiveInstallations.Add(installation);
+            await DownloadAsync(installation);
             _downloadSem.Release();
 
             Console.WriteLine("Starting Unpack");
-            Unpacks.Add(unpackable_downloadable);
-            await UnpackAsync(unpackable_downloadable);
+            Unpacks.Add(installation);
+            await UnpackAsync(installation);
 
             Console.WriteLine("Moving Mods");
-            await MoveModsAsync(unpackable_downloadable);
+            await MoveModsAsync(installation);
 
-            CleanUpUnpackable(unpackable_downloadable);
-            CleanUpDownloadable(unpackable_downloadable);
-            ActiveInstallations.Remove(unpackable_downloadable);
+            CleanUpUnpackable(installation);
+            CleanUpDownloadable(installation);
+            ActiveInstallations.Remove(installation);
+            CurrentGithubInstallsIDs.RemoveAll(x => x == installation.ID);
+            InstallationCompleted?.Invoke();
+            TotalInstallationCount--;
         }
 
         private async Task UnpackAsync(IUnpackable zipInstallation)
