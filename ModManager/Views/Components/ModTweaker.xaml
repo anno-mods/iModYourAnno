@@ -131,9 +131,9 @@
                                                             HorizontalAlignment="Stretch"
                                                             Visibility="{Binding IsSliderType, Converter={StaticResource VisibleOnTrue}}">
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="30"/>
+                                                            <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition />
-                                                            <ColumnDefinition Width="30"/>
+                                                            <ColumnDefinition Width="Auto"/>
                                                         </Grid.ColumnDefinitions>
 
                                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
