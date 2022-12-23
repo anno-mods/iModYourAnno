@@ -27,6 +27,8 @@ namespace Imya.UI.Components
         public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
         public MainViewController MainViewController { get; } = MainViewController.Instance;
 
+        public AppSettings AppSettings { get; } = AppSettings.Instance;
+
         public AuthenticationController AuthenticationController { get; } = new AuthenticationController();
         public IAuthenticator Authenticator { get; } = GithubClientProvider.Authenticator;
 
@@ -88,7 +90,7 @@ namespace Imya.UI.Components
                 if (dialog.ShowDialog() is false) return;
             }
 
-            GameSetupManager.Instance.StartGame();
+            GameSetupManager.Instance.StartGame(AppSettings.Instance.ModloaderEnabled);
         }
 
         private void UpdateSelection(View view)

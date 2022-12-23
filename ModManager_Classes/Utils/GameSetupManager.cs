@@ -80,25 +80,12 @@ namespace Imya.Utils
         }
         private String _modDirectoryName;
 
-        public string ModindexLocation { get; set; }
-
         public bool IsValidSetup
         {
             get { return _isValid; }
             private set { _isValid = value; OnPropertyChanged(nameof(IsValidSetup)); }
         }
         private bool _isValid;
-
-        public bool ModloaderActivationDesiredOnStart 
-        {
-            get => _modloaderActivationDesiredOnStart;
-            set
-            {
-                _modloaderActivationDesiredOnStart = value;
-                OnPropertyChanged(nameof(ModloaderActivationDesiredOnStart));
-            }
-        }
-        private bool _modloaderActivationDesiredOnStart = true; 
 
         public bool IsModloaderInstalled => ModloaderState == ModloaderInstallationState.Installed;
 
@@ -247,12 +234,12 @@ namespace Imya.Utils
         }
 
         #region GAME_LAUNCH
-        public void StartGame()
+        public void StartGame(bool modloaderActive = true)
         {
             if (ExecutablePath == null)
                 return;
 
-            EnsureModloaderActivation(ModloaderActivationDesiredOnStart);
+            EnsureModloaderActivation(modloaderActive);
 
             _ = Task.Run(async () =>
             {

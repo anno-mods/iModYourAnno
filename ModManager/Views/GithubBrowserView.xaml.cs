@@ -74,7 +74,7 @@ namespace Imya.UI.Views
 
         public void OnLoad()
         {
-            var repoInfoProvider = new AutoRepoInfoSource(GameSetupManager.Instance.ModindexLocation);
+            var repoInfoProvider = new AutoRepoInfoSource(AppSettings.Instance.ModindexLocation);
             AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
             DisplayedRepositories = AllRepositories;
         }

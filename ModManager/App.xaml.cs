@@ -30,7 +30,6 @@ namespace Imya.UI
             //gameSetup.SetDownloadDirectory(Settings.Default.DownloadDir);
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
-            gameSetup.ModindexLocation = Settings.Default.ModindexLocation;
             var appSettings = new AppSettings();
 
             GithubClientProvider.Authenticator = new DeviceFlowAuthenticator();

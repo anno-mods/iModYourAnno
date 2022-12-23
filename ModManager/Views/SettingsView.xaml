@@ -53,7 +53,7 @@
                                   x:Name="LanguageSelection"
                                   VerticalAlignment="Top"
                                   SelectionChanged="RequestLanguageChange"
-                                  ItemsSource="{Binding Languages, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding AppSettings.Languages, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
                                   MinHeight="32">
                             <ComboBox.ItemTemplate>
@@ -80,7 +80,7 @@
                                   x:Name="ThemeSelection"
                                   VerticalAlignment="Top"
                                   SelectionChanged="RequestThemeChange"
-                                  ItemsSource="{Binding Themes, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding AppSettings.Themes, UpdateSourceTrigger=PropertyChanged}"
                                   Margin="5"
                                   MinHeight="32">
                             <ComboBox.ItemTemplate>
@@ -123,10 +123,10 @@
                             OnText="{Binding TextManager[CONTROLS_TOGGLE_SHOW].Text}"
                             OffText="{Binding TextManager[CONTROLS_TOGGLE_HIDE].Text}"
                             Foreground="{DynamicResource AccentColorBrush}"
-                            IsChecked="{Binding ShowConsole, Mode=TwoWay}">
+                            IsChecked="{Binding AppSettings.ShowConsole, Mode=TwoWay}">
                         </controls:FancyToggle>
                     </Grid>
-                    <Grid Visibility="{Binding DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
+                    <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="5*" />
@@ -144,7 +144,7 @@
                             HorizontalAlignment="Right"
                             Grid.Column="1"
                             Foreground="{DynamicResource AccentColorBrush}"
-                            IsChecked="{Binding ModCreatorMode, Mode=TwoWay}">
+                            IsChecked="{Binding AppSettings.ModCreatorMode, Mode=TwoWay}">
                         </controls:FancyToggle>
                     </Grid>
                 </StackPanel>
@@ -185,7 +185,7 @@
                                               IsChecked="{Binding AppSettings.InstallationOptions.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         </controls:FancyToggle>
                     </Grid>
-                    <Grid Visibility="{Binding DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
+                    <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="200" />
@@ -259,7 +259,7 @@
                                 <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                                     Text="{Binding GameSetup.GameRootPath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Text="{Binding AppSettings.GamePath, UpdateSourceTrigger=PropertyChanged}"
                                      Margin="0,0,10,0"
                                      IsReadOnly="True" />
                             <Button Grid.Column="1"
@@ -277,7 +277,7 @@
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0"
-                    Visibility="{Binding DevMode, Converter={StaticResource BoolToVis}}">
+                    Visibility="{Binding AppSettings.DevMode, Converter={StaticResource BoolToVis}}">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -295,7 +295,7 @@
                                 <ColumnDefinition Width="50" />
                             </Grid.ColumnDefinitions>
                             <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                                     Text="{Binding GameSetup.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                                     Text="{Binding AppSettings.ModDirectoryName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                      Margin="0,0,10,0"
                                      IsReadOnly="False"
                                      x:Name="ModDirectoryNameBox" />
@@ -326,7 +326,7 @@
                             </Grid.ColumnDefinitions>
                             <TextBox 
                                 Style="{StaticResource IMYA_TEXTBOX}"
-                                Text="{Binding GameSetup.ModindexLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                Text="{Binding AppSettings.ModindexLocation, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 Margin="0,0,10,0"
                                 IsReadOnly="False"
                                 Name="ModindexTextbox" />
