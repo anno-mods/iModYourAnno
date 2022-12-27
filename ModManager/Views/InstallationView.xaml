@@ -105,32 +105,30 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="250"/>
+                                    <ColumnDefinition Width="150"/>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="40"/>
 
                                     <ColumnDefinition Width="50" />
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Orientation="Vertical"
-                                            Grid.RowSpan="2"
-                                            VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding HeaderText.Text}"
-                                               FontWeight="Bold"
-                                               Style="{StaticResource IMYA_TEXT}"
-                                               Margin="5"></TextBlock>
-                                    <TextBlock Text="{Binding AdditionalText.Text}"
-                                               Grid.Row="1"
-                                               Style="{StaticResource IMYA_TEXT}"
-                                               Margin="5"></TextBlock>
-                                </StackPanel>
+                                <TextBlock Text="{Binding HeaderText.Text}"
+                                           FontWeight="Bold"
+                                           Style="{StaticResource IMYA_TEXT}"
+                                           Margin="5"
+                                           Grid.ColumnSpan="2"></TextBlock>
+                                <TextBlock Text="{Binding AdditionalText.Text}"
+                                           Grid.Row="1"
+                                           Style="{StaticResource IMYA_TEXT}"
+                                           Margin="5"></TextBlock>
 
                                 <StackPanel Grid.Row="1"
                                             Margin="5"
                                             Grid.Column="1"
                                             Orientation="Horizontal">
                                     <TextBlock Text="Size: " />
-                                    <TextBlock Text="{Binding DownloadSize, Converter={StaticResource ByteSizeConv}}" />
+                                    <TextBlock Text="{Binding DownloadSize, Converter={StaticResource ByteSizeConv}}" 
+                                               Style="{StaticResource IMYA_TEXT}"/>
                                 </StackPanel>
                                 <Button Grid.Column="2"
                                         Margin="5"
