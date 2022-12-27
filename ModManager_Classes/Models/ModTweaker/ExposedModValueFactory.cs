@@ -121,7 +121,8 @@ namespace Imya.Models.ModTweaker
                     Path = Path!,
                     ModOpID = ModOpID!,
                     ExposeID = ExposeID!,
-                    Parent = parent
+                    Parent = parent,
+                    Description = description
                 };
             }
             return null;
