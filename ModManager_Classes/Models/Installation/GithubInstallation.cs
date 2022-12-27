@@ -9,7 +9,7 @@ using Octokit;
 
 namespace Imya.Models.Installation
 {
-    public class GithubInstallation : Installation, IInstallation
+    public class GithubInstallation : Installation, IDownloadableUnpackableInstallation
     {
         public GithubRepoInfo RepositoryToInstall { get; init; }
 
@@ -26,21 +26,5 @@ namespace Imya.Models.Installation
         {
             HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_LOADER");
         }
-    }
-
-    public class GithubInstallationStatus : IInstallationStatus
-    {
-        public static readonly GithubInstallationStatus NotStarted = new("ZIP_NOTSTARTED");
-        public static readonly GithubInstallationStatus Downloading = new("INSTALL_DOWNLOAD");
-        public static readonly GithubInstallationStatus Unpacking = new("ZIP_UNPACKING");
-        public static readonly GithubInstallationStatus MovingFiles = new("ZIP_MOVING");
-
-        private readonly string _value;
-        private GithubInstallationStatus(string value)
-        {
-            _value = value;
-        }
-
-        public IText Localized => TextManager.Instance[_value];
     }
 }

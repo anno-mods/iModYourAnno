@@ -81,7 +81,8 @@ namespace Imya.Models.Installation
                 DownloadSize = _download_size,
                 HeaderText = new SimpleText(header),
                 AdditionalText = new SimpleText(additional),
-                ID = id
+                ID = id,
+                Status = InstallationStatus.NotStarted
             };    
             return _installation;
         }

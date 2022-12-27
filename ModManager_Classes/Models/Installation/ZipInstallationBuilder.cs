@@ -36,7 +36,8 @@ namespace Imya.Models.Installation
             {
                 SourceFilepath = _source,
                 UnpackTargetPath = Path.Combine(ImyaSetupManager.Instance.UnpackDirectoryPath, guid),
-                HeaderText = new SimpleText(header)
+                HeaderText = new SimpleText(header),
+                Status = InstallationStatus.NotStarted
             };
             return installation;
         }

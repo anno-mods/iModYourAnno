@@ -20,10 +20,10 @@ namespace Imya.Utils
         public List<IUnpackable> Unpacks { get; private set; }
 
         //we want a special queue that we can manipulate later on. 
-        public IQueue<IInstallation> PendingDownloads { get; private set; }
+        public IQueue<IDownloadableUnpackableInstallation> PendingDownloads { get; private set; }
         public IDownloadable? CurrentDownload { get; private set; }
 
-        public ObservableCollection<IUnpackable> ActiveInstallations { get; private set; }
+        public ObservableCollection<IInstallation> ActiveInstallations { get; private set; }
         public List<String> CurrentGithubInstallsIDs { get; private set; }
 
         public DownloadService DownloadService {
@@ -78,12 +78,18 @@ namespace Imya.Utils
         }
         private int _totalInstallationCount;
 
+        #region some_constants
+        private float min_progress = 0;
+        private float max_dl_progress = 0.8f;
+        private float max_progress = 1;
+        #endregion
+
         public InstallationManager()
         {
             _moveIntoSem = new Semaphore(1, 1);
             _downloadSem = new Semaphore(1, 1);
 
-            PendingDownloads = new WrappedQueue<IInstallation>();
+            PendingDownloads = new WrappedQueue<IDownloadableUnpackableInstallation>();
             Unpacks = new List<IUnpackable>();
             ActiveInstallations = new();
             CurrentGithubInstallsIDs = new();
@@ -118,7 +124,7 @@ namespace Imya.Utils
             return CurrentGithubInstallsIDs.Any(x => x == id);
         }
 
-        private async Task ExecuteZipInstall(IUnpackable zipInstallation)
+        private async Task ExecuteZipInstall(IUnpackableInstallation zipInstallation)
         {
             ActiveInstallations.Add(zipInstallation);
             await Task.Run(async () =>
@@ -160,19 +166,22 @@ namespace Imya.Utils
             TotalInstallationCount--;
         }
 
-        private async Task UnpackAsync(IUnpackable zipInstallation)
+        private async Task UnpackAsync(IUnpackableInstallation zipInstallation)
         {
+            zipInstallation.Status = InstallationStatus.Unpacking;
             await Task.Run(() =>
             {
+                zipInstallation.SetProgressRange(max_dl_progress, max_progress);
                 if (Directory.Exists(zipInstallation.UnpackTargetPath))
                     Directory.Delete(zipInstallation.UnpackTargetPath, true);
                 using (FileStream fs = File.OpenRead(zipInstallation.SourceFilepath))
-                    fs.ExtractZipFile(zipInstallation.UnpackTargetPath, overwrite: true);
+                    fs.ExtractZipFile(zipInstallation.UnpackTargetPath, overwrite: true, progress : zipInstallation);
             });            
         }
 
-        private async Task MoveModsAsync(IUnpackable unpackable)
+        private async Task MoveModsAsync(IUnpackableInstallation unpackable)
         {
+            unpackable.Status = InstallationStatus.MovingFiles;
             var newCollection = await ModCollectionLoader.LoadFrom(unpackable.UnpackTargetPath);
             //async waiting
             await Task.Run(() => _moveIntoSem.WaitOne());
@@ -181,10 +190,21 @@ namespace Imya.Utils
             Unpacks.Remove(unpackable);
         }
 
-        private async Task DownloadAsync(IDownloadable downloadable)
+        private async Task DownloadAsync(IDownloadableInstallation downloadable)
         {
             CurrentDownload = downloadable;
+            //register progress tracking and update status
+            downloadable.Status = InstallationStatus.Downloading;
+            downloadable.SetProgressRange(min_progress, max_dl_progress);
+            EventHandler<DownloadProgressChangedEventArgs> eventHandler = (object? sender, DownloadProgressChangedEventArgs e) =>
+            {
+                downloadable.Report((float)e.ProgressPercentage / 100);
+            };
+            DownloadService.DownloadProgressChanged += eventHandler;
+            //do the download
             await DownloadService.DownloadFileTaskAsync(downloadable.DownloadUrl, downloadable.DownloadTargetFilename);
+            //unload the download
+            DownloadService.DownloadProgressChanged -= eventHandler;
             CurrentDownload = null; 
         }
 
@@ -205,6 +225,5 @@ namespace Imya.Utils
             BytesPerSecondSpeed = e.BytesPerSecondSpeed;
             ProgressPercentage = e.ProgressPercentage;
         }
-
     }
 }

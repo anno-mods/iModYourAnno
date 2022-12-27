@@ -9,7 +9,7 @@ namespace Imya.Models.Installation
 {
     public abstract class Installation : 
         Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier,
-        IProgress<float>
+        IInstallation
     {
         public float Progress
         {
@@ -36,7 +36,12 @@ namespace Imya.Models.Installation
 
         public String ID { get; init; }
 
-        public IInstallationStatus? Status { get; }
+        public IInstallationStatus? Status 
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
+        private IInstallationStatus? _status;
 
         public IText? HeaderText 
         { 
@@ -60,7 +65,7 @@ namespace Imya.Models.Installation
         }
         protected IText? _additional_text;
 
-        public bool HasAdditionalText => AdditionalText is not null;
+        public bool HasAdditionalText { get => AdditionalText is not null; }
 
         public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
@@ -71,8 +76,4 @@ namespace Imya.Models.Installation
         }
     }
 
-    public interface IInstallationStatus
-    {
-        public IText Localized { get; }
-    }
 }

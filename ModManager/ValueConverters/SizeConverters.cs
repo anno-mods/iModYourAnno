@@ -24,4 +24,20 @@ namespace Imya.UI.ValueConverters
             throw new NotImplementedException();
         }
     }
+
+    [ValueConversion(typeof(long), typeof(String))]
+    internal sealed class ByteSizeConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not long lvalue)
+                return String.Empty;
+            return Math.Round(lvalue / (float)(1024 * 1024), 2) + " MB";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

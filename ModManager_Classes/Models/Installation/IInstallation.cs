@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
-    public interface IInstallation : IDownloadable, IUnpackable
+    public interface IInstallation : IProgress<float>
     {
+        float Progress { get; }
+        bool IsInstalling { get; }
+        bool IsAbortable { get; }
+        String ID { get; }
+
         IText? HeaderText { get; }
         IText? AdditionalText { get; }
+        bool HasAdditionalText { get; }
+        IInstallationStatus? Status { get; set; }
+        void SetProgressRange(float Min, float Max);
+    }
 
-        String ID { get; }
+    public interface IInstallationStatus
+    {
+        public IText Localized { get; }
     }
 }

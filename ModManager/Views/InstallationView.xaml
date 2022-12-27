@@ -17,6 +17,7 @@
                                                     FalseValue="Collapsed" />
             <conv:NegateBoolConverter x:Key="NegateBool" />
             <conv:SpeedConverter x:Key="DownloadSpeed" />
+            <conv:ByteSizeConverter x:Key="ByteSizeConv" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*" />
@@ -112,7 +113,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Orientation="Vertical"
-                                            Grid.RowSpan="2">
+                                            Grid.RowSpan="2"
+                                            VerticalAlignment="Center">
                                     <TextBlock Text="{Binding HeaderText.Text}"
                                                FontWeight="Bold"
                                                Style="{StaticResource IMYA_TEXT}"
@@ -128,25 +130,15 @@
                                             Grid.Column="1"
                                             Orientation="Horizontal">
                                     <TextBlock Text="Size: " />
-                                    <TextBlock Text="{Binding DownloadSize}" />
-                                    <TextBlock Text=" Bytes" />
+                                    <TextBlock Text="{Binding DownloadSize, Converter={StaticResource ByteSizeConv}}" />
                                 </StackPanel>
-                                
-
                                 <Button Grid.Column="2"
-                                        Margin="5" 
-                                        Style="{StaticResource IMYA_BUTTON}"
-                                        HorizontalContentAlignment="Center">
-                                    <materialDesign:PackIcon Kind="ArrowUpward" 
-                                                             Style="{StaticResource IMYA_ICON}"/>
-                                </Button>
-                                <Button Grid.Column="2"
-                                        Grid.Row="1"
                                         Margin="5"
+                                        Grid.RowSpan="2"
                                         Style="{StaticResource IMYA_BUTTON}"
                                         HorizontalContentAlignment="Center">
-                                    <materialDesign:PackIcon Kind="ArrowDown"
-                                                             Style="{StaticResource IMYA_ICON}" />
+                                    <materialDesign:PackIcon Kind="PriorityHigh" 
+                                                             Style="{StaticResource IMYA_ICON}"/>
                                 </Button>
                                 <Button Grid.Column="3"
                                         Grid.RowSpan="2"
@@ -174,57 +166,60 @@
                     <DataTemplate>
                         <Border Margin="2,2,2,2"
                                 Background="{DynamicResource ComponentColorBrush}"
-                                MinHeight="60"
+                                MinHeight="70"
                                 CornerRadius="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="2*"/>
                                     <ColumnDefinition Width="50" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
+                                
                                 <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
                                                          Margin="3"
                                                          Kind="DownloadBox"
                                                          Width="32"
                                                          Height="32"
                                                          VerticalAlignment="Center"
-                                                         Grid.RowSpan="2">
+                                                         Grid.RowSpan="3">
                                 </materialDesign:PackIcon>
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="{Binding HeaderText.Text}"
-                                           FontWeight="Bold"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"
-                                           Grid.Column="1"/>
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="{Binding AdditionalText.Text}"
-                                           Grid.Column="1"
-                                           Grid.Row="2"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" />
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding HeaderText.Text}"
+                                               FontWeight="Bold"
+                                               />
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding AdditionalText.Text}"
+                                               Margin="30,0,0,0"/>
+                                </StackPanel>
                                 
                                 <ProgressBar Name="progress"
                                              Height="15"
                                              Value="{Binding Progress, UpdateSourceTrigger=PropertyChanged}"
                                              Minimum="0"
                                              Maximum="1"
-                                             Grid.Column="2"/>
-                                <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                           Text="[Status]"
-                                           Grid.Column="2"
-                                           Grid.Row="2"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" />
+                                             Grid.Column="1"
+                                             Grid.Row="1"/>
+                                <StackPanel Grid.Column="1"
+                                            Grid.Row="3"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                               Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
                                 
                                 <Button Style="{StaticResource IMYA_BUTTON}"
                                         Grid.Column="3"
-                                        Margin="6"
-                                        Grid.RowSpan="2"
+                                        Margin="10"
+                                        Grid.RowSpan="3"
                                         HorizontalContentAlignment="Center">
                                     <materialDesign:PackIcon Kind="Cancel"
                                                              Style="{StaticResource IMYA_ICON}">

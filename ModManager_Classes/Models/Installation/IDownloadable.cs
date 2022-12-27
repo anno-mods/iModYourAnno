@@ -8,4 +8,5 @@ namespace Imya.Models.Installation
         String DownloadUrl { get; }
         long? DownloadSize { get; }
     }
+ 
 }
