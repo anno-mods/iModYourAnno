@@ -8,9 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Octokit;
 
 namespace Imya.Utils
 {
+    public static class GithubClientExtensions
+    {
+        public static bool IsAuthenticated(this GitHubClient client)
+        {
+            return client.Credentials.AuthenticationType == AuthenticationType.Oauth;
+        }
+    }
     public static class CollectionExtension
     {
         public static IEnumerable<TResult> SelectNoNull<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult?> selector) where TResult : class
