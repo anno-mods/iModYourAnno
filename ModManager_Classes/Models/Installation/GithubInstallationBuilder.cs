@@ -70,6 +70,7 @@ namespace Imya.Models.Installation
             var additional = $"{_repoInfoToInstall.ReleaseID}";
 
             var id = _repoInfoToInstall.GetID();
+            var url = await _repoInfoToInstall.GetImageUrlAsync();
 
             _installation = new GithubInstallation()
             {
@@ -82,7 +83,8 @@ namespace Imya.Models.Installation
                 HeaderText = new SimpleText(header),
                 AdditionalText = new SimpleText(additional),
                 ID = id,
-                Status = InstallationStatus.NotStarted
+                Status = InstallationStatus.NotStarted,
+                ImageUrl= url,
             };    
             return _installation;
         }

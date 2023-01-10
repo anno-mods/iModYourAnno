@@ -12,7 +12,7 @@ namespace Imya.Models.Installation
         bool IsInstalling { get; }
         bool IsAbortable { get; }
         String ID { get; }
-
+        string? ImageUrl { get; }
         IText? HeaderText { get; }
         IText? AdditionalText { get; }
         bool HasAdditionalText { get; }

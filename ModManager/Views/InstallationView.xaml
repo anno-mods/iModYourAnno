@@ -21,6 +21,7 @@
             <conv:NegateBoolConverter x:Key="NegateBool" />
             <conv:SpeedConverter x:Key="DownloadSpeed" />
             <conv:ByteSizeConverter x:Key="ByteSizeConv" />
+            <conv:FallbackImageConverter x:Key="FallbackImg" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -68,12 +69,14 @@
                             <Border Margin="6"
                                     Background="{DynamicResource ComponentColorBrush}"
                                     MinHeight="100"
-                                    CornerRadius="2">
+                                    CornerRadius="2"
+                                    BorderBrush="{DynamicResource ComponentColorBrush_Light}"
+                                    BorderThickness="1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="100" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="120" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -81,18 +84,17 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                                             Margin="3"
-                                                             Kind="DownloadBox"
-                                                             Width="32"
-                                                             Height="32"
-                                                             VerticalAlignment="Center"
-                                                             Grid.RowSpan="3">
-                                    </materialDesign:PackIcon>
+                                    <Border Grid.RowSpan="3"
+                                            CornerRadius="2,0,0,2">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding ImageUrl, Converter={StaticResource FallbackImg}}" />
+                                        </Border.Background>
+                                    </Border>
                                     <StackPanel Orientation="Horizontal"
                                                 Grid.Column="1"
                                                 VerticalAlignment="Center"
-                                                HorizontalAlignment="Center">
+                                                HorizontalAlignment="Center"
+                                                >
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                    Text="{Binding HeaderText.Text}"
                                                    FontWeight="Bold" />
@@ -107,7 +109,8 @@
                                                  Minimum="0"
                                                  Maximum="1"
                                                  Grid.Column="1"
-                                                 Grid.Row="1" />
+                                                 Grid.Row="1"
+                                                 Margin="10,0"/>
                                     <StackPanel Grid.Column="1"
                                                 Grid.Row="3"
                                                 HorizontalAlignment="Center"
@@ -116,16 +119,26 @@
                                                    Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
 
-                                    <Button Style="{StaticResource IMYA_BUTTON}"
-                                            Grid.Column="3"
-                                            Grid.Row="1"
-                                            Margin="5,0"
-                                            HorizontalContentAlignment="Center">
-                                        <materialDesign:PackIcon Kind="Cancel"
-                                                                 Style="{StaticResource IMYA_ICON}">
 
-                                        </materialDesign:PackIcon>
-                                    </Button>
+                                    <StackPanel Orientation="Horizontal"
+                                                Grid.Column="3"
+                                                FlowDirection="RightToLeft"
+                                                Grid.Row="1">
+                                        <Button Style="{StaticResource IMYA_BUTTON}"
+                                                Grid.Column="3"
+                                                Grid.Row="1"
+                                                Margin="5,0"
+                                                MinHeight="38"
+                                                MinWidth="38"
+                                                HorizontalContentAlignment="Center">
+                                            <materialDesign:PackIcon Kind="Cancel"
+                                                                     Style="{StaticResource IMYA_ICON}">
+
+                                            </materialDesign:PackIcon>
+                                        </Button>
+                                    </StackPanel>
+
+                                    
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -150,56 +163,74 @@
                         <DataTemplate>
                             <Border Background="{DynamicResource ComponentColorBrush}"
                                     Margin="7"
-                                    MinHeight="100">
+                                    MinHeight="100"
+                                    BorderBrush="{DynamicResource ComponentColorBrush_Light}"
+                                    BorderThickness="1"
+                                    CornerRadius="2">
                                 <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="150" />
+                                        <ColumnDefinition Width="100" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="40" />
-
-                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="120" />
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="{Binding HeaderText.Text}"
-                                               FontWeight="Bold"
-                                               Style="{StaticResource IMYA_TEXT}"
-                                               Margin="5"
-                                               Grid.ColumnSpan="2"></TextBlock>
-                                    <TextBlock Text="{Binding AdditionalText.Text}"
-                                               Grid.Row="1"
-                                               Style="{StaticResource IMYA_TEXT}"
-                                               Margin="5"></TextBlock>
+                                    <Border CornerRadius="2,0,0,2">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="{Binding ImageUrl, Converter={StaticResource FallbackImg}}" />
+                                        </Border.Background>
+                                    </Border>
 
-                                    <StackPanel Grid.Row="1"
-                                                Margin="5"
-                                                Grid.Column="1"
-                                                Orientation="Horizontal">
-                                        <TextBlock Text="Size: " />
-                                        <TextBlock Text="{Binding DownloadSize, Converter={StaticResource ByteSizeConv}}"
-                                                   Style="{StaticResource IMYA_TEXT}" />
+                                    <Grid Grid.Column="1" Margin="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding HeaderText.Text}"
+                                                   FontWeight="Bold"
+                                                   Style="{StaticResource IMYA_TEXT}"
+                                                   Margin="5"
+                                                   Grid.ColumnSpan="2"></TextBlock>
+                                        <TextBlock Text="{Binding AdditionalText.Text}"
+                                                   Grid.Row="1"
+                                                   Style="{StaticResource IMYA_TEXT}"
+                                                   Margin="5"></TextBlock>
+
+                                        <StackPanel Grid.Row="1"
+                                                    Margin="5"
+                                                    Grid.Column="1"
+                                                    Orientation="Horizontal">
+                                            <TextBlock Text="Size: "
+                                                       Style="{StaticResource IMYA_TEXT}"/>
+                                            <TextBlock Text="{Binding DownloadSize, Converter={StaticResource ByteSizeConv}}"
+                                                       Style="{StaticResource IMYA_TEXT}" />
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Grid.RowSpan="2"
+                                                Grid.Column="2"
+                                                FlowDirection="RightToLeft">
+                                        <Button Margin="5,0"
+                                                Style="{StaticResource IMYA_BUTTON}"
+                                                HorizontalContentAlignment="Center"
+                                                Height="38"
+                                                Width="38">
+                                            <materialDesign:PackIcon Kind="TrashCanOutline"
+                                                                     Style="{StaticResource IMYA_ICON}" />
+                                        </Button>
+                                        <Button Margin="5,0"
+                                                Style="{StaticResource IMYA_BUTTON}"
+                                                HorizontalContentAlignment="Center"
+                                                Height="38"
+                                                Width="38">
+                                            <materialDesign:PackIcon Kind="PriorityHigh"
+                                                                     Style="{StaticResource IMYA_ICON}" />
+                                        </Button>
                                     </StackPanel>
-                                    <Button Grid.Column="2"
-                                            Margin="5,0"
-                                            Grid.RowSpan="2"
-                                            Style="{StaticResource IMYA_BUTTON}"
-                                            HorizontalContentAlignment="Center"
-                                            VerticalAlignment="Center">
-                                        <materialDesign:PackIcon Kind="PriorityHigh"
-                                                                 Style="{StaticResource IMYA_ICON}" />
-                                    </Button>
-                                    <Button Grid.Column="3"
-                                            Grid.RowSpan="2"
-                                            Margin="5,0"
-                                            VerticalAlignment="Center"
-                                            Style="{StaticResource IMYA_BUTTON}"
-                                            HorizontalContentAlignment="Center">
-                                        <materialDesign:PackIcon Kind="TrashCanOutline"
-                                                                 Style="{StaticResource IMYA_ICON}" />
-                                    </Button>
                                 </Grid>
                             </Border>
                         </DataTemplate>
