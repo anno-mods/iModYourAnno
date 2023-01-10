@@ -186,15 +186,23 @@ namespace Imya.Models.ModTweaker
             //    modop.Name = value ? "Include" : "Disabled";
             //    return;
             //}
-            
-            XmlAttribute? skipAttrib = modop.Attributes["Skip"];
-            if (skipAttrib is null)
-            {
-                skipAttrib = modop.OwnerDocument.CreateAttribute("Skip");
-                modop.Attributes.Append(skipAttrib);
-            }
 
-            skipAttrib.Value = value ? "1" : "0";
+            if (value)
+            {
+                XmlAttribute? skipAttrib = modop.Attributes["Skip"];
+                if (skipAttrib is null)
+                {
+                    skipAttrib = modop.OwnerDocument.CreateAttribute("Skip");
+                    modop.Attributes.Append(skipAttrib);
+                }
+                skipAttrib.Value = "1";
+            }
+            else
+            {
+                XmlAttribute? skipAttrib = modop.Attributes["Skip"];
+                if (skipAttrib is not null)
+                    modop.Attributes.Remove(skipAttrib);
+            }
         }
 
         public void EnsureInclude()
@@ -238,11 +246,16 @@ namespace Imya.Models.ModTweaker
                 // ensure a skip in the source document.
                 if (OriginalDocument.TryGetModOpNodes(op.ID, out var modopNodes) && modopNodes is not null)
                 {
-                    // get the expose of includes because we just toggle them inline
-                    var expose = op.Type == "include" ? Exposes.FirstOrDefault(x => x.ModOpID == op.ID) as ExposedToggleModValue : null;
+                    // all ModOps are skipped by default
+                    bool skip = true;
+
+                    // only SkipToggles may not skip when on
+                    var inlineToggle = Exposes.FirstOrDefault(x => x.ModOpID == op.ID) as ExposedToggleModValue;
+                    if (inlineToggle is not null)
+                        skip = !inlineToggle.IsTrue ^ inlineToggle.IsInverted;
 
                     foreach (XmlNode node in modopNodes)
-                        EnsureSkipFlag(node, !expose?.IsTrue ?? true);
+                        EnsureSkipFlag(node, skip);
                 }
 
                 // generate the mod op in the target document

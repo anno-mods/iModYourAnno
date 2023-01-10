@@ -101,6 +101,9 @@ namespace Imya.Models.ModTweaker
                 }
                 else if (type == ExposedModValueType.SkipToggle)
                 {
+                    Expose.TryGetAttribute(TweakerConstants.INVERTED, out var invert);
+                    bool IsInverted = invert?.Equals("True") ?? false;
+
                     var val = new ExposedToggleModValue()
                     {
                         Path = Path!,
@@ -111,7 +114,7 @@ namespace Imya.Models.ModTweaker
                         Tooltip = tooltip,
                         FalseValue = "1",
                         TrueValue = "0",
-                        IsInverted = false,
+                        IsInverted = IsInverted,
                         ExposedModValueType = ExposedModValueType.SkipToggle
                     };
                     return val;
