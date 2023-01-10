@@ -216,7 +216,7 @@
                 CornerRadius="3"
                 Margin="5,5,5,0"
                 BorderThickness="1"
-                BorderBrush="{StaticResource AccentColorBrush}">
+                BorderBrush="{DynamicResource AccentColorBrush}">
             <StackPanel Orientation="Horizontal"
                         Margin="15,5"
                         HorizontalAlignment="Center">
