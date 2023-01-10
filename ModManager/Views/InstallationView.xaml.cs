@@ -77,7 +77,7 @@ namespace Imya.UI.Views
             }
 
             InstallationManager.DownloadService.DownloadProgressChanged += OnDownloadProgressChanged;
-            InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
+            //InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
         }
 
         private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
