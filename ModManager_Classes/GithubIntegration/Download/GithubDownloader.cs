@@ -11,6 +11,7 @@ using Octokit;
 
 using Downloader;
 
+
 namespace Imya.GithubIntegration.Download
 {
     public struct DownloadResult
@@ -21,6 +22,7 @@ namespace Imya.GithubIntegration.Download
         public String DownloadDestination = String.Empty;
     }
 
+    [Obsolete]
     public class GithubDownloader
     {
         public GithubDownloaderOptions Options = new GithubDownloaderOptions();

@@ -17,6 +17,8 @@ using Imya.GithubIntegration;
 using Imya.UI.Utils;
 using Imya.Models.Options;
 using Imya.GithubIntegration.Download;
+using Imya.GithubIntegration.StaticData;
+using Downloader;
 
 namespace Imya.UI.Views
 {
@@ -30,10 +32,12 @@ namespace Imya.UI.Views
 
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
-        public InstallationSetup Installer { get; } = new InstallationSetup();
-        public InstallationManager InstallationManager { get; private set; }
 
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
+
+        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
+
+        public ObservableCollection<IInstallation> PendingDownloads { get; }
 
         #region notifyable properties
 
@@ -48,15 +52,15 @@ namespace Imya.UI.Views
         }
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
 
-        public bool IsInstalling
+
+        public double CurrentDownloadSpeedPerSecond
         {
-            get => _isInstalling;
-            set => SetProperty(ref _isInstalling, value);
+            get => _currentDownloadSpeedPerSecond;
+            set => SetProperty(ref _currentDownloadSpeedPerSecond, value);
         }
-        private bool _isInstalling = false;
+        private double _currentDownloadSpeedPerSecond;
 
         #endregion
-
 
         public InstallationView()
         {
@@ -65,7 +69,6 @@ namespace Imya.UI.Views
             InitializeComponent();
             DataContext = this;
 
-            InstallationManager = new InstallationManager(Installer);
             TextManager.LanguageChanged += OnLanguageChanged;
 
             if (GameSetup.IsModloaderInstalled)
@@ -73,40 +76,18 @@ namespace Imya.UI.Views
                 InstallStatus = ModLoaderStatus.Installed;
             }
 
+            InstallationManager.DownloadService.DownloadProgressChanged += OnDownloadProgressChanged;
+            //InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
         }
 
-
-        
-
-        private void OnInstallFromGithub(object sender, RoutedEventArgs e)
+        private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
         {
-            MainViewController.Instance.SetView(View.GITHUB_BROWSER);
+            CurrentDownloadSpeedPerSecond = e.BytesPerSecondSpeed;
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Installing Modloader");
-            ModloaderDownloadButton.IsEnabled = false;
-            InstallStatus = ModLoaderStatus.Installing;
-
-            var Result = await InstallationManager.RunModloaderInstallAsync();
-
-            switch (Result.ResultType)
-            {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                case InstallationResultType.Exception:
-                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
-                    break;
-                default:
-                    Console.WriteLine("Installation successful");
-                    break;
-            }
-
-            ModloaderDownloadButton.IsEnabled = true;
-            GameSetup.UpdateModloaderInstallStatus();
-            InstallStatus = GameSetup.IsModloaderInstalled ? ModLoaderStatus.Installed : ModLoaderStatus.NotInstalled;
+            Console.WriteLine("This does fucking nothing right now");
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)

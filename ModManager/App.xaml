@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="Styles/ToggleSwitchStyle.xaml" />
                 <ResourceDictionary Source="Styles/ScrollBarStyle.xaml" />
                 <ResourceDictionary Source="Styles/ScrollViewerStyle.xaml" />
+                <ResourceDictionary Source="Styles/InvisScrollViewer.xaml" />
                 <ResourceDictionary Source="Styles/CheckBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ComboBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
@@ -96,9 +97,7 @@
                         Value="UniformToFill">
                 </Setter>
                 <Setter Property="MaxWidth"
-                        Value="500">
-                    
-                </Setter>
+                        Value="{Binding ElementName=DescriptionFlowViewer, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"></Setter>
                 <Style.Triggers>
                     <Trigger Property="Tag"
                              Value="imageright">

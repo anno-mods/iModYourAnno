@@ -20,7 +20,7 @@ namespace Imya.Models.Attributes
 
         public bool HasAttribute(AttributeType type)
         {
-            return this.Any(x => x.AttributeType == type);
+            return this.Any(x => x?.AttributeType == type);
         }
 
         public void RemoveAttribute(IAttribute attrib)

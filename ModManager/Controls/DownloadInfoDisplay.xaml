@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Imya.UI.Controls.DownloadInfoDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Imya.UI.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border Background="{DynamicResource BackgroundColorBrush}"
+            BorderBrush="{DynamicResource ComponentColorBrush}"
+            BorderThickness="1">
+        <Canvas SizeChanged="Canvas_SizeChanged"
+                Background="{DynamicResource BackgroundColorBrush}"
+                x:Name="canvas"
+                Margin="2"
+                Visibility="{Binding ShowValues}">
+            <Path Data="{Binding PathGeometry, UpdateSourceTrigger=PropertyChanged}"
+                  x:Name="DownloadSpeedVisualization"
+                  Stroke="{DynamicResource AccentColorBrush}" 
+                  StrokeThickness="2"></Path>
+            <Grid Canvas.Top="{Binding DownloadSpeedPointOriginY, UpdateSourceTrigger=PropertyChanged}"
+                  Canvas.Left="{Binding DownloadSpeedPointOriginX, UpdateSourceTrigger=PropertyChanged}"
+                  Height="16"
+                  x:Name="DownloadSpeedText">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Ellipse Fill="AliceBlue" Width="8" Height="8" 
+                         VerticalAlignment="Center"
+                         HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding CurrentValue, UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource IMYA_TEXT}"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </Canvas>  
+    </Border>
+</UserControl>

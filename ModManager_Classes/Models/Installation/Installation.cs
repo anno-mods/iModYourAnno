@@ -9,7 +9,6 @@ namespace Imya.Models.Installation
 {
     public abstract class Installation : 
         Imya.Models.NotifyPropertyChanged.PropertyChangedNotifier,
-        IProgress<float>,
         IInstallation
     {
         public float Progress
@@ -35,12 +34,19 @@ namespace Imya.Models.Installation
         }
         protected bool _isAbortable = false;
 
-        public IInstallationStatus? Status { get; }
+        public String ID { get; init; }
+
+        public IInstallationStatus? Status 
+        {
+            get => _status;
+            set => SetProperty(ref _status, value);
+        }
+        private IInstallationStatus? _status;
 
         public IText? HeaderText 
         { 
             get => _headerText;
-            protected set 
+            set 
             {
                 SetProperty(ref _headerText, value);
                 OnPropertyChanged(nameof(HeaderText));
@@ -51,7 +57,7 @@ namespace Imya.Models.Installation
         public IText? AdditionalText
         {
             get => _additional_text;
-            protected set
+            set
             {
                 SetProperty(ref _additional_text, value);
                 OnPropertyChanged(nameof(AdditionalText));
@@ -59,7 +65,7 @@ namespace Imya.Models.Installation
         }
         protected IText? _additional_text;
 
-        public bool HasAdditionalText => AdditionalText is not null;
+        public bool HasAdditionalText { get => AdditionalText is not null; }
 
         public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
@@ -68,15 +74,6 @@ namespace Imya.Models.Installation
             _progressRange = (Min, Max);
             Report(Progress);
         }
-
-        public abstract Task<IInstallation> Setup();
-        public abstract Task Finalize();
-
-        public abstract void CleanUp();
     }
 
-    public interface IInstallationStatus
-    {
-        public IText Localized { get; }
-    }
 }

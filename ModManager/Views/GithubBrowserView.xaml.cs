@@ -3,6 +3,7 @@ using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
 using Imya.Models;
+using Imya.Models.Installation;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -13,8 +14,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 
 namespace Imya.UI.Views
 {
@@ -41,35 +45,32 @@ namespace Imya.UI.Views
 
         public GithubRepoInfo? SelectedRepo {
             get => _selectedRepo;
-            private set {
-                SetProperty(ref _selectedRepo, value);
-                HasRepoSelection = value is not null;
-            }
+            private set => SetProperty(ref _selectedRepo, value);
         }
         private GithubRepoInfo? _selectedRepo;
 
-        public bool HasRepoSelection
+        public bool CanAddToDownloads
         {
-            get => _hasRepoSelection;
-            set => SetProperty(ref _hasRepoSelection, value);
+            get => _canAddToDownloads;
+            set => SetProperty(ref _canAddToDownloads, value);
         }
-        private bool _hasRepoSelection;
+        private bool _canAddToDownloads;
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
         private readonly StaticReadmeProvider ReadmeProvider = new();
 
         public TextManager TextManager { get;} = TextManager.Instance;
+        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
 
         public GithubBrowserView()
         {
-            InitializeComponent();
             DataContext = this;
-
+            InitializeComponent();
             OK_TEXT = new SimpleText("Download");
             CANCEL_TEXT = new SimpleText("Cancel");
 
-            RepoSelection.SelectionChanged += UpdateReadmeForSelection;
+            InstallationManager.InstallationCompleted += ValidateCanAddToDownloads;
         }
 
         public void OnLoad()
@@ -85,20 +86,20 @@ namespace Imya.UI.Views
             if (SelectedRepo is null || InstallationView.Instance is null)
                 return;
 
-            var Result = await InstallationManager.Instance.RunGithubInstallAsync(SelectedRepo, AppSettings.Instance.InstallationOptions);
-
-            switch (Result.ResultType)
+            try
             {
-                case InstallationResultType.InstallationAlreadyRunning:
-                    PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                    break;
-                case InstallationResultType.Exception:
-                    PopupCreator.CreateGithubExceptionPopup(Result.Exception!).ShowDialog();
-                    break;
-                default:
-                    Console.WriteLine("Installation successful");
-                    break;
-            };
+                var install = await GithubInstallationBuilder
+                    .Create()
+                    .WithRepoInfo(SelectedRepo)
+                    .BuildAsync();
+
+                InstallationManager.EnqueueGithubInstallation(install);
+                ValidateCanAddToDownloads();
+            }
+            catch (InstallationException ex)
+            {
+                PopupCreator.CreateGithubExceptionPopup(ex).ShowDialog();
+            }
         }
 
         private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
@@ -109,17 +110,14 @@ namespace Imya.UI.Views
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
-            var Results = await InstallationManager.Instance.RunZipInstallAsync(dialog.FileNames, AppSettings.Instance.InstallationOptions);
-
-            foreach (var Result in Results)
+            foreach (String filename in dialog.FileNames)
             {
-                switch (Result.ResultType)
-                {
-                    case InstallationResultType.InstallationAlreadyRunning:
-                        PopupCreator.CreateInstallationAlreadyRunningPopup().ShowDialog();
-                        break;
-                    default: break;
-                }
+                var install = ZipInstallationBuilder
+                    .Create()
+                    .WithSource(filename)
+                    .Build();
+
+                InstallationManager.EnqueueZipInstallation(install);
             }
         }
 
@@ -140,13 +138,20 @@ namespace Imya.UI.Views
             MainViewController.Instance.GoToLastView();
         }
 
-        private async void UpdateReadmeForSelection(object sender, SelectionChangedEventArgs e)
+        private async void OnRepoSelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
             var repoInfo = RepoSelection.SelectedItem as GithubRepoInfo;
             if (repoInfo is null) return;
-            ReadmeText = await ReadmeProvider.GetReadmeAsync(repoInfo);
-
             SelectedRepo = repoInfo;
+
+            ValidateCanAddToDownloads();
+            ReadmeText = await ReadmeProvider.GetReadmeAsync(SelectedRepo);
+
+        }
+
+        private void ValidateCanAddToDownloads()
+        {
+            CanAddToDownloads = RepoSelection is not null && !InstallationManager.Instance.IsProcessingInstallWithID(SelectedRepo.GetID());
         }
 
         public void Filter(IEnumerable<string> keywords)
@@ -169,6 +174,7 @@ namespace Imya.UI.Views
         }
         #endregion
 
+
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var textbox = sender as TextBox;
@@ -190,5 +196,20 @@ namespace Imya.UI.Views
             }
 
         }
+
+        #region hacky_image_size_correction
+        private async void DescriptionFlowViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //rerender the flow document cuz images 
+            await Application.Current.Dispatcher.BeginInvoke(
+                () =>
+                {
+                    if (DescriptionFlowViewer.Document is null)
+                        return;
+                    DescriptionFlowViewer.Document.PageWidth = DescriptionFlowViewer.Document.PageWidth;
+                });
+        }
+        #endregion
+
     }
 }

@@ -46,7 +46,9 @@ namespace Imya.UI.Utils
 
         public static GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() 
         { 
-            MESSAGE = new SimpleText(e.Message) 
+            MESSAGE = new SimpleText(e.Message),
+            OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
+            HasCancelButton = false
         };
 
         public static GenericOkayPopup CreateLogoutPopup() => new() 

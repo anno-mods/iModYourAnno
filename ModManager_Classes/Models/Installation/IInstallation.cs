@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
-    public interface IInstallation
+    public interface IInstallation : IProgress<float>
     {
-        /// <summary>
-        /// Initiates and Starts the Setup Part of the Installation: Downloading and/or File Extracting
-        /// 
-        /// </summary>
-        /// <returns>The Setup Process as awaitable task</returns>
-        public Task<IInstallation> Setup();
+        float Progress { get; }
+        bool IsInstalling { get; }
+        bool IsAbortable { get; }
+        String ID { get; }
 
-        /// <summary>
-        /// Finalizes the Installation by moving the files where they belong.
-        /// </summary>
-        /// <returns></returns>
-        public Task Finalize();
+        IText? HeaderText { get; }
+        IText? AdditionalText { get; }
+        bool HasAdditionalText { get; }
+        IInstallationStatus? Status { get; set; }
+        void SetProgressRange(float Min, float Max);
+    }
 
-        public void CleanUp();
+    public interface IInstallationStatus
+    {
+        public IText Localized { get; }
     }
 }
