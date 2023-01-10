@@ -61,6 +61,68 @@ namespace Imya.UnitTests
         }
 
         [Fact]
+        public void CorrectlyEnsuresNoSkip()
+        {
+            const string assetsXML =
+                "<ModOps>" +
+                    "<ModOp Path=\"/SomePath\" Type=\"add\" ModOpID=\"SomeID\" Skip=\"1\">" +
+                        "<Text>Some Text</Text>" +
+                    "</ModOp>" +
+                    "<ImyaExpose Path=\"self::Text\" ModOpID=\"SomeID\" ExposeID=\"Text\" Kind=\"SkipToggle\" />" +
+                "</ModOps>";
+
+            InitWorkingDirectory();
+            LoadAssets(assetsXML);
+
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
+            toggleVal!.IsTrue = true; // dont skip on true
+            tweakerFile.Save("tweak_tmp");
+
+            XmlDocument AssetsWithExpectedSkip = new();
+            AssetsWithExpectedSkip.Load("tweak_tmp/assets.xml");
+            var node = AssetsWithExpectedSkip.SelectSingleNode("/ModOps/ModOp");
+            Assert.Equal("ModOp", node?.Name);
+
+            string? path = null;
+            Assert.True(node?.TryGetAttribute("Path", out path));
+            Assert.Equal("/SomePath", path);
+
+            Assert.False(node?.TryGetAttribute("Skip", out _));
+        }
+
+        [Fact]
+        public void CorrectlyEnsuresSkipInverted()
+        {
+            const string assetsXML =
+                "<ModOps>" +
+                    "<ModOp Path=\"/SomePath\" Type=\"add\" ModOpID=\"SomeID\">" +
+                        "<Text>Some Text</Text>" +
+                    "</ModOp>" +
+                    "<ImyaExpose Path=\"self::Text\" ModOpID=\"SomeID\" ExposeID=\"Text\" Kind=\"SkipToggle\" Invert=\"True\" />" +
+                "</ModOps>";
+
+            InitWorkingDirectory();
+            LoadAssets(assetsXML);
+
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
+            toggleVal!.IsTrue = true; // skip on true (inverted)
+            tweakerFile.Save("tweak_tmp");
+
+            XmlDocument AssetsWithExpectedSkip = new();
+            AssetsWithExpectedSkip.Load("tweak_tmp/assets.xml");
+            var node = AssetsWithExpectedSkip.SelectSingleNode("/ModOps/ModOp");
+            Assert.Equal("ModOp", node?.Name);
+
+            string? path = null;
+            Assert.True(node?.TryGetAttribute("Path", out path));
+            Assert.Equal("/SomePath", path);
+
+            Assert.True(node?.TryGetAttribute("Skip", out _));
+        }
+
+        [Fact]
         public void CorrectlyEnsuresInclude()
         {
             const String AssetsXML =
