@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="Styles/ToggleSwitchStyle.xaml" />
                 <ResourceDictionary Source="Styles/ScrollBarStyle.xaml" />
                 <ResourceDictionary Source="Styles/ScrollViewerStyle.xaml" />
+                <ResourceDictionary Source="Styles/InvisScrollViewer.xaml" />
                 <ResourceDictionary Source="Styles/CheckBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ComboBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
