@@ -108,8 +108,8 @@ namespace Imya.UI.Utils
             get => Properties.Settings.Default.GameRootPath;
             set
             {
-                GameSetup.SetGamePath(value);
-                Properties.Settings.Default.GameRootPath = value;
+                GameSetup.SetGamePath(value, true);
+                Properties.Settings.Default.GameRootPath = GameSetup.GameRootPath;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(GamePath));
             }
@@ -169,7 +169,6 @@ namespace Imya.UI.Utils
 
             Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
             Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));
-
 
             Instance ??= this;
         }
