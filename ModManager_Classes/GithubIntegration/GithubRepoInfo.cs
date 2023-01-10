@@ -1,4 +1,5 @@
-﻿using Octokit;
+﻿using Imya.GithubIntegration.StaticData;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -18,10 +19,12 @@ namespace Imya.GithubIntegration
 
         private IReleaseAssetStrategy _releaseAssetStrategy;
         private IReadmeFilepathStrategy _readmeFilepathStrategy;
+        private IModImageStrategy _imageStrategy;
 
         public GithubRepoInfo(
             IReleaseAssetStrategy releaseAssetStrategy,
             IReadmeFilepathStrategy readmeFilepathStrategy,
+            IModImageStrategy modImageStrategy,
             String owner, 
             String repoName,
             String releaseID)
@@ -32,6 +35,7 @@ namespace Imya.GithubIntegration
 
             _releaseAssetStrategy = releaseAssetStrategy;
             _readmeFilepathStrategy = readmeFilepathStrategy;
+            _imageStrategy = modImageStrategy;
         }
 
         public override bool Equals([NotNullWhen(true)] object? obj)
@@ -40,15 +44,11 @@ namespace Imya.GithubIntegration
             return Name == other.Name && Owner == other.Owner && ReleaseID == other.ReleaseID;
         }
 
-        public async Task<ReleaseAsset?> GetReleaseAssetAsync()
-        {
-            return await _releaseAssetStrategy.GetReleaseAssetAsync(this);
-        }
+        public async Task<ReleaseAsset?> GetReleaseAssetAsync() => await _releaseAssetStrategy.GetReleaseAssetAsync(this);
 
-        public String GetMarkdownReadmeFilepath()
-        { 
-            return _readmeFilepathStrategy.GetMarkdownReadmeFilepath();
-        }
+        public String GetMarkdownReadmeFilepath() => _readmeFilepathStrategy.GetMarkdownReadmeFilepath();
+
+        public async Task<string?> GetImageUrlAsync() => await _imageStrategy.GetImageUrlAsync(this);
 
         public override String ToString()
         {

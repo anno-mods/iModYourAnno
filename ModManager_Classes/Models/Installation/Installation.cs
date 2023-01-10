@@ -67,6 +67,8 @@ namespace Imya.Models.Installation
 
         public bool HasAdditionalText { get => AdditionalText is not null; }
 
+        public string? ImageUrl { get; init; }
+
         public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
         public void SetProgressRange(float Min, float Max)

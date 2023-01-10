@@ -12,8 +12,9 @@ namespace Imya.GithubIntegration.StaticData
         {
             IReleaseAssetStrategy release_asset_strat = new StaticNameReleaseAssetStrategy(AssetName);
             IReadmeFilepathStrategy filepath_strat = new StaticReadmeFilepathStrategy();
+            IModImageStrategy modimage_strat = new ImageStrategy();
 
-            return new GithubRepoInfo(release_asset_strat, filepath_strat, Owner, RepositoryName, AssetName);
+            return new GithubRepoInfo(release_asset_strat, filepath_strat, modimage_strat, Owner, RepositoryName, AssetName);
         }
     }
 }
