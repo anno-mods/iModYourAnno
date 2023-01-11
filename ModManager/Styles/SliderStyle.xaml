@@ -23,7 +23,7 @@
                                         Foreground="{DynamicResource TextColorBrush}"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
-                                        Margin="0,-2"/>
+                                        Margin="2,1"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -81,8 +81,8 @@
                     <Components:ContentThumb Style="{StaticResource IMYA_SLIDERTHUMB}"
                                              Foreground="{TemplateBinding Foreground}"
                                              Background="{DynamicResource InteractiveComponentColorBrush}"
-                                             Width="22"
-                                             Height="18"
+                                             Width="Auto"
+                                             Height="Auto"
                                              Content="{TemplateBinding Content}">
                     </Components:ContentThumb>
                     
