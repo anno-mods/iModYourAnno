@@ -46,7 +46,8 @@
                                           CurrentValue="{Binding CurrentDownloadSpeedPerSecond, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DownloadSpeed}}"
                                           DownloadService="{Binding InstallationManager.DownloadService, UpdateSourceTrigger=PropertyChanged}"/>
         </Border> -->
-        <TextBlock Text="{Binding CurrentDownloadSpeedPerSecond}" />
+        <TextBlock Text="{Binding CurrentDownloadSpeedPerSecond, Converter={StaticResource DownloadSpeed}}" 
+                   />
 
         <!-- INSTALLS -->
         <ScrollViewer

@@ -192,8 +192,12 @@
                         </Grid.ColumnDefinitions>
                         <TextBox Style="{StaticResource IMYA_TEXTBOX}"
                                  Text="{Binding AppSettings.DownloadRateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            
                         </TextBox>
+                        <controls:FancyToggle Grid.Column="1"
+                                              Margin="5"
+                                              IsChecked="{Binding AppSettings.UseRateLimiting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            
+                        </controls:FancyToggle>
                     </Grid>
                     <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
