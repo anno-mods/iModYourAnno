@@ -158,7 +158,7 @@
                     Margin="0,12,0,6"
                     MinHeight="30">
                 <TextBlock Style="{StaticResource IMYA_TEXT}"
-                           Text="Installation and Download"
+                           Text="{Binding TextManager[SETTINGS_INST_DL_SECTION].Text}"
                            FontWeight="Bold"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"></TextBlock>
@@ -195,11 +195,11 @@
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
                                    Margin="5"
                                    VerticalAlignment="Center"
-                                   Text="Download Rate"></TextBlock>
+                                   Text="{Binding TextManager[SETTINGS_DL_RATE].Text}"></TextBlock>
                         <controls:FancyToggle Grid.Column="1"
                                               Margin="5"
-                                              OffText="Unlimited"
-                                              OnText="limited to"
+                                              OffText="{Binding TextManager[SETTINGS_DL_RATE_UNLIMITED].Text}"
+                                              OnText="{Binding TextManager[SETTINGS_DL_RATE_LIMITED].Text}"
                                               IsChecked="{Binding AppSettings.UseRateLimiting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             
                         </controls:FancyToggle>
