@@ -78,6 +78,20 @@ namespace Imya.Utils
         }
         private int _totalInstallationCount;
 
+        public int PendingInstallationsCount
+        {
+            get => _pendingInstallationCount;
+            private set => SetProperty(ref _pendingInstallationCount, value);
+        }
+        private int _pendingInstallationCount;
+
+        public int RunningInstallationsCount
+        {
+            get => _runningInstallationCount;
+            private set => SetProperty(ref _runningInstallationCount, value);
+        }
+        private int _runningInstallationCount;
+
         #region some_constants
         private float min_progress = 0;
         private float max_dl_progress = 0.8f;
@@ -101,12 +115,19 @@ namespace Imya.Utils
             //when an install gets added, we invoke process with next download, semaphore does the rest for us. 
             GithubInstallAdded += async (x) => await ProceedWithNextDownloadAsync();
             ZipInstallAdded += async (x) => await ExecuteZipInstall(x);
+
+            InstallationCompleted += () =>
+            {
+                TotalInstallationCount--;
+                RunningInstallationsCount--;
+            };
         }
 
         public void EnqueueGithubInstallation(GithubInstallation githubInstallation)
         {
             TotalInstallationCount++;
             PendingDownloads.Enqueue(githubInstallation);
+            PendingInstallationsCount++;
             CurrentGithubInstallsIDs.Add(githubInstallation.RepositoryToInstall.GetID());
             //Signal that a github install was added.
             GithubInstallAdded?.Invoke(githubInstallation);
@@ -134,7 +155,6 @@ namespace Imya.Utils
                 CleanUpUnpackable(zipInstallation);
             });
             ActiveInstallations.Remove(zipInstallation);
-            TotalInstallationCount--;
         }
 
         private async Task ProceedWithNextDownloadAsync()
@@ -146,6 +166,8 @@ namespace Imya.Utils
             //get the next download
             Console.WriteLine("Starting Download");
             var installation = PendingDownloads.Dequeue();
+            PendingInstallationsCount--;
+            RunningInstallationsCount++;
 
             ActiveInstallations.Add(installation);
             await DownloadAsync(installation);
@@ -163,7 +185,6 @@ namespace Imya.Utils
             ActiveInstallations.Remove(installation);
             CurrentGithubInstallsIDs.RemoveAll(x => x == installation.ID);
             InstallationCompleted?.Invoke();
-            TotalInstallationCount--;
         }
 
         private async Task UnpackAsync(IUnpackableInstallation zipInstallation)
@@ -205,7 +226,7 @@ namespace Imya.Utils
             await DownloadService.DownloadFileTaskAsync(downloadable.DownloadUrl, downloadable.DownloadTargetFilename);
             //unload the download
             DownloadService.DownloadProgressChanged -= eventHandler;
-            CurrentDownload = null; 
+            CurrentDownload = null;
         }
 
         private void CleanUpUnpackable(IUnpackable unpackable)

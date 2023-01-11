@@ -1638,6 +1638,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "DOWNLOADS_PENDING_INSTALLCOUNT": {
+    "Chinese": null,
+    "English": "Pending ({0})",
+    "French": null,
+    "German": "Noch ausstehend ({0})",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "DOWNLOADS_RUNNING_INSTALLCOUNT": {
+    "Chinese": null,
+    "English": "Running ({0})",
+    "French": null,
+    "German": "Laufende Installationen ({0})",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
