@@ -185,6 +185,16 @@
                                               IsChecked="{Binding AppSettings.InstallationOptions.AllowOldToOverwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         </controls:FancyToggle>
                     </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="200" />                            
+                        </Grid.ColumnDefinitions>
+                        <TextBox Style="{StaticResource IMYA_TEXTBOX}"
+                                 Text="{Binding AppSettings.DownloadRateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            
+                        </TextBox>
+                    </Grid>
                     <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />

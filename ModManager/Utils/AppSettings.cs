@@ -161,6 +161,16 @@ namespace Imya.UI.Utils
         }
         private ThemeSetting _theme;
 
+        public int DownloadRateLimit
+        {
+            get => _downloadRateLimit;
+            set
+            {
+                InstallationManager.Instance.DownloadConfig.MaximumBytesPerSecond = value;
+                SetProperty(ref _downloadRateLimit, value);
+            }
+        }
+        private int _downloadRateLimit;
         public AppSettings()
         {
             Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Styles/Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));

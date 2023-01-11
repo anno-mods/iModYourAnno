@@ -26,6 +26,8 @@ namespace Imya.Utils
         public ObservableCollection<IInstallation> ActiveInstallations { get; private set; }
         public List<String> CurrentGithubInstallsIDs { get; private set; }
 
+        public DownloadConfiguration DownloadConfig { get; private set; }
+
         public DownloadService DownloadService {
             get => _downloadService;
             set => SetProperty(ref _downloadService, value);
@@ -108,8 +110,14 @@ namespace Imya.Utils
             ActiveInstallations = new();
             CurrentGithubInstallsIDs = new();
 
+            DownloadConfig = new DownloadConfiguration()
+            {
+                //rate limited to 1MB/s
+                MaximumBytesPerSecond = 1024 * 1024
+            };
+
             //TODO add options
-            DownloadService = new();
+            DownloadService = new(DownloadConfig);
             DownloadService.DownloadProgressChanged += OnDownloadProgressChanged; 
 
             //when an install gets added, we invoke process with next download, semaphore does the rest for us. 
