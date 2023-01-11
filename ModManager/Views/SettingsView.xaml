@@ -6,6 +6,7 @@
              xmlns:controls="clr-namespace:Imya.UI.Controls"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:Components="clr-namespace:Imya.UI.Views.Components"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -20,6 +21,8 @@
 
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <converters:SpeedConverter x:Key="DownloadSpeed" />
+            <converters:ByteSizeConverter x:Key="Bytesize" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue" TrueValue="Visible" FalseValue="Collapsed" />
         </Grid.Resources>
 
@@ -188,16 +191,43 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="200" />                            
+                            <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
-                        <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                                 Text="{Binding AppSettings.DownloadRateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        </TextBox>
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Margin="5"
+                                   VerticalAlignment="Center"
+                                   Text="Download Rate"></TextBlock>
                         <controls:FancyToggle Grid.Column="1"
                                               Margin="5"
+                                              OffText="Unlimited"
+                                              OnText="limited to"
                                               IsChecked="{Binding AppSettings.UseRateLimiting, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             
                         </controls:FancyToggle>
+                    </Grid>
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding Min, Converter={StaticResource Bytesize}}"
+                                   Style="{StaticResource IMYA_TEXT}" />
+                        <Components:ContentSlider Grid.Column="1"
+                                                  Style="{StaticResource IMYA_SLIDER}"
+                                                  Value="{Binding AppSettings.DownloadRateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Content="{Binding AppSettings.DownloadRateLimit, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DownloadSpeed}}"
+                                                  Foreground="{DynamicResource AccentColorBrush}"
+                                                  Minimum="{Binding Min}"
+                                                  Maximum="{Binding Max}"
+                                                  TickFrequency="{Binding Stepping}"
+                                                  IsSnapToTickEnabled="True"
+                                                  Background="{DynamicResource InteractiveComponentColorBrush_Light}">
+                            
+                        </Components:ContentSlider>
+                        <TextBlock Text="{Binding Max, Converter={StaticResource Bytesize}}"
+                                   Style="{StaticResource IMYA_TEXT}" 
+                                   />
                     </Grid>
                     <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
                         <Grid.ColumnDefinitions>

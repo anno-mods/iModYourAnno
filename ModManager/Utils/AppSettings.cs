@@ -169,7 +169,7 @@ namespace Imya.UI.Utils
                 Properties.Settings.Default.DownloadRateLimit = value;
                 Properties.Settings.Default.Save();
                 RateLimitChanged(UseRateLimiting ? value : 0);
-                OnPropertyChanged(nameof(UseRateLimiting));
+                OnPropertyChanged(nameof(DownloadRateLimit));
             }
         }
 
