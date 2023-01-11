@@ -22,7 +22,6 @@
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <converters:SpeedConverter x:Key="DownloadSpeed" />
-            <converters:ByteSizeConverter x:Key="Bytesize" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue" TrueValue="Visible" FalseValue="Collapsed" />
         </Grid.Resources>
 
@@ -205,14 +204,15 @@
                             
                         </controls:FancyToggle>
                     </Grid>
-                    <Grid Margin="5">
+                    <Grid Margin="5" Visibility="{Binding AppSettings.UseRateLimiting, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VisibleOnTrue}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Min, Converter={StaticResource Bytesize}}"
-                                   Style="{StaticResource IMYA_TEXT}" />
+                        <TextBlock Text="{Binding Min, Converter={StaticResource DownloadSpeed}}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Margin="4,2" />
                         <Components:ContentSlider Grid.Column="1"
                                                   Style="{StaticResource IMYA_SLIDER}"
                                                   Value="{Binding AppSettings.DownloadRateLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -222,11 +222,14 @@
                                                   Maximum="{Binding Max}"
                                                   TickFrequency="{Binding Stepping}"
                                                   IsSnapToTickEnabled="True"
+                                                  Margin="5,0"
                                                   Background="{DynamicResource InteractiveComponentColorBrush_Light}">
                             
                         </Components:ContentSlider>
-                        <TextBlock Text="{Binding Max, Converter={StaticResource Bytesize}}"
+                        <TextBlock Text="{Binding Max, Converter={StaticResource DownloadSpeed}}"
                                    Style="{StaticResource IMYA_TEXT}" 
+                                   Grid.Column="2"
+                                   Margin="4,2"
                                    />
                     </Grid>
                     <Grid Visibility="{Binding AppSettings.DevMode, Converter={StaticResource VisibleOnTrue}, UpdateSourceTrigger=PropertyChanged}">
