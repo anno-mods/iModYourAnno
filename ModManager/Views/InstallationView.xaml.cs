@@ -33,7 +33,7 @@ namespace Imya.UI.Views
         public TextManager TextManager { get; } = TextManager.Instance;
         public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
 
-        public Properties.Settings Settings { get; } = Properties.Settings.Default;
+        public AppSettings Settings { get; } = AppSettings.Instance;
 
         public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
 

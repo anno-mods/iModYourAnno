@@ -47,7 +47,7 @@
                                           DownloadService="{Binding InstallationManager.DownloadService, UpdateSourceTrigger=PropertyChanged}"/>
         </Border> -->
         <TextBlock Text="{Binding CurrentDownloadSpeedPerSecond, Converter={StaticResource DownloadSpeed}}" 
-                   />
+                   Visibility="{Binding Settings.DevMode, Converter={StaticResource VisibleOnTrue}}"/>
 
         <!-- INSTALLS -->
         <ScrollViewer
