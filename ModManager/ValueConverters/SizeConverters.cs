@@ -14,9 +14,11 @@ namespace Imya.UI.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not double dvalue)
-                return String.Empty;
-            return Math.Round(dvalue / (1024 * 1024), 2) + " MB/s";
+            if (value is double dvalue)
+                return Math.Round(dvalue / (1024 * 1024), 2) + " MB/s";
+            if (value is long lvalue)
+                return Math.Round((float)lvalue / (1024 * 1024), 2) + " MB/s";
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -30,9 +32,11 @@ namespace Imya.UI.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is not long lvalue)
-                return String.Empty;
-            return Math.Round(lvalue / (float)(1024 * 1024), 2) + " MB";
+            if (value is double dvalue)
+                return Math.Round(dvalue / (1024 * 1024), 2) + " MB";
+            if (value is long lvalue)
+                return Math.Round((float)lvalue / (1024 * 1024), 2) + " MB";
+            return String.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

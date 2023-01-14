@@ -1664,6 +1664,58 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_INST_DL_SECTION": {
+    "Chinese": null,
+    "English": "Installation and Download",
+    "French": null,
+    "German": "Installationen und Downloads",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_DL_RATE_UNLIMITED": {
+    "Chinese": null,
+    "English": "Unlimited",
+    "French": null,
+    "German": "Unbegrenzt",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_DL_RATE_LIMITED": {
+    "Chinese": null,
+    "English": "Limited",
+    "French": null,
+    "German": "Gedrosselt",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_DL_RATE": {
+    "Chinese": null,
+    "English": "Download Speed",
+    "French": null,
+    "German": "Download-Geschwindigkeit",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
