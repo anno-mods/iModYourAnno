@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.ComponentModel;
+using System.IO.Compression;
 using Imya.GithubIntegration;
 using Imya.GithubIntegration.Download;
 using Imya.Models;
@@ -9,7 +10,8 @@ using Octokit;
 
 namespace Imya.Models.Installation
 {
-    public class GithubInstallation : Installation, IDownloadableUnpackableInstallation
+    public class GithubInstallation : Installation, IDownloadableUnpackableInstallation,
+        IPausable
     {
         public GithubRepoInfo RepositoryToInstall { get; init; }
 
@@ -19,8 +21,20 @@ namespace Imya.Models.Installation
         public string UnpackTargetPath { get; init; }
 
         public bool UseModloaderInstallFlow { get; set; }
-
         public long? DownloadSize { get; init; }
+
+        public bool CanBePaused {
+            get => _canBePaused;
+            set => SetProperty(ref _canBePaused, value);
+        }
+        private bool _canBePaused;
+        public bool IsPaused {
+            get => _isPaused;
+            set => SetProperty(ref _isPaused, value);
+        }
+        private bool _isPaused; 
+
+
 
         public GithubInstallation() 
         {

@@ -21,7 +21,7 @@ namespace Imya.Utils
 
         //we want a special queue that we can manipulate later on. 
         public IQueue<IDownloadableUnpackableInstallation> PendingDownloads { get; private set; }
-        public IDownloadable? CurrentDownload { get; private set; }
+        public IDownloadableInstallation? CurrentDownload { get; private set; }
 
         public ObservableCollection<IInstallation> ActiveInstallations { get; private set; }
         public List<String> CurrentGithubInstallsIDs { get; private set; }
@@ -110,11 +110,7 @@ namespace Imya.Utils
             ActiveInstallations = new();
             CurrentGithubInstallsIDs = new();
 
-            DownloadConfig = new DownloadConfiguration()
-            {
-                //rate limited to 1MB/s
-                MaximumBytesPerSecond = 1024 * 1024
-            };
+            DownloadConfig = new DownloadConfiguration();
 
             //TODO add options
             DownloadService = new(DownloadConfig);
@@ -153,6 +149,22 @@ namespace Imya.Utils
             return CurrentGithubInstallsIDs.Any(x => x == id);
         }
 
+        public void Pause()
+        {
+            if (CurrentDownload is null)
+                return;
+            _downloadService.Pause();
+            CurrentDownload.IsPaused = true;
+        }
+
+        public void Resume()
+        {
+            if (CurrentDownload is null)
+                return;
+            _downloadService.Resume();
+            CurrentDownload.IsPaused = false;
+        }
+
         private async Task ExecuteZipInstall(IUnpackableInstallation zipInstallation)
         {
             ActiveInstallations.Add(zipInstallation);
@@ -178,7 +190,9 @@ namespace Imya.Utils
             RunningInstallationsCount++;
 
             ActiveInstallations.Add(installation);
+            installation.CanBePaused = true;
             await DownloadAsync(installation);
+            installation.CanBePaused = false;
             _downloadSem.Release();
 
             Console.WriteLine("Starting Unpack");
