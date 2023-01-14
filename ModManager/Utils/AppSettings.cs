@@ -161,6 +161,33 @@ namespace Imya.UI.Utils
         }
         private ThemeSetting _theme;
 
+        public long DownloadRateLimit
+        {
+            get => Properties.Settings.Default.DownloadRateLimit;
+            set
+            {
+                Properties.Settings.Default.DownloadRateLimit = value;
+                Properties.Settings.Default.Save();
+                RateLimitChanged(UseRateLimiting ? value : 0);
+                OnPropertyChanged(nameof(DownloadRateLimit));
+            }
+        }
+
+        public bool UseRateLimiting
+        {
+            get => Properties.Settings.Default.UseRatelimit;
+            set 
+            {
+                Properties.Settings.Default.UseRatelimit = value; 
+                Properties.Settings.Default.Save();
+                RateLimitChanged(value ? DownloadRateLimit : 0);
+                OnPropertyChanged(nameof(UseRateLimiting));
+            }
+        }
+
+        public delegate void RateLimitChangedEventHandler(long new_rate_limit);
+        public event RateLimitChangedEventHandler RateLimitChanged = delegate { };
+
         public AppSettings()
         {
             Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Styles/Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
@@ -169,6 +196,8 @@ namespace Imya.UI.Utils
 
             Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
             Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));
+
+            RateLimitChanged += x => InstallationManager.Instance.DownloadConfig.MaximumBytesPerSecond = x;
 
             Instance ??= this;
         }

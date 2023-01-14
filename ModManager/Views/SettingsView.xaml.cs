@@ -23,6 +23,10 @@ namespace Imya.UI.Views
 
         public AppSettings AppSettings { get; set; } = AppSettings.Instance;
 
+        public long Max { get; } = 100 * 1024 * 1024;
+        public long Min { get; } = 256 * 1024;
+        public long Stepping { get; } = 256 * 1024;
+
         #region Notifiable Properties
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new(propertyName));
