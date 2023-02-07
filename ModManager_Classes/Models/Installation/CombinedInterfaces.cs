@@ -9,7 +9,7 @@ namespace Imya.Models.Installation
 
     public interface IDownloadableUnpackable : IDownloadable, IUnpackable { }
 
-    public interface IDownloadableInstallation : IDownloadable, IInstallation { }
+    public interface IDownloadableInstallation : IDownloadable, IInstallation, IPausable { }
     public interface IUnpackableInstallation : IUnpackable, IInstallation { }
 
     public interface IDownloadableUnpackableInstallation : IDownloadableInstallation, IUnpackableInstallation { }

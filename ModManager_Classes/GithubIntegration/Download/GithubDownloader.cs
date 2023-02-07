@@ -54,8 +54,7 @@ namespace Imya.GithubIntegration.Download
                 var downloadOpt = new DownloadConfiguration()
                 {
                     ChunkCount = 4,
-                    ParallelDownload = true,
-                    TempDirectory = Options.DownloadDirectory
+                    ParallelDownload = true
                 };
 
                 IDownload download = DownloadBuilder.New()

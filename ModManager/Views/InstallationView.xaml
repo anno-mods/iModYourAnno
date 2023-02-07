@@ -146,6 +146,26 @@
 
                                             </materialDesign:PackIcon>
                                         </Button>
+                                        <Button Style="{StaticResource IMYA_BUTTON}"
+                                                Grid.Column="3"
+                                                Grid.Row="1"
+                                                Margin="5,0"
+                                                MinHeight="38"
+                                                MinWidth="38"
+                                                HorizontalContentAlignment="Center"
+                                                Click="PauseButtonClicked"
+                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}">
+                                            <Grid>
+                                                <materialDesign:PackIcon Kind="Pause"
+                                                                         Style="{StaticResource IMYA_ICON}"
+                                                                         Visibility="{Binding IsPaused, Converter={StaticResource VisibleOnFalse}}">
+                                                </materialDesign:PackIcon>
+                                                <materialDesign:PackIcon Kind="PlayArrow"
+                                                                         Style="{StaticResource IMYA_ICON}"
+                                                                         Visibility="{Binding IsPaused, Converter={StaticResource VisibleOnTrue}}">
+                                                </materialDesign:PackIcon>
+                                            </Grid>
+                                        </Button>
                                     </StackPanel>
 
                                     

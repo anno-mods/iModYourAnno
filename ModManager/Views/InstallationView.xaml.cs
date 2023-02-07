@@ -105,6 +105,19 @@ namespace Imya.UI.Views
             OnPropertyChanged(propertyName);
         }
         #endregion
+
+        private void PauseButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            var pausable = but?.DataContext as IPausable;
+            if (pausable is null)
+                return;
+
+            if (pausable.IsPaused)
+                InstallationManager.Resume();
+            else
+                InstallationManager.Pause();            
+        }
     }
 
     /// <summary>

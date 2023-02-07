@@ -39,6 +39,8 @@ namespace Imya.UI
             _hooks = new(ModCollection.Global);
             Task.Run(() => ModCollection.Global.LoadModsAsync());
 
+            if(AppSettings.Instance.UseRateLimiting)
+                InstallationManager.Instance.DownloadConfig.MaximumBytesPerSecond = AppSettings.Instance.DownloadRateLimit;
         }
     }
 }
