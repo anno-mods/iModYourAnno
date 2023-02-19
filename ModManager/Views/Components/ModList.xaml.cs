@@ -60,15 +60,17 @@ namespace Imya.UI.Components
 
         public async void ActivateSelection()
         {
-            foreach (Mod mod in ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray())
-                await mod.ChangeActivationAsync(true);
+            var selected = ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray();
+            await Mods.WrappedCollection.ChangeActivationAsync(selected, true);
+
             OnSelectionChanged(); 
         }
 
         public async void DeactivateSelection()
         {
-            foreach (Mod mod in ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray())
-                await mod.ChangeActivationAsync(false);
+            var selected = ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray();
+            await Mods.WrappedCollection.ChangeActivationAsync(selected, false);
+
             OnSelectionChanged();
         }
 

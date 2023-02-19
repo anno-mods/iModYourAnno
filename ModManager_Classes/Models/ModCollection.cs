@@ -101,8 +101,6 @@ namespace Imya.Models
 
                 _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                     .Where(x => !Path.GetFileName(x).StartsWith(".")));
-                foreach (var mod in _mods)
-                    mod.PropertyChanged += Mod_PropertyChanged;
             }
             else
             {
@@ -191,13 +189,6 @@ namespace Imya.Models
             await LoadModsAsync();
         }
 
-        private void Mod_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Mod.IsActive))
-            {
-                OnActivationChanged(sender as Mod);
-            }
-        }
 
         private void OnActivationChanged(Mod? sender)
         {
@@ -273,7 +264,7 @@ namespace Imya.Models
             {
                 var sameModIDs = WhereByModID(sourceMod.Modinfo.ModID).Where(x => x != targetMod);
                 foreach (var mod in sameModIDs)
-                    await mod.MakeObsoleteAsync(ModsPath);
+                    await MakeObsoleteAsync(mod, ModsPath);
                 // mark mod as updated, since there was the same modid already there
                 if (sameModIDs.Any())
                     status = ModStatus.Updated;
@@ -284,19 +275,17 @@ namespace Imya.Models
             {
                 var deprecateIDs = sourceMod.Modinfo.DeprecateIds.SelectMany(x => WhereByModID(x));
                 foreach (var mod in deprecateIDs)
-                    await mod.MakeObsoleteAsync(ModsPath);
+                    await MakeObsoleteAsync(mod, ModsPath);
             }
 
             // update mod list, only remove in case of same folder
             if (targetMod is not null)
             {
                 _mods.Remove(targetMod);
-                targetMod.PropertyChanged -= Mod_PropertyChanged;
             }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath }, false)).First();
             reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
-            reparsed.PropertyChanged += Mod_PropertyChanged;
         }
 
         private (Mod?, string) SelectTargetMod(Mod sourceMod)
@@ -320,11 +309,51 @@ namespace Imya.Models
             return (targetMod, targetModPath);
         }
 
+        public async Task ChangeActivationAsync(IEnumerable<Mod> mods, bool activation_status)
+        {
+            if (mods.Any(x => !_mods.Contains(x)))
+            {
+                throw new InvalidOperationException("Collection cannot change mods that are not in it.");
+            }
+            var tasks = mods.Select(x => Task.Run(async () => await ChangeActivationAsync(x, activation_status))).ToList();
+            await Task.WhenAll(tasks);
+
+            OnActivationChanged(null);
+        }
+
+        public async Task ChangeActivationAsync(Mod mod, bool active)
+        {
+            if (mod.IsActive == active || mod.IsRemoved)
+                return;
+            
+            var verb = active ? "activate" : "deactivate";
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    mod.AdaptToActiveStatus(active);
+                    Console.WriteLine($"{verb} {mod.FolderName}. Folder renamed to {mod.FullFolderName}");
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                    if (!mod.IsRemoved)
+                        mod.Attributes.AddAttribute(ModAccessIssueAttributeFactory.Get());
+                }
+            });
+        }
+
         /// <summary>
         /// Permanently delete all mods from collection.
         /// </summary>
         public async Task DeleteAsync(IEnumerable<Mod> mods)
         {
+            if (mods.Any(x => !_mods.Contains(x)))
+            {
+                throw new InvalidOperationException("Collection cannot change mods that are not in it.");
+            }
+
             var deleted = mods.ToList();
 
             foreach (var mod in mods)
@@ -336,6 +365,7 @@ namespace Imya.Models
         /// <summary>
         /// Permanently delete mod from collection.
         /// </summary>
+        /// 
         private async Task DeleteAsync(Mod mod)
         {
             await Task.Run(() =>
@@ -346,13 +376,11 @@ namespace Imya.Models
 
                     // remove from the mod lists to prevent access.
                     _mods.Remove(mod);
-                    mod.PropertyChanged -= Mod_PropertyChanged;
                 }
                 catch (DirectoryNotFoundException)
                 {
                     // remove from the mod lists to prevent access.
                     _mods.Remove(mod);
-                    mod.PropertyChanged -= Mod_PropertyChanged;
                 }
                 catch (Exception e)
                 {
@@ -361,6 +389,15 @@ namespace Imya.Models
                 }
             });
         }
+
+
+        public async Task MakeObsoleteAsync(Mod mod, string path)
+        {
+            await ChangeActivationAsync(mod, false);
+            mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+            Console.WriteLine($"{ModStatus.Obsolete}: {mod.FolderName}");
+        }
+
         #endregion
 
         /// <summary>
@@ -390,7 +427,7 @@ namespace Imya.Models
             {
                 bool active = activationSet.Contains(mod.FolderName);
                 if (active != mod.IsActive)
-                    await mod.ChangeActivationAsync(active);
+                    await ChangeActivationAsync(mod, active);
             }
 
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
