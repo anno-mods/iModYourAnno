@@ -29,7 +29,7 @@ namespace Imya.UnitTests
             DirectoryEx.EnsureDeleted(folder);
 
             // deactivate deleted mod
-            await mods.Mods[0].ChangeActivationAsync(false);
+            await mods.ChangeActivationAsync(mods.Mods[0], false);
 
             // mod should be still in the list, but marked as removed
             Assert.Single(mods);
@@ -100,7 +100,7 @@ namespace Imya.UnitTests
             // check
             Assert.Single(mods);
             DirectoryEx.EnsureDeleted(folderA);
-            await mods.Mods[0].ChangeActivationAsync(false);
+            await mods.ChangeActivationAsync(mods.Mods[0], false);
             Assert.Single(mods);
             Assert.True(mods.Mods[0].IsRemoved);
 
@@ -131,7 +131,7 @@ namespace Imya.UnitTests
             // check
             Assert.Single(mods);
             DirectoryEx.EnsureDeleted(folderA);
-            await mods.Mods[0].ChangeActivationAsync(false);
+            await mods.ChangeActivationAsync(mods.Mods[0], false);
             Assert.Single(mods);
             Assert.True(mods.Mods[0].IsRemoved);
 
