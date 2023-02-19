@@ -27,7 +27,7 @@ namespace Imya.Models
         public bool IsActive
         {
             get => _isActive;
-            private set => SetProperty(ref _isActive, value);
+            set => SetProperty(ref _isActive, value);
         }
         private bool _isActive;
 
@@ -186,44 +186,30 @@ namespace Imya.Models
         /// Change activation by renaming the mod folder.
         /// Note: target folder will be overwritten if both active and inactive states are available.
         /// </summary>
-        public async Task ChangeActivationAsync(bool active)
+        internal void AdaptToActiveStatus(bool active)
         {
-            if (IsActive == active || IsRemoved)
-                return;
-
-            await Task.Run(() =>
+            string sourcePath = Path.Combine(BasePath, FullFolderName);
+            string targetPath = Path.Combine(BasePath, (active ? "" : "-") + FolderName);
+            
+            try
             {
-                string sourcePath = Path.Combine(BasePath, FullFolderName);
-                string targetPath = Path.Combine(BasePath, (active ? "" : "-") + FolderName);
-                var verb = active ? "activate" : "deactivate";
-                try
-                {
-                    DirectoryEx.CleanMove(sourcePath, targetPath);
-                    IsActive = active;
-                    Console.WriteLine($"{verb} {FolderName}. Folder renamed to {FullFolderName}");
-                }
-                catch (DirectoryNotFoundException)
-                {
-                    IsRemoved = true;
-                    Console.WriteLine($"Mod not found: {FolderName}");
-                }
-                catch (Exception e)
-                {
-                    Attributes.AddAttribute(ModAccessIssueAttributeFactory.Get());
-                    Console.WriteLine($"Failed to {verb} mod: {FolderName}. Cause: {e.Message}");
-                }
-            });
+                DirectoryEx.CleanMove(sourcePath, targetPath);
+                IsActive = active;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                IsRemoved = true;
+                throw new InvalidOperationException($"Failed to access mod: {FolderName}. Cause: The mod has been removed");
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Failed to access mod: {FolderName}. Cause: {e.Message}");
+            }
         }
 
         /// <summary>
         /// Deactivate and give it a special flag as deletion candidate.
         /// </summary>
-        public async Task MakeObsoleteAsync(string path)
-        {
-            await ChangeActivationAsync(false);
-            Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
-            Console.WriteLine($"{ModStatus.Obsolete}: {FolderName}");
-        }
         #endregion
 
         #region readonly actions
