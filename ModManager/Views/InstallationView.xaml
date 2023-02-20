@@ -46,9 +46,7 @@
                                           CurrentValue="{Binding CurrentDownloadSpeedPerSecond, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DownloadSpeed}}"
                                           DownloadService="{Binding InstallationManager.DownloadService, UpdateSourceTrigger=PropertyChanged}"/>
         </Border> -->
-        <TextBlock Text="{Binding CurrentDownloadSpeedPerSecond, Converter={StaticResource DownloadSpeed}}" 
-                   Visibility="{Binding Settings.DevMode, Converter={StaticResource VisibleOnTrue}}"/>
-
+        
         <!-- INSTALLS -->
         <ScrollViewer
             Grid.Row="2"
@@ -117,7 +115,7 @@
                                           Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="90"/>
                                         </Grid.ColumnDefinitions>
                                         <ProgressBar Name="progress"
                                                      Height="15"
@@ -130,6 +128,7 @@
                                             <TextBlock Margin="10,0"
                                                        VerticalAlignment="Center"
                                                        FontWeight="Bold"
+                                                       TextAlignment="Right"
                                                        Style="{StaticResource IMYA_TEXT}"
                                                        Text="{Binding CurrentDownloadSpeedPerSecond, Converter={StaticResource DownloadSpeed}}"
                                                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:InstallationView}}}" />
