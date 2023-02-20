@@ -202,5 +202,17 @@ namespace Imya.UI.Properties {
                 this["UseRatelimit"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        public string Sorting {
+            get {
+                return ((string)(this["Sorting"]));
+            }
+            set {
+                this["Sorting"] = value;
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Imya.Models;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
+using Imya.UI.Models;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -45,6 +47,20 @@ namespace Imya.UI.Utils
         }
     }
 
+    public struct SortSetting
+    {
+        public IComparer<Mod> Comparer { get; init; }
+        public IText SortingName { get; init; }
+        public String ID { get; init; }
+
+        public SortSetting(IComparer<Mod> comparer, IText sortingname, String id)
+        {
+            Comparer = comparer;
+            SortingName = sortingname;
+            ID = id;
+        }
+    }
+
     public class AppSettings : PropertyChangedNotifier
     {
         public static AppSettings Instance { get; set; }
@@ -54,6 +70,7 @@ namespace Imya.UI.Utils
 
         public List<ThemeSetting> Themes { get; } = new List<ThemeSetting>();
         public List<LanguageSetting> Languages { get; } = new List<LanguageSetting>();
+        public List<SortSetting> Sortings { get; } = new List<SortSetting>();
 
         //painfully horrible tbh, this lookup should get better.
         private ResourceDictionary ThemeDictionary;
@@ -142,6 +159,8 @@ namespace Imya.UI.Utils
             get { return _language; }
             set
             {
+                if (!Languages.Contains(value))
+                    throw new InvalidOperationException("Language not part of the languages list");
                 ChangeLanguage(value);
                 _language = value;
                 OnPropertyChanged(nameof(Language));
@@ -154,12 +173,29 @@ namespace Imya.UI.Utils
             get { return _theme; }
             set
             {
+                if (!Themes.Contains(value))
+                    throw new InvalidOperationException("Theme not part of the themes list");
                 ChangeColorTheme(value);
                 _theme = value;
                 OnPropertyChanged(nameof(Theme));
             }
         }
         private ThemeSetting _theme;
+
+        public SortSetting Sorting
+        {
+            get => _sorting; 
+            set
+            {
+                if (!Sortings.Contains(value))
+                    throw new InvalidOperationException("Sorting not part of the sortings list");
+                Properties.Settings.Default.Sorting = value.ID;
+                Properties.Settings.Default.Save();
+                _sorting = value;
+                OnPropertyChanged(nameof(Sorting));
+            }
+        }
+        private SortSetting _sorting;
 
         public long DownloadRateLimit
         {
@@ -188,6 +224,7 @@ namespace Imya.UI.Utils
         public delegate void RateLimitChangedEventHandler(long new_rate_limit);
         public event RateLimitChangedEventHandler RateLimitChanged = delegate { };
 
+
         public AppSettings()
         {
             Themes.Add(new ThemeSetting(TextManager["THEME_GREEN"], "Styles/Themes/DarkGreen.xaml", "DarkGreen", Colors.DarkOliveGreen));
@@ -196,6 +233,10 @@ namespace Imya.UI.Utils
 
             Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
             Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));
+
+            Sortings.Add(new SortSetting(CompareByActiveCategoryName.Default, TextManager["SORTING_DEFAULT"], "Default"));
+            Sortings.Add(new SortSetting(CompareByCategoryName.Default, TextManager["SORTING_ACTIVE_AGNOSTIC"], "ActiveAgnostic"));
+            Sortings.Add(new SortSetting(CompareByFolder.Default, TextManager["SORTING_BYFOLDER"], "Folder"));
 
             RateLimitChanged += x => InstallationManager.Instance.DownloadConfig.MaximumBytesPerSecond = x;
 
@@ -221,6 +262,11 @@ namespace Imya.UI.Utils
             }
         }
 
+        private void LoadSortSetting()
+        {
+            Sorting = Sortings.FirstOrDefault(x => x.ID.ToString().Equals(Properties.Settings.Default.Sorting), Sortings[0]);
+        }
+
         private void LoadLanguageSetting()
         {
             Language = Languages.FirstOrDefault(x => x.Language.ToString().Equals(Properties.Settings.Default.Language), Languages[0]);
@@ -239,6 +285,7 @@ namespace Imya.UI.Utils
             ThemeDictionary = Application.Current.Resources.MergedDictionaries[0];
             LoadLanguageSetting();
             LoadThemeSetting();
+            LoadSortSetting();
         }
     }
 }

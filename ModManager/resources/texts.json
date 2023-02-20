@@ -1716,6 +1716,58 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_SORTING": {
+    "Chinese": null,
+    "English": "Mod Sort Order",
+    "French": null,
+    "German": "Sortierung",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SORTING_DEFAULT": {
+    "Chinese": null,
+    "English": "Active > Category > Name",
+    "French": null,
+    "German": "Aktiviert > Kategorie > Name",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SORTING_ACTIVE_AGNOSTIC": {
+    "Chinese": null,
+    "English": "Category > Name",
+    "French": null,
+    "German": " Kategorie > Name",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SORTING_BYFOLDER": {
+    "Chinese": null,
+    "English": "By Folder Name",
+    "French": null,
+    "German": "Nach Ordnername",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",

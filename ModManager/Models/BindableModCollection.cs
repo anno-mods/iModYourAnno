@@ -16,12 +16,9 @@ namespace Imya.UI.Models
         public int ActiveSizeInMBs => Model.ActiveSizeInMBs;
         public int InstalledSizeInMBs => Model.InstalledSizeInMBs;
 
-        public ModCollection WrappedCollection; 
-
         public BindableModCollection(ModCollection collection, DispatcherObject context) : base(collection, context, (x, c) => new BindableMod(x, c))
         {
             Order = CompareByActiveCategoryName.Default;
-            WrappedCollection = collection;
         }
     }
 }

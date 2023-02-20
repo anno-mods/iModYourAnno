@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.UI.Models;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,8 @@ namespace Imya.UI.Components
 
         public TextManager TextManager { get; } = TextManager.Instance;
 
+        public AppSettings Settings { get; } = AppSettings.Instance;
+
         public ModList()
         {
             Mods = new BindableModCollection(ModCollection.Global ?? ModCollection.Empty, this);
@@ -35,6 +38,16 @@ namespace Imya.UI.Components
             InitializeComponent();
             DataContext = this;
             OnSelectionChanged();
+
+            Settings.PropertyChanged += Settings_PropertyChanged;
+        }
+
+        private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Settings.Sorting))
+            {
+                Mods.Order = Settings.Sorting.Comparer;
+            }
         }
 
         public bool ShowAttributes { 
@@ -61,7 +74,7 @@ namespace Imya.UI.Components
         public async void ActivateSelection()
         {
             var selected = ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray();
-            await Mods.WrappedCollection.ChangeActivationAsync(selected, true);
+            await Mods.Model.ChangeActivationAsync(selected, true);
 
             OnSelectionChanged(); 
         }
@@ -69,7 +82,7 @@ namespace Imya.UI.Components
         public async void DeactivateSelection()
         {
             var selected = ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray();
-            await Mods.WrappedCollection.ChangeActivationAsync(selected, false);
+            await Mods.Model.ChangeActivationAsync(selected, false);
 
             OnSelectionChanged();
         }
