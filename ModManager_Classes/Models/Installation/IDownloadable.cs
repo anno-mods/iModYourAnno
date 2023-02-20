@@ -7,6 +7,8 @@ namespace Imya.Models.Installation
         String DownloadTargetFilename { get; }
         String DownloadUrl { get; }
         long? DownloadSize { get; }
+
+        bool IsBeingDownloaded { get; set; }
     }
  
 }

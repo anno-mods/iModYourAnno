@@ -84,7 +84,7 @@ namespace Imya.Models.Installation
                 AdditionalText = new SimpleText(additional),
                 ID = id,
                 Status = InstallationStatus.NotStarted,
-                ImageUrl= url,
+                ImageUrl= url
             };    
             return _installation;
         }
