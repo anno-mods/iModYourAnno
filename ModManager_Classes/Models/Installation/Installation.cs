@@ -69,6 +69,10 @@ namespace Imya.Models.Installation
 
         public string? ImageUrl { get; init; }
 
+        public CancellationToken CancellationToken { get => CancellationTokenSource.Token; }
+
+        public CancellationTokenSource CancellationTokenSource { get; init; }
+
         public void Report(float value) => Progress = _progressRange.Item1 + value * (_progressRange.Item2 - _progressRange.Item1);
 
         public void SetProgressRange(float Min, float Max)
