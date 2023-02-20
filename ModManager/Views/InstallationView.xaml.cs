@@ -53,12 +53,6 @@ namespace Imya.UI.Views
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
 
 
-        public double CurrentDownloadSpeedPerSecond
-        {
-            get => _currentDownloadSpeedPerSecond;
-            set => SetProperty(ref _currentDownloadSpeedPerSecond, value);
-        }
-        private double _currentDownloadSpeedPerSecond;
 
         #endregion
 
@@ -74,18 +68,7 @@ namespace Imya.UI.Views
             if (GameSetup.IsModloaderInstalled)
             {
                 InstallStatus = ModLoaderStatus.Installed;
-            }
-
-            InstallationManager.DownloadService.DownloadProgressChanged += OnDownloadProgressChanged;
-            //InstallationManager.DownloadService.DownloadProgressChanged += DownloadInfoDisplay.OnDownloadProgressChanged;
-        }
-
-        private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
-        {
-            if (sender is not DownloadService dl_service || dl_service.IsPaused)
-                return;
-
-            CurrentDownloadSpeedPerSecond = e.BytesPerSecondSpeed;
+            }            
         }
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
@@ -121,8 +104,27 @@ namespace Imya.UI.Views
             else
             {
                 InstallationManager.Pause();
-                CurrentDownloadSpeedPerSecond = 0;
             }           
+        }
+
+        private async void CancelButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            var installation = but?.DataContext as IInstallation;
+            if (installation is null)
+                return;
+
+            await InstallationManager.CancelAsync(installation);
+        }
+
+        private void RemoveButtonClicked(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            var installation = but?.DataContext as IDownloadableUnpackableInstallation;
+            if (installation is null)
+                return;
+
+            InstallationManager.RemovePending(installation);
         }
     }
 
