@@ -12,6 +12,8 @@ namespace Imya.Models.Collections
         T Dequeue();
         void Enqueue(T item);
 
+        void Remove(T item);
+
         int Count();        
     }
 }
