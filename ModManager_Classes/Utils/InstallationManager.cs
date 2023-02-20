@@ -191,8 +191,10 @@ namespace Imya.Utils
 
             ActiveInstallations.Add(installation);
             installation.CanBePaused = true;
+            installation.IsBeingDownloaded = true;
             await DownloadAsync(installation);
             installation.CanBePaused = false;
+            installation.IsBeingDownloaded = false;
             _downloadSem.Release();
 
             Console.WriteLine("Starting Unpack");

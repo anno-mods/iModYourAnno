@@ -82,6 +82,9 @@ namespace Imya.UI.Views
 
         private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
         {
+            if (sender is not DownloadService dl_service || dl_service.IsPaused)
+                return;
+
             CurrentDownloadSpeedPerSecond = e.BytesPerSecondSpeed;
         }
 
@@ -116,7 +119,10 @@ namespace Imya.UI.Views
             if (pausable.IsPaused)
                 InstallationManager.Resume();
             else
-                InstallationManager.Pause();            
+            {
+                InstallationManager.Pause();
+                CurrentDownloadSpeedPerSecond = 0;
+            }           
         }
     }
 

@@ -32,7 +32,15 @@ namespace Imya.Models.Installation
             get => _isPaused;
             set => SetProperty(ref _isPaused, value);
         }
-        private bool _isPaused; 
+        private bool _isPaused;
+
+
+        public bool IsBeingDownloaded {
+            get => _isBeingDownloaded;
+            set => SetProperty(ref _isBeingDownloaded, value);
+        }
+        private bool _isBeingDownloaded = false;
+
 
 
 
