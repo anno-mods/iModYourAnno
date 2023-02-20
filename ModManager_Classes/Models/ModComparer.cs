@@ -53,6 +53,8 @@ namespace Imya.Models
 
     public class CompareByFolder : IComparer<Mod>
     {
+        public readonly static CompareByFolder Default = new();
+
         public int Compare(Mod? x, Mod? y)
         {
             if (y is null && x is null) return 0;

@@ -30,7 +30,7 @@ namespace Imya.UI.Views
         #region Notifiable Properties
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
         protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new(propertyName));
-        
+
         public ModLoaderStatus InstallStatus
         {
             get => _installStatus;
@@ -43,7 +43,7 @@ namespace Imya.UI.Views
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
         #endregion
 
-        
+
 
         public SettingsView()
         {
@@ -52,6 +52,7 @@ namespace Imya.UI.Views
 
             LanguageSelection.SelectedItem = AppSettings.Language;
             ThemeSelection.SelectedItem = AppSettings.Theme;
+            SortingSelection.SelectedItem = AppSettings.Sorting;
 
             DataContext = this;
         }
@@ -68,6 +69,13 @@ namespace Imya.UI.Views
             var box = sender as ComboBox;
             if (box?.SelectedItem is not ThemeSetting themeSetting) return;
             AppSettings.Theme = themeSetting;
+        }
+
+        public void RequestSortChange(object sender, RoutedEventArgs e)
+        {
+            var box = sender as ComboBox;
+            if (box?.SelectedItem is not SortSetting sortSetting) return;
+            AppSettings.Sorting = sortSetting;
         }
 
         //Apply new Mod Directory Name
