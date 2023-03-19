@@ -94,6 +94,13 @@ namespace Imya.Utils
         }
         private int _runningInstallationCount;
 
+        public double CurrentDownloadSpeedPerSecond
+        {
+            get => _currentDownloadSpeedPerSecond;
+            set => SetProperty(ref _currentDownloadSpeedPerSecond, value);
+        }
+        private double _currentDownloadSpeedPerSecond;
+
         #region some_constants
         private float min_progress = 0;
         private float max_dl_progress = 0.8f;
@@ -153,16 +160,43 @@ namespace Imya.Utils
         {
             if (CurrentDownload is null)
                 return;
-            _downloadService.Pause();
+            DownloadService.Pause();
             CurrentDownload.IsPaused = true;
+            BytesPerSecondSpeed = 0; 
         }
 
         public void Resume()
         {
             if (CurrentDownload is null)
                 return;
-            _downloadService.Resume();
+            DownloadService.Resume();
             CurrentDownload.IsPaused = false;
+        }
+
+        public async Task CancelAsync(IInstallation installation)
+        {
+            installation.CancellationTokenSource.Cancel();
+
+            if (installation is IUnpackable unpackable)
+                CleanUpUnpackable(unpackable);
+
+            if (installation is IDownloadable downloadable)
+            {
+                if (downloadable == CurrentDownload)
+                {
+                    DownloadService.CancelAsync();
+                    await DownloadService.Clear();
+                    RestartDownloadService();
+                    CurrentDownload = null;
+                }
+                CleanUpDownloadable(downloadable);
+            }
+        }
+
+        public void RemovePending(IDownloadableUnpackableInstallation install)
+        {
+            PendingDownloads.Remove(install);
+            PendingInstallationsCount--;
         }
 
         private async Task ExecuteZipInstall(IUnpackableInstallation zipInstallation)
@@ -213,6 +247,9 @@ namespace Imya.Utils
 
         private async Task UnpackAsync(IUnpackableInstallation zipInstallation)
         {
+            if (zipInstallation.CancellationToken.IsCancellationRequested)
+                return; 
+
             zipInstallation.Status = InstallationStatus.Unpacking;
             await Task.Run(() =>
             {
@@ -221,22 +258,30 @@ namespace Imya.Utils
                     Directory.Delete(zipInstallation.UnpackTargetPath, true);
                 using (FileStream fs = File.OpenRead(zipInstallation.SourceFilepath))
                     fs.ExtractZipFile(zipInstallation.UnpackTargetPath, overwrite: true, progress : zipInstallation);
-            });            
+            }, zipInstallation.CancellationToken);            
         }
 
         private async Task MoveModsAsync(IUnpackableInstallation unpackable)
         {
+            if (unpackable.CancellationToken.IsCancellationRequested)
+                return;
             unpackable.Status = InstallationStatus.MovingFiles;
             var newCollection = await ModCollectionLoader.LoadFrom(unpackable.UnpackTargetPath);
             //async waiting
-            await Task.Run(() => _moveIntoSem.WaitOne());
-            await ModCollection.Global!.MoveIntoAsync(newCollection);
+            await Task.Run(() => _moveIntoSem.WaitOne(), unpackable.CancellationToken);
+            if (!unpackable.CancellationToken.IsCancellationRequested)
+            {
+                await ModCollection.Global!.MoveIntoAsync(newCollection);
+            }
             _moveIntoSem.Release();
             Unpacks.Remove(unpackable);
         }
 
         private async Task DownloadAsync(IDownloadableInstallation downloadable)
         {
+            if (downloadable.CancellationToken.IsCancellationRequested)
+                return; 
+
             CurrentDownload = downloadable;
             //register progress tracking and update status
             downloadable.Status = InstallationStatus.Downloading;
@@ -247,7 +292,7 @@ namespace Imya.Utils
             };
             DownloadService.DownloadProgressChanged += eventHandler;
             //do the download
-            await DownloadService.DownloadFileTaskAsync(downloadable.DownloadUrl, downloadable.DownloadTargetFilename);
+            await DownloadService.DownloadFileTaskAsync(downloadable.DownloadUrl, downloadable.DownloadTargetFilename, downloadable.CancellationToken);
             //unload the download
             DownloadService.DownloadProgressChanged -= eventHandler;
             CurrentDownload = null;
@@ -267,8 +312,20 @@ namespace Imya.Utils
 
         private void OnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
         {
+            if (DownloadService.IsPaused)
+                return; 
             BytesPerSecondSpeed = e.BytesPerSecondSpeed;
             ProgressPercentage = e.ProgressPercentage;
+        }
+
+        private void RestartDownloadService()
+        {
+            if (DownloadService.IsBusy)
+                throw new InvalidOperationException("Don't interrupt me asshole");
+
+            DownloadService.DownloadProgressChanged -= OnDownloadProgressChanged;
+            DownloadService = new(DownloadConfig);
+            DownloadService.DownloadProgressChanged += OnDownloadProgressChanged;
         }
     }
 }

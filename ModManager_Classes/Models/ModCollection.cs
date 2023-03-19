@@ -217,7 +217,7 @@ namespace Imya.Models
         /// Source collection folder will be deleted afterwards.
         /// Existing mods will be overwriten, old names with same mod id deactivated.
         /// </summary>
-        public async Task MoveIntoAsync(ModCollection source, bool allowOldToOverwrite = false)
+        public async Task MoveIntoAsync(ModCollection source, bool allowOldToOverwrite = false, CancellationToken ct = default)
         {
             Directory.CreateDirectory(ModsPath);
 
@@ -226,7 +226,8 @@ namespace Imya.Models
                 foreach (var sourceMod in source.Mods)
                 {
                     await Task.Run( 
-                        async () => await MoveSingleModIntoAsync(sourceMod, source.ModsPath, allowOldToOverwrite)
+                        async () => await MoveSingleModIntoAsync(sourceMod, source.ModsPath, allowOldToOverwrite),
+                        ct
                     );
                 }
             }

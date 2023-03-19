@@ -17,7 +17,12 @@ namespace Imya.Models.Installation
         IText? AdditionalText { get; }
         bool HasAdditionalText { get; }
         IInstallationStatus? Status { get; set; }
+
+        CancellationTokenSource CancellationTokenSource { get; }
+        CancellationToken CancellationToken { get; }
+
         void SetProgressRange(float Min, float Max);
+
     }
 
     public interface IInstallationStatus

@@ -130,7 +130,7 @@
                                                        FontWeight="Bold"
                                                        TextAlignment="Right"
                                                        Style="{StaticResource IMYA_TEXT}"
-                                                       Text="{Binding CurrentDownloadSpeedPerSecond, Converter={StaticResource DownloadSpeed}}"
+                                                       Text="{Binding InstallationManager.BytesPerSecondSpeed, Converter={StaticResource DownloadSpeed}}"
                                                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:InstallationView}}}" />
                                         </Grid>
                                         
@@ -155,7 +155,9 @@
                                                 Margin="5,0"
                                                 MinHeight="38"
                                                 MinWidth="38"
-                                                HorizontalContentAlignment="Center">
+                                                Click="CancelButtonClicked"
+                                                HorizontalContentAlignment="Center"
+                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}">
                                             <materialDesign:PackIcon Kind="Cancel"
                                                                      Style="{StaticResource IMYA_ICON}">
 
@@ -271,7 +273,8 @@
                                                 Style="{StaticResource IMYA_BUTTON}"
                                                 HorizontalContentAlignment="Center"
                                                 Height="38"
-                                                Width="38">
+                                                Width="38"
+                                                Click="RemoveButtonClicked">
                                             <materialDesign:PackIcon Kind="TrashCanOutline"
                                                                      Style="{StaticResource IMYA_ICON}" />
                                         </Button>
