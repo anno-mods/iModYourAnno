@@ -239,7 +239,7 @@ namespace Imya.Utils
             if (ExecutablePath == null)
                 return;
 
-            EnsureModloaderActivation(modloaderActive);
+            //EnsureModloaderActivation(modloaderActive);
 
             _ = Task.Run(async () =>
             {
