@@ -157,7 +157,8 @@
                                                 MinWidth="38"
                                                 Click="CancelButtonClicked"
                                                 HorizontalContentAlignment="Center"
-                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}">
+                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}"
+                                                ToolTip="{Binding TextManager[INSTALLATION_DELETEPENDING].Text}">
                                             <materialDesign:PackIcon Kind="Cancel"
                                                                      Style="{StaticResource IMYA_ICON}">
 
@@ -171,7 +172,8 @@
                                                 MinWidth="38"
                                                 HorizontalContentAlignment="Center"
                                                 Click="PauseButtonClicked"
-                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}">
+                                                IsEnabled="{Binding CanBePaused,UpdateSourceTrigger=PropertyChanged}"
+                                                ToolTip="{Binding TextManager[INSTALLATION_PAUSEPENDING].Text}">
                                             <Grid>
                                                 <materialDesign:PackIcon Kind="Pause"
                                                                          Style="{StaticResource IMYA_ICON}"
@@ -274,7 +276,8 @@
                                                 HorizontalContentAlignment="Center"
                                                 Height="38"
                                                 Width="38"
-                                                Click="RemoveButtonClicked">
+                                                Click="RemoveButtonClicked"
+                                                ToolTip="{Binding TextManager[DIALOG_CANCEL].Text}">
                                             <materialDesign:PackIcon Kind="TrashCanOutline"
                                                                      Style="{StaticResource IMYA_ICON}" />
                                         </Button>
@@ -282,7 +285,8 @@
                                                 Style="{StaticResource IMYA_BUTTON}"
                                                 HorizontalContentAlignment="Center"
                                                 Height="38"
-                                                Width="38">
+                                                Width="38"
+                                                Visibility="Collapsed">
                                             <materialDesign:PackIcon Kind="PriorityHigh"
                                                                      Style="{StaticResource IMYA_ICON}" />
                                         </Button>

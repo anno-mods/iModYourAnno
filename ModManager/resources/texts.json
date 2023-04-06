@@ -1794,6 +1794,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "INSTALLATION_DELETEPENDING": {
+    "Chinese": null,
+    "English": "Remove from queue",
+    "French": null,
+    "German": "Aus der Warteschlange entfernen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "INSTALLATION_PAUSEPENDING": {
+    "Chinese": null,
+    "English": "Pause/Resume",
+    "French": null,
+    "German": "Pausieren/Fortsetzen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
