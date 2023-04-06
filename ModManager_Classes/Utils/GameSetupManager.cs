@@ -1,5 +1,7 @@
 ﻿using Imya.Models;
+using Imya.Models.GameLauncher;
 using Imya.Models.NotifyPropertyChanged;
+using System;
 using System.Diagnostics;
 
 using System.Timers;
@@ -24,7 +26,9 @@ namespace Imya.Utils
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
         private InstallationValidator Validator;
-        private GameScanner Scanner; 
+        private GameScanner Scanner;
+
+        private IGameLauncher _gameLauncher; 
 
         #region EVENTS
         public delegate void GameRootPathChangedEventHandler(String newPath);
@@ -106,6 +110,7 @@ namespace Imya.Utils
             GameClosed += (x, y) => IsGameRunning = false;
 
             Scanner = new GameScanner();
+
         }
 
         #region DIRECTORY_RELATED
@@ -144,7 +149,7 @@ namespace Imya.Utils
             
             GameRootPathChanged(gamePath);
             CreateWatchers();
-            UpdateModloaderInstallStatus();
+            SetupGameLauncher();
         }
 
         public void SetModDirectoryName(String ModDirectoryName)
@@ -159,8 +164,9 @@ namespace Imya.Utils
 
         private void CreateWatchers() => ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
 
+        [Obsolete]
         public void UpdateModloaderInstallStatus() => ModloaderState = Validator.CheckModloaderInstallState();
-
+        [Obsolete]
         public void EnsureModloaderActivation(bool desired)
         {
             UpdateModloaderInstallStatus();
@@ -180,6 +186,7 @@ namespace Imya.Utils
             _ = DirectoryEx.TryDelete(cache);
         }
 
+        [Obsolete]
         private void ActivateModloader()
         {
             if (ModloaderState != ModloaderInstallationState.Deactivated) return;
@@ -196,7 +203,7 @@ namespace Imya.Utils
                 return;
             }
         }
-
+        [Obsolete]
         private void DeactivateModloader()
         {
             if (!IsModloaderInstalled) return;
@@ -214,6 +221,22 @@ namespace Imya.Utils
                 Console.WriteLine("Modloader Deactivation unsuccessful");
                 return;
             }            
+        }
+
+        private bool IsSteamVersion()
+        {
+            var path = Path.Combine(ExecutableDir, "steam_api64.dll");
+            return File.Exists(path);
+        }
+
+        private void SetupGameLauncher()
+        {
+            _gameLauncher?.Dispose();
+            _gameLauncher = IsSteamVersion() ? new SteamGameLauncher() : new StandardGameLauncher();
+
+            //hacky event redirection for now. Make sure the subscribers to these events will reference the game starter instead.
+            _gameLauncher.GameStarted += () => GameStarted.Invoke();
+            _gameLauncher.GameExited += (x, y) => GameClosed.Invoke(x, y);
         }
 
         private FileSystemWatcher? CreateWatcher(string pathToWatch)
@@ -236,58 +259,10 @@ namespace Imya.Utils
         #region GAME_LAUNCH
         public void StartGame(bool modloaderActive = true)
         {
-            if (ExecutablePath == null)
+            if (!IsValidSetup)
                 return;
 
-            //EnsureModloaderActivation(modloaderActive);
-
-            _ = Task.Run(async () =>
-            {
-                using Process process = new Process();
-                process.StartInfo.FileName = ExecutablePath;
-                process.EnableRaisingEvents = true;
-                process.Exited += OnGameLaunchComplete;
-                process.Start();
-
-                Console.WriteLine("Anno 1800 started.");
-
-                GameStarted.Invoke();
-
-                await process.WaitForExitAsync();
-            }
-            );
-        }
-
-        private void OnGameLaunchComplete(object sender, EventArgs e)
-        {
-            Console.WriteLine($"Start Process exited! Starting Game Scan");
-
-            _ = Task.Run (
-                async () =>
-                {
-                    Process? RunningGame = await Scanner.ScanForRunningGameAsync(30);
-
-                    if (RunningGame is null)
-                    {
-                        GameClosed.Invoke(-1, false);
-                        return;
-                    }
-
-                    RunningGame.EnableRaisingEvents = true;
-                    RunningGame.Exited += OnGameExit;
-
-                    await RunningGame.WaitForExitAsync();
-                } 
-            );
-        }
-
-        private void OnGameExit(object sender, EventArgs e)
-        {
-            var process = sender as Process;
-            Console.WriteLine($"Anno 1800 exited with Code {process?.ExitCode}");
-
-            int exitCode = process?.ExitCode ?? -1;
-            GameClosed.Invoke(exitCode);
+            _gameLauncher.StartGame(); 
         }
         #endregion
 
