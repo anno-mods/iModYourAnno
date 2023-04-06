@@ -27,13 +27,19 @@ namespace Imya.Utils
 
         public ImyaSetupManager() 
         {
-            Init();
+            if (Directory.Exists(GameSetup.GameRootPath))
+            {
+                Init();
+            }
             GameSetup.GameRootPathChanged += OnGameRootPathChanged;
         }
 
         private void OnGameRootPathChanged(String GameRootPath)
         {
-            Init();
+            if (Directory.Exists(GameRootPath))
+            {
+                Init();
+            }
         }
 
         public void Init()
