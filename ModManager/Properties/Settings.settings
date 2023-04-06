@@ -15,7 +15,7 @@
       <Value Profile="(Default)">400</Value>
     </Setting>
     <Setting Name="GameRootPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F:\Spiele\Anno 1800</Value>
+      <Value Profile="(Default)">C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Anno 1800</Value>
     </Setting>
     <Setting Name="DownloadDir" Type="System.String" Scope="User">
       <Value Profile="(Default)">imya_tmp</Value>
