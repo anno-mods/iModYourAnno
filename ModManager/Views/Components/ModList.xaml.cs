@@ -23,7 +23,6 @@ namespace Imya.UI.Components
         /// </summary>
         public Mod? CurrentlySelectedMod { get; private set; } = null;
         public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
-        public bool HasSelection => CurrentlySelectedMod is not null;
 
         public BindableModCollection Mods { get; init; }
 
@@ -56,6 +55,8 @@ namespace Imya.UI.Components
         }
         private bool _showAttributes = true;
 
+        
+
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             OnSelectionChanged();
@@ -67,7 +68,6 @@ namespace Imya.UI.Components
 
             CurrentlySelectedMods = selectedItems.Select(x => x.Model).OrderBy(x => x, Mods.Order ?? CompareByActiveCategoryName.Default);
             CurrentlySelectedMod = CurrentlySelectedMods.FirstOrDefault();
-
             ModList_SelectionChanged?.Invoke(CurrentlySelectedMod);
         }
 
@@ -107,16 +107,6 @@ namespace Imya.UI.Components
         {
             string filterText = SearchTextBox.Text;
             Mods.Filter = string.IsNullOrWhiteSpace(filterText) ? null : x => x.HasKeywords(filterText);
-        }
-
-        public bool AnyActiveSelected()
-        {
-            return CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
-        }
-
-        public bool AnyInactiveSelected()
-        {
-            return CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
         }
 
         public event ModListSelectionChangedHandler? ModList_SelectionChanged;

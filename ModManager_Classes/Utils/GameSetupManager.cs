@@ -1,5 +1,7 @@
 ﻿using Imya.Models;
+using Imya.Models.GameLauncher;
 using Imya.Models.NotifyPropertyChanged;
+using System;
 using System.Diagnostics;
 
 using System.Timers;
@@ -17,6 +19,8 @@ namespace Imya.Utils
     /// </summary>
     /// 
 
+    public enum GamePlatform { Steam, Agnostic }
+
     public enum ModloaderInstallationState { Installed, Uninstalled, Deactivated }
 
     public class GameSetupManager : PropertyChangedNotifier
@@ -24,7 +28,7 @@ namespace Imya.Utils
         public static GameSetupManager Instance { get; } = new GameSetupManager();
 
         private InstallationValidator Validator;
-        private GameScanner Scanner; 
+        private GameScanner Scanner;
 
         #region EVENTS
         public delegate void GameRootPathChangedEventHandler(String newPath);
@@ -32,12 +36,6 @@ namespace Imya.Utils
 
         public delegate void ModDirectoryNameChangedEventHandler(String newName);
         public event ModDirectoryNameChangedEventHandler ModDirectoryNameChanged = delegate { };
-
-        public delegate void GameStartEventHandler();
-        public event GameStartEventHandler GameStarted = delegate { };
-
-        public delegate void GameCloseEventHandler(int GameExitCode, bool IsRegularExit = true);
-        public event GameCloseEventHandler GameClosed = delegate { };
 
         #endregion
 
@@ -50,7 +48,7 @@ namespace Imya.Utils
         public bool IsGameRunning
         {
             get => _isGameRunning;
-            private set
+            set
             {
                 _isGameRunning = value;
                 OnPropertyChanged(nameof(IsGameRunning));
@@ -87,6 +85,17 @@ namespace Imya.Utils
         }
         private bool _isValid;
 
+        public GamePlatform GamePlatform
+        {
+            get {
+                if (ExecutableDir is null)
+                    return GamePlatform.Agnostic;
+
+                var path = Path.Combine(ExecutableDir, "steam_api64.dll");
+                return File.Exists(path) ? GamePlatform.Steam : GamePlatform.Agnostic;
+            }
+        }
+
         public bool IsModloaderInstalled => ModloaderState == ModloaderInstallationState.Installed;
 
         public ModloaderInstallationState ModloaderState 
@@ -102,9 +111,6 @@ namespace Imya.Utils
 
         public GameSetupManager()
         {
-            GameStarted += () => IsGameRunning = true;
-            GameClosed += (x, y) => IsGameRunning = false;
-
             Scanner = new GameScanner();
         }
 
@@ -144,7 +150,6 @@ namespace Imya.Utils
             
             GameRootPathChanged(gamePath);
             CreateWatchers();
-            UpdateModloaderInstallStatus();
         }
 
         public void SetModDirectoryName(String ModDirectoryName)
@@ -159,8 +164,9 @@ namespace Imya.Utils
 
         private void CreateWatchers() => ModDirectoryWatcher = CreateWatcher(Path.Combine(GameRootPath));
 
+        [Obsolete]
         public void UpdateModloaderInstallStatus() => ModloaderState = Validator.CheckModloaderInstallState();
-
+        [Obsolete]
         public void EnsureModloaderActivation(bool desired)
         {
             UpdateModloaderInstallStatus();
@@ -180,6 +186,7 @@ namespace Imya.Utils
             _ = DirectoryEx.TryDelete(cache);
         }
 
+        [Obsolete]
         private void ActivateModloader()
         {
             if (ModloaderState != ModloaderInstallationState.Deactivated) return;
@@ -196,7 +203,7 @@ namespace Imya.Utils
                 return;
             }
         }
-
+        [Obsolete]
         private void DeactivateModloader()
         {
             if (!IsModloaderInstalled) return;
@@ -232,64 +239,5 @@ namespace Imya.Utils
                 Filter = "*"
             };
         }
-
-        #region GAME_LAUNCH
-        public void StartGame(bool modloaderActive = true)
-        {
-            if (ExecutablePath == null)
-                return;
-
-            //EnsureModloaderActivation(modloaderActive);
-
-            _ = Task.Run(async () =>
-            {
-                using Process process = new Process();
-                process.StartInfo.FileName = ExecutablePath;
-                process.EnableRaisingEvents = true;
-                process.Exited += OnGameLaunchComplete;
-                process.Start();
-
-                Console.WriteLine("Anno 1800 started.");
-
-                GameStarted.Invoke();
-
-                await process.WaitForExitAsync();
-            }
-            );
-        }
-
-        private void OnGameLaunchComplete(object sender, EventArgs e)
-        {
-            Console.WriteLine($"Start Process exited! Starting Game Scan");
-
-            _ = Task.Run (
-                async () =>
-                {
-                    Process? RunningGame = await Scanner.ScanForRunningGameAsync(30);
-
-                    if (RunningGame is null)
-                    {
-                        GameClosed.Invoke(-1, false);
-                        return;
-                    }
-
-                    RunningGame.EnableRaisingEvents = true;
-                    RunningGame.Exited += OnGameExit;
-
-                    await RunningGame.WaitForExitAsync();
-                } 
-            );
-        }
-
-        private void OnGameExit(object sender, EventArgs e)
-        {
-            var process = sender as Process;
-            Console.WriteLine($"Anno 1800 exited with Code {process?.ExitCode}");
-
-            int exitCode = process?.ExitCode ?? -1;
-            GameClosed.Invoke(exitCode);
-        }
-        #endregion
-
     }
 }

@@ -20,6 +20,8 @@
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <Converters:BooleanMultiAndConverter x:Key="BoolMultiAnd" />
+            <Converters:NegateBoolConverter x:Key="NegateBool" />
             <Converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Collapsed" FalseValue="Visible" />
         </Grid.Resources>
         <!-- Headline Dashboard -->
@@ -45,8 +47,17 @@
                     MinHeight="32"
                     Margin="5,4,4,0"
                     HorizontalContentAlignment="Left"
-                    IsEnabled="{Binding CanStartGame, UpdateSourceTrigger=PropertyChanged}"
                     Click="StartGameClick">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource BoolMultiAnd}"
+                                  UpdateSourceTrigger="PropertyChanged">
+                        <Binding Path="GameSetupManager.IsValidSetup"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                        <Binding Path="GameSetupManager.IsGameRunning"
+                                 Converter="{StaticResource NegateBool}"
+                                 UpdateSourceTrigger="PropertyChanged" />
+                    </MultiBinding>
+                </Button.IsEnabled>
                 <DockPanel Margin="10,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Stretch">
