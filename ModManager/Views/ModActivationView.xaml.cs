@@ -19,35 +19,38 @@ namespace Imya.UI.Views
     {
         public TextManager TextManager { get; } = TextManager.Instance;
         public ModCollection? Mods { get; private set; } = ModCollection.Global;
+        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
 
         #region notifyable properties
-        public bool CanActivate
-        {
-            get => _canActivate;
-            private set => SetProperty(ref _canActivate, value);
-        }
-        private bool _canActivate = false;
 
-        public bool CanDeactivate
+        public bool AnyActiveSelected
         {
-            get => _canDeactivate;
-            private set => SetProperty(ref _canDeactivate, value);
+            get => _anyActiveSelected;
+            set => SetProperty(ref _anyActiveSelected, value);
         }
-        private bool _canDeactivate = false;
+        private bool _anyActiveSelected;
 
-        public bool CanDelete
+        public bool AnyInactiveSelected
         {
-            get => _canDelete;
-            private set => SetProperty(ref _canDelete, value);
+            get => _anyInactiveSelected;
+            set => SetProperty(ref _anyInactiveSelected, value);
         }
-        private bool _canDelete = false;
+        private bool _anyInactiveSelected;
 
-        public bool CanLoadProfile
+        public bool OnlyRemovedSelected
         {
-            get => _canLoadProfile;
-            private set => SetProperty(ref _canLoadProfile, value);
+            get => _onlyRemovedSelected;
+            set => SetProperty(ref _onlyRemovedSelected, value);
         }
-        private bool _canLoadProfile = true;
+        private bool _onlyRemovedSelected;
+
+        public bool HasSelection
+        {
+            get => _hasSelection;
+            set => SetProperty(ref _hasSelection, value);
+        }
+        private bool _hasSelection;
+
         #endregion
 
         public ModActivationView()
@@ -56,21 +59,16 @@ namespace Imya.UI.Views
             DataContext = this;
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
             ModList.ModList_SelectionChanged += OnUpdateSelection;
-
-            GameSetupManager.Instance.GameStarted += () => UpdateButtons();
-            GameSetupManager.Instance.GameClosed += (x, y) => UpdateButtons();
         }
 
         private void OnActivate(object sender, RoutedEventArgs e)
         {
             ModList.ActivateSelection();
-            UpdateButtons();
         }
 
         private void OnDeactivate(object sender, RoutedEventArgs e)
         {
             ModList.DeactivateSelection();
-            UpdateButtons();
         }
 
         private void OnDelete(object sender, RoutedEventArgs e)
@@ -143,28 +141,16 @@ namespace Imya.UI.Views
                     m.PropertyChanged += OnSelectionPropertyChanged;
                 _previousSelection = m;
             }
-            UpdateButtons();
         }
 
         private void OnSelectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            UpdateButtons();
+            HasSelection = ModList.CurrentlySelectedMod is not null;
+            AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
+            AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
+            OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
         }
 
-        private void UpdateButtons()
-        { 
-            CanActivate = ModList.AnyInactiveSelected() && !GameSetupManager.Instance.IsGameRunning;
-            CanDeactivate = ModList.AnyActiveSelected() && !GameSetupManager.Instance.IsGameRunning;
-            CanDelete = ModList.HasSelection && !GameSetupManager.Instance.IsGameRunning;
-
-            if (ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count())
-            {
-                CanActivate = false;
-                CanDeactivate = false;
-            }
-
-            CanLoadProfile = !GameSetupManager.Instance.IsGameRunning;
-        }
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
