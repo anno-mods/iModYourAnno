@@ -207,7 +207,7 @@
                     </TextBlock.Text>
                 </TextBlock>
                 <TextBlock Style="{StaticResource IMYA_TEXT}"
-                           Text="No Installs are currently running..."
+                           Text="{Binding TextManager[INSTALLATION_NOINSTALLS].Text, UpdateSourceTrigger=PropertyChanged}"
                            HorizontalAlignment="Center"
                            Visibility="{Binding InstallationManager.IsInstalling, Converter={StaticResource VisibleOnFalse}}">
                 </TextBlock>

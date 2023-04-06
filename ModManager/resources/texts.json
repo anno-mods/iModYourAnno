@@ -1781,6 +1781,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "INSTALLATION_NOINSTALLS": {
+    "Chinese": null,
+    "English": "No installs are running currently.",
+    "French": null,
+    "German": "Hier wird gerade nichts installiert.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
