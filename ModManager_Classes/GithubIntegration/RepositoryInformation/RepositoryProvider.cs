@@ -18,10 +18,12 @@ namespace Imya.GithubIntegration.RepositoryInformation
             {
                 return await _githubClient.Repository.Release.GetLatest(repository.Owner, repository.Name);
             }
-            catch (ApiException e)
+            catch (RateLimitExceededException e)
             {
-                
+                throw e; 
             }
+            catch (ApiException e)
+            { }
             return null;
         }
 
@@ -31,10 +33,12 @@ namespace Imya.GithubIntegration.RepositoryInformation
             {
                 return await _githubClient.Repository.Release.GetAll(repository.Owner, repository.Name);
             }
-            catch (ApiException e)
+            catch (RateLimitExceededException e)
             {
-
+                throw e;
             }
+            catch (ApiException e)
+            { }
             return null;
         }
 
@@ -44,10 +48,12 @@ namespace Imya.GithubIntegration.RepositoryInformation
             {
                 return await _githubClient.Repository.Get(repoInfo.Owner, repoInfo.Name);
             }
-            catch (ApiException e)
+            catch (RateLimitExceededException e)
             {
-                
+                throw e;
             }
+            catch (ApiException e)
+            { }
             return null;
         }
     }

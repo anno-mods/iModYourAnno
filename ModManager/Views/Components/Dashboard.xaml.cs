@@ -146,6 +146,9 @@ namespace Imya.UI.Components
 
         private void LogoutButtonClick(object sender, RoutedEventArgs e)
         {
+            var dialogresult = PopupCreator.CreateLogoutPopup().ShowDialog();
+            if (dialogresult is false) return;
+
             AuthenticationController.Logout();
         }
     }

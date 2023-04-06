@@ -17,10 +17,15 @@ namespace Imya.GithubIntegration.StaticData
             {
                 return await cache.GetOrCreateAsync(repoInfo, _ => ReadmeFunc(repoInfo));
             }
+            catch (RateLimitExceededException e)
+            {
+                throw e;
+            }
             catch (ApiException e)
             {
-                return null;
+                return null; 
             }
+            
         }
 
         private async Task<String> ReadmeFunc(GithubRepoInfo repoInfo)

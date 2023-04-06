@@ -2,6 +2,7 @@
 using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.StaticData;
+using Imya.GithubIntegration.RepositoryInformation;
 using Imya.Models;
 using Imya.Models.Installation;
 using Imya.UI.Popup;
@@ -58,7 +59,7 @@ namespace Imya.UI.Views
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
-        private readonly StaticReadmeProvider ReadmeProvider = new();
+        private readonly IReadmeProvider ReadmeProvider = new StaticReadmeProvider();
 
         public TextManager TextManager { get;} = TextManager.Instance;
         public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
@@ -96,9 +97,13 @@ namespace Imya.UI.Views
                 InstallationManager.EnqueueGithubInstallation(install);
                 ValidateCanAddToDownloads();
             }
+            catch (Octokit.RateLimitExceededException ex)
+            {
+                PopupCreator.CreateApiRateExceededPopup().ShowDialog();
+            }
             catch (InstallationException ex)
             {
-                PopupCreator.CreateGithubExceptionPopup(ex).ShowDialog();
+                PopupCreator.CreateExceptionPopup(ex).ShowDialog();
             }
         }
 
@@ -145,8 +150,20 @@ namespace Imya.UI.Views
             SelectedRepo = repoInfo;
 
             ValidateCanAddToDownloads();
-            ReadmeText = await ReadmeProvider.GetReadmeAsync(SelectedRepo);
 
+            try
+            {
+                ReadmeText = await ReadmeProvider.GetReadmeAsync(SelectedRepo);
+            }
+            catch (Octokit.RateLimitExceededException ex)
+            {
+
+                PopupCreator.CreateApiRateExceededPopup().ShowDialog();
+            }
+            catch (Octokit.ApiException ex)
+            {
+                PopupCreator.CreateExceptionPopup(ex).ShowDialog();
+            }
         }
 
         private void ValidateCanAddToDownloads()

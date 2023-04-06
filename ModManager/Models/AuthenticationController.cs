@@ -1,6 +1,7 @@
 ﻿using Imya.Models;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -48,9 +49,6 @@ namespace Imya.UI.Models
 
         public void Logout()
         {
-            var dialogresult = new GenericOkayPopup() { MESSAGE = new SimpleText("Are you sure you want to log out?") }.ShowDialog();
-            if (dialogresult is false) return;
-
             GithubClientProvider.Client.Credentials = Octokit.Credentials.Anonymous;
             IsAuthenticated = false;
             AvatarUri = null;

@@ -1820,6 +1820,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "API_RATELIMIT_REACHED": {
+    "Chinese": null,
+    "English": "You have exceeded your rate limit per hour (This is imposed by GitHub). To get access again, you can login.",
+    "French": null,
+    "German": "Du hast das Anfragenlimit pro Stunde erreicht (Dies ist leider so von Github vorgegeben). Um wieder Zugriff zu bekommen, kannst Du dich allerdings einloggen.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
