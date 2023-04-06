@@ -225,6 +225,9 @@ namespace Imya.Utils
 
         private bool IsSteamVersion()
         {
+            if (ExecutableDir is null)
+                return false;
+
             var path = Path.Combine(ExecutableDir, "steam_api64.dll");
             return File.Exists(path);
         }
