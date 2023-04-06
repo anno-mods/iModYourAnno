@@ -14,6 +14,7 @@ using Imya.Models.Attributes;
 using System.Linq;
 using Imya.UI.Popup;
 using Imya.UI.Models;
+using Imya.Models.GameLauncher;
 
 namespace Imya.UI.Components
 {
@@ -32,6 +33,8 @@ namespace Imya.UI.Components
         public AuthenticationController AuthenticationController { get; } = new AuthenticationController();
         public IAuthenticator Authenticator { get; } = GithubClientProvider.Authenticator;
 
+        private IGameLauncherFactory _launcherFactory;
+
         public bool CanStartGame { 
             get => _canStartGame;
             private set {
@@ -47,11 +50,9 @@ namespace Imya.UI.Components
             DataContext = this;
 
             MainViewController.Instance.ViewChanged += UpdateSelection;
+            _launcherFactory = new GameLauncherFactory();
 
             CanStartGame = CheckCanStartGame();
-
-            GameSetupManager.GameStarted += () => CanStartGame = CheckCanStartGame();
-            GameSetupManager.GameClosed += (x, y) => CanStartGame = CheckCanStartGame();
         }
 
         private bool CheckCanStartGame()
@@ -73,7 +74,7 @@ namespace Imya.UI.Components
 
         public void ModInstallationClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.MOD_INSTALLATION);
 
-        public async void StartGameClick(object sender, RoutedEventArgs e)
+        public void StartGameClick(object sender, RoutedEventArgs e)
         {
             var withUnresolved = ModCollection.Global?.WithAttribute(AttributeType.UnresolvedDependencyIssue);
             var withIncompatibleIssue = ModCollection.Global?.WithAttribute(AttributeType.ModCompabilityIssue);
@@ -90,7 +91,19 @@ namespace Imya.UI.Components
                 if (dialog.ShowDialog() is false) return;
             }
 
-            GameSetupManager.Instance.StartGame(AppSettings.Instance.ModloaderEnabled);
+            StartGame(); 
+        }
+
+        private void StartGame()
+        {
+            var launcher = _launcherFactory.GetLauncher();
+            launcher.GameExited += (a, b) =>
+            {
+                GameSetupManager.IsGameRunning = false;
+                launcher.Dispose();
+            };
+            launcher.GameStarted += () => GameSetupManager.IsGameRunning = true;
+            launcher.StartGame();
         }
 
         private void UpdateSelection(View view)

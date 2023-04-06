@@ -19,6 +19,8 @@ namespace Imya.Utils
     /// </summary>
     /// 
 
+    public enum GamePlatform { Steam, Agnostic }
+
     public enum ModloaderInstallationState { Installed, Uninstalled, Deactivated }
 
     public class GameSetupManager : PropertyChangedNotifier
@@ -28,20 +30,12 @@ namespace Imya.Utils
         private InstallationValidator Validator;
         private GameScanner Scanner;
 
-        private IGameLauncher _gameLauncher; 
-
         #region EVENTS
         public delegate void GameRootPathChangedEventHandler(String newPath);
         public event GameRootPathChangedEventHandler GameRootPathChanged = delegate { };
 
         public delegate void ModDirectoryNameChangedEventHandler(String newName);
         public event ModDirectoryNameChangedEventHandler ModDirectoryNameChanged = delegate { };
-
-        public delegate void GameStartEventHandler();
-        public event GameStartEventHandler GameStarted = delegate { };
-
-        public delegate void GameCloseEventHandler(int GameExitCode, bool IsRegularExit = true);
-        public event GameCloseEventHandler GameClosed = delegate { };
 
         #endregion
 
@@ -54,7 +48,7 @@ namespace Imya.Utils
         public bool IsGameRunning
         {
             get => _isGameRunning;
-            private set
+            set
             {
                 _isGameRunning = value;
                 OnPropertyChanged(nameof(IsGameRunning));
@@ -91,6 +85,17 @@ namespace Imya.Utils
         }
         private bool _isValid;
 
+        public GamePlatform GamePlatform
+        {
+            get {
+                if (ExecutableDir is null)
+                    return GamePlatform.Agnostic;
+
+                var path = Path.Combine(ExecutableDir, "steam_api64.dll");
+                return File.Exists(path) ? GamePlatform.Steam : GamePlatform.Agnostic;
+            }
+        }
+
         public bool IsModloaderInstalled => ModloaderState == ModloaderInstallationState.Installed;
 
         public ModloaderInstallationState ModloaderState 
@@ -106,11 +111,7 @@ namespace Imya.Utils
 
         public GameSetupManager()
         {
-            GameStarted += () => IsGameRunning = true;
-            GameClosed += (x, y) => IsGameRunning = false;
-
             Scanner = new GameScanner();
-
         }
 
         #region DIRECTORY_RELATED
@@ -149,7 +150,6 @@ namespace Imya.Utils
             
             GameRootPathChanged(gamePath);
             CreateWatchers();
-            SetupGameLauncher();
         }
 
         public void SetModDirectoryName(String ModDirectoryName)
@@ -223,25 +223,6 @@ namespace Imya.Utils
             }            
         }
 
-        private bool IsSteamVersion()
-        {
-            if (ExecutableDir is null)
-                return false;
-
-            var path = Path.Combine(ExecutableDir, "steam_api64.dll");
-            return File.Exists(path);
-        }
-
-        private void SetupGameLauncher()
-        {
-            _gameLauncher?.Dispose();
-            _gameLauncher = IsSteamVersion() ? new SteamGameLauncher() : new StandardGameLauncher();
-
-            //hacky event redirection for now. Make sure the subscribers to these events will reference the game starter instead.
-            _gameLauncher.GameStarted += () => GameStarted.Invoke();
-            _gameLauncher.GameExited += (x, y) => GameClosed.Invoke(x, y);
-        }
-
         private FileSystemWatcher? CreateWatcher(string pathToWatch)
         {
             if (!Directory.Exists(pathToWatch))
@@ -258,16 +239,5 @@ namespace Imya.Utils
                 Filter = "*"
             };
         }
-
-        #region GAME_LAUNCH
-        public void StartGame(bool modloaderActive = true)
-        {
-            if (!IsValidSetup)
-                return;
-
-            _gameLauncher.StartGame(); 
-        }
-        #endregion
-
     }
 }
