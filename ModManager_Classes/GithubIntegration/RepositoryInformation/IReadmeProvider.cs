@@ -2,7 +2,7 @@
 
 namespace Imya.GithubIntegration.RepositoryInformation
 {
-    internal interface IReadmeProvider
+    public interface IReadmeProvider
     {
         public Task<String?> GetReadmeAsync(GithubRepoInfo repoInfo);
     }

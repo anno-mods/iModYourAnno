@@ -44,9 +44,16 @@ namespace Imya.UI.Utils
             HasCancelButton = false
         };
 
-        public static GenericOkayPopup CreateGithubExceptionPopup(InstallationException e) => new() 
+        public static GenericOkayPopup CreateExceptionPopup(Exception e) => new() 
         { 
             MESSAGE = new SimpleText(e.Message),
+            OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
+            HasCancelButton = false
+        };
+
+        public static GenericOkayPopup CreateApiRateExceededPopup() => new()
+        {
+            MESSAGE = TextManager.GetText("API_RATELIMIT_REACHED"),
             OK_TEXT = TextManager.GetText("DIALOG_OKAY"),
             HasCancelButton = false
         };
