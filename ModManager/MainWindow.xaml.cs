@@ -39,6 +39,18 @@ namespace Imya.UI
             {
                 Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
             }
+
+            if (GameSetupManager.Instance.NeedsModloaderRemoval())
+            {
+                var result = MessageBox.Show("You seem to have an old community modloader. Do you want to remove it?", "Remove modloader",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning,
+                    MessageBoxResult.Yes);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    GameSetupManager.Instance.RemoveModloader();
+                }
+            }
         }
 
         public void SetUpEmbeddedConsole()

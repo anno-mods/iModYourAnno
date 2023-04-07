@@ -223,6 +223,34 @@ namespace Imya.Utils
             }            
         }
 
+        /// <summary>
+        /// Check if python35_ubi.dll is there.
+        /// </summary>
+        public bool NeedsModloaderRemoval()
+        {
+            if (ExecutableDir is null || !Directory.Exists(ExecutableDir)) return false;
+            return File.Exists(Path.Combine(ExecutableDir, "python35_ubi.dll"));
+        }
+
+        /// <summary>
+        /// Rename python35_ubi.dll to python35.dll
+        /// </summary>
+        public void RemoveModloader()
+        {
+            if (!NeedsModloaderRemoval()) return;
+
+            try
+            {
+                File.Delete(Path.Combine(ExecutableDir!, "python35.dll"));
+                File.Move(Path.Combine(ExecutableDir!, "python35_ubi.dll"), Path.Combine(ExecutableDir!, "python35.dll"));
+                ModloaderState = ModloaderInstallationState.Uninstalled;
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Modloader deactivation unsuccessful");
+            }
+        }
+
         private FileSystemWatcher? CreateWatcher(string pathToWatch)
         {
             if (!Directory.Exists(pathToWatch))
