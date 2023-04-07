@@ -13,6 +13,8 @@ namespace Imya.Validation
     {
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
         {
+            foreach (Mod x in all)
+                x.Attributes.RemoveAttributesByType(AttributeType.CyclicDependency);
             foreach (Mod x in changed)
             {
                 var cyclics = CyclicDependencies(x, all);
@@ -25,8 +27,11 @@ namespace Imya.Validation
 
         private IEnumerable<Mod> CyclicDependencies(Mod x, IReadOnlyCollection<Mod> others)
         {
+            if (!x.IsActive)
+                return Enumerable.Empty<Mod>();
+
             return others.Where(y =>
-                (y.Modinfo?.LoadAfterIds?.Contains(x.ModID) ?? false)
+                y.IsActive && (y.Modinfo?.LoadAfterIds?.Contains(x.ModID) ?? false)
                 && (x.Modinfo?.LoadAfterIds?.Contains(y.ModID) ?? false));
         }
     }
