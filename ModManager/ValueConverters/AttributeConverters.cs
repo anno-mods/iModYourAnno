@@ -24,6 +24,7 @@ namespace Imya.UI.ValueConverters
                 AttributeType.ModContentInSubfolder => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.IssueModRemoved => ("TrashCanOutline", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.IssueModAccess => ("FolderAlertOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeType.CyclicDependency => ("CircleArrows", FindResourceBrush("ErrorColorBrush")),
                 _ => ("InformationOutline", FindResourceBrush("TextColorBrush")),
             };
         }
