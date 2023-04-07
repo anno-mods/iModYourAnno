@@ -1833,6 +1833,45 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "STARTUP_REMOVECOMMUNITYMODLOADER": {
+    "Chinese": null,
+    "English": "You seem to have an old community modloader, which is no longer needed since Game Update 17. Do you want to remove it?",
+    "French": null,
+    "German": "Wie es scheint, ist der alte Community-Modloader noch installiert. Dieser wird seit Game Update 17 nicht mehr benötigt. Soll dieser entfernt werden?",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "STARTUP_REMOVECOMMUNITYMODLOADER_YES": {
+    "Chinese": null,
+    "English": "Yes, remove it",
+    "French": null,
+    "German": "Ja, entfernen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "STARTUP_REMOVECOMMUNITYMODLOADER_NO": {
+    "Chinese": null,
+    "English": "Keep",
+    "French": null,
+    "German": "Beibehalten",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",

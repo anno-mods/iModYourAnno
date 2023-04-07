@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Imya.UI.Properties;
+using Imya.UI.Utils;
 using Imya.Utils;
 
 namespace Imya.UI
@@ -38,6 +39,13 @@ namespace Imya.UI
             if (GithubClientProvider.Authenticator.HasStoredLoginInfo())
             {
                 Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
+            }
+
+            if (GameSetupManager.Instance.NeedsModloaderRemoval())
+            {
+                var result = PopupCreator.CreateModloaderPopup().ShowDialog();
+                if (result is true)
+                    GameSetupManager.Instance.RemoveModloader();
             }
         }
 
