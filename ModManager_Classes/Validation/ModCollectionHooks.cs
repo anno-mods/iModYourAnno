@@ -12,7 +12,8 @@ namespace Imya.Validation
         private readonly IModValidator[] validators = new IModValidator[]
             {
                 new ModContentValidator(),
-                new ModCompatibilityValidator()
+                new ModCompatibilityValidator(),
+                new CyclicDependencyValidator()
             };
 
         public ModCollectionHooks(ModCollection mods)
