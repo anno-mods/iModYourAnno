@@ -10,8 +10,8 @@ namespace Imya.UnitTests
         {
             AttributeCollection attributes = new();
 
-            attributes.AddAttribute(new ModCompabilityIssueAttribute());
-            attributes.AddAttribute(new ModCompabilityIssueAttribute());
+            attributes.AddAttribute(new GenericModContextAttribute());
+            attributes.AddAttribute(new GenericModContextAttribute());
 
             Assert.Equal(2, attributes.Count);
         }

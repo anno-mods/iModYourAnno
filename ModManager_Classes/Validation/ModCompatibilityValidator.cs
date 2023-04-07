@@ -29,7 +29,7 @@ namespace Imya.Validation
 
             var incompatibles = GetIncompatibleMods(mod.Modinfo, collection);
             if (incompatibles.Any())
-                mod.Attributes.AddAttribute(new ModCompabilityIssueAttribute(incompatibles));
+                mod.Attributes.AddAttribute(ModCompabilityAttributeFactory.Get(incompatibles));
 
             Mod? newReplacementMod = HasBeenDeprecated(mod.Modinfo, collection) ?? IsNewestOfID(mod, collection);
             if (newReplacementMod is not null && newReplacementMod != mod)
