@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using Imya.UI.Properties;
+using Imya.UI.Utils;
 using Imya.Utils;
 
 namespace Imya.UI
@@ -42,14 +43,9 @@ namespace Imya.UI
 
             if (GameSetupManager.Instance.NeedsModloaderRemoval())
             {
-                var result = MessageBox.Show("You seem to have an old community modloader. Do you want to remove it?", "Remove modloader",
-                    MessageBoxButton.YesNo, MessageBoxImage.Warning,
-                    MessageBoxResult.Yes);
-
-                if (result == MessageBoxResult.Yes)
-                {
+                var result = PopupCreator.CreateModloaderPopup().ShowDialog();
+                if (result is true)
                     GameSetupManager.Instance.RemoveModloader();
-                }
             }
         }
 

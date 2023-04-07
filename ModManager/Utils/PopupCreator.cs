@@ -66,5 +66,12 @@ namespace Imya.UI.Utils
 
         };
 
+        public static GenericOkayPopup CreateModloaderPopup() => new()
+        {
+            MESSAGE = TextManager.GetText("STARTUP_REMOVECOMMUNITYMODLOADER"),
+            CANCEL_TEXT = TextManager.GetText("STARTUP_REMOVECOMMUNITYMODLOADER_NO"),
+            OK_TEXT = TextManager.GetText("STARTUP_REMOVECOMMUNITYMODLOADER_YES"),
+        };
+
     }
 }
