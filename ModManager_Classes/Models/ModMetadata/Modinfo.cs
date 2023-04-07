@@ -19,6 +19,7 @@ namespace Imya.Models.ModMetadata
         public string? CreatorName { get; set; }
         public string? CreatorContact { get; set; }
         public string? Image { get; set; }
+        public string[]? LoadAfterIds { get; set; }
 
         public LocalizedModinfo GetLocalized(string name) => new (name, this);
     }
@@ -39,6 +40,7 @@ namespace Imya.Models.ModMetadata
             CreatorName = modinfo?.CreatorName;
             CreatorContact = modinfo?.CreatorContact;
             Image = modinfo?.Image;
+            LoadAfterIds = modinfo?.LoadAfterIds;
 
             // localize
             Category = (modinfo?.Category is not null) ? TextManager.CreateLocalizedText(modinfo.Category) : TextManager.Instance["MODLIST_NOCATEGORY"];
