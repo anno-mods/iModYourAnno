@@ -69,6 +69,8 @@ namespace Imya.Models
         /// Category with default "NoCategory".
         /// </summary>
         public IText Category => Modinfo.Category;
+
+        public String ModID => Modinfo.ModID ?? FolderName;
         #endregion
 
         #region Optional Mod Manager info

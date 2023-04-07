@@ -43,7 +43,7 @@ namespace Imya.UI.Components
                 new() { Attribute = ModStatusAttributeFactory.Get(ModStatus.Obsolete), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_OBSOLETEMOD") },
                 new() { Attribute = TweakedAttributeFactory.Get(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_TWEAKEDMOD") },
                 new() { Attribute = MissingModinfoAttributeFactory.Get(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_NOMODINFO") },
-                new() { Attribute = new ModCompabilityIssueAttribute(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_COMPABILITY")},
+                new() { Attribute = new GenericModContextAttribute(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_COMPABILITY")},
                 new() { Attribute = new ModDependencyIssueAttribute(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_DEPENDENCY")},
             };
 

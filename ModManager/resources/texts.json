@@ -1378,6 +1378,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "ATTRIBUTE_CYCLIC_DEPENDENCY": {
+    "Chinese": null,
+    "English": "Cyclic dependency in loading order with: {0}. This may cause issues ingame!",
+    "French": null,
+    "German": "Zyklische Abhängigkeit in der Ladeordnung: {0}. Dies könnte im Spiel Probleme verursachen!",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "ATTRIBUTE_REPLACEDBY": {
     "Chinese": null,
     "English": "This mod is old.\nIt has been replaced by '{0}'.",
@@ -1773,6 +1786,19 @@
     "English": "By Folder Name",
     "French": null,
     "German": "Nach Ordnername",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SORTING_LOADORDER": {
+    "Chinese": null,
+    "English": "By Load Order",
+    "French": null,
+    "German": "Nach Ladereihenfolge",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
