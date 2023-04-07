@@ -1781,6 +1781,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SORTING_LOADORDER": {
+    "Chinese": null,
+    "English": "By Load Order",
+    "French": null,
+    "German": "Nach Ladereihenfolge",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "INSTALLATION_NOINSTALLS": {
     "Chinese": null,
     "English": "No installs are running currently.",

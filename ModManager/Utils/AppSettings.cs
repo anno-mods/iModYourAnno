@@ -238,6 +238,7 @@ namespace Imya.UI.Utils
             Sortings.Add(new SortSetting(CompareByActiveCategoryName.Default, TextManager["SORTING_DEFAULT"], "Default"));
             Sortings.Add(new SortSetting(CompareByCategoryName.Default, TextManager["SORTING_ACTIVE_AGNOSTIC"], "ActiveAgnostic"));
             Sortings.Add(new SortSetting(CompareByFolder.Default, TextManager["SORTING_BYFOLDER"], "Folder"));
+            Sortings.Add(new SortSetting(ComparebyLoadOrder.Default, TextManager["SORTING_LOADORDER"], "LoadOrder"));
 
             RateLimitChanged += x => InstallationManager.Instance.DownloadConfig.MaximumBytesPerSecond = x;
 
