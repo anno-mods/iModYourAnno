@@ -1,4 +1,5 @@
-﻿using Imya.Services;
+﻿using Imya.Models.ModTweaker.IO;
+using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Utils;
 using Newtonsoft.Json;
@@ -16,10 +17,14 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
     public class TweakRepository : ITweakRepository
     {
         private readonly IImyaSetupService _imyaSetupService;
+        private readonly ModTweaksStorageModelLoader _storageModelLoader;
 
-        public TweakRepository(IImyaSetupService imyaSetupService)
+        public TweakRepository(
+            IImyaSetupService imyaSetupService,
+            ModTweaksStorageModelLoader storageModelLoader)
         {
             _imyaSetupService = imyaSetupService;
+            _storageModelLoader = storageModelLoader;
         }
 
         private Dictionary<string, ModTweaksStorageModel> loadedStorages = new();
@@ -31,20 +36,10 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
         /// <returns></returns>
         public ModTweaksStorageModel Get(string ID)
         {
-            var storagePath = GetFilepath(ID);
-            if (File.Exists(storagePath))
-            {
-                var text = File.ReadAllText(storagePath); 
-                try
-                {
-                    JsonConvert.DeserializeObject<ModTweaksStorageModel>(text);
-                }
-                catch (Exception ex) 
-                {
-                    Console.WriteLine("Could not load storage: " + storagePath);
-                }
-            }
-            return new ModTweaksStorageModel();
+            var filename = GetFilepath(ID);
+            if (!File.Exists(filename))
+                return new ModTweaksStorageModel();
+            return _storageModelLoader.Load(GetFilepath(ID)) ?? new ModTweaksStorageModel();
         }
 
         public bool IsStored(string ID)
@@ -54,9 +49,7 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
 
         public void UpdateStorage(ModTweaksStorageModel storageModel, string modBaseName)
         {
-            var storagePath = GetFilepath(modBaseName);
-            var json = JsonConvert.SerializeObject(storageModel);
-            File.WriteAllText(storagePath, json);
+            _storageModelLoader.Save(storageModel, GetFilepath(modBaseName));
         }
 
         private String GetFilepath(String baseName) => Path.Combine(_imyaSetupService.TweakDirectoryPath, baseName + ".json");

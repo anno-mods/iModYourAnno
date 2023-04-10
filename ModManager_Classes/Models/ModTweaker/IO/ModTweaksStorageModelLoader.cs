@@ -10,16 +10,16 @@ namespace Imya.Models.ModTweaker.IO
 {
     public class ModTweaksStorageModelLoader
     {
-        void Save(ModTweaksStorageModel model, String filename)
+        public void Save(ModTweaksStorageModel model, String filename)
         {
-            string s = JsonConvert.SerializeObject(model, Formatting.Indented);
+            string s = JsonConvert.SerializeObject(model.Tweaks, Formatting.Indented);
             using (StreamWriter writer = new StreamWriter(File.Create(filename)))
             {
                 writer.Write(s);
             }
         }
 
-        ModTweaksStorageModel? Load(String filename)
+        public ModTweaksStorageModel? Load(String filename)
         {
             var jsonString = File.ReadAllText(filename);
             try

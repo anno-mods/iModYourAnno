@@ -31,7 +31,7 @@ namespace Imya.Models.ModTweaker.IO
             foreach (var file in tweaks.TweakerFiles!)
             {
                 var tweak = GetTweak(file);
-                storage.Tweaks.Add(file.SourceFilename, tweak);
+                storage.Tweaks.Add(file.FilePath, tweak);
             }
             return storage;
         }

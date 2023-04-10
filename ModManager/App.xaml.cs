@@ -70,6 +70,7 @@ namespace Imya.UI
                     services.AddSingleton<LocalizedModinfoFactory>();
                     services.AddSingleton<IModFactory, ModFactory>();
                     services.AddSingleton<IModCollectionFactory, ModCollectionFactory>();
+                    services.AddTransient<ModTweaksStorageModelLoader>();
                     services.AddSingleton<ITweakRepository, TweakRepository>();
                     services.AddSingleton<ModTweaksLoader>();
                     services.AddSingleton<ModTweaksExporter>();

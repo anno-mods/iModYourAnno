@@ -40,7 +40,7 @@ namespace Imya.Models.ModTweaker.IO
         {
             foreach (TweakerFile file in tweaks.TweakerFiles!)
             {
-                var tweak = stored.GetTweak(file.SourceFilename);
+                var tweak = stored.GetTweak(file.FilePath);
                 if (tweak is not null)
                     ApplyToTweakerFile(file, tweak);
             }
