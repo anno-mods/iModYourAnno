@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Enums;
 using Imya.Models.ModMetadata;
+using Imya.Texts;
 using Imya.UI.Popup;
 using Imya.Utils;
 
@@ -25,7 +26,7 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class ModinfoCreatorView : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; set; } = TextManager.Instance;
+        public ITextManager TextManager { get; init; }
 
         public ModinfoFactory ModinfoFactory 
         {
@@ -39,8 +40,9 @@ namespace Imya.UI.Views
 
         private ModinfoFactory _factory;
 
-        public ModinfoCreatorView()
+        public ModinfoCreatorView(ITextManager textManager)
         {
+            TextManager = textManager;
             DataContext = this;
             InitializeComponent();
 

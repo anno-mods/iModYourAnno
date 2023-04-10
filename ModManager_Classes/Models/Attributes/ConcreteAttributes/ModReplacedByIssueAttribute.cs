@@ -1,4 +1,5 @@
-﻿using Imya.Utils;
+﻿using Imya.Models.Mods;
+using Imya.Utils;
 
 namespace Imya.Models.Attributes
 {

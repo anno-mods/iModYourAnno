@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Imya.Services;
+using Imya.Services.Interfaces;
 using Imya.UI.Properties;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -16,10 +18,24 @@ namespace Imya.UI
     {
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
 
-        public MainViewController MainViewController { get; } = MainViewController.Instance;
+        public IMainViewController MainViewController { get; init; }
 
-        public MainWindow()
+        private IAuthenticator _authenticator;
+        private IGameSetupService _gameSetupService;
+        private PopupCreator _popupCreator;
+
+        public MainWindow(
+            IAuthenticator authenticator,
+            IMainViewController mainViewController,
+            IGameSetupService gameSetupService,
+            PopupCreator popupCreator)
         {
+            _authenticator = authenticator;
+            _gameSetupService = gameSetupService;
+            _popupCreator = popupCreator;
+
+            MainViewController = mainViewController;
+
             InitializeComponent();
             SetUpEmbeddedConsole();
 
@@ -35,17 +51,16 @@ namespace Imya.UI
 #if DEBUG
             Properties.Settings.Default.DevMode = true;
 #endif
-
-            if (GithubClientProvider.Authenticator.HasStoredLoginInfo())
+            if (authenticator.HasStoredLoginInfo())
             {
-                Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
+                Task.Run(async () => await authenticator.StartAuthentication());
             }
 
-            if (GameSetupManager.Instance.NeedsModloaderRemoval())
+            if (_gameSetupService.NeedsModloaderRemoval())
             {
-                var result = PopupCreator.CreateModloaderPopup().ShowDialog();
+                var result = _popupCreator.CreateModloaderPopup().ShowDialog();
                 if (result is true)
-                    GameSetupManager.Instance.RemoveModloader();
+                    _gameSetupService.RemoveModloader();
             }
         }
 

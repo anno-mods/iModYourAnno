@@ -1,6 +1,7 @@
-﻿using Imya.UI.Utils;
+﻿using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.UI.Utils;
 using Imya.UI.Views;
-using Imya.Utils;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -10,36 +11,29 @@ namespace Imya.UI
         MOD_ACTIVATION,
         SETTINGS,
         TWEAKER,
-        GAME_SETUP,
         MODINFO_CREATOR,
         MOD_INSTALLATION,
-        GITHUB_BROWSER,
+        GITHUB_BROWSER
     }
 
-    public class MainViewController : INotifyPropertyChanged
+    public class MainViewController : INotifyPropertyChanged, IMainViewController
     {
-        private static readonly ModActivationView _modActivation = new();
-        private static readonly SettingsView _settings = new();
-        private static readonly ModTweakerView _tweaker = new();
-        private static readonly GameSetupView _gameSetup = new();
-        private static readonly ModinfoCreatorView _modinfoCreator = new();
-        private static readonly InstallationView _modInstallation = new();
-        private static readonly GithubBrowserView _githubBrowser = new();
+        private readonly ModActivationView _modActivation;
+        private readonly SettingsView _settings;
+        private readonly ModTweakerView _tweaker;
+        private readonly ModinfoCreatorView _modinfoCreator;
+        private readonly InstallationView _modInstallation;
+        private readonly GithubBrowserView _githubBrowser;
+        private readonly PopupCreator _popupCreator;
 
-        public static MainViewController Instance { get; } = new();
+        public event IMainViewController.ViewChangedEventHandler ViewChanged = delegate { };
 
-        public delegate void ViewChangedEventHandler(View view);
-        public event ViewChangedEventHandler ViewChanged = delegate { };
+        public readonly View DefaultView = View.MOD_ACTIVATION;
+        public readonly UserControl DefaultControl;
 
-        public static readonly View DefaultView = View.MOD_ACTIVATION;
-        public static readonly UserControl DefaultControl = _modInstallation;
+        private ITweakService _tweakService;
+        private View _lastView;
 
-        private MainViewController()
-        {
-            _currentView = GetViewControl(DefaultView);
-        }
-
-        private View _lastView = DefaultView;
         private UserControl _currentView;
         public UserControl CurrentView
         {
@@ -49,6 +43,31 @@ namespace Imya.UI
                 _currentView = value;
                 OnPropertyChanged(nameof(CurrentView));
             }
+        }
+
+        private MainViewController(
+            ITweakService tweakService,
+            ModActivationView modActivation,
+            SettingsView settings,
+            ModTweakerView tweaker,
+            ModinfoCreatorView modinfoCreator,
+            InstallationView modInstallation,
+            GithubBrowserView githubBrowser,
+            PopupCreator popupCreator)
+        {
+            _modActivation = modActivation;
+            _settings = settings;
+            _tweaker = tweaker;
+            _modinfoCreator = modinfoCreator;
+            _modInstallation = modInstallation;
+            _githubBrowser = githubBrowser;
+            _tweakService = tweakService;
+            _popupCreator = popupCreator;
+
+            DefaultControl = _modActivation;
+            _currentView = GetViewControl(DefaultView);
+            _lastView = DefaultView;
+
         }
 
         #region INotifyPropertyChangedMembers
@@ -68,11 +87,11 @@ namespace Imya.UI
 
             if (currentView == View.TWEAKER && view != View.TWEAKER)
             {
-                if (TweakManager.Instance.HasUnsavedChanges)
+                if (_tweakService.HasUnsavedChanges)
                 {
-                    var dialog = PopupCreator.CreateSaveTweakPopup();
+                    var dialog = _popupCreator.CreateSaveTweakPopup();
                     if (dialog.ShowDialog() is true)
-                        TweakManager.Instance.Save();
+                        _tweakService.Save();
                 }
             }
             CurrentView = GetViewControl(view);
@@ -82,14 +101,13 @@ namespace Imya.UI
             ViewChanged(view);
         }
 
-        private static UserControl GetViewControl(View view)
+        private UserControl GetViewControl(View view)
         {
             return view switch
             {
                 View.MOD_ACTIVATION => _modActivation,
                 View.SETTINGS => _settings,
                 View.TWEAKER => _tweaker,
-                View.GAME_SETUP => _gameSetup,
                 View.MODINFO_CREATOR => _modinfoCreator,
                 View.GITHUB_BROWSER => _githubBrowser,
                 View.MOD_INSTALLATION => _modInstallation,
@@ -110,7 +128,6 @@ namespace Imya.UI
                 ModActivationView => View.MOD_ACTIVATION,
                 SettingsView => View.SETTINGS,
                 ModTweakerView => View.TWEAKER,
-                GameSetupView => View.GAME_SETUP,
                 ModinfoCreatorView => View.MODINFO_CREATOR,
                 GithubBrowserView => View.GITHUB_BROWSER,
                 InstallationView => View.MOD_INSTALLATION,

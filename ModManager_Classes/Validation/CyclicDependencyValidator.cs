@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
+using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,15 @@ using System.Threading.Tasks;
 
 namespace Imya.Validation
 {
-    internal class CyclicDependencyValidator : IModValidator
+    public class CyclicDependencyValidator : IModValidator
     {
+        private CyclicDependencyAttributeFactory _attributeFactory;
+
+        public CyclicDependencyValidator(CyclicDependencyAttributeFactory attributeFactory)
+        {
+            _attributeFactory = attributeFactory;
+        }
+
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
         {
             foreach (Mod x in all)
@@ -20,7 +27,7 @@ namespace Imya.Validation
                 var cyclics = CyclicDependencies(x, all);
                 if (cyclics.Count() > 0)
                 {
-                    x.Attributes.Add(CyclicDependencyAttributeFactory.Get(cyclics));   
+                    x.Attributes.Add(_attributeFactory.Get(cyclics));   
                 }
             }
         }

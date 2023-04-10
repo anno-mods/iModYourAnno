@@ -16,6 +16,7 @@ using System.IO;
 using Imya.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Imya.Services;
 
 namespace Imya.UI.Popup
 {
@@ -32,7 +33,7 @@ namespace Imya.UI.Popup
     {
         public String ProfileFilename { get; set; } = "Profile1";
 
-        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
+        private static String ProfilesDirectoryPath = ImyaSetupService.Instance.ProfilesDirectoryPath;
 
         public bool IsValidFilename
         {

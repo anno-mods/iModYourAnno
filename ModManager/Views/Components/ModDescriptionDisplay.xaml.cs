@@ -8,6 +8,8 @@ using System.Windows.Controls;
 using Imya.Enums;
 using Imya.Models;
 using Imya.Models.ModMetadata;
+using Imya.Models.Mods;
+using Imya.Texts;
 using Imya.Utils;
 
 using Markdown.Xaml;
@@ -111,15 +113,16 @@ namespace Imya.UI.Components
         }
         private String? _markdownDescription;
 
-        public TextManager TextManager { get; } = TextManager.Instance;
+        public ITextManager TextManager { get; init; }
 
         public double WindowWidth { get; private set; }
 
-        public ModDescriptionDisplay()
+        public ModDescriptionDisplay(ITextManager textManager)
         {
             InitializeComponent();
             DataContext = this;
-            TextManager.Instance.LanguageChanged += OnLanguageChanged;
+            TextManager = textManager;
+            TextManager.LanguageChanged += OnLanguageChanged;
         }
 
         public void SetDisplayedMod(Mod? mod)

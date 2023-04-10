@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.Services;
 using Imya.Utils;
 using System;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace Imya.UI.Popup
     {
         public ObservableCollection<ModActivationProfile> Profiles { get; private set; } = new ObservableCollection<ModActivationProfile>();
 
-        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
+        private static String ProfilesDirectoryPath = ImyaSetupService.Instance.ProfilesDirectoryPath;
 
         public ModActivationProfile? SelectedProfile { get; private set; }
 

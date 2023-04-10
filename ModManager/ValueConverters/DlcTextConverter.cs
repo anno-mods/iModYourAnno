@@ -1,5 +1,6 @@
 ﻿using Imya.Enums;
 using Imya.Models;
+using Imya.Texts;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,12 @@ namespace Imya.UI.ValueConverters
     [ValueConversion(typeof(DlcId), typeof(LocalizedText))]
     internal class DlcTextConverter : IValueConverter
     {
-        private TextManager TextManager = TextManager.Instance;
+        private ITextManager TextManager;
+
+        public DlcTextConverter(ITextManager textManager) 
+        {
+            TextManager = textManager;
+        }
 
         private Dictionary<DlcId, String> DlcTextMapping = new Dictionary<DlcId, String>
         {

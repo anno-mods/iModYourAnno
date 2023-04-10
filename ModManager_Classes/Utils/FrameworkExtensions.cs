@@ -1,5 +1,3 @@
-
-using Imya.Models.ModTweaker;
 using Imya.Models.Installation;
 using System;
 using System.Collections.Generic;
@@ -9,14 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Octokit;
+using Imya.Models.ModTweaker.DataModel;
 
 namespace Imya.Utils
 {
     public static class GithubClientExtensions
     {
-        public static bool IsAuthenticated(this GitHubClient client)
+        public static bool IsAuthenticated(this IGitHubClient client)
         {
-            return client.Credentials.AuthenticationType == AuthenticationType.Oauth;
+            return client.Connection.Credentials.AuthenticationType == AuthenticationType.Oauth;
         }
     }
     public static class CollectionExtension

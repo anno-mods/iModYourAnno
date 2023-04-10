@@ -1,25 +1,35 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
+using Imya.Models.Mods;
 using Imya.Models.ModTweaker;
+using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.Storage;
 using System.Collections.Specialized;
 using System.Threading;
 
 namespace Imya.Validation
 {
+    //todo rework the hook system
     public class ModCollectionHooks
     {
+        private ITweakRepository _tweakRepository;
         private SemaphoreSlim _tweaksave_sem;
-        private readonly IModValidator[] validators = new IModValidator[]
-            {
-                new ModContentValidator(),
-                new ModCompatibilityValidator(),
-                new CyclicDependencyValidator()
-            };
 
-        public ModCollectionHooks(ModCollection mods)
+        private List<IModValidator> validators = new(); 
+
+        public ModCollectionHooks(ITweakRepository tweakRepository)
         {
+            _tweakRepository = tweakRepository;
             _tweaksave_sem = new SemaphoreSlim(1);
+        }
+
+        public void HookTo(ModCollection mods)
+        {
             mods.CollectionChanged += ValidateOnChange;
+        }
+
+        public void AddHook(IModValidator validator) 
+        {
+            validators.Add(validator);
         }
 
         private void ValidateOnChange(object? sender, NotifyCollectionChangedEventArgs e)
@@ -42,7 +52,7 @@ namespace Imya.Validation
         private void UpdateWithTweak(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
-            if (!TweakStorageShelf.Global.IsStored(mod.FolderName))
+            if (!_tweakRepository.IsStored(mod.FolderName))
                 return;
 
             // TODO double access is unprotected

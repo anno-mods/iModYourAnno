@@ -16,8 +16,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Imya.Models;
-using Imya.Models.ModTweaker;
+using Imya.Models.Mods;
+using Imya.Models.ModTweaker.DataModel;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -30,10 +33,11 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModTweaker : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
-        public TweakManager TweakManager { get; } = TweakManager.Instance;
+        public ITextManager TextManager { get; init;  }
+        public ITweakService TweakManager { get; init; }
+        public IGameSetupService GameSetupService { get; init; }
 
-        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
+        private readonly PopupCreator _popupCreator; 
 
         public Mod? CurrentMod
         {
@@ -46,8 +50,17 @@ namespace Imya.UI.Components
         }
         private Mod? _currentMod;
 
-        public ModTweaker()
+        public ModTweaker(
+            ITextManager textManager,
+            ITweakService tweakService,
+            IGameSetupService gameSetupService,
+            PopupCreator popupCreator)
         {
+            GameSetupService = gameSetupService;
+            TweakManager = tweakService;
+            TextManager = textManager;
+            _popupCreator = popupCreator;
+
             InitializeComponent();
             DataContext = this;
             IsVisibleChanged += OnVisibleChanged;
@@ -81,7 +94,7 @@ namespace Imya.UI.Components
         {
             if (TweakManager.HasUnsavedChanges)
             {
-                var dialog = PopupCreator.CreateSaveTweakPopup();
+                var dialog = _popupCreator.CreateSaveTweakPopup();
                 dialog.ShowDialog();
             }
             TweakManager.Load(mod);

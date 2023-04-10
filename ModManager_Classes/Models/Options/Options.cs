@@ -1,20 +1,43 @@
 ﻿using Imya.Models.NotifyPropertyChanged;
-using Imya.Utils;
+using Imya.Services;
+using Imya.Services.Interfaces;
 using System.ComponentModel;
 
 namespace Imya.Models.Options
 {
-    public class ModloaderInstallationOptions
-    {
-        public String UnpackDirectory { get; set; } = ImyaSetupManager.Instance.UnpackDirectoryPath;
+    public interface IModloaderInstallationOptions 
+    { 
+        String UnpackDirectory { get; set; }
     }
 
-    public class GithubDownloaderOptions
+    public class ModloaderInstallationOptions : IModloaderInstallationOptions
     {
-        public String DownloadDirectory { get; set; } = ImyaSetupManager.Instance.DownloadDirectoryPath;
+        public String UnpackDirectory { get; set; }
+        public ModloaderInstallationOptions(IImyaSetupService imyaSetupService) {
+            UnpackDirectory = imyaSetupService.UnpackDirectoryPath;
+        }
     }
 
-    public class ModInstallationOptions : PropertyChangedNotifier
+    public interface IGithubDownloaderOptions
+    {
+        String DownloadDirectory { get; set; }
+    }
+
+    public class GithubDownloaderOptions : IGithubDownloaderOptions
+    {
+        public String DownloadDirectory { get; set; }
+        public GithubDownloaderOptions(IImyaSetupService imyaSetupService)
+        {
+            DownloadDirectory = imyaSetupService.DownloadDirectoryPath;
+        }
+    }
+
+    public interface IModInstallationOptions
+    {
+        String UnpackDirectory { get; set; }
+    }
+
+    public class ModInstallationOptions : PropertyChangedNotifier, IModInstallationOptions
     {
         public bool AllowOldToOverwrite  {
             get => _allowOldToOverwrite;
@@ -25,7 +48,12 @@ namespace Imya.Models.Options
             }
         }
         private bool _allowOldToOverwrite = false;
-        public String UnpackDirectory { get; set; } = ImyaSetupManager.Instance.UnpackDirectoryPath;
+        public String UnpackDirectory { get; set; }
+
+        public ModInstallationOptions(IImyaSetupService imyaSetupService)
+        {
+            UnpackDirectory = imyaSetupService.UnpackDirectoryPath;
+        }
     }
 
     public class ModCollectionOptions

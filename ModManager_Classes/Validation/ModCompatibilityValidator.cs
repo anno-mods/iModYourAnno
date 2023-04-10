@@ -1,6 +1,6 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
 using Imya.Models.ModMetadata;
+using Imya.Models.Mods;
 using System.Collections.Immutable;
 
 namespace Imya.Validation

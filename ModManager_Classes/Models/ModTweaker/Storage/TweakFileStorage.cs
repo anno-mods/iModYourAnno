@@ -1,4 +1,5 @@
-﻿using Imya.Utils;
+﻿using Imya.Services;
+using Imya.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.ModTweaker
 {
-
     public class TweakFileStorage : ITweakStorage
     {
         public Dictionary<String, Tweak> Tweaks { get; set; } = new();
 
-        public static String BaseDirectory => ImyaSetupManager.Instance.TweakDirectoryPath;
+        public static String BaseDirectory => ImyaSetupService.Instance.TweakDirectoryPath;
 
         public TweakFileStorage()
         {

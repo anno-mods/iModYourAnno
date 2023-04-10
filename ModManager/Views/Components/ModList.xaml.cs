@@ -1,6 +1,7 @@
 ﻿using Imya.Models;
+using Imya.Models.Mods;
+using Imya.Texts;
 using Imya.UI.Models;
-using Imya.UI.Utils;
 using Imya.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,9 +16,6 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ModList : UserControl, INotifyPropertyChanged
     {
-        public IText ActivateText { get; } = TextManager.Instance.GetText("MODLIST_ACTIVATE");
-        public IText DeactivateText { get; } = TextManager.Instance.GetText("MODLIST_DEACTIVATE");
-
         /// <summary>
         /// Either the only or the first mod in the current selection
         /// </summary>
@@ -26,36 +24,33 @@ namespace Imya.UI.Components
 
         public BindableModCollection Mods { get; init; }
 
-        public TextManager TextManager { get; } = TextManager.Instance;
+        public ITextManager TextManager { get; init; }
+        public IAppSettings Settings { get; init; }
 
-        public AppSettings Settings { get; } = AppSettings.Instance;
-
-        public ModList()
+        public ModList(
+            ITextManager textManager, 
+            IAppSettings settings,
+            ModCollection _globalMods)
         {
-            Mods = new BindableModCollection(ModCollection.Global ?? ModCollection.Empty, this);
+            TextManager = textManager;
+            Settings = settings;
+
+            Mods = new BindableModCollection(_globalMods, this);
 
             InitializeComponent();
             DataContext = this;
             OnSelectionChanged();
 
-            Settings.PropertyChanged += Settings_PropertyChanged;
+            Settings.SortSettingChanged += OnSortSettingChanged;
         }
 
-        private void Settings_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(Settings.Sorting))
-            {
-                Mods.Order = Settings.Sorting.Comparer;
-            }
-        }
+        private void OnSortSettingChanged(SortSetting e) => Mods.Order = e.Comparer;
 
         public bool ShowAttributes { 
             get => _showAttributes; 
             set => SetProperty(ref _showAttributes, value); 
         }
         private bool _showAttributes = true;
-
-        
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

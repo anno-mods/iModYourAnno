@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:Imya.UI"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              
-             StartupUri="MainWindow.xaml">
+             Startup="OnStartup">
     <Application.Resources>
 
         <ResourceDictionary x:Key="Colors">

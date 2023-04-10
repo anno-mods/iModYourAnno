@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Linq;
+using Imya.Services;
 
 namespace Imya.UI.Popup
 {
@@ -21,7 +22,7 @@ namespace Imya.UI.Popup
     {
         public ObservableCollection<DlcId> Dlcs { get; private set; }
 
-        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
+        private static String ProfilesDirectoryPath = ImyaSetupService.Instance.ProfilesDirectoryPath;
 
         public DlcId[] SelectedIDs { get; private set; } = Array.Empty<DlcId>();
 

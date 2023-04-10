@@ -1,4 +1,5 @@
-﻿using Imya.Models.Options;
+﻿using Imya.Models.Installation.Interfaces;
+using Imya.Models.Options;
 using Imya.Utils;
 
 namespace Imya.Models.Installation
@@ -8,11 +9,8 @@ namespace Imya.Models.Installation
         public String SourceFilepath { get; init; }
         public String UnpackTargetPath { get; init; }
 
-        public ZipInstallation() 
-        {
-            HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_MOD");
-            AdditionalText = new SimpleText(SourceFilepath);
-        }
+        public ZipInstallation() { }
+
         public override string ToString() => $"InstallationTask of {SourceFilepath}";
     }
 

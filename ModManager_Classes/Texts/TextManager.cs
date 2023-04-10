@@ -1,13 +1,11 @@
-﻿using System.Runtime.Serialization;
-using Imya.Models;
+﻿using Imya.Models;
 using Newtonsoft.Json;
-using Imya.Enums;
 using Imya.Models.ModMetadata;
 
 // TODO move all text/language related code under Imya.Text or Imya.Language
-namespace Imya.Utils
+namespace Imya.Texts
 {
-    public class TextManager
+    public class TextManager : ITextManager
     {
         public static TextManager Instance { get; } = new TextManager(); 
 
@@ -16,8 +14,7 @@ namespace Imya.Utils
         private readonly Dictionary<string, IText> KeyedTexts = new();
         private readonly List<IText> UnkeyedTexts = new();
 
-        public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
-        public event LanguageChangedEventHandler LanguageChanged = delegate { };
+        public event ITextManager.LanguageChangedEventHandler LanguageChanged = delegate { };
 
         public IText this[String Key]
         {

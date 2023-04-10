@@ -1,10 +1,11 @@
 ﻿using Imya.Models;
+using Imya.Models.Mods;
+using Imya.Services.Interfaces;
+using Imya.Texts;
 using Imya.UI.Popup;
-using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -17,9 +18,9 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class ModActivationView : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
-        public ModCollection? Mods { get; private set; } = ModCollection.Global;
-        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+        public ITextManager TextManager { get; init; }
+        public ModCollection? Mods { get; private set; }
+        public IGameSetupService GameSetupManager { get; }
 
         #region notifyable properties
 
@@ -53,8 +54,15 @@ namespace Imya.UI.Views
 
         #endregion
 
-        public ModActivationView()
+        public ModActivationView(
+            IGameSetupService gameSetup,
+            ITextManager textManager,
+            ModCollection globalMods)
         {
+            GameSetupManager = gameSetup;
+            TextManager = textManager;
+            Mods = globalMods;
+
             InitializeComponent();
             DataContext = this;
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;

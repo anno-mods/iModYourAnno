@@ -1,13 +1,13 @@
 ﻿using Imya.GithubIntegration;
 using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
-using Imya.GithubIntegration.StaticData;
-using Imya.GithubIntegration.RepositoryInformation;
-using Imya.Models;
 using Imya.Models.Installation;
-using Imya.UI.Popup;
+using Imya.Models.Installation.Interfaces;
+using Imya.Models.Mods;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Imya.UI.Models;
 using Imya.UI.Utils;
-using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,20 +15,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 
 namespace Imya.UI.Views
 {
     public partial class GithubBrowserView : UserControl, INotifyPropertyChanged, IViewPage
     {
-        public IText MESSAGE { get; set; }
-        public IText OK_TEXT { get; set; }
-        public IText CANCEL_TEXT { get; set; }
-
         #region Notifying
         public ObservableCollection<GithubRepoInfo> DisplayedRepositories 
         { 
@@ -59,24 +52,44 @@ namespace Imya.UI.Views
         #endregion
 
         public ObservableCollection<GithubRepoInfo> AllRepositories;
-        private readonly IReadmeProvider ReadmeProvider = new StaticReadmeProvider();
 
-        public TextManager TextManager { get;} = TextManager.Instance;
-        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
+        public ITextManager TextManager { get;}
+        public IInstallationService InstallationManager { get; init; }
 
-        public GithubBrowserView()
+        private readonly IMainViewController _mainViewController;
+        private readonly IReadmeStrategy _readmeProvider;
+        private readonly PopupCreator _popupCreator;
+        private readonly IGithubInstallationBuilderFactory _githubInstallationBuilderFactory;
+        private readonly IZipInstallationBuilderFactory _zipInstallationBuilderFactory;
+        private readonly IAppSettings _appSettings;
+
+        public GithubBrowserView(
+            IInstallationService installationService,
+            ITextManager textManager,
+            IReadmeStrategy readmeProvider,
+            IGithubInstallationBuilderFactory githubInstallationBuilderFactory,
+            IZipInstallationBuilderFactory zipInstallationBuilderFactory,
+            PopupCreator popupCreator,
+            IAppSettings appSettings)
         {
+            InstallationManager = installationService;
+            TextManager = textManager;
+            _readmeProvider = readmeProvider;
+            _popupCreator = popupCreator;
+            _githubInstallationBuilderFactory = githubInstallationBuilderFactory;
+            _zipInstallationBuilderFactory = zipInstallationBuilderFactory;
+            _appSettings = appSettings;
+
             DataContext = this;
             InitializeComponent();
-            OK_TEXT = new SimpleText("Download");
-            CANCEL_TEXT = new SimpleText("Cancel");
 
             InstallationManager.InstallationCompleted += ValidateCanAddToDownloads;
+            
         }
 
         public void OnLoad()
         {
-            var repoInfoProvider = new AutoRepoInfoSource(AppSettings.Instance.ModindexLocation);
+            var repoInfoProvider = new AutoRepoInfoSource(_appSettings.ModindexLocation);
             AllRepositories = new ObservableCollection<GithubRepoInfo>(repoInfoProvider.GetAll());
             DisplayedRepositories = AllRepositories;
         }
@@ -89,7 +102,7 @@ namespace Imya.UI.Views
 
             try
             {
-                var install = await GithubInstallationBuilder
+                var install = await _githubInstallationBuilderFactory
                     .Create()
                     .WithRepoInfo(SelectedRepo)
                     .BuildAsync();
@@ -99,25 +112,23 @@ namespace Imya.UI.Views
             }
             catch (Octokit.RateLimitExceededException ex)
             {
-                PopupCreator.CreateApiRateExceededPopup().ShowDialog();
+                _popupCreator.CreateApiRateExceededPopup().ShowDialog();
             }
             catch (InstallationException ex)
             {
-                PopupCreator.CreateExceptionPopup(ex).ShowDialog();
+                _popupCreator.CreateExceptionPopup(ex).ShowDialog();
             }
         }
 
-        private async void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
+        private void OnInstallFromZipAsync(object sender, RoutedEventArgs e)
         {
-            if (ModCollection.Global is null) return;
-
             var dialog = CreateOpenFileDialog();
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
                 return;
 
             foreach (String filename in dialog.FileNames)
             {
-                var install = ZipInstallationBuilder
+                var install = _zipInstallationBuilderFactory
                     .Create()
                     .WithSource(filename)
                     .Build();
@@ -140,7 +151,7 @@ namespace Imya.UI.Views
 
         private void CancelButtonClick(object sender, RoutedEventArgs e)
         {
-            MainViewController.Instance.GoToLastView();
+            _mainViewController.GoToLastView();
         }
 
         private async void OnRepoSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -153,22 +164,22 @@ namespace Imya.UI.Views
 
             try
             {
-                ReadmeText = await ReadmeProvider.GetReadmeAsync(SelectedRepo);
+                ReadmeText = await _readmeProvider.GetReadmeAsync(SelectedRepo);
             }
             catch (Octokit.RateLimitExceededException ex)
             {
 
-                PopupCreator.CreateApiRateExceededPopup().ShowDialog();
+                _popupCreator.CreateApiRateExceededPopup().ShowDialog();
             }
             catch (Octokit.ApiException ex)
             {
-                PopupCreator.CreateExceptionPopup(ex).ShowDialog();
+                _popupCreator.CreateExceptionPopup(ex).ShowDialog();
             }
         }
 
         private void ValidateCanAddToDownloads()
         {
-            CanAddToDownloads = RepoSelection is not null && !InstallationManager.Instance.IsProcessingInstallWithID(SelectedRepo.GetID());
+            CanAddToDownloads = RepoSelection is not null && !InstallationManager.IsProcessingInstallWithID(SelectedRepo.GetID());
         }
 
         public void Filter(IEnumerable<string> keywords)

@@ -1,4 +1,6 @@
-﻿using Imya.Utils;
+﻿using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,12 +21,12 @@ namespace Imya.Models.GameLauncher
      */
     public class SteamGameLauncher : GameLauncherBase, IGameLauncher
     {
-        private GameSetupManager _gameSetup;
+        private IGameSetupService _gameSetup;
 
-        public SteamGameLauncher()
+        public SteamGameLauncher(IGameSetupService gameSetupService)
         {
             _scanner = new GameScanner();
-            _gameSetup = GameSetupManager.Instance;
+            _gameSetup = gameSetupService;
 
             RunningGame = null;
         }

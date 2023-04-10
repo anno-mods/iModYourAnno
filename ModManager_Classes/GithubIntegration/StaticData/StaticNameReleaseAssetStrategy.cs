@@ -6,24 +6,21 @@ namespace Imya.GithubIntegration.StaticData
 {
     public class StaticNameReleaseAssetStrategy : IReleaseAssetStrategy
     {
-        private string DownloadPattern { get; init; }
+        static IRepositoryProvider? _releaseProvider;        
 
-        static IRepositoryProvider? releaseProvider;        
-
-        public StaticNameReleaseAssetStrategy(string downloadPattern)
+        public StaticNameReleaseAssetStrategy(IRepositoryProvider releaseProvider)
         {
-            releaseProvider ??= new RepositoryProvider();
-            DownloadPattern = downloadPattern;
+            _releaseProvider = releaseProvider;
         }
 
         public async Task<ReleaseAsset?> GetReleaseAssetAsync(GithubRepoInfo repoInfo)
         {
-            var release = await releaseProvider!.FetchLatestReleaseAsync(repoInfo);
+            var release = await _releaseProvider!.FetchLatestReleaseAsync(repoInfo);
             if (release is null)
                 return null;
 
             Matcher matcher = new();
-            matcher.AddIncludePatterns(new string[] { DownloadPattern });
+            matcher.AddIncludePatterns(new string[] { repoInfo.ReleaseID });
 
             return release?.Assets.FirstOrDefault(x => matcher.Match(x.Name).HasMatches);
         }

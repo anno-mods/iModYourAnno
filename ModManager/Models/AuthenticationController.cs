@@ -3,6 +3,7 @@ using Imya.Models.NotifyPropertyChanged;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
+using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Imya.UI.Models
 {
-    public class AuthenticationController : PropertyChangedNotifier
+    public class AuthenticationController : PropertyChangedNotifier, IAuthenticationController
     {
         private AuthCodePopup? AuthCodePopup;
 
@@ -36,24 +37,35 @@ namespace Imya.UI.Models
         }
         private Uri? _uri;
 
-        public AuthenticationController()
+        private IAuthenticator _authenticator;
+        private IGitHubClient _client;
+        private readonly PopupCreator _popupCreator;
+
+        public AuthenticationController(
+            IGitHubClient client, 
+            IAuthenticator authenticator,
+            PopupCreator popupCreator)
         {
-            GithubClientProvider.Authenticator.UserCodeReceived += OnAuthCodeReceived;
-            GithubClientProvider.Authenticator.AuthenticationSuccess += OnAuthSuccess;
+            _authenticator = authenticator;
+            _client = client;
+            _popupCreator = popupCreator;
+
+            _authenticator.UserCodeReceived += OnAuthCodeReceived;
+            _authenticator.AuthenticationSuccess += OnAuthSuccess;
         }
 
         public void Authenticate()
         {
-            Task.Run(async () => await GithubClientProvider.Authenticator.StartAuthentication());
+            Task.Run(async () => await _authenticator.StartAuthentication());
         }
 
         public void Logout()
         {
-            GithubClientProvider.Client.Credentials = Octokit.Credentials.Anonymous;
+            _client.Connection.Credentials = Octokit.Credentials.Anonymous;
             IsAuthenticated = false;
             AvatarUri = null;
             AuthenticatedUser = null;
-            GithubClientProvider.Authenticator.RemoveAuthentication();
+            _authenticator.RemoveAuthentication();
         }
 
         private void OnAuthCodeReceived(string AuthCode)
@@ -62,7 +74,7 @@ namespace Imya.UI.Models
             {
                 if (AuthCodePopup is AuthCodePopup)
                     AuthCodePopup.Close();
-                AuthCodePopup = new AuthCodePopup(AuthCode);
+                AuthCodePopup = _popupCreator.CreateAuthCodePopup(AuthCode);
                 AuthCodePopup.Show();
             });
         }
@@ -79,7 +91,7 @@ namespace Imya.UI.Models
 
         private async Task UpdateUserLogin()
         {
-            var user = await GithubClientProvider.Client.User.Current();
+            var user = await _client.User.Current();
             AuthenticatedUser = user.Login;
             Console.WriteLine($"Authenticated as {AuthenticatedUser}");
             AvatarUri = new Uri(user.AvatarUrl);

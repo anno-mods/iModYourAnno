@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using Imya.Utils;
 using Imya.Models;
 using System.Threading.Tasks;
-using Imya.UI.Utils;
 using Imya.UI.Popup;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Imya.UI.Models;
 
 namespace Imya.UI.Views
 {
@@ -18,10 +21,10 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class SettingsView : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
-        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
+        public ITextManager TextManager { get; init; }
+        public IGameSetupService GameSetup { get; init; }
 
-        public AppSettings AppSettings { get; set; } = AppSettings.Instance;
+        public IAppSettings AppSettings { get; init; }
 
         public long Max { get; } = 100 * 1024 * 1024;
         public long Min { get; } = 256 * 1024;
@@ -43,10 +46,15 @@ namespace Imya.UI.Views
         private ModLoaderStatus _installStatus = ModLoaderStatus.NotInstalled;
         #endregion
 
-
-
-        public SettingsView()
+        public SettingsView(
+            IAppSettings appSettings,
+            ITextManager textManager, 
+            IGameSetupService gameSetupService)
         {
+            AppSettings = appSettings;
+            TextManager = textManager;
+            GameSetup = gameSetupService;
+
             InitializeComponent();
             AppSettings.Initialize();
 

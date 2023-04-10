@@ -1,4 +1,8 @@
-﻿using Imya.Utils;
+﻿using Imya.Models.Installation.Interfaces;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +11,33 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Installation
 {
+    public class ZipInstallationBuilderFactory : IZipInstallationBuilderFactory
+    {
+        private readonly IServiceProvider _serviceProvider;
+
+        public ZipInstallationBuilderFactory(IServiceProvider serviceProvider) 
+        {
+            _serviceProvider = serviceProvider;
+        }
+        public ZipInstallationBuilder Create() => _serviceProvider.GetRequiredService<ZipInstallationBuilder>();
+    }
+
     public class ZipInstallationBuilder
     {
         private String? _source;
 
-        private ZipInstallationBuilder() { }
+        private readonly IGameSetupService _gameSetupService;
+        private readonly IImyaSetupService _imyaSetupService;
+        private readonly ITextManager _textManager;
 
-        public static ZipInstallationBuilder Create() => new ZipInstallationBuilder();
+        public ZipInstallationBuilder(
+            IGameSetupService gameSetupService,
+            IImyaSetupService imyaSetupService, 
+            ITextManager _textManager)
+        {
+            _gameSetupService = gameSetupService;
+            _imyaSetupService = imyaSetupService;
+        }
 
         public ZipInstallationBuilder WithSource(String source_path) 
         {
@@ -23,7 +47,7 @@ namespace Imya.Models.Installation
 
         public ZipInstallation Build()
         {
-            if (GameSetupManager.Instance.GameRootPath is null)
+            if (_gameSetupService.GameRootPath is null)
                 throw new Exception("No Game Path set!");
 
             if(_source is null)
@@ -35,10 +59,11 @@ namespace Imya.Models.Installation
             var installation = new ZipInstallation()
             {
                 SourceFilepath = _source,
-                UnpackTargetPath = Path.Combine(ImyaSetupManager.Instance.UnpackDirectoryPath, guid),
-                HeaderText = new SimpleText(header),
+                UnpackTargetPath = Path.Combine(_imyaSetupService.UnpackDirectoryPath, guid),
                 Status = InstallationStatus.NotStarted,
-                CancellationTokenSource = new CancellationTokenSource()
+                CancellationTokenSource = new CancellationTokenSource(),
+                HeaderText = _textManager.GetText("INSTALLATION_HEADER_MOD"),
+                AdditionalText = new SimpleText(_source)
             };
             return installation;
         }

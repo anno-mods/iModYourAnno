@@ -1,4 +1,4 @@
-﻿using Imya.Models;
+﻿using Imya.Models.Mods;
 
 namespace Imya.Validation
 {

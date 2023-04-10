@@ -1,4 +1,6 @@
-﻿using Imya.Utils;
+﻿using Imya.Models.Mods;
+using Imya.Texts;
+using Imya.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +11,19 @@ namespace Imya.Models.Attributes
 {
     public class CyclicDependencyAttributeFactory
     {
-        public static IAttribute Get(IEnumerable<Mod> context)
+        private ITextManager _textManager;
+        public CyclicDependencyAttributeFactory(ITextManager textManager)
+        {
+            _textManager = textManager;
+        }
+
+        public IAttribute Get(IEnumerable<Mod> context)
         {
             return new GenericModContextAttribute()
             {
                 AttributeType = AttributeType.CyclicDependency,
                 Description = new SimpleText(
-                   String.Format(TextManager.Instance.GetText("ATTRIBUTE_CYCLIC_DEPENDENCY").Text,
+                   String.Format(_textManager.GetText("ATTRIBUTE_CYCLIC_DEPENDENCY").Text,
                                 String.Join(',', context.Select(x => $"[{x.Category}] {x.Name}")))),
                 Context = context
             };

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Cache
 {
-    internal class TimedCache<TKey, TResult> : ITimedCache<TKey, TResult> where TKey : notnull
+    public class TimedCache<TKey, TResult> : ITimedCache<TKey, TResult> where TKey : notnull
     {
         public TimeSpan ExpirationTime { get; set; } = TimeSpan.FromSeconds(60);
 
