@@ -43,6 +43,12 @@ namespace Imya.UI.Views
         }
         private GithubRepoInfo? _selectedRepo;
 
+        public bool HasRepoSelection { 
+            get => _hasRepoSelection;
+            set => SetProperty(ref _hasRepoSelection, value);
+        }
+        private bool _hasRepoSelection = false;
+
         public bool CanAddToDownloads
         {
             get => _canAddToDownloads;
@@ -159,8 +165,13 @@ namespace Imya.UI.Views
         private async void OnRepoSelectionChanged(object sender, SelectionChangedEventArgs e)
         { 
             var repoInfo = RepoSelection.SelectedItem as GithubRepoInfo;
-            if (repoInfo is null) return;
+            if (repoInfo is null)
+            {
+                HasRepoSelection = false;
+                return;
+            } 
             SelectedRepo = repoInfo;
+            HasRepoSelection = true;
 
             ValidateCanAddToDownloads();
 
