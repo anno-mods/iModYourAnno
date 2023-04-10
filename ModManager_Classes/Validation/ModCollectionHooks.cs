@@ -2,6 +2,7 @@
 using Imya.Models.Mods;
 using Imya.Models.ModTweaker;
 using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.IO;
 using Imya.Models.ModTweaker.Storage;
 using System.Collections.Specialized;
 using System.Threading;
@@ -12,13 +13,16 @@ namespace Imya.Validation
     public class ModCollectionHooks
     {
         private ITweakRepository _tweakRepository;
+        private ModTweaksLoader _tweaksLoader; 
         private SemaphoreSlim _tweaksave_sem;
 
         private List<IModValidator> validators = new(); 
 
-        public ModCollectionHooks(ITweakRepository tweakRepository)
+        public ModCollectionHooks(ITweakRepository tweakRepository,
+            ModTweaksLoader tweaksLoader)
         {
             _tweakRepository = tweakRepository;
+            _tweaksLoader = tweaksLoader;
             _tweaksave_sem = new SemaphoreSlim(1);
         }
 
@@ -60,7 +64,7 @@ namespace Imya.Validation
             Task.Run(() =>
             {
                 ModTweaks tweaks = new();
-                tweaks.Load(mod);
+                _tweaksLoader.Load(mod);
                 _tweaksave_sem.Wait();
                 tweaks.Save();
                 _tweaksave_sem.Release();

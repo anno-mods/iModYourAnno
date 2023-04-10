@@ -1,5 +1,5 @@
 ﻿using Imya.Models.Mods;
-using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
 using System;
 using System.Collections.Generic;
 using System.Linq;

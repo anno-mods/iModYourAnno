@@ -191,8 +191,8 @@ namespace Imya.UI.Models
             Themes.Add(new ThemeSetting(TextManager["THEME_LIGHT"], "Styles/Themes/Light.xaml", "Light", Colors.LightGray));
             Themes.Add(new ThemeSetting(TextManager["THEME_DARKVIOLET"], "Styles/Themes/DarkViolet.xaml", "DarkViolet", Colors.Purple));
 
-            Languages.Add(new LanguageSetting("SETTINGS_LANG_ENGLISH", ApplicationLanguage.English));
-            Languages.Add(new LanguageSetting("SETTINGS_LANG_GERMAN", ApplicationLanguage.German));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
 
             Sortings.Add(new SortSetting(CompareByActiveCategoryName.Default, TextManager["SORTING_DEFAULT"], "Default"));
             Sortings.Add(new SortSetting(CompareByCategoryName.Default, TextManager["SORTING_ACTIVE_AGNOSTIC"], "ActiveAgnostic"));

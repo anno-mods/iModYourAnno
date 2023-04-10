@@ -18,9 +18,9 @@ namespace Imya.UI.Models
         public string LanguageName { get; private init; }
         public ApplicationLanguage Language { get; private init; }
 
-        public LanguageSetting(string nameId, ApplicationLanguage lang)
+        public LanguageSetting(IText text, ApplicationLanguage lang)
         {
-            var localizedName = TextManager.Instance.GetText(nameId);
+            var localizedName = text;
             localizedName.Update(lang); // this will globally update them, but it doesn't matter in this specific case
             LanguageName = localizedName.Text;
             Language = lang;

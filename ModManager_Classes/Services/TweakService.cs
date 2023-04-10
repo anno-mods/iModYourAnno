@@ -1,5 +1,6 @@
 ﻿using Imya.Models.Mods;
 using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.IO;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Services.Interfaces;
 using System;
@@ -12,6 +13,12 @@ namespace Imya.Services
 {
     public class TweakService : PropertyChangedNotifier, ITweakService
     {
+        private readonly ModTweaksLoader _loader; 
+        public TweakService(ModTweaksLoader loader)
+        {
+            _loader = loader;
+        }
+
         public ModTweaks? Tweaks
         {
             get => _tweaks;
@@ -87,9 +94,9 @@ namespace Imya.Services
                 Tweaks = null;
             ThreadPool.QueueUserWorkItem(o =>
             {
-                ModTweaks tweaks = new();
-                if (mod is not null)
-                    tweaks.Load(mod);
+                var tweaks = mod is not null ?
+                    _loader.Load(mod)
+                    : new ModTweaks();
                 Tweaks = tweaks;
                 IsLoading = false;
             });

@@ -1,4 +1,5 @@
 ﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace Imya.Validation
 {
     public class CyclicDependencyValidator : IModValidator
     {
-        private CyclicDependencyAttributeFactory _attributeFactory;
+        private ICyclicDependencyAttributeFactory _attributeFactory;
 
-        public CyclicDependencyValidator(CyclicDependencyAttributeFactory attributeFactory)
+        public CyclicDependencyValidator(ICyclicDependencyAttributeFactory attributeFactory)
         {
             _attributeFactory = attributeFactory;
         }

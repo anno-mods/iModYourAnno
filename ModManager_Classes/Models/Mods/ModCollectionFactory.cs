@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO.Compression;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Installation;
 using Imya.Services.Interfaces;
 using Imya.Validation;
@@ -26,7 +27,10 @@ namespace Imya.Models.Mods
         {
             var collection = new ModCollection(
                 _serviceProvider.GetRequiredService<IGameSetupService>(),
-                _serviceProvider.GetRequiredService<ModCollectionHooks>())
+                _serviceProvider.GetRequiredService<ModCollectionHooks>(),
+                _serviceProvider.GetRequiredService<IModFactory>(),
+                _serviceProvider.GetRequiredService<IModStatusAttributeFactory>(),
+                _serviceProvider.GetRequiredService<IModAccessIssueAttributeFactory>())
             {
                 ModsPath = Filepath,
                 Normalize = normalize,

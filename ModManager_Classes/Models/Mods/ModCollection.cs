@@ -1,4 +1,6 @@
 ﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Factories;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Services;
 using Imya.Services.Interfaces;
@@ -54,6 +56,9 @@ namespace Imya.Models.Mods
         public bool AutofixSubfolder { get; init; }
 
         private IGameSetupService _gameSetupService;
+        private IModFactory _modFactory;
+        private IModStatusAttributeFactory _modStatusAttributeFactory;
+        private IModAccessIssueAttributeFactory _modAccessIssueAttributeFactory;
 
         public ModCollectionHooks Hooks { get; }
 
@@ -65,14 +70,23 @@ namespace Imya.Models.Mods
         /// <param name="normalize">Remove duplicate "-"</param>
         /// <param name="loadImages">Load image files into memory</param>
         /// <param name="autofixSubfolder">find data/ in subfolder and move up</param>
-        internal ModCollection(IGameSetupService gameSetupService, ModCollectionHooks hooks)
+        internal ModCollection(
+            IGameSetupService gameSetupService, 
+            ModCollectionHooks hooks, 
+            IModFactory modFactory,
+            IModStatusAttributeFactory modStatusAttributeFactory,
+            IModAccessIssueAttributeFactory modAccessIssueAttributeFactory)
         {
+            _gameSetupService = gameSetupService;
+            _modFactory = modFactory;
+            _modStatusAttributeFactory = modStatusAttributeFactory;
+            _modAccessIssueAttributeFactory = modAccessIssueAttributeFactory;
+
             ModsPath = "";
             Normalize = false;
             LoadImages = false;
             AutofixSubfolder = false;
 
-            _gameSetupService = gameSetupService;
             Hooks = hooks;
             Hooks.HookTo(this);
         }
@@ -141,7 +155,7 @@ namespace Imya.Models.Mods
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders, bool invokeEvents = true)
         {
-            var mods = folders.SelectNoNull(x => Mod.TryFromFolder(x)).ToList();
+            var mods = folders.SelectNoNull(x => _modFactory.GetFromFolder(x)).ToList();
             if (Normalize)
             {
                 foreach (var mod in mods)
@@ -245,7 +259,7 @@ namespace Imya.Models.Mods
 
             // do it!
             var status = Directory.Exists(targetModPath) ? ModStatus.Updated : ModStatus.New;
-            sourceMod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
+            sourceMod.Attributes.AddAttribute(_modStatusAttributeFactory.Get(status));
 
             DirectoryEx.CleanMove(Path.Combine(sourceModsPath, sourceMod.FullFolderName), targetModPath);
             Console.WriteLine($"{sourceMod.Attributes.GetByType(AttributeType.ModStatus)}: {sourceMod.FolderName}");
@@ -275,7 +289,7 @@ namespace Imya.Models.Mods
                 _mods.Remove(targetMod);
             }
             var reparsed = (await LoadModsAsync(new string[] { targetModPath }, false)).First();
-            reparsed.Attributes.AddAttribute(ModStatusAttributeFactory.Get(status));
+            reparsed.Attributes.AddAttribute(_modStatusAttributeFactory.Get(status));
             _mods.Add(reparsed);
         }
 
@@ -330,7 +344,7 @@ namespace Imya.Models.Mods
                 {
                     Console.WriteLine(e.Message);
                     if (!mod.IsRemoved)
-                        mod.Attributes.AddAttribute(ModAccessIssueAttributeFactory.Get());
+                        mod.Attributes.AddAttribute(_modAccessIssueAttributeFactory.Get());
                 }
             });
         }
@@ -375,7 +389,7 @@ namespace Imya.Models.Mods
                 }
                 catch (Exception e)
                 {
-                    mod.Attributes.Add(ModAccessIssueAttributeFactory.GetNoDelete());
+                    mod.Attributes.Add(_modAccessIssueAttributeFactory.GetNoDelete());
                     Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
                 }
             });
@@ -385,7 +399,7 @@ namespace Imya.Models.Mods
         public async Task MakeObsoleteAsync(Mod mod, string path)
         {
             await ChangeActivationAsync(mod, false);
-            mod.Attributes.AddAttribute(ModStatusAttributeFactory.Get(ModStatus.Obsolete));
+            mod.Attributes.AddAttribute(_modStatusAttributeFactory.Get(ModStatus.Obsolete));
             Console.WriteLine($"{ModStatus.Obsolete}: {mod.FolderName}");
         }
 

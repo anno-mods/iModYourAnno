@@ -31,8 +31,9 @@
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
         </Grid.Resources>
 
-        <Components:Dashboard Grid.RowSpan="2" x:Name="Dashboard"/>
-        
+        <Components:Dashboard Grid.RowSpan="2"
+                              x:Name="Dashboard" />
+
         <Components:ConsoleLog Grid.Column="1" 
                                Height ="100" 
                                Visibility="{Binding Settings.ConsoleVisibility, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}" 

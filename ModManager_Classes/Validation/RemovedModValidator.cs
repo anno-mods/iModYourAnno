@@ -1,4 +1,5 @@
 ﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Mods;
 using Imya.Texts;
 using System;
@@ -12,8 +13,10 @@ namespace Imya.Validation
 {
     public class RemovedModValidator : IModValidator
     {
-        public RemovedModValidator() { 
-        
+        private readonly IRemovedFolderAttributeFactory _attributeFactory;
+        public RemovedModValidator(IRemovedFolderAttributeFactory attributeFactory) 
+        {
+            _attributeFactory = attributeFactory;
         }
 
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
@@ -31,7 +34,7 @@ namespace Imya.Validation
                 return;
             }
             mod.Attributes.Clear();
-            mod.Attributes.AddAttribute(RemovedFolderAttributeFactory.Get());
+            mod.Attributes.AddAttribute(_attributeFactory.Get());
         }
     }
 }

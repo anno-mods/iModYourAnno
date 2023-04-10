@@ -43,16 +43,7 @@ namespace Imya.Models.ModTweaker.IO
             IExposedModValue? expose = ExposedModValueFactory.FromXmlNode(ExposeInstruction, parent);
 
             if (expose is null) return null;
-
-            if (parent.TweakStorage.TryGetTweakValue(parent.FilePath, expose.ExposeID, out var value))
-            {
-                expose.Value = value!;
-            }
-            else
-            {
-                expose.Value = parent.GetDefaultNodeValue(expose);
-            }
-
+            expose.Value = parent.GetDefaultNodeValue(expose);
             return expose;
         }
 

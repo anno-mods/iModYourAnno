@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Octokit;
-using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
 
 namespace Imya.Utils
 {

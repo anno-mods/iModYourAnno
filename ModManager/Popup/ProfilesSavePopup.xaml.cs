@@ -33,7 +33,7 @@ namespace Imya.UI.Popup
     {
         public String ProfileFilename { get; set; } = "Profile1";
 
-        private static String ProfilesDirectoryPath = ImyaSetupService.Instance.ProfilesDirectoryPath;
+        public String ProfilesDirectoryPath { get; init; }
 
         public bool IsValidFilename
         {
@@ -65,15 +65,9 @@ namespace Imya.UI.Popup
         public ProfilesSavePopup()
         {
             InitializeComponent();
-
-            OK_TEXT = TextManager.Instance["DIALOG_OKAY"];
-            CANCEL_TEXT = TextManager.Instance["DIALOG_CANCEL"];
-
             DataContext = this;
-
             NameTextbox.TextChanged += FilenameChanged;
 
-            Title = TextManager.Instance["PROFILE_SAVE"].Text;
         }
 
         private FilenameValidation ValidateFilename()

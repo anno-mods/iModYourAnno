@@ -5,8 +5,8 @@ using Xunit;
 using Imya.Models;
 using Imya.Utils;
 using System.Linq;
-using Imya.Models.Attributes;
 using System.Collections.Generic;
+using Imya.Models.Attributes.Factories;
 
 namespace Imya.UnitTests
 {

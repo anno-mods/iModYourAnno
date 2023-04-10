@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace Imya.UI.ValueConverters
 {
@@ -14,7 +15,7 @@ namespace Imya.UI.ValueConverters
     /// A converter that maps DLC IDs to LocalizedTexts
     /// </summary>
     [ValueConversion(typeof(DlcId), typeof(LocalizedText))]
-    internal class DlcTextConverter : IValueConverter
+    public class DlcTextConverter : IValueConverter
     {
         private ITextManager TextManager;
 

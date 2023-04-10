@@ -16,7 +16,7 @@ namespace Imya.Models.Installation
         IText? HeaderText { get; }
         IText? AdditionalText { get; }
         bool HasAdditionalText { get; }
-        IInstallationStatus? Status { get; set; }
+        InstallationStatus Status { get; set; }
 
         CancellationTokenSource CancellationTokenSource { get; }
         CancellationToken CancellationToken { get; }

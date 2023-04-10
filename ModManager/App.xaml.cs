@@ -17,13 +17,13 @@ using Imya.GithubIntegration.StaticData;
 using Imya.UI.Models;
 using Imya.Models.Options;
 using Imya.Models.GameLauncher;
-using Imya.Models.ModTweaker.Storage;
-using Imya.Models.ModTweaker;
 using Imya.Models.Installation.Interfaces;
 using Imya.Models.Installation;
-using Imya.Models.Attributes;
 using Imya.Models.Mods;
 using System.Windows.Forms;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.Attributes.Factories;
+using Imya.Models.ModTweaker.DataModel.Storage;
 
 namespace Imya.UI
 {
@@ -43,6 +43,17 @@ namespace Imya.UI
                 {
                     //services
                     services.AddSingleton<ITextManager, TextManager>();
+                    services.AddTransient<ICyclicDependencyAttributeFactory, CyclicDependencyAttributeFactory>();
+                    services.AddTransient<IMissingModinfoAttributeFactory, MissingModinfoAttributeFactory>();
+                    services.AddTransient<IModCompabilityAttributeFactory, ModCompabilityAttributeFactory>();
+                    services.AddTransient<IModDependencyIssueAttributeFactory, ModDependencyIssueAttributeFactory>();
+                    services.AddTransient<IModReplacedByAttributeFactory, ModReplacedByAttributeFactory>();
+                    services.AddTransient<IModStatusAttributeFactory, ModStatusAttributeFactory>();
+                    services.AddTransient<IRemovedFolderAttributeFactory, RemovedFolderAttributeFactory>();
+                    services.AddTransient<ITweakedAttributeFactory, TweakedAttributeFactory>();
+                    services.AddTransient<IContentInSubfolderAttributeFactory, ContentInSubfolderAttributeFactory>();
+
+                    services.AddSingleton<IModFactory, ModFactory>();
                     services.AddSingleton<IModCollectionFactory, ModCollectionFactory>();
                     services.AddSingleton<IAppSettings, AppSettings>();
                     services.AddSingleton<IGameSetupService, GameSetupService>();
@@ -81,6 +92,9 @@ namespace Imya.UI
                                             serviceProvider.GetRequiredService<CyclicDependencyAttributeFactory>()));
                     services.AddSingleton<ModCompatibilityValidator>();
                     services.AddSingleton<ModContentValidator>();
+                    services.AddSingleton<ModDependencyValidator>();
+                    services.AddSingleton<ModReplacementValidator>();
+                    services.AddSingleton<RemovedModValidator>();
 
                     //caching
                     services.AddScoped<ICache<GithubRepoInfo, String>, TimedCache<GithubRepoInfo, String>>();
@@ -112,7 +126,6 @@ namespace Imya.UI
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<IMainViewController, MainViewController>();
                     services.AddSingleton<IAuthenticationController, AuthenticationController>();
-
                 })
                 .Build();
 
@@ -132,6 +145,9 @@ namespace Imya.UI
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModContentValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModCompatibilityValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<CyclicDependencyValidator>());
+            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModDependencyValidator>());
+            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModReplacementValidator>());
+            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
 
             var appSettings = AppHost.Services.GetRequiredService<IAppSettings>();
             var installationService = AppHost.Services.GetRequiredService<IInstallationService>();

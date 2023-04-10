@@ -18,12 +18,8 @@ namespace Imya.UI.Popup
     public partial class ProfilesLoadPopup : Window, INotifyPropertyChanged 
     {
         public ObservableCollection<ModActivationProfile> Profiles { get; private set; } = new ObservableCollection<ModActivationProfile>();
-
-        private static String ProfilesDirectoryPath = ImyaSetupService.Instance.ProfilesDirectoryPath;
-
+        public String ProfilesDirectoryPath { get; init; }
         public ModActivationProfile? SelectedProfile { get; private set; }
-
-        public TextManager TextManager { get; private set; } = TextManager.Instance;
 
         public bool HasSelection
         {
@@ -41,9 +37,6 @@ namespace Imya.UI.Popup
             InitializeComponent();
             DataContext = this;
 
-            Title = TextManager.Instance["PROFILE_LOAD"].Text;
-
-
             ProfileSelection.SelectionChanged += UpdateSelection;
             Load();
 
@@ -56,14 +49,12 @@ namespace Imya.UI.Popup
 
         public void Load()
         {
-            String ProfilesDirectory = ProfilesDirectoryPath;
-
-            if (!Directory.Exists(ProfilesDirectory))
+            if (!Directory.Exists(ProfilesDirectoryPath))
             {
-                Directory.CreateDirectory(ProfilesDirectory);
+                Directory.CreateDirectory(ProfilesDirectoryPath);
             }
 
-            foreach (String file in Directory.EnumerateFiles(ProfilesDirectory, "*."+ModActivationProfile.ProfileExtension))
+            foreach (String file in Directory.EnumerateFiles(ProfilesDirectoryPath, "*."+ModActivationProfile.ProfileExtension))
             {
                 AddProfile(file);
             }

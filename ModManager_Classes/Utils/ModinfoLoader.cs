@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Imya.Models.ModMetadata.ModinfoModel;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Imya.Models.ModMetadata

@@ -1,10 +1,13 @@
-﻿using Imya.GithubIntegration.Download;
+﻿using Imya.Enums;
+using Imya.GithubIntegration.Download;
 using Imya.Models;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Popup;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Imya.UI.Utils
 {
@@ -12,13 +15,16 @@ namespace Imya.UI.Utils
     {
         private readonly ITextManager _textManager;
         private readonly ITweakService _tweakService;
+        private readonly IImyaSetupService _imyaSetupService;
 
         public PopupCreator(
             ITextManager textManager,
-            ITweakService tweakService) 
+            ITweakService tweakService,
+            IImyaSetupService imyaSetupService) 
         { 
             _textManager = textManager;
             _tweakService = tweakService;
+            _imyaSetupService = imyaSetupService;
         }
         public GenericOkayPopup CreateSaveTweakPopup()
         {
@@ -81,5 +87,29 @@ namespace Imya.UI.Utils
         };
 
         public AuthCodePopup CreateAuthCodePopup(string AuthCode) => new AuthCodePopup(AuthCode);
+
+        public AddDlcPopup CreateAddDlcPopup(IEnumerable<DlcId> dlcIds) => new()
+        {
+            Title = _textManager.GetText("PROFILE_LOAD").Text,
+            Dlcs = new ObservableCollection<DlcId>(dlcIds)
+        };
+
+        public ProfilesLoadPopup CreateProfilesLoadPopup() {
+            var popup = new ProfilesLoadPopup()
+            {
+                Title = _textManager.GetText("PROFILE_LOAD").Text,
+                ProfilesDirectoryPath = _imyaSetupService.ProfilesDirectoryPath
+            };
+            popup.Load();
+            return popup;
+        }
+
+        public ProfilesSavePopup CreateProfilesSavePopup() => new()
+        {
+            OK_TEXT = _textManager.GetText("DIALOG_OKAY"),
+            CANCEL_TEXT = _textManager.GetText("DIALOG_CANCEL"),
+            Title = _textManager.GetText("PROFILE_SAVE").Text,
+            ProfilesDirectoryPath = _imyaSetupService.ProfilesDirectoryPath
+        };
     }
 }

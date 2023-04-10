@@ -90,7 +90,7 @@ namespace Imya.UI.Components
 
         public void BrowserClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GITHUB_BROWSER);
 
-        public void GameSetupClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GAME_SETUP);
+        public void GameSetupClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GITHUB_BROWSER);
 
         public void ModTweakerClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.TWEAKER);
 

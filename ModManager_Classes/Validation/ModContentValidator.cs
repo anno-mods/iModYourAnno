@@ -1,4 +1,5 @@
 ﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Mods;
 using Imya.Utils;
 
@@ -10,13 +11,19 @@ namespace Imya.Validation
     /// </summary>
     public class ModContentValidator : IModValidator
     {
+        private readonly IContentInSubfolderAttributeFactory _factory;
+        public ModContentValidator(IContentInSubfolderAttributeFactory factory) 
+        {
+            _factory = factory;
+        }
+
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
         {
             foreach (var mod in changed)
                 ValidateSingle(mod);
         }
 
-        private static void ValidateSingle(Mod mod)
+        private void ValidateSingle(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.ModContentInSubfolder);
 
@@ -35,7 +42,7 @@ namespace Imya.Validation
                 if (foundFolders.Length > 0)
                 {
                     // there's a data/ somewhere deeper, probably a mistake then
-                    mod.Attributes.AddAttribute(new GenericAttribute() { AttributeType = AttributeType.ModContentInSubfolder, Description = TextManager.Instance.GetText("ATTRIBUTE_MODCONTENTSUBFOLDER") });
+                    mod.Attributes.AddAttribute(_factory.Get());
                 }
             }
         }

@@ -17,7 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Models.Mods;
-using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;

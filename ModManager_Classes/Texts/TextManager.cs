@@ -1,6 +1,6 @@
 ﻿using Imya.Models;
+using Imya.Models.ModMetadata.ModinfoModel;
 using Newtonsoft.Json;
-using Imya.Models.ModMetadata;
 
 // TODO move all text/language related code under Imya.Text or Imya.Language
 namespace Imya.Texts
@@ -104,7 +104,7 @@ namespace Imya.Texts
 
         }
 
-        public static LocalizedText CreateLocalizedText(Localized localized)
+        public LocalizedText CreateLocalizedText(Localized localized)
         {
             var newText = new LocalizedText();
 

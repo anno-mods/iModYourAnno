@@ -1,10 +1,13 @@
-﻿using Imya.Models.ModMetadata;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Imya.Utils;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.Attributes.Factories;
+using Imya.Models.ModMetadata.ModinfoModel;
+using Imya.Models.ModMetadata;
 
 namespace Imya.Models.Mods
 {
@@ -104,39 +107,18 @@ namespace Imya.Models.Mods
 
         public Attributes.AttributeCollection Attributes { get; } = new();
 
-        #region loading
-        public static Mod? TryFromFolder(string modFolderPath)
-        {
-            var basePath = Path.GetDirectoryName(modFolderPath);
-            if (basePath is null || !Directory.Exists(modFolderPath)) return null;
-
-            ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);
-            return new Mod(Path.GetFileName(modFolderPath), modinfo, basePath);
-        }
-
         /// <param name="folderName">i.e. "[Gameplay] AI Shipyard"</param>
         /// <param name="basePath">absolute path without folderName</param>
-        public Mod(string folderName, Modinfo? modinfo, string basePath)
+        public Mod(
+            bool isActive,
+            string folderName, 
+            LocalizedModinfo modinfo,
+            string basePath)
         {
-            IsActive = !folderName.StartsWith("-");
-            FolderName = IsActive ? folderName : folderName[1..];
+            IsActive = isActive;
+            FolderName = folderName;
             BasePath = basePath;
-
-            // create metadata if needed
-            if (modinfo is null)
-            {
-                modinfo = new();
-                Attributes.AddAttribute(MissingModinfoAttributeFactory.Get());
-            }
-
-            if (modinfo.ModName is null || !modinfo.ModName.HasAny())
-            {
-                bool matches = MatchNameCategory(FolderName, out var _category, out var _name);
-                modinfo.ModName = new FakeLocalized(matches ? _name : FolderName);
-                if (matches) modinfo.Category = new FakeLocalized(_category);
-            }
-
-            Modinfo = modinfo.GetLocalized(FolderName);
+            Modinfo = modinfo;
 
             // Just construct as base64 for now. 
             // TODO move to separate async function
@@ -160,7 +142,6 @@ namespace Imya.Models.Mods
             Image = new ImyaImageSource();
             Image.ConstructAsFilepathImage(ImagePath);
         }
-        #endregion
 
         #region modifying actions
         /// <summary>
@@ -251,16 +232,6 @@ namespace Imya.Models.Mods
             return Directory.EnumerateFiles(FullModPath, $"*.{extension}", SearchOption.AllDirectories);
         }
 
-        private static bool MatchNameCategory(string folderName, out string category, out string name)
-        {
-            string CategoryPattern = @"[[][a-z]+[]]";
-            category = Regex.Match(folderName, CategoryPattern, RegexOptions.IgnoreCase).Value.TrimStart('[').TrimEnd(']');
-
-            string NamePattern = @"[^]]*";
-            name = Regex.Match(folderName, NamePattern, RegexOptions.RightToLeft).Value.TrimStart(' ');
-
-            return !name.Equals("") && !category.Equals("");
-        }
         #endregion
 
         #region comparisons

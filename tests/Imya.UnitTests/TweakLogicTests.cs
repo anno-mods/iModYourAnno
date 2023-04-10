@@ -10,9 +10,9 @@ using System.IO;
 using Imya.Utils;
 using System.Xml;
 using Imya.Services;
-using Imya.Models.ModTweaker.DataModel;
 using Imya.Services.Interfaces;
-using Imya.Models.ModTweaker.Storage;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
+using Imya.Models.ModTweaker.DataModel.Storage;
 
 namespace Imya.UnitTests
 {

@@ -16,6 +16,7 @@ namespace Imya.Models.Attributes
         ModContentInSubfolder,
         IssueModRemoved,
         IssueModAccess,
+        IssueNoDelete,
         ModReplacedByIssue,
         CyclicDependency
     }

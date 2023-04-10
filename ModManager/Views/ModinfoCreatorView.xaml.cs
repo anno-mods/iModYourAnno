@@ -17,6 +17,7 @@ using Imya.Enums;
 using Imya.Models.ModMetadata;
 using Imya.Texts;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 
 namespace Imya.UI.Views
@@ -39,10 +40,14 @@ namespace Imya.UI.Views
         }
 
         private ModinfoFactory _factory;
+        private PopupCreator _popupCreator;
 
-        public ModinfoCreatorView(ITextManager textManager)
+        public ModinfoCreatorView(
+            ITextManager textManager, 
+            PopupCreator popupCreator)
         {
             TextManager = textManager;
+            _popupCreator = popupCreator;
             DataContext = this;
             InitializeComponent();
 
@@ -106,7 +111,7 @@ namespace Imya.UI.Views
         private void OnDlcAddClick(object sender, RoutedEventArgs e)
         {
             var remaining = ModinfoFactory.GetRemainingDlcIds();
-            AddDlcPopup popup = new AddDlcPopup(remaining);
+            AddDlcPopup popup = _popupCreator.CreateAddDlcPopup(remaining);
             popup.ShowDialog();
 
             if (popup.DialogResult is false) return;
