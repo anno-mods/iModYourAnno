@@ -170,17 +170,19 @@ namespace Imya.UI
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
 
-            var appSettings = AppHost.Services.GetRequiredService<IAppSettings>();
-            var installationService = AppHost.Services.GetRequiredService<IInstallationService>();
-
-            if (appSettings.UseRateLimiting)
-                installationService.DownloadConfig.MaximumBytesPerSecond = appSettings.DownloadRateLimit;
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             var globalMods = AppHost.Services.GetRequiredService<ModCollection>();
             await globalMods.LoadModsAsync();
+
+            var appSettings = AppHost.Services.GetRequiredService<IAppSettings>();
+            appSettings.Initialize();
+            var installationService = AppHost.Services.GetRequiredService<IInstallationService>();
+
+            if (appSettings.UseRateLimiting)
+                installationService.DownloadConfig.MaximumBytesPerSecond = appSettings.DownloadRateLimit;
 
             await AppHost.StartAsync();
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();

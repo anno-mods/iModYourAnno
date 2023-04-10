@@ -56,7 +56,6 @@ namespace Imya.UI.Views
             GameSetup = gameSetupService;
 
             InitializeComponent();
-            AppSettings.Initialize();
 
             LanguageSelection.SelectedItem = AppSettings.Language;
             ThemeSelection.SelectedItem = AppSettings.Theme;
