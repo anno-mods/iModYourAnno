@@ -37,8 +37,8 @@ namespace Imya.UI.Components
 
             Mods = new BindableModCollection(_globalMods, this);
 
-            InitializeComponent();
             DataContext = this;
+            InitializeComponent();
             OnSelectionChanged();
 
             Settings.SortSettingChanged += OnSortSettingChanged;

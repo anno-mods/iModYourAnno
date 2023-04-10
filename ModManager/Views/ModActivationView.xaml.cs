@@ -71,8 +71,8 @@ namespace Imya.UI.Views
             ModList = modList; 
             ModDescription = modDescriptionDisplay;
 
-            InitializeComponent();
             DataContext = this;
+            InitializeComponent();
 
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
             ModList.ModList_SelectionChanged += OnUpdateSelection;
@@ -152,22 +152,14 @@ namespace Imya.UI.Views
         {
             if (_previousSelection != m)
             {
-                if (_previousSelection is not null)
-                    _previousSelection.PropertyChanged -= OnSelectionPropertyChanged;
-                if (m is not null)
-                    m.PropertyChanged += OnSelectionPropertyChanged;
+                HasSelection = ModList.CurrentlySelectedMod is not null;
+                AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
+                AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
+                OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
+
                 _previousSelection = m;
             }
         }
-
-        private void OnSelectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            HasSelection = ModList.CurrentlySelectedMod is not null;
-            AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
-            AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
-            OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
-        }
-
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };

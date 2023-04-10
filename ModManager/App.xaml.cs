@@ -134,14 +134,11 @@ namespace Imya.UI
                                             serviceProvider.GetRequiredService<ITextManager>()));
 
                     //application
-                    services.AddScoped<ModList>(serviceProvider => new ModList(
-                        serviceProvider.GetRequiredService<ITextManager>(),
-                        serviceProvider.GetRequiredService<IAppSettings>(),
-                        serviceProvider.GetRequiredService<ModCollection>()));
-                    services.AddSingleton<ModTweaker>();
-                    services.AddSingleton<Dashboard>();
-                    services.AddSingleton<ConsoleLog>();
-                    services.AddSingleton<ModDescriptionDisplay>();
+                    services.AddTransient<ModList>();
+                    services.AddTransient<ModTweaker>();
+                    services.AddTransient<Dashboard>();
+                    services.AddTransient<ConsoleLog>();
+                    services.AddTransient<ModDescriptionDisplay>();
                     services.AddSingleton<ModActivationView>();
                     services.AddSingleton<GithubBrowserView>();
                     services.AddSingleton<InstallationView>();
