@@ -3,6 +3,7 @@ using Imya.Models.Attributes.Interfaces;
 using Imya.Models.ModMetadata.ModinfoModel;
 using Imya.Models.Mods;
 using System.Collections.Immutable;
+using System.Collections.Specialized;
 
 namespace Imya.Validation
 {
@@ -15,7 +16,7 @@ namespace Imya.Validation
             _compabilityAttributeFactory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in all)
                 ValidateSingle(mod, all);

@@ -7,7 +7,7 @@
              xmlns:Components="clr-namespace:Imya.UI.Components"
              xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DataContext="{d:DesignInstance Type=local:ModActivationView}"
+             d:DataContext="{d:DesignInstance Type=Components:ModList}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -52,8 +52,15 @@
             </TextBlock>
         </StackPanel>
 
-        <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList" />
-        <Components:ModDescriptionDisplay Margin="5,5,5,0" Grid.Row="1" Grid.Column="1" x:Name="ModDescription" />
+        <ContentControl Grid.Row="1"
+                        Margin="0,5,5,5"
+                        Grid.Column="0"
+                        Content="{Binding ModList}" />
+        <ContentControl Margin="5,5,5,0"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Content="{Binding ModDescription}" />
+        
 
         <Border Background="{DynamicResource ComponentColorBrush}"
                 Grid.Row="2"

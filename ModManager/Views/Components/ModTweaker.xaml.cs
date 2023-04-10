@@ -36,7 +36,6 @@ namespace Imya.UI.Components
         public ITextManager TextManager { get; init;  }
         public ITweakService TweakManager { get; init; }
         public IGameSetupService GameSetupService { get; init; }
-
         private readonly PopupCreator _popupCreator; 
 
         public Mod? CurrentMod

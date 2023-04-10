@@ -21,7 +21,7 @@ namespace Imya.Models.Attributes.Factories
         {
             return new ModReplacedByIssue(replacedBy)
             {
-                Description = new SimpleText(string.Format(TextManager.Instance.GetText("ATTRIBUTE_REPLACEDBY").Text, replacedBy.FolderName)),
+                Description = new SimpleText(string.Format(_textManager.GetText("ATTRIBUTE_REPLACEDBY").Text, replacedBy.FolderName)),
             };
         }
     }

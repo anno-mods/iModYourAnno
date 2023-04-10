@@ -2,6 +2,8 @@
 using Imya.Services.Interfaces;
 using Imya.UI.Utils;
 using Imya.UI.Views;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -26,6 +28,8 @@ namespace Imya.UI
         private readonly GithubBrowserView _githubBrowser;
         private readonly PopupCreator _popupCreator;
 
+        IServiceProvider _serviceProvider; 
+
         public event IMainViewController.ViewChangedEventHandler ViewChanged = delegate { };
 
         public readonly View DefaultView = View.MOD_ACTIVATION;
@@ -45,26 +49,16 @@ namespace Imya.UI
             }
         }
 
-        private MainViewController(
+        public MainViewController(
             ITweakService tweakService,
-            ModActivationView modActivation,
-            SettingsView settings,
-            ModTweakerView tweaker,
-            ModinfoCreatorView modinfoCreator,
-            InstallationView modInstallation,
-            GithubBrowserView githubBrowser,
+            IServiceProvider serviceProvider,
             PopupCreator popupCreator)
         {
-            _modActivation = modActivation;
-            _settings = settings;
-            _tweaker = tweaker;
-            _modinfoCreator = modinfoCreator;
-            _modInstallation = modInstallation;
-            _githubBrowser = githubBrowser;
+            _serviceProvider = serviceProvider;
             _tweakService = tweakService;
             _popupCreator = popupCreator;
 
-            DefaultControl = _modActivation;
+            DefaultControl = _serviceProvider.GetRequiredService<ModActivationView>();
             _currentView = GetViewControl(DefaultView);
             _lastView = DefaultView;
 
@@ -105,12 +99,12 @@ namespace Imya.UI
         {
             return view switch
             {
-                View.MOD_ACTIVATION => _modActivation,
-                View.SETTINGS => _settings,
-                View.TWEAKER => _tweaker,
-                View.MODINFO_CREATOR => _modinfoCreator,
-                View.GITHUB_BROWSER => _githubBrowser,
-                View.MOD_INSTALLATION => _modInstallation,
+                View.MOD_ACTIVATION => _serviceProvider.GetRequiredService<ModActivationView>(),
+                View.SETTINGS => _serviceProvider.GetRequiredService<SettingsView>(),
+                View.TWEAKER => _serviceProvider.GetRequiredService<ModTweakerView>(),
+                View.MODINFO_CREATOR => _serviceProvider.GetRequiredService<ModinfoCreatorView>(),
+                View.GITHUB_BROWSER => _serviceProvider.GetRequiredService<GithubBrowserView>(),
+                View.MOD_INSTALLATION => _serviceProvider.GetRequiredService<InstallationView>(),
                 _ => DefaultControl,
             };
         }

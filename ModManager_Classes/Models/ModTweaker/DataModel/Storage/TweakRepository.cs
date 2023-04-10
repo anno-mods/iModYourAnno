@@ -22,7 +22,7 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
             _imyaSetupService = imyaSetupService;
         }
 
-        private Dictionary<string, ModTweaksStorageModel> _storedTweaksById = new();
+        private Dictionary<string, ModTweaksStorageModel> loadedStorages = new();
 
         /// <summary>
         /// Gets the Tweak Storage for an ID. If it does not exist, it creates a new one.
@@ -31,26 +31,35 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
         /// <returns></returns>
         public ModTweaksStorageModel Get(string ID)
         {
-            return _storedTweaksById.SafeAddOrGet(ID);
+            var storagePath = GetFilepath(ID);
+            if (File.Exists(storagePath))
+            {
+                var text = File.ReadAllText(storagePath); 
+                try
+                {
+                    JsonConvert.DeserializeObject<ModTweaksStorageModel>(text);
+                }
+                catch (Exception ex) 
+                {
+                    Console.WriteLine("Could not load storage: " + storagePath);
+                }
+            }
+            return new ModTweaksStorageModel();
         }
 
         public bool IsStored(string ID)
         {
-            return File.Exists(Path.Combine(_imyaSetupService.TweakDirectoryPath, ID + ".json"));
+            return File.Exists(GetFilepath(ID));
         }
 
-        public IEnumerable<ModTweaksStorageModel> GetAllStorages()
+        public void UpdateStorage(ModTweaksStorageModel storageModel, string modBaseName)
         {
-            return _storedTweaksById.Values.ToList();
+            var storagePath = GetFilepath(modBaseName);
+            var json = JsonConvert.SerializeObject(storageModel);
+            File.WriteAllText(storagePath, json);
         }
 
-        public void SaveAll()
-        {
-            foreach (var (key, value) in _storedTweaksById)
-            {
-                value.Save(key);
-            }
-        }
+        private String GetFilepath(String baseName) => Path.Combine(_imyaSetupService.TweakDirectoryPath, baseName + ".json");
     }
 
 }

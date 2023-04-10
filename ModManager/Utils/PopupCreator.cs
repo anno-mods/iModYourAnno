@@ -86,7 +86,11 @@ namespace Imya.UI.Utils
             OK_TEXT = _textManager.GetText("STARTUP_REMOVECOMMUNITYMODLOADER_YES"),
         };
 
-        public AuthCodePopup CreateAuthCodePopup(string AuthCode) => new AuthCodePopup(AuthCode);
+        public AuthCodePopup CreateAuthCodePopup(string AuthCode) => new AuthCodePopup(AuthCode)
+        {
+            MESSAGE = _textManager.GetText("USERCODE_POPUP_MESSAGE"),
+            CANCEL_TEXT = _textManager.GetText("DIALOG_CANCEL")
+        };
 
         public AddDlcPopup CreateAddDlcPopup(IEnumerable<DlcId> dlcIds) => new()
         {

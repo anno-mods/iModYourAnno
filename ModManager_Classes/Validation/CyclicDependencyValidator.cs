@@ -3,6 +3,7 @@ using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -19,7 +20,7 @@ namespace Imya.Validation
             _attributeFactory = attributeFactory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (Mod x in all)
                 x.Attributes.RemoveAttributesByType(AttributeType.CyclicDependency);

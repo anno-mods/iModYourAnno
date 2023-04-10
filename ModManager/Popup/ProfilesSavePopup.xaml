@@ -17,7 +17,6 @@
     <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.Resources>
             <Converters:ExtendedBoolToVisibilityConverter x:Key="BoolToVis" TrueValue="Hidden" FalseValue="Visible" />
-            <Converters:FilenameValidationConverter x:Key="Validation" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -45,7 +44,7 @@
                      x:Name="NameTextbox">
             </TextBox>
             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                       Text="{Binding FilenameValidation, Converter={StaticResource Validation}}"
+                       Text="{Binding FilenameValidation, Converter={Converters:FilenameValidationConverter}}"
                        Grid.Row="1"
                        TextAlignment="Center">
             </TextBlock>

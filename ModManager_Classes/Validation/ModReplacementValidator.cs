@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Imya.Models.ModMetadata.ModinfoModel;
+using System.Collections.Specialized;
 
 namespace Imya.Validation
 {
@@ -19,7 +20,7 @@ namespace Imya.Validation
             _modReplacedByAttributeFactory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in all)
                 ValidateSingle(mod, all);

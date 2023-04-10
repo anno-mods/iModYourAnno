@@ -9,9 +9,7 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
     public interface ITweakRepository
     {
         ModTweaksStorageModel Get(string ID);
-        IEnumerable<ModTweaksStorageModel> GetAllStorages();
-
         bool IsStored(string ID);
-        void SaveAll();
+        void UpdateStorage(ModTweaksStorageModel storageModel, string modBaseName);
     }
 }

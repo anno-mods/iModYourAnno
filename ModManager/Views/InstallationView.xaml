@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Imya.UI.Views"
              xmlns:controls="clr-namespace:Imya.UI.Controls"
-             d:DataContext="{d:DesignInstance Type=local:InstallationView}"
              xmlns:conv="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
@@ -141,7 +140,7 @@
                                                 VerticalAlignment="Center"
                                                 Orientation="Horizontal">
                                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                   Text="{Binding Status.Localized.Text, UpdateSourceTrigger=PropertyChanged}" />
+                                                   Text="{Binding Status, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
 
 

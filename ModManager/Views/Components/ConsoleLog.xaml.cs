@@ -7,6 +7,7 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class ConsoleLog : UserControl
     {
+        public TextBox Console { get => ConsoleOut; }
         public ConsoleLog()
         {
             InitializeComponent();

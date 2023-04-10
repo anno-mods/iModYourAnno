@@ -4,6 +4,7 @@ using Imya.Models.ModMetadata.ModinfoModel;
 using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Imya.Validation
             _dependencyAttributeFactory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in all)
                 ValidateSingle(mod, all);

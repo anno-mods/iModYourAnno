@@ -31,7 +31,7 @@ namespace Imya.Models.Mods
                 return null;
 
             var folder = Path.GetFileName(modFolderPath);
-            var isActive = folder.StartsWith("-");
+            var isActive = !folder.StartsWith("-");
             var folderName = isActive ? folder : folder[1..];
 
             bool hasModinfo = ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);

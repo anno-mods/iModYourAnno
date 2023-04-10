@@ -22,7 +22,6 @@
         </Grid.ColumnDefinitions>
         <Grid.Resources>
             <conv:DlcIconConverter x:Key="DlcIconConv" />
-            <conv:DlcTextConverter x:Key="DlcTextConv" />
         </Grid.Resources>
 
         <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}" 
@@ -176,7 +175,7 @@
                                                Width="28"
                                                Height="28"
                                                Margin="0,0,7,0" />
-                                        <TextBlock Text="{Binding Path=., Converter={StaticResource DlcTextConv}}"
+                                        <TextBlock Text="{Binding Path=., Converter={conv:DlcTextConverter}}"
                                                    Style="{StaticResource IMYA_TEXT}"
                                                    Grid.Column="0"
                                                    VerticalAlignment="Center" />

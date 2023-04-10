@@ -2,6 +2,7 @@
 using Imya.Models;
 using Imya.Texts;
 using Imya.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,11 +16,13 @@ namespace Imya.UI.ValueConverters
     /// A converter that maps DLC IDs to LocalizedTexts
     /// </summary>
     [ValueConversion(typeof(DlcId), typeof(LocalizedText))]
-    public class DlcTextConverter : IValueConverter
+    public class DlcTextConverter : MarkupExtension, IValueConverter
     {
+        public DlcTextConverter() { }
+
         private ITextManager TextManager;
 
-        public DlcTextConverter(ITextManager textManager) 
+        public DlcTextConverter(ITextManager textManager)
         {
             TextManager = textManager;
         }
@@ -69,5 +72,11 @@ namespace Imya.UI.ValueConverters
         {
             throw new NotImplementedException();
         }
+
+        public override object ProvideValue(IServiceProvider serviceProvider)
+        {
+            return serviceProvider.GetService<DlcTextConverter>();
+            
+        } 
     }
 }

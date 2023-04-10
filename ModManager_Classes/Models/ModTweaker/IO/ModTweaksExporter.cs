@@ -1,6 +1,6 @@
-﻿using Imya.Models.ModTweaker.DataModel.Storage;
+﻿using Imya.Models.Mods;
+using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
-using Octokit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +9,25 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.ModTweaker.IO
 {
-    //a mediator class between the modtweaks model and the tweakfilestorage model.
-    public class TweakMediator
+    public class ModTweaksExporter
     {
+        private readonly ITweakRepository _tweakRepository;
+        public ModTweaksExporter(ITweakRepository tweakRepository) 
+        {
+            _tweakRepository = tweakRepository;
+        }
 
-        public ModTweaksStorageModel SaveToRepository(ModTweaks tweaks)
+        public void Save(ModTweaks tweaks)
+        {
+            var storageModel = ConvertToStorage(tweaks);
+            _tweakRepository.UpdateStorage(storageModel, tweaks.ModBaseName);
+        }
+
+        private ModTweaksStorageModel ConvertToStorage(ModTweaks tweaks)
         {
             ModTweaksStorageModel storage = new ModTweaksStorageModel();
+            if (tweaks.TweakerFiles is null)
+                return new ModTweaksStorageModel();
             foreach (var file in tweaks.TweakerFiles!)
             {
                 var tweak = GetTweak(file);

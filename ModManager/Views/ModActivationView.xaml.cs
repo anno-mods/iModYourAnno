@@ -2,6 +2,7 @@
 using Imya.Models.Mods;
 using Imya.Services.Interfaces;
 using Imya.Texts;
+using Imya.UI.Components;
 using Imya.UI.Popup;
 using Imya.Utils;
 using System;
@@ -21,6 +22,9 @@ namespace Imya.UI.Views
         public ITextManager TextManager { get; init; }
         public ModCollection? Mods { get; private set; }
         public IGameSetupService GameSetupManager { get; }
+
+        public ModList ModList { get; init; }
+        public ModDescriptionDisplay ModDescription { get; init; }
 
         #region notifyable properties
 
@@ -57,14 +61,19 @@ namespace Imya.UI.Views
         public ModActivationView(
             IGameSetupService gameSetup,
             ITextManager textManager,
+            ModList modList,
+            ModDescriptionDisplay modDescriptionDisplay,
             ModCollection globalMods)
         {
             GameSetupManager = gameSetup;
             TextManager = textManager;
             Mods = globalMods;
+            ModList = modList; 
+            ModDescription = modDescriptionDisplay;
 
             InitializeComponent();
             DataContext = this;
+
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
             ModList.ModList_SelectionChanged += OnUpdateSelection;
         }

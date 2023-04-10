@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Imya.Services;
 using Imya.Services.Interfaces;
+using Imya.UI.Components;
 using Imya.UI.Properties;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -24,15 +25,22 @@ namespace Imya.UI
         private IGameSetupService _gameSetupService;
         private PopupCreator _popupCreator;
 
+        public Dashboard Dashboard { get; set; }
+        public ConsoleLog ConsoleLogTextBox { get; set; }
+
         public MainWindow(
             IAuthenticator authenticator,
             IMainViewController mainViewController,
             IGameSetupService gameSetupService,
+            Dashboard dashboard,
+            ConsoleLog consoleLog,
             PopupCreator popupCreator)
         {
             _authenticator = authenticator;
             _gameSetupService = gameSetupService;
             _popupCreator = popupCreator;
+            Dashboard = dashboard;
+            ConsoleLogTextBox = consoleLog; 
 
             MainViewController = mainViewController;
 
@@ -66,7 +74,7 @@ namespace Imya.UI
 
         public void SetUpEmbeddedConsole()
         {
-            Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.ConsoleOut, this));
+            Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.Console, this));
         }
     }
 }

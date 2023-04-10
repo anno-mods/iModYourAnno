@@ -23,7 +23,6 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             set
             {
                 SetProperty(ref _value, value);
-                Parent.TweakStorage.SetTweakValue(Parent.FilePath, ExposeID, Value);
             }
         }
         private string _value;

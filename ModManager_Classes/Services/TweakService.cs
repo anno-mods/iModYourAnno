@@ -1,5 +1,5 @@
 ﻿using Imya.Models.Mods;
-using Imya.Models.ModTweaker.DataModel;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
 using Imya.Models.ModTweaker.IO;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Services.Interfaces;
@@ -13,10 +13,13 @@ namespace Imya.Services
 {
     public class TweakService : PropertyChangedNotifier, ITweakService
     {
-        private readonly ModTweaksLoader _loader; 
-        public TweakService(ModTweaksLoader loader)
+        private readonly ModTweaksLoader _loader;
+        private readonly ModTweaksExporter _exporter;
+
+        public TweakService(ModTweaksLoader loader, ModTweaksExporter exporter)
         {
             _loader = loader;
+            _exporter = exporter;
         }
 
         public ModTweaks? Tweaks
@@ -62,7 +65,7 @@ namespace Imya.Services
             IsSaving = true;
             ThreadPool.QueueUserWorkItem(o =>
             {
-                tweaks?.Save();
+                _exporter.Save(tweaks);
                 IsSaving = false;
             });
         }
@@ -80,7 +83,7 @@ namespace Imya.Services
             IsSaving = true;
             HasUnsavedChanges = false;
             var tweaks = Tweaks;
-            await Task.Run(() => tweaks?.Save());
+            await Task.Run(() => _exporter.Save(tweaks));
             IsSaving = false;
         }
 

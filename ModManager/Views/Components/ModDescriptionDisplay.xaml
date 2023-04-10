@@ -19,7 +19,6 @@
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <converters:DlcIconConverter x:Key="DlcIcon" />
-            <converters:DlcTextConverter x:Key="DlcText" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
             <converters:StringFormatConverter x:Key="Format" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
@@ -226,7 +225,7 @@
                                                TextWrapping="Wrap"
                                                Margin="0,0,0,0"
                                                x:Name="DLC_Dependency_TextboxTemplate"
-                                               Text="{Binding Path=., Converter={StaticResource DlcText}, UpdateSourceTrigger=Explicit}"
+                                               Text="{Binding Path=., Converter={converters:DlcTextConverter}, UpdateSourceTrigger=Explicit}"
                                                MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}"
                                                VerticalAlignment="Center" />
                                 </StackPanel>

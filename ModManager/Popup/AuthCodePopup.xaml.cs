@@ -31,9 +31,6 @@ namespace Imya.UI.Popup
         {
             InitializeComponent();
             DataContext = this;
-
-            MESSAGE = TextManager.Instance.GetText("USERCODE_POPUP_MESSAGE");
-            CANCEL_TEXT = new SimpleText("Cancel");
             AuthCode = authcode;
         }
 

@@ -64,6 +64,7 @@ namespace Imya.UI.Views
         private readonly IAppSettings _appSettings;
 
         public GithubBrowserView(
+            IMainViewController mainViewController,
             IInstallationService installationService,
             ITextManager textManager,
             IReadmeStrategy readmeProvider,
@@ -79,6 +80,7 @@ namespace Imya.UI.Views
             _githubInstallationBuilderFactory = githubInstallationBuilderFactory;
             _zipInstallationBuilderFactory = zipInstallationBuilderFactory;
             _appSettings = appSettings;
+            _mainViewController = mainViewController;
 
             DataContext = this;
             InitializeComponent();

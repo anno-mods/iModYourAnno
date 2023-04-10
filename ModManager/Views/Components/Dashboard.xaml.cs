@@ -56,6 +56,7 @@ namespace Imya.UI.Components
             IAppSettings appSettings,
             IMainViewController mainViewController,
             IGameLauncherFactory gameLauncherFactory,
+            IGameSetupService gameSetupService,
             ITextManager textManager,
             PopupCreator popupCreator,
             IAuthenticationController authController,
@@ -66,6 +67,7 @@ namespace Imya.UI.Components
             AuthenticationController = authController;
             MainViewController = mainViewController;
             TextManager = textManager;
+            GameSetupManager = gameSetupService;
 
             _launcherFactory = gameLauncherFactory;
             _popupCreator = popupCreator;

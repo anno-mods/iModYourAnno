@@ -28,7 +28,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
         private Mod? _mod = null;
 
-        private string? ModBaseName;
+        public string ModBaseName { get; init; }
 
         public ModTweaks(string baseName, IEnumerable<TweakerFile> tweakerFiles)
         {
@@ -38,26 +38,6 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
         public ModTweaks()
         {
-
-        }
-
-        public void Save()
-        {
-            if (TweakerFiles != null && TweakerFiles.Count > 0 && _mod != null)
-            {
-                foreach (var f in TweakerFiles)
-                {
-                    f.Save(_mod.FullModPath);
-                }
-                TweakStorage.Save(ModBaseName);
-
-                if (_mod is not null && !_mod.Attributes.HasAttribute(AttributeType.TweakedMod))
-                {
-                    //this should be done in the hooks honestly
-                    _mod.Attributes.AddAttribute(TweakedAttributeFactory.Get());
-                }
-            }
-
 
         }
     }

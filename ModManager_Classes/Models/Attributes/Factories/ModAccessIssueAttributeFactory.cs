@@ -4,7 +4,7 @@ using Imya.Utils;
 
 namespace Imya.Models.Attributes.Factories
 {
-    internal class ModAccessIssueAttributeFactory : IModAccessIssueAttributeFactory
+    public class ModAccessIssueAttributeFactory : IModAccessIssueAttributeFactory
     {
         private readonly ITextManager _textManager;
         public ModAccessIssueAttributeFactory(ITextManager textManager)

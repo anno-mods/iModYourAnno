@@ -1,4 +1,4 @@
-﻿using Imya.Models.ModTweaker.DataModel;
+﻿using Imya.Models.ModTweaker.DataModel.Tweaking;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;

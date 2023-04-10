@@ -7,8 +7,6 @@ namespace Imya.Texts
 {
     public class TextManager : ITextManager
     {
-        public static TextManager Instance { get; } = new TextManager(); 
-
         public ApplicationLanguage ApplicationLanguage { get; private set; } = ApplicationLanguage.English;
 
         private readonly Dictionary<string, IText> KeyedTexts = new();
@@ -18,7 +16,7 @@ namespace Imya.Texts
 
         public IText this[String Key]
         {
-            get { return Instance.GetText(Key); }
+            get { return GetText(Key); }
         }
 
         public TextManager()
@@ -51,7 +49,7 @@ namespace Imya.Texts
             {
                 return KeyedTexts[Key];
             }
-            catch
+            catch (Exception e)
             {
                 Console.WriteLine($"Could not find Text: {Key}");
                 return IText.Empty;
@@ -120,11 +118,9 @@ namespace Imya.Texts
             if (localized.Spanish is String) newText.Spanish = localized.Spanish;
             if (localized.Taiwanese is String) newText.Taiwanese = localized.Taiwanese;
 
-            if (Instance is not null)
-            {
-                newText.Update(Instance.ApplicationLanguage);
-                Instance.AddAnonymousText(newText);
-            }
+            newText.Update(ApplicationLanguage);
+            AddAnonymousText(newText);
+
             return newText;
         }
     }

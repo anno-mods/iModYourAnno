@@ -11,8 +11,6 @@ namespace Imya.Models.ModTweaker.DataModel.Storage
         public void SetTweakValue(string Filename, string ExposeID, string NewValue);
         public bool TryGetTweakValue(string Filename, string ExposeID, out string? Value);
 
-        public void Save(string FilenameBase);
-
         public TweakerFileStorageModel GetTweak(string Filename);
     }
 }

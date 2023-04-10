@@ -155,6 +155,6 @@ namespace Imya.UI.Views
             _value = value;
         }
 
-        public IText Localized => TextManager.Instance[_value];
+        public IText Localized => new SimpleText("lolololol");
     }
 }

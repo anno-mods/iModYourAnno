@@ -21,6 +21,7 @@ namespace Imya.Services
         public string WorkingDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory); }
         public string ProfilesDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, ProfilesDirectory); }
         public string DownloadDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, DownloadDirectory); }
+        //the fallback currently stores the tweaks elsewhere. I have no idea why the gamesetup isn't injected properly here.
         public string TweakDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, TweakDirectory); }
         public string UnpackDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, UnpackDirectory); }
 

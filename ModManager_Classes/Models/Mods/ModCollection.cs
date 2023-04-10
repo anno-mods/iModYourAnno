@@ -105,6 +105,8 @@ namespace Imya.Models.Mods
 
                 _mods = await LoadModsAsync(Directory.EnumerateDirectories(ModsPath)
                     .Where(x => !Path.GetFileName(x).StartsWith(".")));
+
+                int i = 0; 
             }
             else
             {

@@ -16,7 +16,7 @@ namespace Imya.Texts
         delegate void LanguageChangedEventHandler(ApplicationLanguage language);
         event LanguageChangedEventHandler LanguageChanged;
 
-        IText this[String Key] { get; }
+        public IText this[String Key] { get; }
 
         void AddText(String Key, IText t);
         void AddAnonymousText(IText t);
