@@ -12,11 +12,11 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
     /// </summary>
     public class ModTweaks : PropertyChangedNotifier
     {
-        public bool IsEmpty => _tweakerFiles == null || _tweakerFiles.Count == 0;
+        public bool IsEmpty => _tweakerFiles == null || _tweakerFiles.Count() == 0;
 
-        public ObservableCollection<TweakerFile>? TweakerFiles
+        public IEnumerable<TweakerFile>? TweakerFiles
         {
-            get => _tweakerFiles;
+            get => _tweakerFiles ?? Enumerable.Empty<TweakerFile>();
             set
             {
                 _tweakerFiles = value;
@@ -24,15 +24,16 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                 OnPropertyChanged(nameof(IsEmpty));
             }
         }
-        private ObservableCollection<TweakerFile>? _tweakerFiles = null;
+        private IEnumerable<TweakerFile>? _tweakerFiles = null;
 
         private Mod? _mod = null;
 
-        public string ModBaseName { get; init; }
+        public string ModBaseName { get => _mod.FolderName; }
+        public string ModBasePath { get => _mod.FullModPath; }
 
-        public ModTweaks(string baseName, IEnumerable<TweakerFile> tweakerFiles)
+        public ModTweaks(Mod mod, IEnumerable<TweakerFile> tweakerFiles)
         {
-            ModBaseName = baseName;
+            _mod = mod;
             TweakerFiles = new ObservableCollection<TweakerFile>(tweakerFiles);
         }
 

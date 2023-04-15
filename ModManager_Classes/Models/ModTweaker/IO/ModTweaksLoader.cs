@@ -15,7 +15,6 @@ namespace Imya.Models.ModTweaker.IO
 
         public ModTweaks? Load(Mod mod)
         {
-            var baseName = mod.FolderName;
 
             var files = mod.GetFilesWithExtension("xml")
                             .Where(x => !x.EndsWith("imyatweak.include.xml"))
@@ -29,8 +28,8 @@ namespace Imya.Models.ModTweaker.IO
                     list.Add(tweakerFile);
             }
 
-            var tweaks = new ModTweaks(baseName, list);
-            var storedtweaks = _tweakRepository.Get(baseName);
+            var tweaks = new ModTweaks(mod, list);
+            var storedtweaks = _tweakRepository.Get(tweaks.ModBaseName);
 
             ApplyStoredValues(tweaks, storedtweaks);
             return tweaks;

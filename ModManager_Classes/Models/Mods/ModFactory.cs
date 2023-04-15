@@ -47,7 +47,7 @@ namespace Imya.Models.Mods
                 basePath);
 
             if (!hasModinfo)
-                mod.Attributes.Add(_missingModinfoAttributeFactory.Get());
+                mod.Attributes.AddAttribute(_missingModinfoAttributeFactory.Get());
 
             return mod; 
         }

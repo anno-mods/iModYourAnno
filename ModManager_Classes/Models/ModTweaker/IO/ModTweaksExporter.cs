@@ -19,8 +19,14 @@ namespace Imya.Models.ModTweaker.IO
 
         public void Save(ModTweaks tweaks)
         {
+            if (tweaks.IsEmpty)
+                return;
             var storageModel = ConvertToStorage(tweaks);
             _tweakRepository.UpdateStorage(storageModel, tweaks.ModBaseName);
+            foreach (var tweakerFile in tweaks.TweakerFiles)
+            {
+                tweakerFile.Save(tweaks.ModBasePath);
+            }
         }
 
         private ModTweaksStorageModel ConvertToStorage(ModTweaks tweaks)

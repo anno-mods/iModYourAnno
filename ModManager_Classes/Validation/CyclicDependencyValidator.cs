@@ -29,7 +29,7 @@ namespace Imya.Validation
                 var cyclics = CyclicDependencies(x, all);
                 if (cyclics.Count() > 0)
                 {
-                    x.Attributes.Add(_attributeFactory.Get(cyclics));   
+                    x.Attributes.AddAttribute(_attributeFactory.Get(cyclics));   
                 }
             }
         }

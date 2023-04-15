@@ -1,4 +1,5 @@
 ﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Mods;
 using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.IO;
@@ -17,16 +18,19 @@ namespace Imya.Validation
         private SemaphoreSlim _tweaksave_sem; 
         private ModTweaksLoader _tweaksLoader;
         private ModTweaksExporter _tweaksExporter;
+        private ITweakedAttributeFactory _tweakedAttributeFactory;
 
         public TweakValidator(
             ITweakRepository tweakRepository, 
             ModTweaksLoader tweaksLoader,
-            ModTweaksExporter tweaksExporter) 
+            ModTweaksExporter tweaksExporter,
+            ITweakedAttributeFactory tweakedAttributeFactory) 
         {
             _tweakRepository = tweakRepository;
             _tweaksave_sem = new SemaphoreSlim(1);
             _tweaksLoader = tweaksLoader;
             _tweaksExporter = tweaksExporter;
+            _tweakedAttributeFactory = tweakedAttributeFactory;
         }
 
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
@@ -54,8 +58,9 @@ namespace Imya.Validation
             Task.Run(() =>
             {
                 var tweaks = _tweaksLoader.Load(mod);
-                if (tweaks is not null)
+                if (tweaks is not null && !tweaks.IsEmpty)
                 {
+                    mod.Attributes.AddAttribute(_tweakedAttributeFactory.Get());
                     _tweaksave_sem.Wait();
                     _tweaksExporter.Save(tweaks);
                     _tweaksave_sem.Release();

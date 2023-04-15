@@ -391,7 +391,7 @@ namespace Imya.Models.Mods
                 }
                 catch (Exception e)
                 {
-                    mod.Attributes.Add(_modAccessIssueAttributeFactory.GetNoDelete());
+                    mod.Attributes.AddAttribute(_modAccessIssueAttributeFactory.GetNoDelete());
                     Console.WriteLine($"Failed to delete Mod: {mod.Category} {mod.Name}. Cause: {e.Message}");
                 }
             });
