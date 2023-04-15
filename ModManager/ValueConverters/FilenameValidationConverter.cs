@@ -16,15 +16,13 @@ using System.Windows.Markup;
 namespace Imya.UI.ValueConverters
 {
     [ValueConversion(typeof(FilenameValidation), typeof(LocalizedText))]
-    public class FilenameValidationConverter : MarkupExtension, IValueConverter
+    public class FilenameValidationConverter : IValueConverter
     {
         private readonly ITextManager _textManager;
         public FilenameValidationConverter(ITextManager textManager)
         {
             _textManager = textManager;
         }
-
-        public FilenameValidationConverter() { }
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
@@ -43,7 +41,5 @@ namespace Imya.UI.ValueConverters
         {
             throw new NotImplementedException();
         }
-
-        public override object ProvideValue(IServiceProvider serviceProvider) => serviceProvider.GetService<FilenameValidationConverter>();
     }
 }

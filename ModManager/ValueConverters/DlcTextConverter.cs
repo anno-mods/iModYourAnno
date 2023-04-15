@@ -16,10 +16,8 @@ namespace Imya.UI.ValueConverters
     /// A converter that maps DLC IDs to LocalizedTexts
     /// </summary>
     [ValueConversion(typeof(DlcId), typeof(LocalizedText))]
-    public class DlcTextConverter : MarkupExtension, IValueConverter
+    public class DlcTextConverter : IValueConverter
     {
-        public DlcTextConverter() { }
-
         private ITextManager TextManager;
 
         public DlcTextConverter(ITextManager textManager)
@@ -73,10 +71,5 @@ namespace Imya.UI.ValueConverters
             throw new NotImplementedException();
         }
 
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetService<DlcTextConverter>();
-            
-        } 
     }
 }

@@ -44,7 +44,7 @@
                      x:Name="NameTextbox">
             </TextBox>
             <TextBlock Style="{StaticResource IMYA_TEXT}"
-                       Text="{Binding FilenameValidation, Converter={Converters:FilenameValidationConverter}}"
+                       Text="{Binding FilenameValidation, Converter={StaticResource FilenameValidationConverter}}"
                        Grid.Row="1"
                        TextAlignment="Center">
             </TextBlock>

@@ -48,8 +48,6 @@ namespace Imya.UI
                 {
                     //services
                     services.AddSingleton<ITextManager, TextManager>();
-                    services.AddTransient<DlcTextConverter>(services => new DlcTextConverter(services.GetRequiredService<ITextManager>()));
-
                     services.AddSingleton<IGameSetupService, GameSetupService>();
                     var gameSetup = services.BuildServiceProvider().GetRequiredService<IGameSetupService>();
                     gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
@@ -152,6 +150,9 @@ namespace Imya.UI
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<IMainViewController, MainViewController>();
                     services.AddSingleton<IAuthenticationController, AuthenticationController>();
+
+                    services.AddTransient<DlcTextConverter>();
+                    services.AddTransient<FilenameValidationConverter>();
                 })
                 .Build();
 
@@ -172,6 +173,7 @@ namespace Imya.UI
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
 
+
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -187,6 +189,11 @@ namespace Imya.UI
                 installationService.DownloadConfig.MaximumBytesPerSecond = appSettings.DownloadRateLimit;
 
             await AppHost.StartAsync();
+
+            //hacky converters with dependencyinjection....
+            Resources.Add("DlcTextConverter", AppHost.Services.GetRequiredService<DlcTextConverter>());
+            Resources.Add("FilenameValidationConverter", AppHost.Services.GetRequiredService<FilenameValidationConverter>());
+
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
             startupForm.Show();
 
