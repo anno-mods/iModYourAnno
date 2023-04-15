@@ -17,6 +17,7 @@ using Imya.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Imya.Services;
+using Imya.Services.Interfaces;
 
 namespace Imya.UI.Popup
 {
@@ -32,7 +33,6 @@ namespace Imya.UI.Popup
     public partial class ProfilesSavePopup : Window, INotifyPropertyChanged
     {
         public String ProfileFilename { get; set; } = "Profile1";
-
         public String ProfilesDirectoryPath { get; init; }
 
         public bool IsValidFilename
@@ -56,26 +56,27 @@ namespace Imya.UI.Popup
         }
         private FilenameValidation _filenameValidation;
 
-
-        public String FullFilename { get => Path.Combine(ProfilesDirectoryPath, ProfileFilename + "." + ModActivationProfile.ProfileExtension); }
-
         public IText OK_TEXT { get; set; }
         public IText CANCEL_TEXT { get; set; }
 
-        public ProfilesSavePopup()
+        private readonly IProfilesService _profilesService; 
+
+        public ProfilesSavePopup(IProfilesService profilesService)
         {
+            _profilesService = profilesService; 
             InitializeComponent();
             DataContext = this;
             NameTextbox.TextChanged += FilenameChanged;
-
         }
 
         private FilenameValidation ValidateFilename()
         {
             char[] Invalids = Path.GetInvalidFileNameChars();
 
-            if (ProfileFilename.Any(x => Invalids.Contains(x))) return FilenameValidation.Invalid;
-            if (File.Exists(FullFilename)) return FilenameValidation.AlreadyExists;
+            if (ProfileFilename.Any(x => Invalids.Contains(x))) 
+                return FilenameValidation.Invalid;
+            if (_profilesService.ProfileExists(ProfileFilename)) 
+                return FilenameValidation.AlreadyExists;
 
             return FilenameValidation.Valid;
         }

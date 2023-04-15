@@ -44,6 +44,6 @@ namespace Imya.UI.ValueConverters
             throw new NotImplementedException();
         }
 
-        public override object ProvideValue(IServiceProvider serviceProvider) => serviceProvider.GetRequiredService<FilenameValidationConverter>();
+        public override object ProvideValue(IServiceProvider serviceProvider) => serviceProvider.GetService<FilenameValidationConverter>();
     }
 }

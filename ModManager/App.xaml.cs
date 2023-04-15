@@ -134,6 +134,8 @@ namespace Imya.UI
                                             serviceProvider.GetRequiredService<IImyaSetupService>(),
                                             serviceProvider.GetRequiredService<ITextManager>()));
 
+                    services.AddSingleton<IProfilesService, ProfilesService>();
+
                     //application
                     services.AddTransient<ModList>();
                     services.AddTransient<ModTweaker>();

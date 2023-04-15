@@ -1,9 +1,11 @@
 ﻿using Imya.Models;
 using Imya.Models.Mods;
+using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Components;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.ComponentModel;
@@ -25,6 +27,9 @@ namespace Imya.UI.Views
 
         public ModList ModList { get; init; }
         public ModDescriptionDisplay ModDescription { get; init; }
+
+        private PopupCreator _popupCreator;
+        private IProfilesService _profilesService;
 
         #region notifyable properties
 
@@ -63,13 +68,17 @@ namespace Imya.UI.Views
             ITextManager textManager,
             ModList modList,
             ModDescriptionDisplay modDescriptionDisplay,
-            ModCollection globalMods)
+            ModCollection globalMods,
+            PopupCreator popupCreator,
+            IProfilesService profilesService)
         {
             GameSetupManager = gameSetup;
             TextManager = textManager;
             Mods = globalMods;
             ModList = modList; 
             ModDescription = modDescriptionDisplay;
+            _popupCreator = popupCreator;
+            _profilesService = profilesService;
 
             DataContext = this;
             InitializeComponent();
@@ -114,8 +123,7 @@ namespace Imya.UI.Views
         {
             if (Mods is null) return;
 
-            var Dialog = new ProfilesLoadPopup();
-
+            var Dialog = _popupCreator.CreateProfilesLoadPopup();
             var dialogResult = Dialog.ShowDialog();
 
             if (dialogResult is true && Dialog.SelectedProfile is not null)
@@ -128,23 +136,14 @@ namespace Imya.UI.Views
         {
             if (Mods is null) return;
 
-            var dialog = new ProfilesSavePopup();
+            var dialog = _popupCreator.CreateProfilesSavePopup();
 
             dialog.ShowDialog();
+            if (dialog.DialogResult is not true)
+                return;
 
-            if (dialog.DialogResult is true)
-            {
-                var profile = ModActivationProfile.FromModCollection(Mods, x => x.IsActive);
-
-                if (profile.SaveToFile(dialog.FullFilename))
-                {
-                    Console.WriteLine($"Saved Profile to {dialog.ProfileFilename}.");
-                }
-                else
-                {
-                    Console.WriteLine($"Failed to save profile {dialog.ProfileFilename}.");
-                }
-            }
+            var profile = _profilesService.CreateFromModCollection(Mods);
+            _profilesService.SaveProfile(profile, dialog.ProfileFilename);
         }
 
         Mod? _previousSelection = null;

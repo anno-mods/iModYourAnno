@@ -5,6 +5,7 @@ using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Popup;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,14 +18,18 @@ namespace Imya.UI.Utils
         private readonly ITweakService _tweakService;
         private readonly IImyaSetupService _imyaSetupService;
 
+        private readonly IServiceProvider _serviceProvider;
+
         public PopupCreator(
             ITextManager textManager,
             ITweakService tweakService,
-            IImyaSetupService imyaSetupService) 
+            IImyaSetupService imyaSetupService,
+            IServiceProvider serviceProvider) 
         { 
             _textManager = textManager;
             _tweakService = tweakService;
             _imyaSetupService = imyaSetupService;
+            _serviceProvider = serviceProvider;
         }
         public GenericOkayPopup CreateSaveTweakPopup()
         {
@@ -99,21 +104,21 @@ namespace Imya.UI.Utils
         };
 
         public ProfilesLoadPopup CreateProfilesLoadPopup() {
-            var popup = new ProfilesLoadPopup()
+            var popup = new ProfilesLoadPopup(_serviceProvider.GetRequiredService<IProfilesService>())
             {
-                Title = _textManager.GetText("PROFILE_LOAD").Text,
-                ProfilesDirectoryPath = _imyaSetupService.ProfilesDirectoryPath
+                OK_TEXT = _textManager.GetText("DIALOG_OKAY"),
+                CANCEL_TEXT = _textManager.GetText("DIALOG_CANCEL"),
+                Title = _textManager.GetText("PROFILE_LOAD").Text
             };
             popup.Load();
             return popup;
         }
 
-        public ProfilesSavePopup CreateProfilesSavePopup() => new()
+        public ProfilesSavePopup CreateProfilesSavePopup() => new(_serviceProvider.GetRequiredService<IProfilesService>())
         {
             OK_TEXT = _textManager.GetText("DIALOG_OKAY"),
             CANCEL_TEXT = _textManager.GetText("DIALOG_CANCEL"),
-            Title = _textManager.GetText("PROFILE_SAVE").Text,
-            ProfilesDirectoryPath = _imyaSetupService.ProfilesDirectoryPath
+            Title = _textManager.GetText("PROFILE_SAVE").Text
         };
     }
 }

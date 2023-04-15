@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Services;
+using Imya.Services.Interfaces;
 using Imya.Utils;
 using System;
 using System.Collections.ObjectModel;
@@ -15,10 +16,12 @@ namespace Imya.UI.Popup
     /// <summary>
     /// Interaktionslogik für ProfilesPopup.xaml
     /// </summary>
-    public partial class ProfilesLoadPopup : Window, INotifyPropertyChanged 
+    public partial class ProfilesLoadPopup : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<ModActivationProfile> Profiles { get; private set; } = new ObservableCollection<ModActivationProfile>();
-        public String ProfilesDirectoryPath { get; init; }
+        public IText OK_TEXT { get; set; }
+        public IText CANCEL_TEXT { get; set; }
+
+        public ObservableCollection<String> Profiles { get; private set; }
         public ModActivationProfile? SelectedProfile { get; private set; }
 
         public bool HasSelection
@@ -32,14 +35,15 @@ namespace Imya.UI.Popup
         }
         private bool _hasSelection = false;
 
-        public ProfilesLoadPopup()
+        private readonly IProfilesService _profilesService;
+
+        public ProfilesLoadPopup(IProfilesService profilesService)
         {
+            _profilesService = profilesService;
             InitializeComponent();
             DataContext = this;
-
             ProfileSelection.SelectionChanged += UpdateSelection;
             Load();
-
         }
 
         private void UpdateSelection(object sender, SelectionChangedEventArgs e)
@@ -47,31 +51,13 @@ namespace Imya.UI.Popup
             HasSelection = ProfileSelection.SelectedIndex >= 0;
         }
 
-        public void Load()
-        {
-            if (!Directory.Exists(ProfilesDirectoryPath))
-            {
-                Directory.CreateDirectory(ProfilesDirectoryPath);
-            }
-
-            foreach (String file in Directory.EnumerateFiles(ProfilesDirectoryPath, "*."+ModActivationProfile.ProfileExtension))
-            {
-                AddProfile(file);
-            }
-        }
-
-        public void AddProfile(string filePath)
-        {
-            var profile = ModActivationProfile.FromFile(filePath);
-            if (profile is not null)
-                Profiles.Add(profile);
-        }
+        public void Load() => Profiles = new(_profilesService.GetSavedKeys());
 
         public void Accept()
         {
             if (ProfileSelection.SelectedIndex != -1)
             {
-                SelectedProfile = (ModActivationProfile)ProfileSelection.SelectedItem!;
+                SelectedProfile = _profilesService.LoadProfile((String)ProfileSelection.SelectedItem!);
             }
         }
 
@@ -90,17 +76,12 @@ namespace Imya.UI.Popup
         {
             Console.WriteLine("Delete requested");
 
-            Button? button = sender as Button;
-            ModActivationProfile? profile = button?.DataContext as ModActivationProfile;
-            if(profile is not null) DeleteActivationProfile(profile);
-        }
-
-        public void DeleteActivationProfile(ModActivationProfile profile)
-        {
-            Profiles.Remove(profile);
-            if (profile.HasFilename)
+            var button = sender as Button;
+            var key = button?.DataContext as String;
+            if (key is not null)
             {
-                File.Delete(profile.Filename!);
+                _profilesService.DeleteActivationProfile(key);
+                Profiles.Remove(key);
             }
         }
 

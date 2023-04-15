@@ -6,11 +6,16 @@ namespace Imya.Models.Attributes
 {
     public class AttributeCollection : ObservableCollection<IAttribute>
     {
+        private object _lock = new Object();
+        
         public void AddAttribute(IAttribute attrib)
         {
-            if (!attrib.MultipleAllowed && this.Any(x => x.AttributeType == attrib.AttributeType))
-                return;
-            Add(attrib);
+            lock (_lock)
+            {
+                if (!attrib.MultipleAllowed && this.Any(x => x.AttributeType == attrib.AttributeType))
+                    return;
+                Add(attrib);
+            }
         }
 
         public IAttribute? GetByType(AttributeType type)
