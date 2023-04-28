@@ -19,14 +19,15 @@ namespace Imya.Enums
         [EnumMember] NewWorldRising,
 
         //Cosmetic DLCs
-        [EnumMember] Christmas,
-        [EnumMember] AmusementPark,
-        [EnumMember] CityLife,
-        [EnumMember] VehicleSkins,
+        [EnumMember] Holiday,
+        [EnumMember] Amusements,
+        [EnumMember] CityLights,
+        [EnumMember] VehicleLiveries,
         [EnumMember] VibrantCity,
         [EnumMember] PedestrianZone,
         [EnumMember] SeasonalDecorations,
-        [EnumMember] IndustryOrnaments,
-        [EnumMember] CDLC09
+        [EnumMember] IndustrialZone,
+        [EnumMember] OldTown,
+        [EnumMember] DragonGarden,
     }
 }
