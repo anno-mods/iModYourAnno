@@ -142,6 +142,25 @@ namespace Imya.Models
             // TODO move to separate async?
             var info = new DirectoryInfo(FullModPath);
             SizeInMB = (float)Math.Round((decimal)info.EnumerateFiles("*", SearchOption.AllDirectories).Sum(x => x.Length) / 1024 / 1024, 1);
+
+            string[] modinfos = Directory.GetFiles(Path.Combine(basePath, folderName), "modinfo.json", SearchOption.AllDirectories);
+            if (modinfos.Length > 1)
+            {
+                SubMods = new List<Mod>();
+                foreach (var submodinfo in modinfos)
+                {
+                    if (submodinfo == Path.Combine(basePath, folderName, "modinfo.json"))
+                    {
+                        continue;
+                    }
+
+                    Mod? submod = TryFromFolder(Path.GetDirectoryName(submodinfo) ?? "");
+                    if (submod is not null)
+                    {
+                        SubMods.Add(submod);
+                    }
+                }
+            }
         }
 
         public void InitImageAsFilepath(String ImagePath)
@@ -308,6 +327,10 @@ namespace Imya.Models
 
             return Version > target.Version;
         }
+        #endregion
+
+        #region Sub mods
+        public List<Mod>? SubMods { get; private set; }
         #endregion
 
         public ModStatus GetStatus()

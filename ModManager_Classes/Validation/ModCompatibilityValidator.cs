@@ -43,7 +43,9 @@ namespace Imya.Validation
 
             foreach (var dep in modinfo.ModDependencies)
             {
-                if (!collection.Any(x => x.Modinfo.ModID is not null && x.Modinfo.ModID.Equals(dep) && x.IsActiveAndValid))
+                if (!collection.Any(x => x.Modinfo.ModID is not null 
+                    && (x.Modinfo.ModID.Equals(dep) || x.SubMods?.Find(submod => submod.ModID.Equals(dep)) is not null)
+                    && x.IsActiveAndValid))
                     yield return dep;
             }
         }
