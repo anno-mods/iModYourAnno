@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Anno.Utils;
 using Imya.UI.Properties;
 using Imya.UI.Utils;
 using Imya.Utils;
@@ -47,6 +48,9 @@ namespace Imya.UI
                 if (result is true)
                     GameSetupManager.Instance.RemoveModloader();
             }
+
+            // initialize self-updater
+            SelfUpdater.CheckForUpdate(GithubClientProvider.Client, "anno-mods", "iModYourAnno");
         }
 
         public void SetUpEmbeddedConsole()

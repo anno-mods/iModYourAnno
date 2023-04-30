@@ -1,11 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.Collections;
 using Imya.Models.Installation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Downloader;
 using Imya.Models.NotifyPropertyChanged;
@@ -266,7 +261,9 @@ namespace Imya.Utils
             if (unpackable.CancellationToken.IsCancellationRequested)
                 return;
             unpackable.Status = InstallationStatus.MovingFiles;
-            var newCollection = await ModCollectionLoader.LoadFrom(unpackable.UnpackTargetPath);
+
+            var newCollection = new ModCollection(unpackable.UnpackTargetPath, autofixSubfolder: true);
+            await newCollection.LoadModsAsync();
             //async waiting
             await Task.Run(() => _moveIntoSem.WaitOne(), unpackable.CancellationToken);
             if (!unpackable.CancellationToken.IsCancellationRequested)

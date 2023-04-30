@@ -118,7 +118,7 @@ namespace Imya.Models
         {
             foreach (var folder in Directory.EnumerateDirectories(modsPath))
             {
-                if (Directory.Exists(Path.Combine(folder, "data")))
+                if (Directory.Exists(Path.Combine(folder, "data")) || File.Exists(Path.Combine(folder, "modinfo.json")))
                     continue;
 
                 var potentialMods = DirectoryEx.FindFolder(folder, "data").Select(x => Path.GetDirectoryName(x)!);
