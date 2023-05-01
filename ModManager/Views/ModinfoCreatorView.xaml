@@ -12,6 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
             <RowDefinition />
             <RowDefinition Height="55" />
             <RowDefinition Height="15" />
@@ -25,11 +26,62 @@
             <conv:DlcTextConverter x:Key="DlcTextConv" />
         </Grid.Resources>
 
+        <Border Grid.Row="1"
+                Background="{DynamicResource ComponentColorBrush}"
+                Margin="5"
+                CornerRadius="3">
+            <TextBlock Text="Basic Information"
+                       Style="{StaticResource IMYA_TEXT}"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+            </TextBlock>
+        </Border>
+        <Border Grid.Row="1"
+                Grid.Column="2"
+                Background="{DynamicResource ComponentColorBrush}"
+                Margin="5"
+                CornerRadius="3">
+            <TextBlock Text="Language-Specific Information"
+                       Style="{StaticResource IMYA_TEXT}"
+                       FontWeight="DemiBold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+            </TextBlock>
+        </Border>
+
         <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}" 
                       Background="{DynamicResource ComponentColorBrush}"
-                      Grid.Row="1"
+                      Grid.Row="2"
                       Margin="5,5,5,10">
             <StackPanel>
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="4.3*" />
+                        <ColumnDefinition Width="0.7*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Version Label-->
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="Mod ID:"
+                               VerticalAlignment="Center">
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource IMYA_TEXT}"
+                               Text="{Binding ModinfoFactory.ModID, UpdateSourceTrigger=PropertyChanged}"
+                               Name="ModIDTextBlock"
+                               Grid.Column="1"
+                               Margin="0,5,5,5">
+                    </TextBlock>
+                    <Button Click="OnNewModIDClick"
+                            Grid.Column="2"
+                            Style="{StaticResource IMYA_BUTTON}"
+                            VerticalAlignment="Center"
+                            Margin="5,0"
+                            ToolTip="Generate new">
+                        <materialDesign:PackIcon Kind="Reload"
+                                                 Style="{StaticResource IMYA_ICON}" />
+                    </Button>
+                </Grid>
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
@@ -45,21 +97,7 @@
                              Text="{Binding ModinfoFactory.ModinfoContext.Version, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Grid.Column="1" />
                 </Grid>
-                <Grid Margin="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="5*" />
-                    </Grid.ColumnDefinitions>
-                    <!-- Version Label-->
-                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                               Text="Mod ID:"
-                               VerticalAlignment="Center">
-                    </TextBlock>
-                    <TextBox Style="{StaticResource IMYA_TEXTBOX}"
-                             Background="{DynamicResource InteractiveComponentColorBrush}"
-                             Text="{Binding ModinfoFactory.ModinfoContext.ModID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Grid.Column="1" />
-                </Grid>
+                
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
@@ -102,7 +140,8 @@
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="4.3*" />
+                        <ColumnDefinition Width="0.7*" />
                     </Grid.ColumnDefinitions>
                     <!-- Version Label-->
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
@@ -114,12 +153,21 @@
                              Background="{DynamicResource InteractiveComponentColorBrush}"
                              Text="{Binding ModinfoFactory.ModDepsJoined, Mode=TwoWay}"
                              Grid.Column="1" />
+                    <Button Click="OnAddDependencyClick"
+                            Grid.Column="2"
+                            Style="{StaticResource IMYA_BUTTON}"
+                            VerticalAlignment="Center"
+                            Margin="5,0">
+                        <materialDesign:PackIcon Kind="Plus"
+                                                 Style="{StaticResource IMYA_ICON}"/>
+                    </Button>
                 </Grid>
 
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="4.3*" />
+                        <ColumnDefinition Width="0.7*" />
                     </Grid.ColumnDefinitions>
                     <!-- Version Label-->
                     <TextBlock Style="{StaticResource IMYA_TEXT}"
@@ -131,6 +179,14 @@
                              Background="{DynamicResource InteractiveComponentColorBrush}"
                              Text="{Binding ModinfoFactory.IncompatibleIDsJoined, Mode=TwoWay}"
                              Grid.Column="1" />
+                    <Button Click="OnAddDependencyClick"
+                            Grid.Column="2"
+                            Style="{StaticResource IMYA_BUTTON}"
+                            VerticalAlignment="Center"
+                            Margin="5,0">
+                        <materialDesign:PackIcon Kind="Plus"
+                                                 Style="{StaticResource IMYA_ICON}" />
+                    </Button>
                 </Grid>
 
                 <Separator Margin="5"/>
@@ -155,7 +211,7 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="4*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
@@ -166,24 +222,40 @@
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Orientation="Horizontal">
                                         <Image VerticalAlignment="Center"
-                                               Source="{Binding Path=., Converter={StaticResource DlcIconConv}}"
+                                               Source="{Binding Path=DLC, Converter={StaticResource DlcIconConv}}"
                                                Width="28"
                                                Height="28"
                                                Margin="0,0,7,0" />
-                                        <TextBlock Text="{Binding Path=., Converter={StaticResource DlcTextConv}}"
+                                        <TextBlock Text="{Binding Path=DLC, Converter={StaticResource DlcTextConv}}"
                                                    Style="{StaticResource IMYA_TEXT}"
                                                    Grid.Column="0"
                                                    VerticalAlignment="Center" />
                                     </StackPanel>
-                                    <Button Grid.Column="1"
+                                    <ComboBox Grid.Column="1"
+                                              Style="{StaticResource IMYA_COMBOBOX}"
+                                              ItemsSource="{Binding DataContext.DlcRequirementData,
+                                                RelativeSource={RelativeSource AncestorType=ItemsControl} }"
+                                              Margin="5,3,10,3"
+                                              SelectedItem="{Binding Dependant, Mode=TwoWay}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                           Style="{StaticResource IMYA_TEXT}"
+                                                           Margin="5,2,0,0"></TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Grid.Column="2"
                                             Style="{StaticResource IMYA_BUTTON}"
-                                            Click="OnDlcDeleteClick">
+                                            Click="OnDlcDeleteClick"
+                                            >
                                         <materialDesign:PackIcon Kind="Remove"
                                                                  Style="{StaticResource IMYA_ICON}" />
                                     </Button>
@@ -197,7 +269,7 @@
         </ScrollViewer>
 
         <Border Background="{DynamicResource ComponentColorBrush}"
-                Grid.Row="2"
+                Grid.Row="3"
                 CornerRadius="3"
                 Margin="5,5,5,0">
             <Grid Grid.Row="2"
@@ -210,11 +282,11 @@
                     <ColumnDefinition Width="0.25*" />
                 </Grid.ColumnDefinitions>
                 <Button Style="{StaticResource IMYA_BUTTON}"
-                        MinWidth="200"
                         Height="32"
                         Margin="0,5,5,5"
                         Click="OnNewClick"
-                        Grid.Column="1">
+                        Grid.Column="1"
+                        HorizontalContentAlignment="Left">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
@@ -229,11 +301,11 @@
                     </DockPanel>
                 </Button>
                 <Button Style="{StaticResource IMYA_BUTTON}"
-                        MinWidth="200"
                         Height="32"
                         Margin="0,5,5,5"
                         Click="OnSaveClick"
-                        Grid.Column="2">
+                        Grid.Column="2"
+                        HorizontalContentAlignment="Left">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
@@ -248,11 +320,11 @@
                     </DockPanel>
                 </Button>
                 <Button Style="{StaticResource IMYA_BUTTON}"
-                        MinWidth="200"
                         Height="32"
                         Margin="0,5,5,5"
                         Click="OnLoadClick"
-                        Grid.Column="3">
+                        Grid.Column="3"
+                        HorizontalContentAlignment="Left">
                     <DockPanel Margin="10,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Stretch">
