@@ -44,14 +44,10 @@ namespace Imya.Models.Mods
         /// </summary>
         public bool IsRemoved
         {
-            get => Attributes.HasAttribute(AttributeType.IssueModRemoved);
-            set
-            {
-                if (IsRemoved == value)
-                    return;
-                OnPropertyChanged(nameof(IsRemoved));
-            }
+            get => _isRemoved;
+            set => SetProperty(ref _isRemoved, value);
         }
+        private bool _isRemoved;
 
         public bool IsObsolete
         {

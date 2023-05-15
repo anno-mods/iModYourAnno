@@ -30,7 +30,8 @@ namespace Imya.Models.Mods
                 _serviceProvider.GetRequiredService<ModCollectionHooks>(),
                 _serviceProvider.GetRequiredService<IModFactory>(),
                 _serviceProvider.GetRequiredService<IModStatusAttributeFactory>(),
-                _serviceProvider.GetRequiredService<IModAccessIssueAttributeFactory>())
+                _serviceProvider.GetRequiredService<IModAccessIssueAttributeFactory>(),
+                _serviceProvider.GetRequiredService<IRemovedFolderAttributeFactory>())
             {
                 ModsPath = Filepath,
                 Normalize = normalize,

@@ -59,6 +59,7 @@ namespace Imya.Models.Mods
         private IModFactory _modFactory;
         private IModStatusAttributeFactory _modStatusAttributeFactory;
         private IModAccessIssueAttributeFactory _modAccessIssueAttributeFactory;
+        private IRemovedFolderAttributeFactory _removedFolderAttributeFactory;
 
         public ModCollectionHooks Hooks { get; }
 
@@ -75,12 +76,14 @@ namespace Imya.Models.Mods
             ModCollectionHooks hooks, 
             IModFactory modFactory,
             IModStatusAttributeFactory modStatusAttributeFactory,
-            IModAccessIssueAttributeFactory modAccessIssueAttributeFactory)
+            IModAccessIssueAttributeFactory modAccessIssueAttributeFactory,
+            IRemovedFolderAttributeFactory removedFolderAttributeFactory)
         {
             _gameSetupService = gameSetupService;
             _modFactory = modFactory;
             _modStatusAttributeFactory = modStatusAttributeFactory;
             _modAccessIssueAttributeFactory = modAccessIssueAttributeFactory;
+            _removedFolderAttributeFactory = removedFolderAttributeFactory;
 
             ModsPath = "";
             Normalize = false;
@@ -199,7 +202,7 @@ namespace Imya.Models.Mods
         private void OnActivationChanged(Mod? sender)
         {
             // remove mods with IssueModRemoved attribute
-            int removedModCount = _mods.Count(x => x.Attributes.HasAttribute(AttributeType.IssueModRemoved));
+            int removedModCount = _mods.Count(x => x.IsRemoved);
 
             int newActiveCount = _mods.Count(x => x.IsActive);
             if (removedModCount > 0 || ActiveMods != newActiveCount)
@@ -322,13 +325,19 @@ namespace Imya.Models.Mods
             {
                 throw new InvalidOperationException("Collection cannot change mods that are not in it.");
             }
-            var tasks = mods.Select(x => Task.Run(async () => await ChangeActivationAsync(x, activation_status))).ToList();
+            var tasks = mods.Select(x => Task.Run(async () => await ChangeActivationNoEventsAsync(x, activation_status))).ToList();
             await Task.WhenAll(tasks);
 
             OnActivationChanged(null);
         }
 
         public async Task ChangeActivationAsync(Mod mod, bool active)
+        {
+            await ChangeActivationNoEventsAsync(mod, active);
+            OnActivationChanged(mod);
+        }
+
+        private async Task ChangeActivationNoEventsAsync(Mod mod, bool active)
         {
             if (mod.IsActive == active || mod.IsRemoved)
                 return;
@@ -345,8 +354,7 @@ namespace Imya.Models.Mods
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                    if (!mod.IsRemoved)
-                        mod.Attributes.AddAttribute(_modAccessIssueAttributeFactory.Get());
+                    mod.IsRemoved = true;                         
                 }
             });
         }
@@ -400,7 +408,7 @@ namespace Imya.Models.Mods
 
         public async Task MakeObsoleteAsync(Mod mod, string path)
         {
-            await ChangeActivationAsync(mod, false);
+            await ChangeActivationNoEventsAsync(mod, false);
             mod.Attributes.AddAttribute(_modStatusAttributeFactory.Get(ModStatus.Obsolete));
             Console.WriteLine($"{ModStatus.Obsolete}: {mod.FolderName}");
         }
@@ -434,7 +442,7 @@ namespace Imya.Models.Mods
             {
                 bool active = activationSet.Contains(mod.FolderName);
                 if (active != mod.IsActive)
-                    await ChangeActivationAsync(mod, active);
+                    await ChangeActivationNoEventsAsync(mod, active);
             }
 
             CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));

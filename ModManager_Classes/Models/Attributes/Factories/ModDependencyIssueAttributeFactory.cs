@@ -19,10 +19,11 @@ namespace Imya.Models.Attributes.Factories
 
         public IAttribute Get(IEnumerable<string> context)
         {
+            String text = _textManager.GetText("ATTRIBUTE_MISSINGDEPENDENCY")?.Text ?? "";
             return new ModDependencyIssueAttribute()
             {
                 AttributeType = AttributeType.UnresolvedDependencyIssue,
-                Description = new SimpleText(string.Format(_textManager.GetText("ATTRIBUTE_MISSINGDEPENDENCY").Text, string.Join(',', context))),
+                Description = new SimpleText(string.Format(text, string.Join(',', context))),
                 UnresolvedDependencies = context
             };
         }

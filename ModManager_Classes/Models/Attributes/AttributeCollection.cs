@@ -10,6 +10,8 @@ namespace Imya.Models.Attributes
         
         public void AddAttribute(IAttribute attrib)
         {
+            if (attrib is null)
+                return;
             lock (_lock)
             {
                 if (!attrib.MultipleAllowed && this.Any(x => x.AttributeType == attrib.AttributeType))
