@@ -116,6 +116,8 @@ namespace Imya.Models.Mods
             BasePath = basePath;
             Modinfo = modinfo;
 
+            SubMods = new List<Mod>();
+
             // Just construct as base64 for now. 
             // TODO move to separate async function
             if (Modinfo.Image is not null)
@@ -286,6 +288,12 @@ namespace Imya.Models.Mods
 
             return Version > target.Version;
         }
+        #endregion
+
+        #region Sub mods
+        public List<Mod> SubMods { get; private set; }
+        
+        public bool HasSubmods { get => SubMods.Count() > 0; }
         #endregion
 
         public ModStatus GetStatus()

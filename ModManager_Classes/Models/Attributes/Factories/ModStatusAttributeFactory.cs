@@ -22,7 +22,7 @@ namespace Imya.Models.Attributes.Factories
     public class ModStatusAttributeFactory : IModStatusAttributeFactory
     {
         private readonly ITextManager _textManager;
-        private Dictionary<ModStatus, IAttribute> static_attribs;
+        private Dictionary<ModStatus, Func<IAttribute>> static_attribs;
         public ModStatusAttributeFactory(ITextManager textManager)
         {
             _textManager = textManager;
@@ -31,7 +31,7 @@ namespace Imya.Models.Attributes.Factories
             {
                 {
                     ModStatus.Default,
-                    new ModStatusAttribute()
+                    () => new ModStatusAttribute()
                     {
                         AttributeType = AttributeType.ModStatus,
                         Description = new SimpleText("Mod Status Attribute"),
@@ -40,7 +40,7 @@ namespace Imya.Models.Attributes.Factories
                 },
                 {
                     ModStatus.New,
-                    new ModStatusAttribute()
+                    () => new ModStatusAttribute()
                     {
                         AttributeType = AttributeType.ModStatus,
                         Description = _textManager.GetText("ATTRIBUTE_STATUS_NEW"),
@@ -49,7 +49,7 @@ namespace Imya.Models.Attributes.Factories
                 },
                 {
                     ModStatus.Updated,
-                    new ModStatusAttribute()
+                    () => new ModStatusAttribute()
                     {
                         AttributeType = AttributeType.ModStatus,
                         Description = _textManager.GetText("ATTRIBUTE_STATUS_UPDATE"),
@@ -58,7 +58,7 @@ namespace Imya.Models.Attributes.Factories
                 },
                 {
                     ModStatus.Obsolete,
-                    new ModStatusAttribute()
+                    () => new ModStatusAttribute()
                     {
                         AttributeType = AttributeType.ModStatus,
                         Description = _textManager.GetText("ATTRIBUTE_STATUS_OBSOLETE"),
@@ -70,7 +70,7 @@ namespace Imya.Models.Attributes.Factories
 
         public IAttribute Get(ModStatus status)
         {
-            return static_attribs[status];
+            return static_attribs[status].Invoke();
         }
     }
 }

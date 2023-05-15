@@ -60,7 +60,7 @@ namespace Imya.UI.Components
             ITextManager textManager,
             PopupCreator popupCreator,
             IAuthenticationController authController,
-            ModCollection globalMods)
+            IImyaSetupService imyaSetupService)
         {
             Authenticator = authenticator;
             AppSettings = appSettings;
@@ -72,7 +72,7 @@ namespace Imya.UI.Components
             _launcherFactory = gameLauncherFactory;
             _popupCreator = popupCreator;
             _tweakService = tweakService; 
-            _globalMods = globalMods;
+            _globalMods = imyaSetupService.GlobalModCollection;
 
             InitializeComponent();
             DataContext = this;

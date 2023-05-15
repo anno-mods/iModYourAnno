@@ -68,13 +68,13 @@ namespace Imya.UI.Views
             ITextManager textManager,
             ModList modList,
             ModDescriptionDisplay modDescriptionDisplay,
-            ModCollection globalMods,
+            IImyaSetupService imyaSetupService,
             PopupCreator popupCreator,
             IProfilesService profilesService)
         {
             GameSetupManager = gameSetup;
             TextManager = textManager;
-            Mods = globalMods;
+            Mods = imyaSetupService.GlobalModCollection;
             ModList = modList; 
             ModDescription = modDescriptionDisplay;
             _popupCreator = popupCreator;

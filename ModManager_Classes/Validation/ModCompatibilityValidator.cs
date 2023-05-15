@@ -35,7 +35,8 @@ namespace Imya.Validation
                 mod.Attributes.AddAttribute(_compabilityAttributeFactory.Get(incompatibles));
         }
 
-        private IEnumerable<Mod> GetIncompatibleMods(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+
+        private static IEnumerable<Mod> GetIncompatibleMods(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
         {
             if (collection is null || modinfo.IncompatibleIds is null || modinfo.ModID is null) 
                 yield break;
@@ -47,6 +48,5 @@ namespace Imya.Validation
                     yield return result;
             }
         }
-
     }
 }

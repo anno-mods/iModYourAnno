@@ -15,6 +15,8 @@ namespace Imya.Services.Interfaces
         public String TweakDirectoryPath { get; }
         public String UnpackDirectoryPath { get; }
 
+        public ModCollection GlobalModCollection { get; set; }
+
         void Init();
     }
 }

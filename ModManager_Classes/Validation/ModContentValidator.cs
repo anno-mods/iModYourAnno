@@ -26,8 +26,6 @@ namespace Imya.Validation
 
         private void ValidateSingle(Mod mod)
         {
-            mod.Attributes.RemoveAttributesByType(AttributeType.ModContentInSubfolder);
-
             if (mod.IsRemoved || !Directory.Exists(mod.FullModPath))
             {
                 mod.IsRemoved = true;

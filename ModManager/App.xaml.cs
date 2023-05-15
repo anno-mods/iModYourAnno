@@ -31,6 +31,7 @@ using Octokit;
 using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.RepositoryInformation;
 using Imya.UI.ValueConverters;
+using Anno.Utils;
 
 namespace Imya.UI
 {
@@ -74,10 +75,6 @@ namespace Imya.UI
                     services.AddSingleton<ModTweaksExporter>();
                     services.AddSingleton<ModCollectionHooks>(serviceProvider => new ModCollectionHooks());
 
-                    //setup global mod collection
-                    var factory = services.BuildServiceProvider().GetRequiredService<IModCollectionFactory>();
-                    var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
-                    services.AddSingleton(collection);
                     services.AddSingleton<CyclicDependencyAttributeFactory>();
 
                     services.AddSingleton<IInstallationService, InstallationService>();
@@ -153,18 +150,25 @@ namespace Imya.UI
 
                     services.AddTransient<DlcTextConverter>();
                     services.AddTransient<FilenameValidationConverter>();
+                    services.AddSingleton<SelfUpdater>();
                 })
                 .Build();
+
 
             var gameSetup = AppHost.Services.GetRequiredService<IGameSetupService>();
             gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
+            var factory = AppHost.Services.GetRequiredService<IModCollectionFactory>();
+            var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
+            var imyaSetup = AppHost.Services.GetRequiredService<IImyaSetupService>();
+            imyaSetup.GlobalModCollection = collection; 
+
             //subscribe the global mod collection to the gamesetup
             var textManager = AppHost.Services.GetRequiredService<ITextManager>();
             textManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
             //check if this can be moved to OnStartup
-            var globalMods = AppHost.Services.GetRequiredService<ModCollection>();
+            var globalMods = AppHost.Services.GetRequiredService<IImyaSetupService>().GlobalModCollection;
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModContentValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModCompatibilityValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<CyclicDependencyValidator>());
@@ -178,7 +182,7 @@ namespace Imya.UI
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            var globalMods = AppHost.Services.GetRequiredService<ModCollection>();
+            var globalMods = AppHost.Services.GetRequiredService<IImyaSetupService>().GlobalModCollection;
             await globalMods.LoadModsAsync();
 
             var appSettings = AppHost.Services.GetRequiredService<IAppSettings>();

@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.Mods;
+using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Models;
 using Imya.Utils;
@@ -30,12 +31,12 @@ namespace Imya.UI.Components
         public ModList(
             ITextManager textManager, 
             IAppSettings settings,
-            ModCollection _globalMods)
+            IImyaSetupService imyaSetupService)
         {
             TextManager = textManager;
             Settings = settings;
 
-            Mods = new BindableModCollection(_globalMods, this);
+            Mods = new BindableModCollection(imyaSetupService.GlobalModCollection, this);
 
             DataContext = this;
             InitializeComponent();

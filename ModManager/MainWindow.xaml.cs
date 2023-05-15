@@ -3,12 +3,15 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using Anno.Utils;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.UI.Components;
+using Imya.UI.Models;
 using Imya.UI.Properties;
 using Imya.UI.Utils;
 using Imya.Utils;
+using Octokit;
 
 namespace Imya.UI
 {
@@ -34,7 +37,8 @@ namespace Imya.UI
             IGameSetupService gameSetupService,
             Dashboard dashboard,
             ConsoleLog consoleLog,
-            PopupCreator popupCreator)
+            PopupCreator popupCreator,
+            SelfUpdater selfUpdater)
         {
             _authenticator = authenticator;
             _gameSetupService = gameSetupService;
@@ -70,6 +74,10 @@ namespace Imya.UI
                 if (result is true)
                     _gameSetupService.RemoveModloader();
             }
+
+            // initialize self-updater
+            if(!Settings.DevMode)
+                selfUpdater.CheckForUpdate("anno-mods", "iModYourAnno");
         }
 
         public void SetUpEmbeddedConsole()

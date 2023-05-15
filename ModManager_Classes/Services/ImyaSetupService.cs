@@ -1,4 +1,5 @@
-﻿using Imya.Models.NotifyPropertyChanged;
+﻿using Imya.Models.Mods;
+using Imya.Models.NotifyPropertyChanged;
 using Imya.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,8 @@ namespace Imya.Services
         //the fallback currently stores the tweaks elsewhere. I have no idea why the gamesetup isn't injected properly here.
         public string TweakDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, TweakDirectory); }
         public string UnpackDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, UnpackDirectory); }
+
+        public ModCollection GlobalModCollection { get; set; }
 
         public ImyaSetupService(IGameSetupService gameSetup)
         {

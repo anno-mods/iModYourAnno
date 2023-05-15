@@ -1,10 +1,5 @@
 ﻿using Imya.Models.Collections;
 using Imya.Models.Installation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Downloader;
 using Imya.Models.NotifyPropertyChanged;
@@ -108,14 +103,14 @@ namespace Imya.Services
         #endregion
 
         private readonly IModCollectionFactory _modCollectionFactory;
-        private readonly ModCollection _globalMods;
+        private readonly IImyaSetupService _imyaSetupService;
 
         public InstallationService(
             IModCollectionFactory factory,
-            ModCollection globalMods)
+            IImyaSetupService imyaSetupService)
         {
             _modCollectionFactory = factory;
-            _globalMods = globalMods; 
+            _imyaSetupService = imyaSetupService; 
             _moveIntoSem = new Semaphore(1, 1);
             _downloadSem = new Semaphore(1, 1);
 
@@ -165,7 +160,7 @@ namespace Imya.Services
 
         public void Pause()
         {
-            if (CurrentDownload is null)
+            if (CurrentDownload is null) 
                 return;
             DownloadService.Pause();
             CurrentDownload.IsPaused = true;
@@ -273,13 +268,13 @@ namespace Imya.Services
             if (unpackable.CancellationToken.IsCancellationRequested)
                 return;
             unpackable.Status = InstallationStatus.MovingFiles;
-            var newCollection = _modCollectionFactory.Get(unpackable.UnpackTargetPath);
+            var newCollection = _modCollectionFactory.Get(unpackable.UnpackTargetPath, autofixSubfolder : true);
             await newCollection.LoadModsAsync();
             //async waiting
             await Task.Run(() => _moveIntoSem.WaitOne(), unpackable.CancellationToken);
             if (!unpackable.CancellationToken.IsCancellationRequested)
             {
-                await _globalMods.MoveIntoAsync(newCollection);
+                await _imyaSetupService.GlobalModCollection.MoveIntoAsync(newCollection);
             }
             _moveIntoSem.Release();
             Unpacks.Remove(unpackable);

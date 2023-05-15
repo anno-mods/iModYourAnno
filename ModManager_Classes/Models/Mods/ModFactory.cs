@@ -49,6 +49,24 @@ namespace Imya.Models.Mods
             if (!hasModinfo)
                 mod.Attributes.AddAttribute(_missingModinfoAttributeFactory.Get());
 
+            string[] modinfos = Directory.GetFiles(Path.Combine(basePath, folder), "modinfo.json", SearchOption.AllDirectories);
+            if (modinfos.Length > 1)
+            {
+                foreach (var submodinfo in modinfos)
+                {
+                    if (submodinfo == Path.Combine(basePath, folder, "modinfo.json"))
+                    {
+                        continue;
+                    }
+
+                    Mod? submod = GetFromFolder(Path.GetDirectoryName(submodinfo) ?? "");
+                    if (submod is not null)
+                    {
+                        mod.SubMods.Add(submod);
+                    }
+                }
+            }
+
             return mod; 
         }
     }

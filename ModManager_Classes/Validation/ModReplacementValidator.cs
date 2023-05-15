@@ -39,7 +39,7 @@ namespace Imya.Validation
         }
 
 
-        private Mod? HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+        private static Mod? HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
         {
             if (collection is null || modinfo.ModID is null)
                 return null;
