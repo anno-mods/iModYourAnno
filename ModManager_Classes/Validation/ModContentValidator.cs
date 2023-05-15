@@ -33,16 +33,14 @@ namespace Imya.Validation
             }
 
             string dataPath = Path.Combine(mod.FullModPath, "data");
-            if (!Directory.Exists(dataPath))
+            if (Directory.Exists(dataPath) || File.Exists(Path.Combine(mod.FullModPath, "modinfo.json")))
+                return; 
+            // data/ doesn't exist, that's odd
+            var foundFolders = Directory.GetDirectories(mod.FullModPath, "data", SearchOption.AllDirectories);
+            if (foundFolders.Length > 0)
             {
-                // data/ doesn't exist, that's odd
-                
-                var foundFolders = Directory.GetDirectories(mod.FullModPath, "data", SearchOption.AllDirectories);
-                if (foundFolders.Length > 0)
-                {
-                    // there's a data/ somewhere deeper, probably a mistake then
-                    mod.Attributes.AddAttribute(_factory.Get());
-                }
+                // there's a data/ somewhere deeper, probably a mistake then
+                mod.Attributes.AddAttribute(_factory.Get());
             }
         }
     }
