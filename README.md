@@ -18,10 +18,10 @@ Anno is a trademark of Ubisoft GmbH in the US and/or other countries.
 There are video tutorials available on how to install the modmanager and use it to install, manage and tweak mods with it. Everything is explained step by step and demonstrated with an example.
 
 **English** 
-[![Watch the video](https://prnt.sc/k6PmJU3jW8fH)](https://youtu.be/5wnJ0LDQJK4)
+[![Watch the video](docs/imageforgithubreadme_en.png)](https://youtu.be/5wnJ0LDQJK4)
 
 **German**
-[![Watch the video](https://prnt.sc/uRoUeLTBHC5t)](https://youtu.be/h0y0gn_m-Es)
+[![Watch the video](docs/imageforgithubreadme_de.png)](https://youtu.be/h0y0gn_m-Es)
 
 
 ## Credits
