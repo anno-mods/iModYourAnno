@@ -1,6 +1,8 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.Mods;
 using Imya.Utils;
+using System.Collections.Specialized;
 
 namespace Imya.Validation
 {
@@ -10,18 +12,35 @@ namespace Imya.Validation
     /// </summary>
     public class ModContentValidator : IModValidator
     {
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        private readonly IContentInSubfolderAttributeFactory _factory;
+        public ModContentValidator(IContentInSubfolderAttributeFactory factory) 
+        {
+            _factory = factory;
+        }
+
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in changed)
                 ValidateSingle(mod);
         }
 
-        private static void ValidateSingle(Mod mod)
+        private void ValidateSingle(Mod mod)
         {
             if (mod.IsRemoved || !Directory.Exists(mod.FullModPath))
             {
                 mod.IsRemoved = true;
                 return;
+            }
+
+            string dataPath = Path.Combine(mod.FullModPath, "data");
+            if (Directory.Exists(dataPath) || File.Exists(Path.Combine(mod.FullModPath, "modinfo.json")))
+                return; 
+            // data/ doesn't exist, that's odd
+            var foundFolders = Directory.GetDirectories(mod.FullModPath, "data", SearchOption.AllDirectories);
+            if (foundFolders.Length > 0)
+            {
+                // there's a data/ somewhere deeper, probably a mistake then
+                mod.Attributes.AddAttribute(_factory.Get());
             }
         }
     }

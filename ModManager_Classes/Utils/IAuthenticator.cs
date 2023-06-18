@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Imya.Utils
 {
+    //todo move this to Imya.UI.Models
     public interface IAuthenticator
     {
         public event PopupRequestedEventHandler UserCodeReceived;

@@ -1,4 +1,5 @@
 ﻿using Imya.Models;
+using Imya.Texts;
 using Imya.Utils;
 using System;
 using System.Windows;
@@ -51,23 +52,7 @@ namespace Imya.UI.Controls
             InitializeComponent();
 
             OnTextBlock.SizeChanged += OnTextBlock_SizeChanged;
-            OffTextBlock.SizeChanged += OnTextBlock_SizeChanged;
-
-            Binding onBinding = new()
-            {
-                Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_ONTEXT") as LocalizedText,
-                Path = new PropertyPath("Text"),
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            };
-            SetBinding(OnTextProperty, onBinding);
-
-            Binding offBinding = new()
-            {
-                Source = TextManager.Instance.GetText("CONTROLS_TOGGLE_DEFAULT_OFFTEXT") as LocalizedText,
-                Path = new PropertyPath("Text"),
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            };
-            SetBinding(OffTextProperty, offBinding);   
+            OffTextBlock.SizeChanged += OnTextBlock_SizeChanged;  
         }
 
         private void OnTextBlock_SizeChanged(object sender, SizeChangedEventArgs e)

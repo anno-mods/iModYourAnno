@@ -1,5 +1,4 @@
-﻿using Imya.Models;
-using Imya.Utils;
+﻿using Imya.Utils;
 using System.Windows;
 using System.Windows.Controls;
 using Imya.Enums;
@@ -15,6 +14,10 @@ using System.Linq;
 using Imya.UI.Popup;
 using Imya.UI.Models;
 using Imya.Models.GameLauncher;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Imya.Models.Mods;
 
 namespace Imya.UI.Components
 {
@@ -23,17 +26,20 @@ namespace Imya.UI.Components
     /// </summary>
     public partial class Dashboard : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
+        public ITextManager TextManager { get; }
         public Properties.Settings Settings { get; } = Properties.Settings.Default;
-        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
-        public MainViewController MainViewController { get; } = MainViewController.Instance;
 
-        public AppSettings AppSettings { get; } = AppSettings.Instance;
-
-        public AuthenticationController AuthenticationController { get; } = new AuthenticationController();
-        public IAuthenticator Authenticator { get; } = GithubClientProvider.Authenticator;
-
+        public IGameSetupService GameSetupManager { get; init; }
+        public IMainViewController MainViewController { get; }
+        public IAppSettings AppSettings { get; init; }
+        public IAuthenticationController AuthenticationController { get; init; }
+        
+        public IAuthenticator Authenticator { get; }
+        private ITweakService _tweakService;
         private IGameLauncherFactory _launcherFactory;
+        private ModCollection _globalMods;
+
+        private PopupCreator _popupCreator;
 
         public bool CanStartGame { 
             get => _canStartGame;
@@ -44,14 +50,34 @@ namespace Imya.UI.Components
         }
         private bool _canStartGame;
 
-        public Dashboard()
+        public Dashboard(
+            IAuthenticator authenticator,
+            ITweakService tweakService,
+            IAppSettings appSettings,
+            IMainViewController mainViewController,
+            IGameLauncherFactory gameLauncherFactory,
+            IGameSetupService gameSetupService,
+            ITextManager textManager,
+            PopupCreator popupCreator,
+            IAuthenticationController authController,
+            IImyaSetupService imyaSetupService)
         {
+            Authenticator = authenticator;
+            AppSettings = appSettings;
+            AuthenticationController = authController;
+            MainViewController = mainViewController;
+            TextManager = textManager;
+            GameSetupManager = gameSetupService;
+
+            _launcherFactory = gameLauncherFactory;
+            _popupCreator = popupCreator;
+            _tweakService = tweakService; 
+            _globalMods = imyaSetupService.GlobalModCollection;
+
             InitializeComponent();
             DataContext = this;
 
-            MainViewController.Instance.ViewChanged += UpdateSelection;
-            _launcherFactory = new GameLauncherFactory();
-
+            MainViewController.ViewChanged += UpdateSelection;
             CanStartGame = CheckCanStartGame();
         }
 
@@ -66,7 +92,7 @@ namespace Imya.UI.Components
 
         public void BrowserClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GITHUB_BROWSER);
 
-        public void GameSetupClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GAME_SETUP);
+        public void GameSetupClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.GITHUB_BROWSER);
 
         public void ModTweakerClick(object sender, RoutedEventArgs e) => MainViewController.SetView(View.TWEAKER);
 
@@ -76,18 +102,18 @@ namespace Imya.UI.Components
 
         public void StartGameClick(object sender, RoutedEventArgs e)
         {
-            var withUnresolved = ModCollection.Global?.WithAttribute(AttributeType.UnresolvedDependencyIssue);
-            var withIncompatibleIssue = ModCollection.Global?.WithAttribute(AttributeType.ModCompabilityIssue);
+            var withUnresolved = _globalMods.WithAttribute(AttributeType.UnresolvedDependencyIssue);
+            var withIncompatibleIssue = _globalMods.WithAttribute(AttributeType.ModCompabilityIssue);
 
             if (withUnresolved?.Count() > 0 || withIncompatibleIssue?.Count() > 0)
             {
-                GenericOkayPopup popup = PopupCreator.CreateInvalidSetupPopup();
+                GenericOkayPopup popup = _popupCreator.CreateInvalidSetupPopup();
                 if (popup.ShowDialog() is false) return;
             }
 
-            if (TweakManager.Instance.HasUnsavedChanges)
+            if (_tweakService.HasUnsavedChanges)
             {
-                var dialog = PopupCreator.CreateSaveTweakPopup();
+                var dialog = _popupCreator.CreateSaveTweakPopup();
                 if (dialog.ShowDialog() is false) return;
             }
 
@@ -118,7 +144,7 @@ namespace Imya.UI.Components
             {
                 case View.MOD_ACTIVATION:
                     return ModManagementButton;
-                case View.GAME_SETUP:
+                case View.MOD_INSTALLATION:
                     return ModInstallationButton;
                 case View.TWEAKER:
                     return ModTweakerButton;
@@ -146,7 +172,7 @@ namespace Imya.UI.Components
 
         private void LogoutButtonClick(object sender, RoutedEventArgs e)
         {
-            var dialogresult = PopupCreator.CreateLogoutPopup().ShowDialog();
+            var dialogresult = _popupCreator.CreateLogoutPopup().ShowDialog();
             if (dialogresult is false) return;
 
             AuthenticationController.Logout();

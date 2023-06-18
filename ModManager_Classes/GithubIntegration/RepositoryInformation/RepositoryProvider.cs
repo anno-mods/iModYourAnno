@@ -3,13 +3,13 @@ using Octokit;
 
 namespace Imya.GithubIntegration.RepositoryInformation
 {
-    internal class RepositoryProvider : IRepositoryProvider
+    public class RepositoryProvider : IRepositoryProvider
     {
-        private GitHubClient _githubClient = GithubClientProvider.Client;
+        private IGitHubClient _githubClient;
 
-        public RepositoryProvider()
+        public RepositoryProvider(IGitHubClient client)
         {
-
+            _githubClient = client; 
         }
 
         public async Task<Release?> FetchLatestReleaseAsync(GithubRepoInfo repository)

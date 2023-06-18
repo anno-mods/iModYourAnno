@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
+using Imya.Texts;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -32,20 +33,14 @@ namespace Imya.UI.Components
     {
         public AttributeText[] Attributes { get; }
 
-        private TextManager TextManager = TextManager.Instance;
+        private ITextManager TextManager;
 
-        public AttributeStaticHelp()
+        public AttributeStaticHelp(ITextManager textManager)
         {
+            TextManager = textManager;
+
             Attributes = new AttributeText[]
-            {
-                new() { Attribute = ModStatusAttributeFactory.Get(ModStatus.Updated), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_UPDATEDMOD") },
-                new() { Attribute = ModStatusAttributeFactory.Get(ModStatus.New), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_NEWMOD") },
-                new() { Attribute = ModStatusAttributeFactory.Get(ModStatus.Obsolete), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_OBSOLETEMOD") },
-                new() { Attribute = TweakedAttributeFactory.Get(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_TWEAKEDMOD") },
-                new() { Attribute = MissingModinfoAttributeFactory.Get(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_NOMODINFO") },
-                new() { Attribute = new GenericModContextAttribute(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_COMPABILITY")},
-                new() { Attribute = new ModDependencyIssueAttribute(), Text = TextManager.GetText("ATTRIBUTE_STATICHELP_DEPENDENCY")},
-            };
+            { };
 
             InitializeComponent();
 

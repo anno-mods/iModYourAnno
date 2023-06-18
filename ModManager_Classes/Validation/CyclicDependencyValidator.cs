@@ -1,7 +1,9 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,9 +11,16 @@ using System.Threading.Tasks;
 
 namespace Imya.Validation
 {
-    internal class CyclicDependencyValidator : IModValidator
+    public class CyclicDependencyValidator : IModValidator
     {
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all)
+        private ICyclicDependencyAttributeFactory _attributeFactory;
+
+        public CyclicDependencyValidator(ICyclicDependencyAttributeFactory attributeFactory)
+        {
+            _attributeFactory = attributeFactory;
+        }
+
+        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (Mod x in all)
                 x.Attributes.RemoveAttributesByType(AttributeType.CyclicDependency);
@@ -20,7 +29,7 @@ namespace Imya.Validation
                 var cyclics = CyclicDependencies(x, all);
                 if (cyclics.Count() > 0)
                 {
-                    x.Attributes.Add(CyclicDependencyAttributeFactory.Get(cyclics));   
+                    x.Attributes.AddAttribute(_attributeFactory.Get(cyclics));   
                 }
             }
         }

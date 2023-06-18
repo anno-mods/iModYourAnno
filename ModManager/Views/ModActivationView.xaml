@@ -7,7 +7,6 @@
              xmlns:Components="clr-namespace:Imya.UI.Components"
              xmlns:Converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DataContext="{d:DesignInstance Type=local:ModActivationView}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -52,8 +51,15 @@
             </TextBlock>
         </StackPanel>
 
-        <Components:ModList Grid.Row="1" Margin="0,5,5,5" Grid.Column="0" x:Name="ModList" />
-        <Components:ModDescriptionDisplay Margin="5,5,5,0" Grid.Row="1" Grid.Column="1" x:Name="ModDescription" />
+        <ContentControl Grid.Row="1"
+                        Margin="0,5,5,5"
+                        Grid.Column="0"
+                        Content="{Binding ModList}" />
+        <ContentControl Margin="5,5,5,0"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Content="{Binding ModDescription}" />
+        
 
         <Border Background="{DynamicResource ComponentColorBrush}"
                 Grid.Row="2"
@@ -76,12 +82,12 @@
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource BoolMultiAnd}"
                                       UpdateSourceTrigger="PropertyChanged">
-                            <Binding Path="ModList.AnyInactiveSelected" 
+                            <Binding Path="AnyInactiveSelected" 
                                      UpdateSourceTrigger="PropertyChanged" />
                             <Binding Path="GameSetupManager.IsGameRunning"
                                      Converter="{StaticResource NegateBool}"
                                      UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Path="ModList.OnlyRemovedSelected"
+                            <Binding Path="OnlyRemovedSelected"
                                      Converter="{StaticResource NegateBool}"
                                      UpdateSourceTrigger="PropertyChanged" />
                         </MultiBinding>
@@ -104,12 +110,12 @@
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource BoolMultiAnd}"
                                       UpdateSourceTrigger="PropertyChanged">
-                            <Binding Path="ModList.AnyActiveSelected"
+                            <Binding Path="AnyActiveSelected"
                                      UpdateSourceTrigger="PropertyChanged" />
                             <Binding Path="GameSetupManager.IsGameRunning"
                                      Converter="{StaticResource NegateBool}"
                                      UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Path="ModList.OnlyRemovedSelected"
+                            <Binding Path="OnlyRemovedSelected"
                                      Converter="{StaticResource NegateBool}"
                                      UpdateSourceTrigger="PropertyChanged" />
                         </MultiBinding>
@@ -133,7 +139,7 @@
                     <Button.IsEnabled>
                         <MultiBinding Converter="{StaticResource BoolMultiAnd}"
                                       UpdateSourceTrigger="PropertyChanged">
-                            <Binding Path="ModList.HasSelection"
+                            <Binding Path="HasSelection"
                                      UpdateSourceTrigger="PropertyChanged" />
                             <Binding Path="GameSetupManager.IsGameRunning"
                                      Converter="{StaticResource NegateBool}"

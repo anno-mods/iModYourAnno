@@ -1,27 +1,22 @@
-﻿using System.Runtime.Serialization;
-using Imya.Models;
+﻿using Imya.Models;
+using Imya.Models.ModMetadata.ModinfoModel;
 using Newtonsoft.Json;
-using Imya.Enums;
-using Imya.Models.ModMetadata;
 
 // TODO move all text/language related code under Imya.Text or Imya.Language
-namespace Imya.Utils
+namespace Imya.Texts
 {
-    public class TextManager
+    public class TextManager : ITextManager
     {
-        public static TextManager Instance { get; } = new TextManager(); 
-
         public ApplicationLanguage ApplicationLanguage { get; private set; } = ApplicationLanguage.English;
 
         private readonly Dictionary<string, IText> KeyedTexts = new();
         private readonly List<IText> UnkeyedTexts = new();
 
-        public delegate void LanguageChangedEventHandler(ApplicationLanguage language);
-        public event LanguageChangedEventHandler LanguageChanged = delegate { };
+        public event ITextManager.LanguageChangedEventHandler LanguageChanged = delegate { };
 
         public IText this[String Key]
         {
-            get { return Instance.GetText(Key); }
+            get { return GetText(Key); }
         }
 
         public TextManager()
@@ -54,7 +49,7 @@ namespace Imya.Utils
             {
                 return KeyedTexts[Key];
             }
-            catch
+            catch (Exception e)
             {
                 Console.WriteLine($"Could not find Text: {Key}");
                 return IText.Empty;
@@ -107,7 +102,7 @@ namespace Imya.Utils
 
         }
 
-        public static LocalizedText CreateLocalizedText(Localized localized)
+        public LocalizedText CreateLocalizedText(Localized localized)
         {
             var newText = new LocalizedText();
 
@@ -123,11 +118,9 @@ namespace Imya.Utils
             if (localized.Spanish is String) newText.Spanish = localized.Spanish;
             if (localized.Taiwanese is String) newText.Taiwanese = localized.Taiwanese;
 
-            if (Instance is not null)
-            {
-                newText.Update(Instance.ApplicationLanguage);
-                Instance.AddAnonymousText(newText);
-            }
+            newText.Update(ApplicationLanguage);
+            AddAnonymousText(newText);
+
             return newText;
         }
     }

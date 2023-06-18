@@ -63,8 +63,7 @@ namespace Imya.GithubIntegration.JsonData
 
             // TODO static is hardcoded now, but shouldn't as soon as we support the others
             var packages = index.packages.Where(x => x.repo is not null && x.owner is not null && x.download is not null);
-            repositories = packages.Select(x =>
-                StaticNameGithubRepoInfoFactory.CreateWithStaticName(x.repo!, x.owner!, x.download!));
+            repositories = packages.Select(x => new GithubRepoInfo(x.repo!, x.owner!, x.download!));
             return true;
         }
 

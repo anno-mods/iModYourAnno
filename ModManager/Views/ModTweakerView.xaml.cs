@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.ModTweaker;
+using Imya.UI.Components;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -23,9 +24,18 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class ModTweakerView : UserControl
     {
-        public ModTweakerView()
+        public ModList ModSelection { get; init; }
+        public ModTweaker TweakerFileView { get; init; }
+
+        public ModTweakerView(
+            ModList modSelection,
+            ModTweaker modTweaker)
         {
+            ModSelection = modSelection;
+            TweakerFileView = modTweaker;
+
             InitializeComponent();
+            DataContext = this;
 
             ModSelection.ModList_SelectionChanged += TweakerFileView.UpdateCurrentDisplay;
         }

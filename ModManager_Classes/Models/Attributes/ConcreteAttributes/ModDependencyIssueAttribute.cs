@@ -9,12 +9,12 @@ namespace Imya.Models.Attributes
 {
     public class ModDependencyIssueAttribute : IAttribute
     {
-        public AttributeType AttributeType { get; } = AttributeType.UnresolvedDependencyIssue;
-        public IText Description { get => new SimpleText(String.Format(TextManager.Instance.GetText("ATTRIBUTE_MISSINGDEPENDENCY").Text, String.Join(',', UnresolvedDependencies))); }
+        public AttributeType AttributeType { get; init; } = AttributeType.UnresolvedDependencyIssue;
+        public IText Description { get; init; }
 
         bool IAttribute.MultipleAllowed => true;
 
-        public IEnumerable<String> UnresolvedDependencies { get; }
+        public IEnumerable<String> UnresolvedDependencies { get; init; }
 
         public ModDependencyIssueAttribute(IEnumerable<String> issues)
         {

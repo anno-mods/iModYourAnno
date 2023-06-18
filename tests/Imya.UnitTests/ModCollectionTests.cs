@@ -5,14 +5,47 @@ using Xunit;
 using Imya.Models;
 using Imya.Utils;
 using System.Linq;
-using Imya.Models.Attributes;
 using System.Collections.Generic;
+using Imya.Models.Attributes.Factories;
+using Imya.Models.Mods;
+using Moq;
+using Imya.Services.Interfaces;
+using Imya.Validation;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.ModMetadata;
+using Imya.Texts;
 
 namespace Imya.UnitTests
 {
     // Note: don't use await, debug doesn't work well with it
     public class ModCollectionTests
     {
+        ModCollectionFactory _collectionFactory;
+        
+        public ModCollectionTests()
+        {
+            var builder = Host.CreateDefaultBuilder();
+
+            var services = builder.ConfigureServices(services =>
+            { 
+                services.AddSingleton(Mock.Of<IGameSetupService>());
+                services.AddSingleton(Mock.Of<ModCollectionHooks>());
+                services.AddSingleton(Mock.Of<IMissingModinfoAttributeFactory>());
+                services.AddSingleton(Mock.Of<ITextManager>());
+                services.AddSingleton<LocalizedModinfoFactory>();
+                services.AddSingleton<IModFactory, ModFactory>();
+                services.AddSingleton<IModStatusAttributeFactory, ModStatusAttributeFactory>();
+                services.AddSingleton<IRemovedFolderAttributeFactory, RemovedFolderAttributeFactory>();
+                services.AddSingleton(Mock.Of<IModAccessIssueAttributeFactory>());
+                services.AddSingleton<ModCollectionFactory>();
+            }).Build()
+            .Services;
+
+            _collectionFactory = services.GetRequiredService<ModCollectionFactory>();
+        }
+
         [Fact]
         public void Single()
         {
@@ -21,7 +54,7 @@ namespace Imya.UnitTests
             const string folder = "tmp\\install1\\target\\[a] mod1";
             Directory.CreateDirectory(folder);
 
-            var target = new ModCollection("tmp\\install1\\target");
+            var target = _collectionFactory.Get("tmp\\install1\\target");
             target.LoadModsAsync().Wait();
 
             Assert.Single(target.Mods);
@@ -37,7 +70,7 @@ namespace Imya.UnitTests
             DirectoryEx.EnsureDeleted("tmp");
 
             Assert.False(Directory.Exists("tmp\\asdf"));
-            var col = new ModCollection("tmp\\asdf");
+            var col = _collectionFactory.Get("tmp\\asdf");
             col.LoadModsAsync().Wait();
             Assert.Empty(col.Mods);
         }
@@ -56,7 +89,7 @@ namespace Imya.UnitTests
             const string secondLevel = @"tmp\source\collection\deep\-[a] mod2\data";
             Directory.CreateDirectory(secondLevel);
             File.WriteAllText($@"{secondLevel}\random.txt", "");
-            var source = new ModCollection(@"tmp\source", autofixSubfolder: autofixSubfolder);
+            var source = _collectionFactory.Get(@"tmp\source", autofixSubfolder: autofixSubfolder);
             source.LoadModsAsync().Wait();
 
             if (autofixSubfolder)
@@ -87,18 +120,18 @@ namespace Imya.UnitTests
             DirectoryEx.EnsureDeleted("tmp");
 
             Assert.False(Directory.Exists("tmp\\mods"));
-            var col = new ModCollection("tmp\\mods");
+            var col = _collectionFactory.Get("tmp\\mods");
             col.LoadModsAsync().Wait();
             Assert.Empty(col.Mods);
 
             Directory.CreateDirectory("tmp\\source");
-            var empty = new ModCollection("tmp\\source");
+            var empty = _collectionFactory.Get("tmp\\source");
             empty.LoadModsAsync().Wait();
             col.MoveIntoAsync(empty).Wait();
 
             // and another time to ensure double creation isn't a problem
             Directory.CreateDirectory("tmp\\source");
-            empty = new ModCollection("tmp\\source");
+            empty = _collectionFactory.Get("tmp\\source");
             empty.LoadModsAsync().Wait();
             col.MoveIntoAsync(empty).Wait();
         }
@@ -113,7 +146,7 @@ namespace Imya.UnitTests
 
             // create target
             Directory.CreateDirectory("tmp\\target");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify target
@@ -129,7 +162,7 @@ namespace Imya.UnitTests
             const string inactiveSourceMod = "tmp\\source\\-[a] mod2";
             Directory.CreateDirectory(inactiveSourceMod);
             File.WriteAllText($"{inactiveSourceMod}\\add.txt", "");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -153,7 +186,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\remove.txt", "");
             File.WriteAllText($"{targetMod}\\update.txt", "old text");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify target
@@ -166,7 +199,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\add.txt", "");
             File.WriteAllText($"{sourceMod}\\update.txt", "new text");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -190,7 +223,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\remove.txt", "");
             File.WriteAllText($"{targetMod}\\update.txt", "old text");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify target
@@ -203,7 +236,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\add.txt", "");
             File.WriteAllText($"{sourceMod}\\update.txt", "new text");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -228,7 +261,7 @@ namespace Imya.UnitTests
             File.WriteAllText($"{obsoleteMod}\\remove.txt", "");
             File.WriteAllText($"{obsoleteMod}\\update.txt", "old text");
             File.WriteAllText($"{obsoleteMod}\\modinfo.json", "{\"ModID\": \"mod1\"}");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify obsolete target
@@ -241,7 +274,7 @@ namespace Imya.UnitTests
             File.WriteAllText($"{sourceMod}\\add.txt", "");
             File.WriteAllText($"{sourceMod}\\update.txt", "new text");
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"ModID\": \"mod1\"}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // verify results
@@ -273,7 +306,7 @@ namespace Imya.UnitTests
             File.WriteAllText($"{obsoleteMod}\\remove.txt", "");
             File.WriteAllText($"{obsoleteMod}\\update.txt", "old text");
             File.WriteAllText($"{obsoleteMod}\\modinfo.json", "{\"ModID\": \"mod1\"}");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify obsolete target
@@ -286,7 +319,7 @@ namespace Imya.UnitTests
             File.WriteAllText($"{sourceMod}\\add.txt", "");
             File.WriteAllText($"{sourceMod}\\update.txt", "new text");
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"ModID\":\"mod2\", \"DeprecateIds\": [ \"mod1\" ]}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // verify results
@@ -317,7 +350,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\remove.txt", "");
             File.WriteAllText($"{targetMod}\\update.txt", "old text");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // verify target
@@ -330,7 +363,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\add.txt", "");
             File.WriteAllText($"{sourceMod}\\update.txt", "new text");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -353,14 +386,14 @@ namespace Imya.UnitTests
             const string targetMod = "tmp\\target\\[a] mod1";
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\modinfo.json", "{\"ModID\": \"mod1\"}");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
             const string sourceMod = "tmp\\source\\[a] mod1";
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"ModID\": \"mod2\"}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be same, and new mod added with a different name
@@ -383,14 +416,14 @@ namespace Imya.UnitTests
             const string targetMod = "tmp\\target\\mod1";
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
             const string sourceMod = "tmp\\source\\mod1";
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
@@ -401,7 +434,7 @@ namespace Imya.UnitTests
             // create source without version
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": null}");
-            source = new ModCollection("tmp\\source");
+            source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
@@ -421,14 +454,14 @@ namespace Imya.UnitTests
             // create target
             const string targetMod = "tmp\\target\\mod1";
             Directory.CreateDirectory(targetMod);
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
             const string sourceMod = "tmp\\source\\mod1";
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -439,7 +472,7 @@ namespace Imya.UnitTests
             // create source
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
-            source = new ModCollection("tmp\\source");
+            source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -460,14 +493,14 @@ namespace Imya.UnitTests
             const string targetMod = "tmp\\target\\mod1";
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1.0.1\"}");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
             const string sourceMod = "tmp\\source\\mod1";
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
@@ -478,7 +511,7 @@ namespace Imya.UnitTests
             // create source without version
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": null}");
-            source = new ModCollection("tmp\\source");
+            source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten
@@ -500,7 +533,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1\"}");
             File.WriteAllText($"{targetMod}\\changed.txt", "old");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
@@ -508,7 +541,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
             File.WriteAllText($"{sourceMod}\\changed.txt", "new");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should be overwritten
@@ -531,7 +564,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(targetMod);
             File.WriteAllText($"{targetMod}\\modinfo.json", "{\"Version\": \"1\"}");
             File.WriteAllText($"{targetMod}\\unchanged.txt", "unchanged");
-            var target = new ModCollection("tmp\\target");
+            var target = _collectionFactory.Get("tmp\\target");
             target.LoadModsAsync().Wait();
 
             // create source
@@ -539,7 +572,7 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(sourceMod);
             File.WriteAllText($"{sourceMod}\\modinfo.json", "{\"Version\": \"1\"}");
             File.WriteAllText($"{sourceMod}\\unchanged.txt", "unchanged");
-            var source = new ModCollection("tmp\\source");
+            var source = _collectionFactory.Get("tmp\\source");
             source.LoadModsAsync().Wait();
 
             // target should not be overwritten

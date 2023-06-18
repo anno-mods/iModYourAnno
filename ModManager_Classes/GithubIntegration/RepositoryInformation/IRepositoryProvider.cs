@@ -7,7 +7,7 @@ using Octokit;
 
 namespace Imya.GithubIntegration.RepositoryInformation
 {
-    internal interface IRepositoryProvider
+    public interface IRepositoryProvider
     {
         Task<Release?> FetchLatestReleaseAsync(GithubRepoInfo repoInfo);
 

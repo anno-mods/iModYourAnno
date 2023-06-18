@@ -1,10 +1,14 @@
 ﻿using Imya.Models;
+using Imya.Models.Mods;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Imya.UI.Components;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
 using System;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -17,9 +21,15 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class ModActivationView : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; } = TextManager.Instance;
-        public ModCollection? Mods { get; private set; } = ModCollection.Global;
-        public GameSetupManager GameSetupManager { get; } = GameSetupManager.Instance;
+        public ITextManager TextManager { get; init; }
+        public ModCollection? Mods { get; private set; }
+        public IGameSetupService GameSetupManager { get; }
+
+        public ModList ModList { get; init; }
+        public ModDescriptionDisplay ModDescription { get; init; }
+
+        private PopupCreator _popupCreator;
+        private IProfilesService _profilesService;
 
         #region notifyable properties
 
@@ -53,10 +63,26 @@ namespace Imya.UI.Views
 
         #endregion
 
-        public ModActivationView()
+        public ModActivationView(
+            IGameSetupService gameSetup,
+            ITextManager textManager,
+            ModList modList,
+            ModDescriptionDisplay modDescriptionDisplay,
+            IImyaSetupService imyaSetupService,
+            PopupCreator popupCreator,
+            IProfilesService profilesService)
         {
-            InitializeComponent();
+            GameSetupManager = gameSetup;
+            TextManager = textManager;
+            Mods = imyaSetupService.GlobalModCollection;
+            ModList = modList; 
+            ModDescription = modDescriptionDisplay;
+            _popupCreator = popupCreator;
+            _profilesService = profilesService;
+
             DataContext = this;
+            InitializeComponent();
+
             ModList.ModList_SelectionChanged += ModDescription.SetDisplayedMod;
             ModList.ModList_SelectionChanged += OnUpdateSelection;
         }
@@ -97,8 +123,7 @@ namespace Imya.UI.Views
         {
             if (Mods is null) return;
 
-            var Dialog = new ProfilesLoadPopup();
-
+            var Dialog = _popupCreator.CreateProfilesLoadPopup();
             var dialogResult = Dialog.ShowDialog();
 
             if (dialogResult is true && Dialog.SelectedProfile is not null)
@@ -111,23 +136,14 @@ namespace Imya.UI.Views
         {
             if (Mods is null) return;
 
-            var dialog = new ProfilesSavePopup();
+            var dialog = _popupCreator.CreateProfilesSavePopup();
 
             dialog.ShowDialog();
+            if (dialog.DialogResult is not true)
+                return;
 
-            if (dialog.DialogResult is true)
-            {
-                var profile = ModActivationProfile.FromModCollection(Mods, x => x.IsActive);
-
-                if (profile.SaveToFile(dialog.FullFilename))
-                {
-                    Console.WriteLine($"Saved Profile to {dialog.ProfileFilename}.");
-                }
-                else
-                {
-                    Console.WriteLine($"Failed to save profile {dialog.ProfileFilename}.");
-                }
-            }
+            var profile = _profilesService.CreateFromModCollection(Mods);
+            _profilesService.SaveProfile(profile, dialog.ProfileFilename);
         }
 
         Mod? _previousSelection = null;
@@ -135,22 +151,14 @@ namespace Imya.UI.Views
         {
             if (_previousSelection != m)
             {
-                if (_previousSelection is not null)
-                    _previousSelection.PropertyChanged -= OnSelectionPropertyChanged;
-                if (m is not null)
-                    m.PropertyChanged += OnSelectionPropertyChanged;
+                HasSelection = ModList.CurrentlySelectedMod is not null;
+                AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
+                AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
+                OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
+
                 _previousSelection = m;
             }
         }
-
-        private void OnSelectionPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            HasSelection = ModList.CurrentlySelectedMod is not null;
-            AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
-            AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
-            OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
-        }
-
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };

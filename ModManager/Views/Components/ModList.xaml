@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:Imya.UI.Components"
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DataContext="{d:DesignInstance Type=local:ModList}"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800">

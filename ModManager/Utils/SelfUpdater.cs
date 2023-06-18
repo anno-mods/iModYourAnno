@@ -6,13 +6,20 @@ using Octokit;
 
 namespace Anno.Utils
 {
-    internal class SelfUpdater
+    public class SelfUpdater
     {
-        public static void CheckForUpdate(GitHubClient client, string owner, string repo)
+        private readonly IGitHubClient _client; 
+
+        public SelfUpdater(IGitHubClient client) 
+        {
+            _client = client; 
+        }
+
+        public void CheckForUpdate(string owner, string repo)
         {
             Task.Run(async () =>
             {
-                var availableUpdate = await IsUpdateAvailableAsync(client, owner, repo);
+                var availableUpdate = await IsUpdateAvailableAsync(owner, repo);
                 if (availableUpdate is not null)
                 {
                     var answer = MessageBox.Show($"iModYourAnno {availableUpdate.TagName} is available.\n\nDo you want to download it now?",
@@ -25,9 +32,9 @@ namespace Anno.Utils
             });
         }
 
-        public async static Task<Release?> IsUpdateAvailableAsync(GitHubClient client, string owner, string repo)
+        public async Task<Release?> IsUpdateAvailableAsync(string owner, string repo)
         {
-            var latest = await client.Repository.Release.GetLatest(owner, repo);
+            var latest = await _client.Repository.Release.GetLatest(owner, repo);
             if (latest is null) return null;
             
             Console.WriteLine(
@@ -41,7 +48,7 @@ namespace Anno.Utils
             return (latestVersion > currentVersion) ? latest : null;
         }
 
-        public static void OpenReleasePage(Release release)
+        public void OpenReleasePage(Release release)
         {
             var info = new ProcessStartInfo(release.HtmlUrl)
             {
@@ -50,7 +57,7 @@ namespace Anno.Utils
             Process.Start(info);
         }
 
-        public static Version GetCurrentVersion()
+        public Version GetCurrentVersion()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);

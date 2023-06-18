@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Linq;
+using Imya.Services;
 
 namespace Imya.UI.Popup
 {
@@ -19,23 +20,13 @@ namespace Imya.UI.Popup
     /// </summary>
     public partial class AddDlcPopup : Window, INotifyPropertyChanged 
     {
-        public ObservableCollection<DlcId> Dlcs { get; private set; }
-
-        private static String ProfilesDirectoryPath = ImyaSetupManager.Instance.ProfilesDirectoryPath;
-
+        public ObservableCollection<DlcId> Dlcs { get; init; }
         public DlcId[] SelectedIDs { get; private set; } = Array.Empty<DlcId>();
 
-        public TextManager TextManager { get; private set; } = TextManager.Instance;
-
-        public AddDlcPopup( IEnumerable<DlcId> dlcIds)
+        public AddDlcPopup()
         {
-            Dlcs = new ObservableCollection<DlcId>(dlcIds);
-
             InitializeComponent();
             DataContext = this;
-
-            Title = TextManager.Instance["PROFILE_LOAD"].Text;
-
             DlcSelection.SelectionChanged += UpdateSelected;
         }
 

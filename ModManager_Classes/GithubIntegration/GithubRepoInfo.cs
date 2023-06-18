@@ -15,27 +15,11 @@ namespace Imya.GithubIntegration
         public String Owner { get; init; }
         public String ReleaseID { get; init; }
 
-        public String ReadmeMarkdownFilepath { get => GetMarkdownReadmeFilepath(); }
-
-        private IReleaseAssetStrategy _releaseAssetStrategy;
-        private IReadmeFilepathStrategy _readmeFilepathStrategy;
-        private IModImageStrategy _imageStrategy;
-
-        public GithubRepoInfo(
-            IReleaseAssetStrategy releaseAssetStrategy,
-            IReadmeFilepathStrategy readmeFilepathStrategy,
-            IModImageStrategy modImageStrategy,
-            String owner, 
-            String repoName,
-            String releaseID)
+        public GithubRepoInfo(string name, string owner, string releaseid)
         {
-            Name = repoName;
+            Name = name;
             Owner = owner;
-            ReleaseID = releaseID;
-
-            _releaseAssetStrategy = releaseAssetStrategy;
-            _readmeFilepathStrategy = readmeFilepathStrategy;
-            _imageStrategy = modImageStrategy;
+            ReleaseID = releaseid;
         }
 
         public override bool Equals([NotNullWhen(true)] object? obj)
@@ -44,11 +28,7 @@ namespace Imya.GithubIntegration
             return Name == other.Name && Owner == other.Owner && ReleaseID == other.ReleaseID;
         }
 
-        public async Task<ReleaseAsset?> GetReleaseAssetAsync() => await _releaseAssetStrategy.GetReleaseAssetAsync(this);
-
-        public String GetMarkdownReadmeFilepath() => _readmeFilepathStrategy.GetMarkdownReadmeFilepath();
-
-        public async Task<string?> GetImageUrlAsync() => await _imageStrategy.GetImageUrlAsync(this);
+        public override int GetHashCode() => base.GetHashCode();
 
         public override String ToString()
         {

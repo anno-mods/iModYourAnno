@@ -36,12 +36,12 @@ namespace Imya.Models.Installation
 
         public String ID { get; init; }
 
-        public IInstallationStatus? Status 
+        public InstallationStatus Status 
         {
             get => _status;
             set => SetProperty(ref _status, value);
         }
-        private IInstallationStatus? _status;
+        private InstallationStatus _status;
 
         public IText? HeaderText 
         { 

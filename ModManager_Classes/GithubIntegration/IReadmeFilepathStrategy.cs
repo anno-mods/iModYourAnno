@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Imya.GithubIntegration
 {
+    [Obsolete]
     public interface IReadmeFilepathStrategy
     {
         String GetMarkdownReadmeFilepath();

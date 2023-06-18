@@ -1,5 +1,5 @@
 ﻿using Imya.Enums;
-using Imya.Models.ModMetadata;
+using Imya.Models.ModMetadata.ModinfoModel;
 using Imya.Models.NotifyPropertyChanged;
 using System;
 using System.Collections.Generic;

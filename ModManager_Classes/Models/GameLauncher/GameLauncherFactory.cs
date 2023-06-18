@@ -1,4 +1,6 @@
-﻿using Imya.Utils;
+﻿using Imya.Services;
+using Imya.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +11,26 @@ namespace Imya.Models.GameLauncher
 {
     public class GameLauncherFactory : IGameLauncherFactory
     {
-        GameSetupManager _gameSetup; 
+        IGameSetupService _gameSetupService;
+        StandardGameLauncher _standardGameLauncher;
+        SteamGameLauncher _steamGameLauncher; 
 
-        public GameLauncherFactory() 
+        public GameLauncherFactory(
+            IGameSetupService gameSetupService,
+            StandardGameLauncher stdGameLauncher,
+            SteamGameLauncher steamGameLauncher) 
         {
-            _gameSetup = GameSetupManager.Instance; 
+            _standardGameLauncher = stdGameLauncher;
+            _steamGameLauncher = steamGameLauncher;
+            _gameSetupService = gameSetupService; 
         }
 
         public IGameLauncher GetLauncher()
         {
-            return _gameSetup.GamePlatform == GamePlatform.Steam ? new SteamGameLauncher() : new StandardGameLauncher();
+            return _gameSetupService.GamePlatform ==
+                GamePlatform.Steam ?
+                    _steamGameLauncher
+                    : _standardGameLauncher;
         }
     }
 }

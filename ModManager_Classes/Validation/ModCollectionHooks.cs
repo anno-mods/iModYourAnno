@@ -1,25 +1,32 @@
-﻿using Imya.Models;
-using Imya.Models.Attributes;
+﻿using Imya.Models.Attributes;
+using Imya.Models.Mods;
 using Imya.Models.ModTweaker;
+using Imya.Models.ModTweaker.DataModel.Storage;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
+using Imya.Models.ModTweaker.IO;
 using System.Collections.Specialized;
 using System.Threading;
 
 namespace Imya.Validation
 {
+    //todo rework the hook system
     public class ModCollectionHooks
     {
-        private SemaphoreSlim _tweaksave_sem;
-        private readonly IModValidator[] validators = new IModValidator[]
-            {
-                new ModContentValidator(),
-                new ModCompatibilityValidator(),
-                new CyclicDependencyValidator()
-            };
+        private List<IModValidator> validators = new(); 
 
-        public ModCollectionHooks(ModCollection mods)
+        public ModCollectionHooks()
         {
-            _tweaksave_sem = new SemaphoreSlim(1);
+            
+        }
+
+        public void HookTo(ModCollection mods)
+        {
             mods.CollectionChanged += ValidateOnChange;
+        }
+
+        public void AddHook(IModValidator validator) 
+        {
+            validators.Add(validator);
         }
 
         private void ValidateOnChange(object? sender, NotifyCollectionChangedEventArgs e)
@@ -29,32 +36,8 @@ namespace Imya.Validation
 
             IEnumerable<Mod> changed = e.NewItems?.OfType<Mod>() ?? collection.Mods;
             foreach (var validator in validators)
-                validator.Validate(changed, collection.Mods);
-
-            if (e.Action == NotifyCollectionChangedAction.Reset
-                || e.Action == NotifyCollectionChangedAction.Add)
-            {
-                foreach (var mod in changed)
-                    UpdateWithTweak(mod);
-            }
+                validator.Validate(changed, collection.Mods, e.Action);
         }
 
-        private void UpdateWithTweak(Mod mod)
-        {
-            mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
-            if (!TweakStorageShelf.Global.IsStored(mod.FolderName))
-                return;
-
-            // TODO double access is unprotected
-            // TODO all validation should be offloaded to async, not tweaks individually
-            Task.Run(() =>
-            {
-                ModTweaks tweaks = new();
-                tweaks.Load(mod);
-                _tweaksave_sem.Wait();
-                tweaks.Save();
-                _tweaksave_sem.Release();
-            });
-        }
     }
 }

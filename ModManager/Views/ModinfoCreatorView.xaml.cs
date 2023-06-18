@@ -15,7 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Imya.Enums;
 using Imya.Models.ModMetadata;
+using Imya.Texts;
 using Imya.UI.Popup;
+using Imya.UI.Utils;
 using Imya.Utils;
 
 namespace Imya.UI.Views
@@ -25,7 +27,7 @@ namespace Imya.UI.Views
     /// </summary>
     public partial class ModinfoCreatorView : UserControl, INotifyPropertyChanged
     {
-        public TextManager TextManager { get; set; } = TextManager.Instance;
+        public ITextManager TextManager { get; init; }
 
         public ModinfoFactory ModinfoFactory 
         {
@@ -38,9 +40,14 @@ namespace Imya.UI.Views
         }
 
         private ModinfoFactory _factory;
+        private PopupCreator _popupCreator;
 
-        public ModinfoCreatorView()
+        public ModinfoCreatorView(
+            ITextManager textManager, 
+            PopupCreator popupCreator)
         {
+            TextManager = textManager;
+            _popupCreator = popupCreator;
             DataContext = this;
             InitializeComponent();
 
@@ -104,7 +111,7 @@ namespace Imya.UI.Views
         private void OnDlcAddClick(object sender, RoutedEventArgs e)
         {
             var remaining = ModinfoFactory.GetRemainingDlcIds();
-            AddDlcPopup popup = new AddDlcPopup(remaining);
+            AddDlcPopup popup = _popupCreator.CreateAddDlcPopup(remaining);
             popup.ShowDialog();
 
             if (popup.DialogResult is false) return;

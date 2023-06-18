@@ -3,7 +3,7 @@ using System.IO.Compression;
 using Imya.GithubIntegration;
 using Imya.GithubIntegration.Download;
 using Imya.Models;
-using Imya.Models.Installation;
+using Imya.Models.Installation.Interfaces;
 using Imya.Models.Options;
 using Imya.Utils;
 using Octokit;
@@ -34,19 +34,13 @@ namespace Imya.Models.Installation
         }
         private bool _isPaused;
 
-
         public bool IsBeingDownloaded {
             get => _isBeingDownloaded;
             set => SetProperty(ref _isBeingDownloaded, value);
         }
         private bool _isBeingDownloaded = false;
 
-
-
-
         public GithubInstallation() 
-        {
-            HeaderText = TextManager.Instance.GetText("INSTALLATION_HEADER_LOADER");
-        }
+        { }
     }
 }

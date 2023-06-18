@@ -9,17 +9,17 @@ using Imya.Models.ModTweaker;
 using System.IO;
 using Imya.Utils;
 using System.Xml;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Models.ModTweaker.DataModel.Tweaking;
+using Imya.Models.ModTweaker.DataModel.Storage;
 
 namespace Imya.UnitTests
 {
     public class TweakLogicTests
     {
         public TweakLogicTests()
-        {
-            //we need to register our gamepath, else we get exceptions thrown all over the place.
-            GameSetupManager gameSetupManager = GameSetupManager.Instance;
-            gameSetupManager.SetGamePath("");
-        }
+        {  }
 
         [Fact]
         public void CorrectlyEnsuresSkip()
@@ -37,7 +37,7 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(AssetsXML);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             //assets.xml only has one value
             tweakerFile.Save("tweak_tmp");
 
@@ -74,7 +74,7 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(assetsXML);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
             toggleVal!.IsTrue = true; // dont skip on true
             tweakerFile.Save("tweak_tmp");
@@ -105,7 +105,7 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(assetsXML);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
             toggleVal!.IsTrue = true; // skip on true (inverted)
             tweakerFile.Save("tweak_tmp");
@@ -138,7 +138,7 @@ namespace Imya.UnitTests
             InitWorkingDirectory();
             LoadAssets(AssetsXML);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             //assets.xml only has one value
             tweakerFile.Save("tweak_tmp");
 
@@ -173,7 +173,7 @@ namespace Imya.UnitTests
 
             LoadAssets(AssetsXML_XmlReplace);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             //assets.xml only has one value
             var toggleVal = tweakerFile.Exposes.First() as ExposedToggleModValue;
             toggleVal!.IsTrue = false;
@@ -202,7 +202,7 @@ namespace Imya.UnitTests
             String NewValue = "Some other Text";
             LoadAssets(AssetsXML_TextReplace);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             //assets.xml only has one value
             tweakerFile.Exposes.First().Value = NewValue;
             tweakerFile.Save("tweak_tmp");
@@ -236,7 +236,7 @@ namespace Imya.UnitTests
 
             LoadAssets(AssetsXML_TextReplace);
 
-            TweakerFile.TryInit("tweak_tmp", "assets.xml", TweakStorageShelf.Global.Get("TestStorage"), out var tweakerFile);
+            TweakerFile.TryInit("tweak_tmp", "assets.xml", out var tweakerFile);
             //assets.xml only has one value
             tweakerFile.Save("tweak_tmp");
 

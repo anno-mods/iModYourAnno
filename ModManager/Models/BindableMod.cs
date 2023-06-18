@@ -1,5 +1,6 @@
 ﻿using Imya.Models;
 using Imya.Models.Attributes;
+using Imya.Models.Mods;
 using System.Windows.Threading;
 
 namespace Imya.UI.Models

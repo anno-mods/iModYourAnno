@@ -20,9 +20,16 @@ namespace Imya.UI.Utils
         public event IAuthenticator.PopupRequestedEventHandler UserCodeReceived = delegate { };
         public event IAuthenticator.AuthenticatedEventHandler AuthenticationSuccess = delegate { };
 
+        private IGitHubClient _client;
+
+        public DeviceFlowAuthenticator(IGitHubClient client)
+        {
+            _client = client;
+        }
+
         public async Task StartAuthentication()
         {
-            if (GithubClientProvider.Client.Credentials.AuthenticationType != AuthenticationType.Anonymous) {
+            if (_client.Connection.Credentials.AuthenticationType != AuthenticationType.Anonymous) {
                 Console.WriteLine("Already logged in");
                 return;
             }
@@ -39,7 +46,7 @@ namespace Imya.UI.Utils
                 SaveOauthToken(access_token);
             }
             var credentials = new Credentials(access_token);
-            GithubClientProvider.Client.Credentials = credentials;
+            _client.Connection.Credentials = credentials;
             AuthenticationSuccess?.Invoke();
         }
 
@@ -47,11 +54,11 @@ namespace Imya.UI.Utils
         {
             var request = new OauthDeviceFlowRequest(ClientID);
 
-            var deviceFlowResponse = await GithubClientProvider.Client.Oauth.InitiateDeviceFlow(request);
+            var deviceFlowResponse = await _client.Oauth.InitiateDeviceFlow(request);
             UserCodeReceived?.Invoke(deviceFlowResponse.UserCode);
             OpenInBrowser(deviceFlowResponse.VerificationUri);
 
-            var token = await GithubClientProvider.Client.Oauth.CreateAccessTokenForDeviceFlow(ClientID, deviceFlowResponse);
+            var token = await _client.Oauth.CreateAccessTokenForDeviceFlow(ClientID, deviceFlowResponse);
             return token;
         }
 

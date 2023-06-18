@@ -14,11 +14,15 @@ using System.Linq;
 using Imya.Models.Installation;
 using Imya.UI.Popup;
 using Imya.GithubIntegration;
-using Imya.UI.Utils;
 using Imya.Models.Options;
 using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.StaticData;
 using Downloader;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
+using Imya.UI.Models;
+using Imya.Models.Installation.Interfaces;
 
 namespace Imya.UI.Views
 {
@@ -30,12 +34,10 @@ namespace Imya.UI.Views
     {
         public static InstallationView? Instance { get; private set; }
 
-        public TextManager TextManager { get; } = TextManager.Instance;
-        public GameSetupManager GameSetup { get; } = GameSetupManager.Instance;
-
-        public AppSettings Settings { get; } = AppSettings.Instance;
-
-        public InstallationManager InstallationManager { get; } = InstallationManager.Instance;
+        public ITextManager TextManager { get; init; }
+        public IGameSetupService GameSetup { get; init; }
+        public IAppSettings Settings { get; init; }
+        public IInstallationService InstallationManager { get; init; }
 
         public ObservableCollection<IInstallation> PendingDownloads { get; }
 
@@ -56,8 +58,16 @@ namespace Imya.UI.Views
 
         #endregion
 
-        public InstallationView()
+        public InstallationView(ITextManager textManager, 
+            IGameSetupService gameSetupService,
+            IAppSettings appSettings,
+            IInstallationService installationService)
         {
+            TextManager= textManager;
+            GameSetup= gameSetupService;
+            Settings = appSettings;
+            InstallationManager= installationService;
+
             Instance = this;
 
             InitializeComponent();
@@ -73,7 +83,7 @@ namespace Imya.UI.Views
 
         public async void OnInstallModLoader(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("This does fucking nothing right now");
+            Console.WriteLine("This will do fucking nothing forever");
         }
 
         private void OnLanguageChanged(ApplicationLanguage language)
@@ -145,6 +155,6 @@ namespace Imya.UI.Views
             _value = value;
         }
 
-        public IText Localized => TextManager.Instance[_value];
+        public IText Localized => new SimpleText("lolololol");
     }
 }
