@@ -23,7 +23,7 @@ namespace Imya.Models.Attributes.Factories
             return new ModDependencyIssueAttribute()
             {
                 AttributeType = AttributeType.UnresolvedDependencyIssue,
-                Description = new SimpleText(string.Format(text, string.Join(',', context))),
+                Description = new SimpleText(string.Format(text, string.Join("\n - ", context))),
                 UnresolvedDependencies = context
             };
         }
