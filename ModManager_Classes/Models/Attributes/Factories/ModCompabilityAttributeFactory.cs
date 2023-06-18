@@ -25,7 +25,7 @@ namespace Imya.Models.Attributes.Factories
                 AttributeType = AttributeType.ModCompabilityIssue,
                 Description = new SimpleText(
                    string.Format(_textManager.GetText("ATTRIBUTE_COMPABILITYERROR").Text,
-                                string.Join(',', context.Select(x => $"[{x.Category}] {x.Name}")))),
+                                string.Join("\n - ", context.Select(x => $"[{x.Category}] {x.Name}")))),
                 Context = context
             };
         }

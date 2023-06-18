@@ -1328,9 +1328,9 @@
   },
   "ATTRIBUTE_MISSINGDEPENDENCY": {
     "Chinese": null,
-    "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly. \n\nMissing Dependencies: {0}",
+    "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly. \n\nMissing Dependencies:\n - {0}",
     "French": null,
-    "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird. \n\nFehlende Abhängigkeiten: {0}",
+    "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird. \n\nFehlende Abhängigkeiten:\n - {0}",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
@@ -1367,9 +1367,9 @@
   },
   "ATTRIBUTE_COMPABILITYERROR": {
     "Chinese": null,
-    "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.\n\nCompability Errors: {0}",
+    "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.\n\nCompability Errors:\n - {0}",
     "French": null,
-    "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen.\n\nKompabilitätsprobleme: {0}",
+    "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen.\n\nKompabilitätsprobleme:\n - {0}",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
