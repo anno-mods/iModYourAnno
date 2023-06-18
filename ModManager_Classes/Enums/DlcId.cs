@@ -27,6 +27,8 @@ namespace Imya.Enums
         [EnumMember] PedestrianZone,
         [EnumMember] SeasonalDecorations,
         [EnumMember] IndustryOrnaments,
-        [EnumMember] CDLC09
+        [EnumMember] OldTown,
+        [EnumMember] DragonGarden,
+        [EnumMember] Fiesta
     }
 }
