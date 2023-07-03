@@ -49,7 +49,7 @@ namespace Imya.Models.ModTweaker.IO
 
         internal IEnumerable<ModOp> FetchModOps(XmlDocument ImportDocument)
         {
-            var modOps = Document.SelectNodes("/ModOps/ModOp | /ModOps/Include");
+            var modOps = Document.SelectNodes("//*[self::ModOps or self::Group]/ModOp | //*[self::ModOps or self::Group]/Include");
             if (modOps is null)
                 yield break;
 
