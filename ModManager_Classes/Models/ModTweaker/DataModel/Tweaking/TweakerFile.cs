@@ -29,6 +29,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         public static readonly string PATH = "Path";
         public static readonly string TYPE = "Type";
         public static readonly string GUID = "GUID";
+
+        public static readonly string[] ArgumentBlacklist = { "ModOpID", "Skip" };
     }
 
     /// <summary>
@@ -140,6 +142,13 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                 return null;
 
             var elem = TargetDocument.CreateElement("ModOp");
+
+            foreach (XmlAttribute xmlAttribute in modop.XmlAttributes)
+            {
+                if (TweakerConstants.ArgumentBlacklist.Contains(xmlAttribute.Name))
+                    continue;
+                elem.Attributes.Append((XmlAttribute)TargetDocument.ImportNode(xmlAttribute, true));
+            }
 
             if (modop.Path is not null)
             {

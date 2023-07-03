@@ -25,12 +25,11 @@ namespace Imya.Models.ModTweaker.IO
             {
                 ExecuteExpose(val);
             }
-            foreach (ModOp op in ModOps)
+
+            var toCorrect = ModOps.Where(x => x.Code.Count() == 0 && x.Type.Equals("replace"));
+            foreach (ModOp op in toCorrect)
             {
-                if (op.Code.Count() == 0 && op.Type.Equals("replace"))
-                {
-                    op.Type = "remove";
-                }
+                op.Type = "remove";
             }
             return ModOps;
         }

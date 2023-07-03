@@ -1,4 +1,5 @@
 ﻿using Imya.Utils;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,64 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
     {
         public string? ID;
         public IEnumerable<XmlNode> Code;
-        public string? Skip;
+
+
+        public string? Skip
+        {
+            get => GetShortcut(nameof(Skip));
+            set => SetShortcut(nameof(Skip), value);
+        }
 
         //Mod Op related things
-        public string Type;
-        public string? GUID;
-        public string? Path;
+        public string Type 
+        {
+            get => GetShortcut(nameof(Type));
+            set => SetShortcut(nameof(Type), value);
+        }
+
+        public string? GUID
+        { 
+            get => GetShortcut(nameof(GUID), acceptNull: true);
+            set => SetShortcut(nameof(GUID), value, acceptNull: true);
+        }
+
+        public string? Path
+        {
+            get => GetShortcut(nameof(Path), acceptNull: true);
+            set => SetShortcut(nameof(Path), value, acceptNull: true);
+        }
+
+        public XmlAttributeCollection XmlAttributes { get; init; }
 
         public bool IsValid => GUID is string || Path is string;
         public bool HasID => ID is string;
 
+        private string? GetShortcut(string attributeKey, bool acceptNull = false)
+        {
+            return XmlAttributes.GetNamedItem(attributeKey)?.Value
+                ?? (acceptNull ? null : throw new InvalidDataException($"ModOp without {attributeKey} attribute!"));
+        }
+
+        private void SetShortcut(string attributeKey, string? value, bool acceptNull = false)
+        {
+            try
+            {
+                XmlAttributes.GetNamedItem(attributeKey)!.Value ??= value;
+            }
+            catch (NullReferenceException e)
+            {
+                if (!acceptNull)
+                {
+                    throw new InvalidDataException($"ModOp without {attributeKey} attribute!");
+                }
+            }
+        }
+
         public static ModOp? FromXmlNode(XmlNode ModOp)
         {
+            if (ModOp.NodeType != XmlNodeType.Element)
+                throw new ArgumentException();
+
             string? type = null;
             if (ModOp.Name.ToLower() == "include")
                 type = "include";
@@ -32,17 +79,12 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
             if (type is not null)
             {
-                ModOp.TryGetAttribute(TweakerConstants.GUID, out string? Guid);
-                ModOp.TryGetAttribute(TweakerConstants.PATH, out string? Path);
                 ModOp.TryGetAttribute(TweakerConstants.MODOP_ID, out string? ID);
                 return new ModOp
                 {
                     ID = ID!,
                     Code = ModOp.ChildNodes.Cast<XmlNode>().ToList(),
-                    Type = type,
-                    GUID = Guid,
-                    Path = Path,
-                    Skip = ModOp.Attributes?["Skip"]?.Value
+                    XmlAttributes = ModOp.Attributes!
                 };
             }
             return null;
@@ -54,9 +96,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             {
                 ID = ID,
                 Code = Code.Select(x => x.CloneNode(true)).ToList(),
-                Type = Type,
-                GUID = GUID,
-                Path = Path
+                XmlAttributes = XmlAttributes
             };
         }
     }
