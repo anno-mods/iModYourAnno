@@ -30,14 +30,14 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
         public string? GUID
         { 
-            get => GetShortcut(nameof(GUID));
-            set => SetShortcut(nameof(GUID), value);
+            get => GetShortcut(nameof(GUID), acceptNull: true);
+            set => SetShortcut(nameof(GUID), value, acceptNull: true);
         }
 
         public string? Path
         {
-            get => GetShortcut(nameof(Path));
-            set => SetShortcut(nameof(Path), value);
+            get => GetShortcut(nameof(Path), acceptNull: true);
+            set => SetShortcut(nameof(Path), value, acceptNull: true);
         }
 
         public XmlAttributeCollection XmlAttributes { get; init; }
@@ -45,13 +45,13 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         public bool IsValid => GUID is string || Path is string;
         public bool HasID => ID is string;
 
-        private string? GetShortcut(string attributeKey)
+        private string? GetShortcut(string attributeKey, bool acceptNull = false)
         {
             return XmlAttributes.GetNamedItem(attributeKey)?.Value
-                ?? throw new InvalidDataException($"ModOp without {attributeKey} attribute!");
+                ?? (acceptNull ? null : throw new InvalidDataException($"ModOp without {attributeKey} attribute!"));
         }
 
-        private void SetShortcut(string attributeKey, string? value)
+        private void SetShortcut(string attributeKey, string? value, bool acceptNull = false)
         {
             try
             {
@@ -59,7 +59,10 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             }
             catch (NullReferenceException e)
             {
-                throw new InvalidDataException($"ModOp without {attributeKey} attribute!");
+                if (!acceptNull)
+                {
+                    throw new InvalidDataException($"ModOp without {attributeKey} attribute!");
+                }
             }
         }
 
