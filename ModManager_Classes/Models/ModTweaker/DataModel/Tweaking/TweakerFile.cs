@@ -143,11 +143,13 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
             var elem = TargetDocument.CreateElement("ModOp");
 
-            foreach (XmlAttribute xmlAttribute in modop.XmlAttributes)
+            foreach (var (key, value) in modop.Attributes)
             {
-                if (TweakerConstants.ArgumentBlacklist.Contains(xmlAttribute.Name))
+                if (TweakerConstants.ArgumentBlacklist.Contains(key))
                     continue;
-                elem.Attributes.Append((XmlAttribute)TargetDocument.ImportNode(xmlAttribute, true));
+                var attribute = TargetDocument.CreateAttribute(key);
+                attribute.Value = value;
+                elem.Attributes.Append(attribute);
             }
 
             if (modop.Path is not null)

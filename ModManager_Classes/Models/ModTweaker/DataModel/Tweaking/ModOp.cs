@@ -17,8 +17,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
         public string? Skip
         {
-            get => GetShortcut(nameof(Skip));
-            set => SetShortcut(nameof(Skip), value);
+            get => GetShortcut(nameof(Skip), acceptNull: true);
+            set => SetShortcut(nameof(Skip), value, acceptNull: true);
         }
 
         //Mod Op related things
@@ -40,30 +40,30 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             set => SetShortcut(nameof(Path), value, acceptNull: true);
         }
 
-        public XmlAttributeCollection XmlAttributes { get; init; }
+        public Dictionary<string, string?> Attributes { get; init; }
 
         public bool IsValid => GUID is string || Path is string;
         public bool HasID => ID is string;
 
         private string? GetShortcut(string attributeKey, bool acceptNull = false)
         {
-            return XmlAttributes.GetNamedItem(attributeKey)?.Value
+            return Attributes.GetValueOrDefault(attributeKey)
                 ?? (acceptNull ? null : throw new InvalidDataException($"ModOp without {attributeKey} attribute!"));
         }
 
         private void SetShortcut(string attributeKey, string? value, bool acceptNull = false)
         {
-            try
+            if (!acceptNull && value is null)
             {
-                XmlAttributes.GetNamedItem(attributeKey)!.Value ??= value;
+                throw new ArgumentException($"Cannot assign a null value to {attributeKey} attribute!");
             }
-            catch (NullReferenceException e)
+            if (Attributes.ContainsKey(attributeKey))
             {
-                if (!acceptNull)
-                {
-                    throw new InvalidDataException($"ModOp without {attributeKey} attribute!");
-                }
+                Attributes[attributeKey] = value;
+                return; 
             }
+
+            Attributes.Add(attributeKey, value);
         }
 
         public static ModOp? FromXmlNode(XmlNode ModOp)
@@ -80,11 +80,17 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             if (type is not null)
             {
                 ModOp.TryGetAttribute(TweakerConstants.MODOP_ID, out string? ID);
+                var dict = new Dictionary<string, string>();
+                foreach (XmlAttribute attribute in ModOp.Attributes!)
+                {
+                    dict.TryAdd(attribute.Name, attribute.Value);
+                }
                 return new ModOp
                 {
                     ID = ID!,
                     Code = ModOp.ChildNodes.Cast<XmlNode>().ToList(),
-                    XmlAttributes = ModOp.Attributes!
+                    Attributes = dict,
+                    Type = type
                 };
             }
             return null;
@@ -96,7 +102,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             {
                 ID = ID,
                 Code = Code.Select(x => x.CloneNode(true)).ToList(),
-                XmlAttributes = XmlAttributes
+                Attributes = Attributes
             };
         }
     }
