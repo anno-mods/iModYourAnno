@@ -54,7 +54,7 @@ namespace Imya.Models.Mods
             {
                 foreach (var submodinfo in modinfos)
                 {
-                    if (submodinfo == Path.Combine(basePath, folder, "modinfo.json"))
+                    if (submodinfo.ToLower() == Path.Combine(basePath, folder, "modinfo.json").ToLower())
                     {
                         continue;
                     }
