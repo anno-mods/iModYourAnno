@@ -116,7 +116,7 @@ namespace Imya.Models.Installation
                 Status = InstallationStatus.NotStarted,
                 ImageUrl = url,
                 CancellationTokenSource = new CancellationTokenSource(),
-                HeaderText = _textManager.GetText("INSTALLATION_HEADER_LOADER")
+                HeaderText = _textManager.GetText("INSTALLATION_HEADER_MOD")
         };    
             return _installation;
         }
