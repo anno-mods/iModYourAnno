@@ -49,8 +49,19 @@ namespace Imya.Models.ModTweaker.IO
         {
             foreach (IExposedModValue expose in file.Exposes)
             {
-                if (tweak.HasStoredValue(expose.ExposeID))
-                    expose.Value = tweak.GetTweakValue(expose.ExposeID)!;
+                if (!tweak.HasStoredValue(expose.ExposeID))
+                    continue;
+
+                if (expose is ExposedToggleModValue toggleExpose)
+                {
+                    if (!Boolean.TryParse(tweak.GetTweakValue(expose.ExposeID), out bool result))
+                    {
+                        result = false; 
+                    }
+                    toggleExpose.IsTrue = result;
+                    continue; 
+                }
+                expose.Value = tweak.GetTweakValue(expose.ExposeID)!;
             }
         }
     }

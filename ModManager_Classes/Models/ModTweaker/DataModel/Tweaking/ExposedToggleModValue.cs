@@ -48,6 +48,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                 TrueValue = vals is not null ? string.Join("", vals) : string.Empty;
             });
 
+            int i = 0; 
         }
     }
 }

@@ -46,7 +46,14 @@ namespace Imya.Models.ModTweaker.IO
         {
             var tweak = new TweakerFileStorageModel();
             foreach (IExposedModValue expose in tweakerFile.Exposes)
+            {
+                if (expose is ExposedToggleModValue toggleExpose)
+                {
+                    tweak.SetTweakValue(expose.ExposeID, toggleExpose.IsTrue.ToString());
+                    continue;
+                }
                 tweak.SetTweakValue(expose.ExposeID, expose.Value);
+            }
             return tweak;
         }
     }
