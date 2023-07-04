@@ -17,16 +17,15 @@ namespace Imya.Models.Attributes.Factories
         public MissingModinfoAttributeFactory(ITextManager textManager)
         {
             _textManager = textManager;
-            MissingModinfoAttribute = new GenericAttribute()
-            {
-                AttributeType = AttributeType.MissingModinfo,
-                Description = _textManager.GetText("ATTRIBUTE_NOMODINFO")
-            };
         }
 
         public IAttribute Get()
         {
-            return MissingModinfoAttribute;
+            return new GenericAttribute()
+            {
+                AttributeType = AttributeType.MissingModinfo,
+                Description = _textManager.GetText("ATTRIBUTE_NOMODINFO")
+            };
         }
     }
 }
