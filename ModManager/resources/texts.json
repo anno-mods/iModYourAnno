@@ -1898,6 +1898,45 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "MODLIST_COLLAPSEALL": {
+    "Chinese": null,
+    "English": "Collapse all embedded Mods",
+    "French": null,
+    "German": "Eingebettete Mods ausblenden",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLIST_EXPANDALL": {
+    "Chinese": null,
+    "English": "Expand all embedded Mods",
+    "French": null,
+    "German": "Eingebettete Mods anzeigen",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "MODLIST_SUBMODS": {
+    "Chinese": null,
+    "English": "Embedded Mods",
+    "French": null,
+    "German": "Eingebettete Mods",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": null,
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",

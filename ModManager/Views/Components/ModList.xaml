@@ -20,12 +20,24 @@
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <converters:AttributeIconConverter x:Key="AttribIconConverter" />
             <converters:AttributeColorConverter x:Key="AttribColorConverter" />
+            <DataTemplate x:Key="expanderHeader">
+                <ContentPresenter Content="{Binding}"/>
+            </DataTemplate>
+            <DataTemplate x:Key="expanderHeaderMouseOver">
+                <Border Background ="Transparent">
+                    <ContentPresenter Content="{Binding}" />
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius ="1"/>
+                    </Border.Effect>
+                </Border>
+            </DataTemplate>
         </Grid.Resources>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition />
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
             <TextBox MinHeight="25"
                      Margin="0,2,10,5"
@@ -61,17 +73,28 @@
                                      Foreground="{DynamicResource TextColorBrush}"
                                      Margin="0,0,5,0">
             </materialDesign:PackIcon>
-            <!--
-            <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
-                                     Grid.Column="2"
-                                     Kind="InformationCircleOutline"
-                                     Foreground="{DynamicResource TextColorBrush}"
-                                     VerticalAlignment="Center"
-                                     ToolTipService.InitialShowDelay="0">
-                <materialDesign:PackIcon.ToolTip>
-                    <local:AttributeStaticHelp />
-                </materialDesign:PackIcon.ToolTip>
-            </materialDesign:PackIcon>-->
+            <Button Grid.Column="2"
+                    Style="{StaticResource IMYA_BUTTON}"
+                    Margin="5"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Click="ButtonExpandEverythingClick"
+                    ToolTip="{Binding TextManager[MODLIST_EXPANDALL]}">
+                <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                         Kind="ExpandAll">                    
+                </materialDesign:PackIcon>
+            </Button>
+            <Button Grid.Column="3"
+                    Style="{StaticResource IMYA_BUTTON}"
+                    Margin="5"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Click="ButtonCollapseEverythingClick"
+                    ToolTip="{Binding TextManager[MODLIST_COLLAPSEALL]}">
+                <materialDesign:PackIcon Style="{StaticResource IMYA_ICON}"
+                                         Kind="CollapseAll">
+                </materialDesign:PackIcon>
+            </Button>
         </Grid>
         <ListBox Grid.Row="1"
                  x:Name="ListBox_ModList"
@@ -89,38 +112,36 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <materialDesign:PackIcon 
-                            Name="ModActivationIcon"
-                            VerticalAlignment="Center"
-                            Margin="5,0"
-                            Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
-                            Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
-                        <Grid
-                            Name="ModEntry"
-                            VerticalAlignment="Center"
-                            Grid.Column="1"
-                            Margin="0,3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon Name="ModActivationIcon"
+                                                 VerticalAlignment="Center"
+                                                 Margin="5,0"
+                                                 Kind="{Binding IsActive, Converter={StaticResource ModIconConverter}}"
+                                                 Foreground="{Binding IsActive, Converter={StaticResource ModIconColorConverter}, UpdateSourceTrigger=PropertyChanged}" />
+                        <Grid Name="ModEntry"
+                              VerticalAlignment="Center"
+                              Grid.Column="1"
+                              Margin="0,3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Name="ModCategoryName"
-                                Style="{StaticResource IMYA_TEXT}"
-                                TextWrapping="WrapWithOverflow">
-                                <Run
-                                    Text="{Binding Category.Text, Mode=OneWay}"
-                                    FontWeight="ExtraBold" />
-                                <Run
-                                    Text="{Binding Name.Text, Mode=OneWay}" />
+                            <TextBlock Name="ModCategoryName"
+                                       Style="{StaticResource IMYA_TEXT}"
+                                       TextWrapping="WrapWithOverflow">
+                                <Run Text="{Binding Category.Text, Mode=OneWay}"
+                                     FontWeight="ExtraBold" />
+                                <Run Text="{Binding Name.Text, Mode=OneWay}" />
                             </TextBlock>
                         </Grid>
-                        <ItemsControl 
-                            ItemsSource="{Binding Attributes}"
-                            HorizontalAlignment="Right"
-                            Grid.Column="2"
-                            Margin="0,3,0,3"
-                            Visibility="{Binding Path=DataContext.ShowAttributes, Converter={StaticResource BoolToVis}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModList}}}">
+                        <ItemsControl ItemsSource="{Binding Attributes}"
+                                      HorizontalAlignment="Right"
+                                      Grid.Column="2"
+                                      Margin="0,3,0,3"
+                                      Visibility="{Binding Path=DataContext.ShowAttributes, Converter={StaticResource BoolToVis}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModList}}}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"></StackPanel>
@@ -139,12 +160,67 @@
                                             <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                        Text="{Binding Description.Text, UpdateSourceTrigger=PropertyChanged}"
                                                        MaxWidth="400"
-                                                       TextWrapping="Wrap"/>
+                                                       TextWrapping="Wrap" />
                                         </materialDesign:PackIcon.ToolTip>
                                     </materialDesign:PackIcon>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+
+                        <Expander IsExpanded="False"
+                                  Grid.Row="1"
+                                  Grid.Column="1"
+                                  Grid.ColumnSpan="2"
+                                  Margin="0,3,3,3"
+                                  Visibility="{Binding HasSubmods, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=LostFocus}">
+                            <Expander.Header>
+                                <TextBlock Text="{Binding TextManager[MODLIST_SUBMODS].Text, UpdateSourceTrigger=PropertyChanged}"
+                                           DataContext="{Binding RelativeSource = {RelativeSource Mode=FindAncestor, AncestorType=local:ModList}}"
+                                           Style="{StaticResource IMYA_TEXT}" 
+                                           FontWeight="Bold"></TextBlock>
+                            </Expander.Header>
+                            <ItemsControl ItemsSource="{Binding SubMods}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Margin="25,2,2,2">
+                                            <materialDesign:PackIcon Kind="PackageVariant"
+                                                                     Style="{StaticResource IMYA_ICON}">
+                                            </materialDesign:PackIcon>
+                                            <TextBlock Text="{Binding Category.Text}"
+                                                       Style="{StaticResource IMYA_TEXT}"
+                                                       FontWeight="DemiBold"
+                                                       Margin="10,0,0,0"
+                                                       VerticalAlignment="Center"></TextBlock>
+                                            <TextBlock Text="{Binding Name.Text}"
+                                                       Style="{StaticResource IMYA_TEXT}"
+                                                       FontWeight="ExtraLight"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0,0,0"></TextBlock>
+                                            <TextBlock Text="{Binding Version}"
+                                                       Style="{StaticResource IMYA_TEXT}"
+                                                       Margin="10,0,0,0"
+                                                       VerticalAlignment="Center"
+                                                       FontWeight="ExtraLight"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Expander.Style>
+                                <Style TargetType="Expander">
+                                    <Setter Property="HeaderTemplate"
+                                            Value="{StaticResource expanderHeader}" />
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="HeaderTemplate"
+                                                    Value="{StaticResource expanderHeaderMouseOver}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Expander.Style>
+                        </Expander>
+                        
                     </Grid>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsRemoved}" Value="True">
