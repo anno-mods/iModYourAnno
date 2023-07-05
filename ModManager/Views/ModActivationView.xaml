@@ -59,7 +59,8 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Content="{Binding ModDescription}" />
-        
+
+
 
         <Border Background="{DynamicResource ComponentColorBrush}"
                 Grid.Row="2"
