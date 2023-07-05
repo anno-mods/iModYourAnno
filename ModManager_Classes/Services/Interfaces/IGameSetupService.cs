@@ -29,7 +29,9 @@ namespace Imya.Services.Interfaces
         bool IsGameRunning { get; set; }
         bool IsModloaderInstalled { get; }
         bool IsValidSetup { get; }
+        bool IsMaindataValid { get; }
         string GameRootPath { get; }
+        string MaindataPath { get; }
         string? ExecutablePath { get; }
         string ModDirectoryName { get; }
 

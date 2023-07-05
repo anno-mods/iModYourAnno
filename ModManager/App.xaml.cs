@@ -55,6 +55,7 @@ namespace Imya.UI
                     gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
                     services.AddSingleton<IImyaSetupService, ImyaSetupService>();
+                    services.AddSingleton<IGameFilesService, GameFileService>(); 
                     services.AddTransient<ICyclicDependencyAttributeFactory, CyclicDependencyAttributeFactory>();
                     services.AddTransient<IMissingModinfoAttributeFactory, MissingModinfoAttributeFactory>();
                     services.AddTransient<IModCompabilityAttributeFactory, ModCompabilityAttributeFactory>();
@@ -150,6 +151,8 @@ namespace Imya.UI
 
                     services.AddTransient<DlcTextConverter>();
                     services.AddTransient<FilenameValidationConverter>();
+                    services.AddTransient<FilepathToImageConverter>();
+
                     services.AddSingleton<SelfUpdater>();
                 })
                 .Build();
@@ -189,6 +192,9 @@ namespace Imya.UI
             appSettings.Initialize();
             var installationService = AppHost.Services.GetRequiredService<IInstallationService>();
 
+            var gamefileService = AppHost.Services.GetRequiredService<IGameFilesService>();
+            await gamefileService.LoadAsync(); 
+
             if (appSettings.UseRateLimiting)
                 installationService.DownloadConfig.MaximumBytesPerSecond = appSettings.DownloadRateLimit;
 
@@ -196,6 +202,7 @@ namespace Imya.UI
 
             //hacky converters with dependencyinjection....
             Resources.Add("DlcTextConverter", AppHost.Services.GetRequiredService<DlcTextConverter>());
+            Resources.Add("FilepathToImageConverter", AppHost.Services.GetRequiredService<FilepathToImageConverter>());
             Resources.Add("FilenameValidationConverter", AppHost.Services.GetRequiredService<FilenameValidationConverter>());
 
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
