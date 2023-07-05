@@ -49,7 +49,7 @@ namespace Imya.Models.ModTweaker.IO
             {
                 if (expose is ExposedToggleModValue toggleExpose)
                 {
-                    tweak.SetTweakValue(expose.ExposeID, toggleExpose.IsTrue.ToString());
+                    tweak.SetTweakValue(expose.ExposeID, (toggleExpose.IsTrue ^ toggleExpose.IsInverted).ToString());
                     continue;
                 }
                 tweak.SetTweakValue(expose.ExposeID, expose.Value);
