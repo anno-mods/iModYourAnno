@@ -53,7 +53,7 @@ namespace Imya.Services
             if (isLoading)
                 return null;
 
-            return _fileSystem.OpenRead(path);
+            return _fileSystem?.OpenRead(path);
         }
 
         /// <summary>
