@@ -47,8 +47,10 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         public string EditFilename => Path.GetFileNameWithoutExtension(SourceFilename) + ".imyatweak.include.xml";
 
         public string Title { get; private set; }
-
         public string Description { get; private set; }
+        public string? IconFilename { get; private set; }
+
+        public bool hasIcon { get => IconFilename is not null; }
 
         public ObservableCollection<IExposedModValue> Exposes
         {
@@ -315,7 +317,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                 var parser = new XmlPatchParser(doc);
                 var editables = parser.FetchExposes(tweakerFile);
                 tweakerFile.Title = parser.FetchTweakerFileTitle() ?? tweakerFile.Title;
-                tweakerFile.Description = parser.FetchTweakerFileDescription() ?? tweakerFile.Description; 
+                tweakerFile.Description = parser.FetchTweakerFileDescription() ?? tweakerFile.Description;
+                tweakerFile.IconFilename = parser.FetchTweakerFileIcon() ?? tweakerFile.IconFilename;
 
                 tweakerFile.ModOps = new ObservableCollection<ModOp>(parser.FetchModOps(tweakerFile.TargetDocument));
 
