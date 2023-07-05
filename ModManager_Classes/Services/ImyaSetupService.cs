@@ -3,7 +3,9 @@ using Imya.Models.NotifyPropertyChanged;
 using Imya.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +28,30 @@ namespace Imya.Services
         public string TweakDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, TweakDirectory); }
         public string UnpackDirectoryPath { get => Path.Combine(_gameSetup.GameRootPath, WorkingDirectory, UnpackDirectory); }
 
-        public ModCollection GlobalModCollection { get; set; }
+        public ModCollection GlobalModCollection 
+        {
+            get => _globalModCollection;
+            set
+            {
+                if (value is null)
+                    return; 
+                if (_globalModCollection == value)
+                    return;
+
+                if (_globalModCollection is not null)
+                {
+                    _gameSetup.GameRootPathChanged -= _globalModCollection.OnModPathChanged;
+                    _gameSetup.ModDirectoryNameChanged -= _globalModCollection.OnModPathChanged;
+                }
+
+                _globalModCollection = value;
+
+                _gameSetup.GameRootPathChanged += value.OnModPathChanged;
+                _gameSetup.ModDirectoryNameChanged += value.OnModPathChanged;
+
+            }
+        }
+        private ModCollection _globalModCollection; 
 
         public ImyaSetupService(IGameSetupService gameSetup)
         {

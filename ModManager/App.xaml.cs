@@ -32,6 +32,7 @@ using Imya.GithubIntegration.JsonData;
 using Imya.GithubIntegration.RepositoryInformation;
 using Imya.UI.ValueConverters;
 using Anno.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Imya.UI
 {
@@ -165,7 +166,7 @@ namespace Imya.UI
             var factory = AppHost.Services.GetRequiredService<IModCollectionFactory>();
             var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
             var imyaSetup = AppHost.Services.GetRequiredService<IImyaSetupService>();
-            imyaSetup.GlobalModCollection = collection; 
+            imyaSetup.GlobalModCollection = collection;
 
             //subscribe the global mod collection to the gamesetup
             var textManager = AppHost.Services.GetRequiredService<ITextManager>();
