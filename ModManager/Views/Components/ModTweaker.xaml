@@ -72,10 +72,17 @@
                         <DataTemplate>
                             <Expander IsExpanded="True">
                                 <Expander.Header>
-                                    <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                               Text="{Binding Title}"
-                                               Margin="5">
-                                    </TextBlock>
+                                    <StackPanel Margin="5">
+                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                   Text="{Binding Title}" 
+                                                   FontWeight="Bold"
+                                                   Margin="2"/>
+                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                   Text="{Binding Description}"
+                                                   FontWeight="Light"
+                                                   Margin="2" />
+
+                                    </StackPanel>
                                 </Expander.Header>
 
                                 <ItemsControl ItemsSource="{Binding Exposes}">
