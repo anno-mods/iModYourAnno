@@ -31,6 +31,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         public static readonly string GUID = "GUID";
 
         public static readonly string[] ArgumentBlacklist = { "ModOpID", "Skip" };
+        public static readonly string[] ExportBlacklist = { "include", "group" };
     }
 
     /// <summary>
@@ -115,7 +116,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         {
             var op = ModOps.Where(x => x.HasID && x.ID!.Equals(expose.ModOpID)).FirstOrDefault();
             if (op is null)
-                return string.Empty;
+                return string.Empty; 
+
             foreach (XmlNode x in op.Code)
             {
                 var node = x.SelectSingleNode(expose.Path);
@@ -138,7 +140,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         /// <returns>The xml node that was generated</returns>
         public XmlNode? Generate(ModOp modop)
         {
-            if (modop.Type.ToLower() == "include")
+            if (TweakerConstants.ExportBlacklist.Contains(modop.Type.ToLower()))
                 return null;
 
             var elem = TargetDocument.CreateElement("ModOp");

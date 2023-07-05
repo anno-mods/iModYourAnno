@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Octokit;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
+using System.Reflection.Metadata;
 
 namespace Imya.Utils
 {
@@ -169,7 +170,13 @@ namespace Imya.Utils
 
         public static bool TryGetModOpNodes(this XmlDocument Document, String ModOpId, out XmlNodeList? ModOps)
         {
-            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include') and @{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include' or name() = 'Group') and @{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            return ModOps is not null && ModOps.Count > 0;
+        }
+
+        public static bool TryGetAllModOpNodes(this XmlDocument Document, out XmlNodeList? ModOps)
+        {
+            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include' or name() = 'Group')]");
             return ModOps is not null && ModOps.Count > 0;
         }
     }

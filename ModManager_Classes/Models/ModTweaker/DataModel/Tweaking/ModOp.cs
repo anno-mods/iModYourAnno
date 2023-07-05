@@ -71,9 +71,13 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             if (ModOp.NodeType != XmlNodeType.Element)
                 throw new ArgumentException();
 
+            //hacky shortcuts for includes and groups
             string? type = null;
             if (ModOp.Name.ToLower() == "include")
                 type = "include";
+            else if (ModOp.Name.ToLower() == "group")
+                type = "group";
+
             if (type is null && ModOp.TryGetAttribute(TweakerConstants.TYPE, out string? ModOpType))
                 type = ModOpType;
 
