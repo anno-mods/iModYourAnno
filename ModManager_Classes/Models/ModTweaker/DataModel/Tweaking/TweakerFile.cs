@@ -49,6 +49,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
         public string Title { get; private set; }
 
+        public string Description { get; private set; }
+
         public ObservableCollection<IExposedModValue> Exposes
         {
             get => _exposes;
@@ -314,7 +316,8 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
 
                 var parser = new XmlPatchParser(doc);
                 var editables = parser.FetchExposes(tweakerFile);
-                tweakerFile.Title = parser.FetchTweakerFileSettings() ?? tweakerFile.Title;
+                tweakerFile.Title = parser.FetchTweakerFileTitle() ?? tweakerFile.Title;
+                tweakerFile.Description = parser.FetchTweakerFileDescription() ?? tweakerFile.Description; 
 
                 tweakerFile.ModOps = new ObservableCollection<ModOp>(parser.FetchModOps(tweakerFile.TargetDocument));
 

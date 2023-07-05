@@ -63,7 +63,16 @@ namespace Imya.Models.ModTweaker.IO
             }
         }
 
-        public string? FetchTweakerFileSettings()
+        public string? FetchTweakerFileDescription()
+        {
+            var tweaks = Document.SelectSingleNode("/ModOps/ImyaTweaks");
+            if (tweaks is null)
+                return null;
+
+            return tweaks.Attributes?["Description"]?.Value;
+        }
+
+        public string? FetchTweakerFileTitle()
         {
             var tweaks = Document.SelectSingleNode("/ModOps/ImyaTweaks");
             if (tweaks is null)
