@@ -164,19 +164,19 @@ namespace Imya.Utils
 
         public static bool TryGetModOpNode(this XmlDocument Document, String ModOpId, out XmlNode? ModOp)
         {
-            ModOp = Document.SelectSingleNode($@"/ModOps/ModOp[@{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            ModOp = Document.SelectSingleNode($@"/*[self::ModOps or self::Group]/ModOp[@{TweakerConstants.MODOP_ID} = '{ModOpId}']");
             return ModOp is not null;
         }
 
         public static bool TryGetModOpNodes(this XmlDocument Document, String ModOpId, out XmlNodeList? ModOps)
         {
-            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include' or name() = 'Group') and @{TweakerConstants.MODOP_ID} = '{ModOpId}']");
+            ModOps = Document.SelectNodes($@"//*[self::ModOps or self::Group]/*[(name()='ModOp' or name()='Include' or name() = 'Group') and @{TweakerConstants.MODOP_ID} = '{ModOpId}']");
             return ModOps is not null && ModOps.Count > 0;
         }
 
         public static bool TryGetAllModOpNodes(this XmlDocument Document, out XmlNodeList? ModOps)
         {
-            ModOps = Document.SelectNodes($@"/ModOps/*[(name()='ModOp' or name()='Include' or name() = 'Group')]");
+            ModOps = Document.SelectNodes($@"//*[self::ModOps or self::Group]/*[(name()='ModOp' or name()='Include' or name() = 'Group')]");
             return ModOps is not null && ModOps.Count > 0;
         }
     }
