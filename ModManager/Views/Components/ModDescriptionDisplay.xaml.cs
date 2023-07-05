@@ -29,6 +29,13 @@ namespace Imya.UI.Components
         }
         private Mod? _mod;
 
+        public Mod? ParentMod
+        {
+            get => _parentMod;
+            private set => SetProperty(ref _parentMod, value);
+        }
+        private Mod? _parentMod;
+
         // Needs retrigger of OnPropertyChanged on language change
         public DlcId[] DlcIds
         {
@@ -106,6 +113,13 @@ namespace Imya.UI.Components
         }
         private bool _useMarkdownDescription = false;
 
+        public bool SupportsMultiple 
+        {
+            get => _supportsMultiple;
+            set => SetProperty(ref _supportsMultiple, value); 
+        }
+        private bool _supportsMultiple;
+
         public String? MarkdownDescription
         {
             get => _markdownDescription;
@@ -117,6 +131,17 @@ namespace Imya.UI.Components
 
         public double WindowWidth { get; private set; }
 
+        //todo route all submods through here...
+        public int CurrentModIndex
+        {
+            get => _currentModIndex;
+            set {
+                SetProperty(ref _currentModIndex, value);
+                DisplaySubmod(value);
+            } 
+        }
+        private int _currentModIndex;
+
         public ModDescriptionDisplay(ITextManager textManager)
         {
             InitializeComponent();
@@ -125,10 +150,8 @@ namespace Imya.UI.Components
             TextManager.LanguageChanged += OnLanguageChanged;
         }
 
-        public void SetDisplayedMod(Mod? mod)
+        private void SetDescription(Mod? mod)
         {
-            Mod = mod;
-
             // TODO is it really necessary to trigger all invidiual fields?
             ShowKnownIssues = mod?.HasKnownIssues ?? false;
             ShowDescription = mod?.HasDescription ?? false;
@@ -148,7 +171,51 @@ namespace Imya.UI.Components
             UpdateDescription();
         }
 
-        public void UpdateDescription()
+        public void SetDisplayedMod(Mod? mod)
+        {
+            Mod = mod;
+            ParentMod = mod;
+            SupportsMultiple = mod?.HasSubmods ?? false;
+            SetDescription(mod);
+            CurrentModIndex = 0;
+        }
+
+        public void SkipRightClicked(object sender, RoutedEventArgs e)
+        {
+            if (Mod is null || ParentMod is null)
+                return;
+            if (!ParentMod.HasSubmods)
+                return;
+
+            CurrentModIndex = (CurrentModIndex + 1) % ParentMod!.DistinctSubModsIncludingSelf.Count();        
+        }
+
+        public void SkipLeftClicked(object sender, RoutedEventArgs e)
+        {
+            if (Mod is null || ParentMod is null)
+                return;
+            if (!ParentMod.HasSubmods)
+                return;
+
+            //fuck c# builtin modulo operator...
+            var a = (CurrentModIndex - 1);
+            var b = ParentMod!.DistinctSubModsIncludingSelf.Count(); 
+            var newIndex = (Math.Abs(a * b) + a) % b;
+            CurrentModIndex = newIndex; 
+        }
+
+        public void DisplaySubmod(int index)
+        {
+            if (Mod is null || ParentMod is null)
+                return;
+            var newIndex = Math.Clamp(index, 0, ParentMod.DistinctSubModsIncludingSelf.Count() - 1);
+
+            var mod = ParentMod.DistinctSubModsIncludingSelf.ElementAt(newIndex);
+            Mod = mod;
+            SetDescription(mod);
+        }
+
+        private void UpdateDescription()
         {
             UseMarkdownDescription = false;
             MarkdownDescription = null;

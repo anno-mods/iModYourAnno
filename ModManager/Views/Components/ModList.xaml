@@ -27,7 +27,7 @@
                 <Border Background ="Transparent">
                     <ContentPresenter Content="{Binding}" />
                     <Border.Effect>
-                        <DropShadowEffect ShadowDepth="1" BlurRadius ="1"/>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius ="1" Color="#C0000000"/>
                     </Border.Effect>
                 </Border>
             </DataTemplate>
@@ -179,20 +179,23 @@
                                            Style="{StaticResource IMYA_TEXT}" 
                                            FontWeight="Bold"></TextBlock>
                             </Expander.Header>
-                            <ItemsControl ItemsSource="{Binding SubMods}">
+                            <ItemsControl ItemsSource="{Binding DistinctSubMods}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal"
                                                     Margin="25,2,2,2">
                                             <materialDesign:PackIcon Kind="PackageVariant"
-                                                                     Style="{StaticResource IMYA_ICON}">
+                                                                     Style="{StaticResource IMYA_ICON}"
+                                                                     Width="22"
+                                                                     Height="22"
+                                                                     VerticalAlignment="Center">
                                             </materialDesign:PackIcon>
-                                            <TextBlock Text="{Binding Category.Text}"
+                                            <TextBlock Text="{Binding Category.Text, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource IMYA_TEXT}"
                                                        FontWeight="DemiBold"
                                                        Margin="10,0,0,0"
                                                        VerticalAlignment="Center"></TextBlock>
-                                            <TextBlock Text="{Binding Name.Text}"
+                                            <TextBlock Text="{Binding Name.Text, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource IMYA_TEXT}"
                                                        FontWeight="ExtraLight"
                                                        VerticalAlignment="Center"

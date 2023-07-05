@@ -149,15 +149,17 @@ namespace Imya.UI.Views
         Mod? _previousSelection = null;
         private void OnUpdateSelection(Mod? m)
         {
-            if (_previousSelection != m)
-            {
-                HasSelection = ModList.CurrentlySelectedMod is not null;
-                AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
-                AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
-                OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
+            if (_previousSelection == m)
+                return;
 
-                _previousSelection = m;
-            }
+            HasSelection = ModList.CurrentlySelectedMod is not null;
+            AnyActiveSelected = ModList.CurrentlySelectedMods?.Any(x => x.IsActive) ?? false;
+            AnyInactiveSelected = ModList.CurrentlySelectedMods?.Any(x => !x.IsActive) ?? false;
+            OnlyRemovedSelected = ModList.CurrentlySelectedMods?.Where(x => x.IsRemoved).Count() == ModList.CurrentlySelectedMods?.Count();
+
+
+
+            _previousSelection = m;
         }
 
         #region INotifyPropertyChangedMembers

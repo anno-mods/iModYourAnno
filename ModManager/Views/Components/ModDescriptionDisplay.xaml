@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition />
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
@@ -260,6 +261,96 @@
             </StackPanel>
             
         </ScrollViewer>
+        <Button Width="40"
+                HorizontalAlignment="Left"
+                Margin="0,0,0,5"
+                Grid.Row="1"
+                HorizontalContentAlignment="Left"
+                Style="{StaticResource IMYA_TABNAVIGATIONBUTTON}"
+                Visibility="{Binding SupportsMultiple, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"
+                Click="SkipLeftClicked">
+            <materialDesign:PackIcon Kind="LessThan"
+                                     Style="{StaticResource IMYA_ICON}"
+                                     Width="20"
+                                     Margin="5">
+            </materialDesign:PackIcon>            
+        </Button>
+        <Button Width="40"
+                HorizontalAlignment="Right"
+                Grid.Row="1"
+                Margin="0,0,12,5"
+                Style="{StaticResource IMYA_TABNAVIGATIONBUTTON}"
+                HorizontalContentAlignment="Right"
+                Visibility="{Binding SupportsMultiple, UpdateSourceTrigger=PropertyChanged,Converter={StaticResource BoolToVis}}"
+                Click="SkipRightClicked">
+            <materialDesign:PackIcon Kind="GreaterThan"
+                                     Style="{StaticResource IMYA_ICON}"
+                                     Margin="5"
+                                     Width="20">
+            </materialDesign:PackIcon>
+        </Button>
+        <ListView Grid.Row="2"
+                  ItemsSource="{Binding ParentMod.DistinctSubModsIncludingSelf}"
+                  HorizontalAlignment="Center"
+                  x:Name="SelectedSubmodVisualizer"
+                  Background="Transparent"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  BorderThickness="0"
+                  SelectionMode="Single"
+                  SelectedIndex="{Binding CurrentModIndex,UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Grid Background="Transparent"
+                                      ToolTipService.InitialShowDelay="0">
+                                    <Border Background="{DynamicResource ComponentColorBrush_Pressed}"
+                                             Width="10"
+                                             Height="10"
+                                             Margin="3"
+                                             x:Name="Ellipse"
+                                            CornerRadius="5"
+                                            BorderBrush="{DynamicResource ComponentColorBrush_Pressed}"
+                                             ></Border>
 
+                                    <Grid.ToolTip>
+                                        <StackPanel Orientation="Horizontal" Margin ="4">
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Category.Text}"
+                                                       FontWeight="Bold"></TextBlock>
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Name.Text}"
+                                                       Margin="5,0,0,0"></TextBlock>
+
+                                        </StackPanel>
+                                    </Grid.ToolTip>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="{DynamicResource AccentColorBrush}"
+                                                TargetName="Ellipse"></Setter>
+                                        <Setter Property="Width"
+                                                TargetName="Ellipse"
+                                                Value="12"></Setter>
+                                        <Setter Property="Height"
+                                                TargetName="Ellipse"
+                                                Value="12"></Setter>
+                                        <Setter Property="BorderThickness"
+                                                TargetName="Ellipse"
+                                                Value="2"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </UserControl>
