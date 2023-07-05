@@ -3,6 +3,7 @@ using Imya.Models.Attributes;
 using Imya.Models.Mods;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
 
@@ -19,7 +20,7 @@ namespace Imya.UI.Models
         public IText Name => Model.Name;
         public IText Category => Model.Category;
 
-        public BindableCollection<Mod> SubMods { get; private set; }
+        public BindableCollection<Mod> DistinctSubMods { get; private set; }
 
         public bool HasSubmods => Model.HasSubmods;
 
@@ -28,8 +29,7 @@ namespace Imya.UI.Models
         public BindableMod(Mod mod, DispatcherObject context) : base(mod, context)
         {
             Attributes = new(mod.Attributes, context);
-            var distinct = mod.SubMods.DistinctBy(x => (x.ModID, x.Version)).ToList().AsReadOnly();
-            SubMods = new(distinct, context);
+            DistinctSubMods = new(mod.DistinctSubMods.ToList().AsReadOnly(), context);
         }      
     }
 }

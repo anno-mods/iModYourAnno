@@ -292,8 +292,11 @@ namespace Imya.Models.Mods
 
         #region Sub mods
         public List<Mod> SubMods { get; private set; }
+        public IEnumerable<Mod> DistinctSubMods { get => SubMods.DistinctBy(x => (x.ModID, x.Version)); }
         
         public bool HasSubmods { get => SubMods.Count() > 0; }
+
+        public IEnumerable<Mod> DistinctSubModsIncludingSelf { get => DistinctSubMods.Prepend(this); }
         #endregion
 
         public ModStatus GetStatus()
