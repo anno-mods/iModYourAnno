@@ -57,6 +57,10 @@ namespace Imya.Services
         }
         private string _gameRootPath;
 
+        public String MaindataPath { get => Path.Combine(GameRootPath, "maindata"); }
+
+        public bool IsMaindataValid { get => Directory.Exists(MaindataPath); }
+
         public string? ExecutablePath { get; private protected set; }
         public string? ExecutableDir { get; private protected set; }
 

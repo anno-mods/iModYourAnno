@@ -80,5 +80,14 @@ namespace Imya.Models.ModTweaker.IO
 
             return tweaks.Attributes?["Title"]?.Value;
         }
+
+        public string? FetchTweakerFileIcon()
+        {
+            var tweaks = Document.SelectSingleNode("/ModOps/ImyaTweaks");
+            if (tweaks is null)
+                return null;
+
+            return tweaks.Attributes?["Icon"]?.Value;
+        }
     }
 }

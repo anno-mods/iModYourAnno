@@ -17,7 +17,9 @@
                                                           TrueValue="Visible"
                                                           FalseValue="Hidden" />
             <Converters:NegateBoolConverter x:Key="NegateBool" />
-            <Converters:IsEmptyToVisibility x:Key="CollapsedOnEmpty" OnEmpty="Collapsed" OnElse="Visible" />
+            <Converters:IsEmptyToVisibility x:Key="CollapsedOnEmpty"
+                                            OnEmpty="Collapsed"
+                                            OnElse="Visible" />
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -72,16 +74,24 @@
                         <DataTemplate>
                             <Expander IsExpanded="True">
                                 <Expander.Header>
-                                    <StackPanel Margin="5">
-                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                   Text="{Binding Title}" 
-                                                   FontWeight="Bold"
-                                                   Margin="2"/>
-                                        <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                                   Text="{Binding Description}"
-                                                   FontWeight="Light"
-                                                   Margin="2" />
-
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Path=IconFilename, Converter = {StaticResource FilepathToImageConverter}, UpdateSourceTrigger=Explicit, ConverterParameter=46x46}"
+                                               MaxWidth="46"
+                                               MaxHeight="46"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding HasIcon, Converter={StaticResource VisibleOnTrue}}"/>
+                                        <StackPanel VerticalAlignment="Center" 
+                                                    Margin="5">
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                       Text="{Binding Title}"
+                                                       FontWeight="Bold"
+                                                       Margin="2"/>
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                                       Text="{Binding Description}"
+                                                       FontWeight="Light"
+                                                       Margin="2" />
+                                        </StackPanel>
                                     </StackPanel>
                                 </Expander.Header>
 
