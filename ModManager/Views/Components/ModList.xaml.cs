@@ -2,6 +2,7 @@
 using Imya.Models.Mods;
 using Imya.Services.Interfaces;
 using Imya.Texts;
+using Imya.UI.Extensions;
 using Imya.UI.Models;
 using Imya.Utils;
 using System.Collections.Generic;
@@ -132,34 +133,12 @@ namespace Imya.UI.Components
 
         private void SetAllExpandersExpandedStatusTo(bool to)
         {
-            var expanders = FindVisualChildren<Expander>(ListBox_ModList).ToArray();
+            var expanders = this.FindVisualChildren<Expander>(ListBox_ModList).ToArray();
 
             foreach (Expander expander in expanders)
             {
                 if(expander.IsExpanded != to)
                     expander.IsExpanded = to;
-            }
-        }
-
-        //see https://learn.microsoft.com/de-de/dotnet/desktop/wpf/data/how-to-find-datatemplate-generated-elements?view=netframeworkdesktop-4.8
-        private IEnumerable<childItem> FindVisualChildren<childItem>(DependencyObject obj) where childItem : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
-                if (child != null && child is childItem)
-                {
-                    yield return (childItem)child;
-                }
-                else
-                {
-                    var grandchildren = FindVisualChildren<childItem>(child);
-                    foreach (var grandchild in grandchildren)
-                    {
-                        if (grandchild != null)
-                            yield return grandchild;
-                    }
-                }
             }
         }
     }

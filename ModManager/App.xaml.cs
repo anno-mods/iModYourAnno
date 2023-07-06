@@ -67,6 +67,7 @@ namespace Imya.UI
                     services.AddTransient<ITweakedAttributeFactory, TweakedAttributeFactory>();
                     services.AddTransient<IContentInSubfolderAttributeFactory, ContentInSubfolderAttributeFactory>();
                     services.AddTransient<IModAccessIssueAttributeFactory, ModAccessIssueAttributeFactory>();
+                    
 
                     services.AddSingleton<LocalizedModinfoFactory>();
                     services.AddSingleton<IModFactory, ModFactory>();
@@ -91,7 +92,11 @@ namespace Imya.UI
                     services.AddTransient<IModImageStrategy, StaticFilepathImageStrategy>();
                     services.AddSingleton<IAuthenticator, DeviceFlowAuthenticator>();
 
-                    //tweaks
+                    //value conversion
+                    services.AddTransient<DlcTextConverter>();
+                    services.AddTransient<FilenameValidationConverter>();
+                    services.AddTransient<FilepathToImageConverter>();
+                    services.AddTransient<DlcIconConverter>();
 
                     //game launcher
                     services.AddSingleton<IGameLauncherFactory, GameLauncherFactory>();
@@ -108,6 +113,9 @@ namespace Imya.UI
                     services.AddSingleton<ModReplacementValidator>();
                     services.AddSingleton<RemovedModValidator>();
                     services.AddSingleton<TweakValidator>();
+                    services.AddTransient<DlcOwnershipAttributeFactory>();
+                    services.AddSingleton<DlcOwnershipValidator>();
+                    //need to register dlc ownership 
 
                     //caching
                     services.AddScoped<ICache<GithubRepoInfo, String>, TimedCache<GithubRepoInfo, String>>();
@@ -150,9 +158,6 @@ namespace Imya.UI
                     services.AddSingleton<IMainViewController, MainViewController>();
                     services.AddSingleton<IAuthenticationController, AuthenticationController>();
 
-                    services.AddTransient<DlcTextConverter>();
-                    services.AddTransient<FilenameValidationConverter>();
-                    services.AddTransient<FilepathToImageConverter>();
 
                     services.AddSingleton<SelfUpdater>();
                 })
@@ -180,6 +185,7 @@ namespace Imya.UI
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModReplacementValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
+            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<DlcOwnershipValidator>());
 
 
         }
@@ -205,6 +211,7 @@ namespace Imya.UI
             Resources.Add("DlcTextConverter", AppHost.Services.GetRequiredService<DlcTextConverter>());
             Resources.Add("FilepathToImageConverter", AppHost.Services.GetRequiredService<FilepathToImageConverter>());
             Resources.Add("FilenameValidationConverter", AppHost.Services.GetRequiredService<FilenameValidationConverter>());
+            Resources.Add("DlcIconConverter", AppHost.Services.GetRequiredService<DlcIconConverter>());
 
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
             startupForm.Show();

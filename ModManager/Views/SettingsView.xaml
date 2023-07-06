@@ -7,6 +7,7 @@
              xmlns:converters="clr-namespace:Imya.UI.ValueConverters"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:Components="clr-namespace:Imya.UI.Views.Components"
+             xmlns:local="clr-namespace:Imya.UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -22,9 +23,10 @@
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis" />
             <converters:SpeedConverter x:Key="DownloadSpeed" />
-            <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue" TrueValue="Visible" FalseValue="Collapsed" />
+            <converters:ExtendedBoolToVisibilityConverter x:Key="VisibleOnTrue"
+                                                          TrueValue="Visible"
+                                                          FalseValue="Collapsed" />
         </Grid.Resources>
-
         <StackPanel Orientation="Vertical" Margin="5" Grid.Row="1">
             <!-- manager settings -->
             <Border CornerRadius="3" 
@@ -303,10 +305,15 @@
         </StackPanel>
 
         <!-- debug settings -->
-        <StackPanel Orientation="Vertical"
-                    Margin="5"
+        <Grid Margin="5"
                     Grid.Row="1"
                     Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0"
@@ -320,7 +327,8 @@
             </Border>
             <Border CornerRadius="3"
                     Background="{DynamicResource ComponentColorBrush}"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    Grid.Row="1">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -354,9 +362,80 @@
                 </StackPanel>
             </Border>
             <Border CornerRadius="3"
+                    Margin="0,4"
                     Background="{DynamicResource ComponentColorBrush}"
                     BorderThickness="0"
-                    Visibility="{Binding AppSettings.DevMode, Converter={StaticResource BoolToVis}}">
+                    Grid.Row="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Center">
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="DLC Ownership"
+                                   FontWeight="Bold"
+                                   Margin="0,3"
+                                   HorizontalAlignment="Center" />
+                        <TextBlock Style="{StaticResource IMYA_TEXT}"
+                                   Text="Enable the DLCs you own and iMYA will inform you about missing Requirements."
+                                   Margin="0,3"
+                                   FontWeight="Light"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                    <ScrollViewer VerticalScrollBarVisibility="Visible"
+                                  Style ="{StaticResource IMYA_SCROLLVIEWER}"
+                                  CanContentScroll="True"
+                                  Grid.Row="1">
+                        <ItemsControl ItemsSource="{Binding AppSettings.AllDLCs}"
+                                      VirtualizingStackPanel.IsVirtualizing="True"
+                                      x:Name="DlcItemsControl">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,2,2,0"
+                                          Width="{Binding DlcEntryWidth, UpdateSourceTrigger = PropertyChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:SettingsView}}}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="36"/>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Source="{Binding DlcId, Converter={StaticResource DlcIconConverter}, UpdateSourceTrigger=Explicit, ConverterParameter=46x46}"
+                                               Height="32"
+                                               Width="32"
+                                               VerticalAlignment="Center"></Image>
+                                        <TextBlock Text="{Binding DlcId, Converter={StaticResource DlcTextConverter},UpdateSourceTrigger=PropertyChanged}"
+                                                   Style="{StaticResource IMYA_TEXT}"
+                                                   Grid.Column="1"
+                                                   Margin="5,0,0,0"
+                                                   VerticalAlignment="Center" />
+                                        <!-- Todo make a better width computation -->
+                                        <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"
+                                                  IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                                  VerticalAlignment="Center"
+                                                  Grid.Column="2" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.Template>
+                                <ControlTemplate TargetType="ItemsControl">
+                                    <ItemsPresenter />
+                                </ControlTemplate>
+                            </ItemsControl.Template>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+            <Border CornerRadius="3"
+                    Background="{DynamicResource ComponentColorBrush}"
+                    BorderThickness="0"
+                    Visibility="{Binding AppSettings.DevMode, Converter={StaticResource BoolToVis}}"
+                    Grid.Row="3">
                 <StackPanel Orientation="Vertical">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -414,6 +493,6 @@
                 </StackPanel>
 
             </Border>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
