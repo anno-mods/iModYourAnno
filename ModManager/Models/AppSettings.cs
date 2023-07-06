@@ -1,12 +1,15 @@
-﻿using Imya.Models;
+﻿using Imya.Enums;
+using Imya.Models;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.Utils;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -22,6 +25,8 @@ namespace Imya.UI.Models
         public List<ThemeSetting> Themes { get; } = new List<ThemeSetting>();
         public List<LanguageSetting> Languages { get; } = new List<LanguageSetting>();
         public List<SortSetting> Sortings { get; } = new List<SortSetting>();
+
+        public IEnumerable<DlcSetting> AllDLCs { get; init;       }
 
         //painfully horrible tbh, this lookup should get better.
         private ResourceDictionary ThemeDictionary;
@@ -200,6 +205,15 @@ namespace Imya.UI.Models
             Sortings.Add(new SortSetting(ComparebyLoadOrder.Default, TextManager["SORTING_LOADORDER"], "LoadOrder"));
 
             RateLimitChanged += x => installationService.DownloadConfig.MaximumBytesPerSecond = x;
+
+            AllDLCs = Enum.GetValues<DlcId>().Select(x => new DlcSetting
+            {
+                DlcId = x,
+                IsEnabled = true
+            }).ToImmutableList();
+
+            LoadStoredDlcOwnership();
+            StartListeningToDlcChanges();
         }
 
         private void ChangeLanguage(LanguageSetting lang)
@@ -245,6 +259,37 @@ namespace Imya.UI.Models
             LoadLanguageSetting();
             LoadThemeSetting();
             LoadSortSetting();
+
+        }
+
+        private void LoadStoredDlcOwnership()
+        {
+            var ownedDlc = Properties.Settings.Default.OwnedDlc.Split(';');
+
+            foreach (var dlcSetting in AllDLCs)
+            {
+                dlcSetting.IsEnabled = ownedDlc.Contains(dlcSetting.DlcId.ToString());
+            }
+        }
+
+        private void StartListeningToDlcChanges()
+        { 
+            foreach (var dlcSetting in AllDLCs)
+            {
+                dlcSetting.PropertyChanged += (sender, e) =>
+                {
+                    if (e.PropertyName != nameof(dlcSetting.IsEnabled))
+                        return;
+                    PersistDlcOwnershipSetting();
+                };
+            }
+        }
+
+        private void PersistDlcOwnershipSetting()
+        {
+            var ownedDlc = string.Join(';', AllDLCs.Where(x => x.IsEnabled).Select(x => x.DlcId.ToString()));
+            Properties.Settings.Default.OwnedDlc = ownedDlc;
+            Properties.Settings.Default.Save();
         }
     }
 }
