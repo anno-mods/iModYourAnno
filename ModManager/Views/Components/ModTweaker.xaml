@@ -100,15 +100,19 @@
                                         <DataTemplate>
                                             <Border
                                                 Name="HoverBorder"
-                                                Margin="2"
-                                                Background="{DynamicResource ComponentColorBrush}">
+                                                Margin="0,4"
+                                                Background="{DynamicResource ComponentColorBrush}"
+                                                BorderThickness="1"
+                                                BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
+                                                CornerRadius="3">
                                                 <Grid Margin="5">
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition />
-                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="1.8*" />
                                                         <ColumnDefinition Width="35" />
                                                     </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
                                                         <RowDefinition Height="auto" />
                                                         <RowDefinition Height="auto" />
                                                     </Grid.RowDefinitions>
@@ -116,9 +120,9 @@
                                                     <TextBlock Text="{Binding ExposeID}"
                                                                 Style="{StaticResource IMYA_TEXT}"
                                                                 VerticalAlignment="Center"
-                                                                Margin="10,0,0,0"
-                                                                MinWidth="150"
-                                                               FontWeight="SemiBold"/>
+                                                                Margin="3"
+                                                               FontWeight="SemiBold"
+                                                               TextWrapping="Wrap"/>
                                                     <TextBox Grid.Column="1"
                                                              Style="{StaticResource IMYA_TEXTBOX}"
                                                              Text="{Binding Value, Mode=TwoWay}"
@@ -128,7 +132,8 @@
                                                              Visibility="{Binding IsSimpleValue, Converter={StaticResource VisibleOnTrue}}"
                                                              IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}"/>
                                                     <ComboBox Grid.Column="1"
-                                                                Margin="0,0,4,0"
+                                                              Height="36"
+                                                              Margin="0,0,0,4"
                                                                 Style="{StaticResource IMYA_COMBOBOX}"
                                                                 Background="{DynamicResource InteractiveComponentColorBrush}"
                                                                 ItemsSource="{Binding PredefinedValues}"
@@ -188,6 +193,7 @@
                                                                 Style="{StaticResource IMYA_TOGGLESWITCH}"
                                                                 Initialized="CheckBox_Initialized"
                                                                 Checked="OnValueChanged"
+                                                              HorizontalAlignment="Right"
                                                                 Unchecked="OnValueChanged"
                                                                 IsEnabled="{Binding DataContext.GameSetup.IsGameRunning, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NegateBool}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ModTweaker}}}">
                                                     </CheckBox>
@@ -208,12 +214,18 @@
                                                         </materialDesign:PackIcon.ToolTip>
                                                     </materialDesign:PackIcon>
 
+                                                    <Rectangle Height="1" 
+                                                               Fill="{DynamicResource ComponentColorBrush_Inactive}"
+                                                               Grid.Row="1"
+                                                               Grid.ColumnSpan="3"
+                                                               Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"></Rectangle>
+
                                                     <!-- description -->
                                                     <TextBlock
-                                                        Grid.Row="1"
+                                                        Grid.Row="2"
                                                         Grid.ColumnSpan="3"
-                                                        Margin="10,2,0,5"
-                                                        TextWrapping="WrapWithOverflow"
+                                                        Margin="4,7,0,5"
+                                                        TextWrapping="Wrap"
                                                         Visibility="{Binding Description, Converter={StaticResource CollapsedOnEmpty}}"
                                                         Style="{StaticResource IMYA_TEXT}"
                                                         Text="{Binding Description}"/>
