@@ -19,7 +19,6 @@
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-            <converters:DlcIconConverter x:Key="DlcIcon" />
             <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
             <converters:StringFormatConverter x:Key="Format" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
@@ -217,7 +216,7 @@
                                             Margin="0,0,0,5"
                                             Visibility="{Binding DataContext.ShowDlcDeps, ElementName=BaseGrid, Converter={StaticResource BoolToVis}}">
                                     <Image VerticalAlignment="Center"
-                                           Source="{Binding Path=., Converter={StaticResource DlcIcon}}"
+                                           Source="{Binding Path=., Converter={StaticResource DlcIconConverter}}"
                                            Width="28"
                                            Height="28"
                                            Margin="0,0,7,0" />

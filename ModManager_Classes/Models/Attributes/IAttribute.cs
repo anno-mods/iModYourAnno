@@ -18,7 +18,8 @@ namespace Imya.Models.Attributes
         IssueModAccess,
         IssueNoDelete,
         ModReplacedByIssue,
-        CyclicDependency
+        CyclicDependency,
+        DlcNotOwned
     }
 
     public interface IAttribute

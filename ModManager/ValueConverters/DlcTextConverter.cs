@@ -48,7 +48,9 @@ namespace Imya.UI.ValueConverters
             { DlcId.NewWorldRising, "DLC_NEWWORLDRISING" },
             { DlcId.SeasonalDecorations, "DLC_SEASONALDECORATIONS" },
             { DlcId.IndustryOrnaments, "DLC_INDUSTRYORNAMENTS" },
-            { DlcId.OldTown, "DLC_OLDTOWN" }
+            { DlcId.OldTown, "DLC_OLDTOWN" },
+            { DlcId.Fiesta, "DLC_FIESTA" },
+            { DlcId.DragonGarden, "DLC_DRAGONGARDEN" }
         };
 
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)

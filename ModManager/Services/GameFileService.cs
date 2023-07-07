@@ -20,9 +20,11 @@ namespace Imya.Services
     {
         private IGameSetupService _gameSetupService;
 
-        private FileSystem _fileSystem;
+        private FileSystem? _fileSystem;
 
-        private bool isLoading = false; 
+        private bool isLoading = false;
+
+        private bool isInitialized => _fileSystem is not null; 
 
         public GameFileService(IGameSetupService gameSetupService)
         {
@@ -52,8 +54,18 @@ namespace Imya.Services
         {
             if (isLoading)
                 return null;
+            if (!isInitialized)
+                return null;
 
-            return _fileSystem?.OpenRead(path);
+            try
+            {
+                return _fileSystem?.OpenRead(path);
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine("Not found in Gamefiles: " + path);
+                return null; 
+            }
         }
 
         /// <summary>

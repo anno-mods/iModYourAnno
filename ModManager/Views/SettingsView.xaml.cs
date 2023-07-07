@@ -13,6 +13,8 @@ using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Models;
+using System.Windows.Data;
+using Imya.UI.Extensions;
 
 namespace Imya.UI.Views
 {
@@ -29,6 +31,19 @@ namespace Imya.UI.Views
         public long Max { get; } = 100 * 1024 * 1024;
         public long Min { get; } = 256 * 1024;
         public long Stepping { get; } = 256 * 1024;
+
+        public int DlcEntryWidth 
+        {
+            get => _dlcEntryWidth;
+            set 
+            {
+                _dlcEntryWidth = value;
+                OnPropertyChanged(nameof(DlcEntryWidth));
+            }
+        }
+        private int _dlcEntryWidth = 200;
+
+        private int _dlcEntryDesiredWidth = 200; 
 
         #region Notifiable Properties
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };
@@ -62,6 +77,23 @@ namespace Imya.UI.Views
             SortingSelection.SelectedItem = AppSettings.Sorting;
 
             DataContext = this;
+
+            DlcItemsControl.SizeChanged += (sender, e) =>
+            {
+                var width = e.NewSize.Width;
+                var columnCount = (int)width / _dlcEntryDesiredWidth;
+                DlcEntryWidth = (int)(width / columnCount) - 5;
+            };
+
+            TextManager.LanguageChanged += (lang) =>
+            {
+                var textsToUpdate = this.FindVisualChildren<TextBlock>(DlcItemsControl);
+                foreach (var text in textsToUpdate)
+                {
+                    var binding = BindingOperations.GetBindingExpression(text, TextBlock.TextProperty);
+                    binding?.UpdateTarget(); 
+                }
+            };
         }
 
         public void RequestLanguageChange(object sender, RoutedEventArgs e)

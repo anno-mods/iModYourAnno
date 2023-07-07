@@ -26,6 +26,7 @@ namespace Imya.UI.ValueConverters
                 AttributeType.IssueModRemoved => ("TrashCanOutline", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.IssueModAccess => ("FolderAlertOutline", FindResourceBrush("ErrorColorBrush")),
                 AttributeType.CyclicDependency => ("CircleArrows", FindResourceBrush("ErrorColorBrush")),
+                AttributeType.DlcNotOwned => ("Ubisoft", FindResourceBrush("InformationColorBrush")),
                 _ => ("InformationOutline", FindResourceBrush("TextColorBrush")),
             };
         }

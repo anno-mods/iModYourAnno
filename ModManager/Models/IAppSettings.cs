@@ -1,7 +1,10 @@
-﻿using Imya.Models;
+﻿using Imya.Enums;
+using Imya.Models;
 using Imya.Models.Mods;
+using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
 using Imya.Utils;
+using Imya.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -62,7 +65,19 @@ namespace Imya.UI.Models
         }
     }
 
-    public interface IAppSettings
+    public class DlcSetting : PropertyChangedNotifier
+    {
+        public DlcId DlcId { get; init; }
+
+        public bool IsEnabled 
+        {
+            get => _isEnabled; 
+            set => SetProperty(ref _isEnabled, value);
+        }
+        private bool _isEnabled; 
+    }
+
+    public interface IAppSettings : IDlcOwnershipChanged
     {
         delegate void RateLimitChangedEventHandler(long new_rate_limit);
         delegate void SortSettingChangedEventHandler(SortSetting sortSetting);
@@ -70,6 +85,7 @@ namespace Imya.UI.Models
         List<ThemeSetting> Themes { get; }
         List<LanguageSetting> Languages { get; }
         List<SortSetting> Sortings { get; }
+        IEnumerable<DlcSetting> AllDLCs { get; }
 
         IModInstallationOptions InstallationOptions { get; }
         bool ShowConsole { get; set; }
@@ -85,6 +101,7 @@ namespace Imya.UI.Models
         LanguageSetting Language { get; set; }
         ThemeSetting Theme { get; set; }
         SortSetting Sorting { get; set; }
+
 
         event RateLimitChangedEventHandler RateLimitChanged;
         event SortSettingChangedEventHandler SortSettingChanged;

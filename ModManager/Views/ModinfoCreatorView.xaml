@@ -20,9 +20,6 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            <conv:DlcIconConverter x:Key="DlcIconConv" />
-        </Grid.Resources>
 
         <ScrollViewer Style="{StaticResource IMYA_SCROLLVIEWER}" 
                       Background="{DynamicResource ComponentColorBrush}"

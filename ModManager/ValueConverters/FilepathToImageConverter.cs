@@ -27,9 +27,13 @@ namespace Imya.UI.ValueConverters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (string.IsNullOrWhiteSpace(value as String))
+                return new Image();
+
+            var stream = _gameFilesService.OpenIcon((String)value);
+            if (stream is null)
                 return new Image(); 
 
-            IImage image = Pfimage.FromStream(_gameFilesService.OpenIcon((String)value));
+            IImage image = Pfimage.FromStream(stream);
 
             if (image is null)
                 return new Image();
