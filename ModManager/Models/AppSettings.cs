@@ -6,6 +6,7 @@ using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.Utils;
+using Imya.Validation;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -182,6 +183,7 @@ namespace Imya.UI.Models
 
         public event IAppSettings.RateLimitChangedEventHandler RateLimitChanged = delegate { };
         public event IAppSettings.SortSettingChangedEventHandler SortSettingChanged = delegate { };
+        public event IDlcOwnershipChanged.DlcSettingChangedEventHandler DlcSettingChanged = delegate { }; 
 
         public AppSettings(
             IInstallationService installationService,
@@ -281,6 +283,7 @@ namespace Imya.UI.Models
                     if (e.PropertyName != nameof(dlcSetting.IsEnabled))
                         return;
                     PersistDlcOwnershipSetting();
+                    DlcSettingChanged.Invoke(); 
                 };
             }
         }

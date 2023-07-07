@@ -4,6 +4,7 @@ using Imya.Models.Mods;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
 using Imya.Utils;
+using Imya.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -76,7 +77,7 @@ namespace Imya.UI.Models
         private bool _isEnabled; 
     }
 
-    public interface IAppSettings
+    public interface IAppSettings : IDlcOwnershipChanged
     {
         delegate void RateLimitChangedEventHandler(long new_rate_limit);
         delegate void SortSettingChangedEventHandler(SortSetting sortSetting);

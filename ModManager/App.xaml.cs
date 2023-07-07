@@ -186,8 +186,7 @@ namespace Imya.UI
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
             globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<DlcOwnershipValidator>());
-
-
+            globalMods.Hooks.HookTo(AppHost.Services.GetRequiredService<IAppSettings>());
         }
 
         protected override async void OnStartup(StartupEventArgs e)

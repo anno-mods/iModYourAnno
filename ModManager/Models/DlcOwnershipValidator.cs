@@ -26,7 +26,7 @@ namespace Imya.UI.Models
 
         public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
         {
-            foreach (Mod m in changed)
+            foreach (Mod m in all)
             {
                 ValidateSingle(m);
             }
