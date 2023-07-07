@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.XPath;
 
 namespace Imya.Models.ModTweaker.DataModel.Tweaking
 {
@@ -18,6 +19,16 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
             {
                 Expose.TryGetAttribute(TweakerConstants.DESCRIPTION, out string? description);
                 Expose.TryGetAttribute(TweakerConstants.TOOLTIP, out string? tooltip);
+
+                try
+                {
+                    var checkPath = XPathExpression.Compile(Path);
+                }
+                catch (XPathException e)
+                {
+                    Console.WriteLine($"Invalid XPath: {ExposeID} - {Path}");
+                    return null; 
+                }
 
                 ExposedModValueType type = ExposedModValueType.SimpleValue;
                 Expose.TryGetAttribute(TweakerConstants.KIND, out string? Kind);
