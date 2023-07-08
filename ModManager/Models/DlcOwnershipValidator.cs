@@ -40,7 +40,7 @@ namespace Imya.UI.Models
 
             var potentialDlc = m.Modinfo
                 .DLCDependencies?
-                .Where(x => x.Dependant != Enums.DlcRequirement.atLeastOneRequired);
+                .Where(x => x.Dependant != Enums.DlcRequirement.atLeastOneRequired && x.DLC is not null && x.Dependant is not null);
             var globallyMissing = _appSettings
                 .AllDLCs
                 .Where(x => !x.IsEnabled)
