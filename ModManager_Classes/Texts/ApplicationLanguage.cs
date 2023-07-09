@@ -6,6 +6,8 @@ namespace Imya.Models
     public enum ApplicationLanguage
     {
         [EnumMember] English,
-        [EnumMember] German
+        [EnumMember] German,
+        [EnumMember] Russian,
+        [EnumMember] Polish
     }
 }
