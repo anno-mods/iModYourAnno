@@ -200,6 +200,8 @@ namespace Imya.UI.Models
 
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_RUSSIAN"], ApplicationLanguage.Russian));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_POLISH"], ApplicationLanguage.Polish));
 
             Sortings.Add(new SortSetting(CompareByActiveCategoryName.Default, TextManager["SORTING_DEFAULT"], "Default"));
             Sortings.Add(new SortSetting(CompareByCategoryName.Default, TextManager["SORTING_ACTIVE_AGNOSTIC"], "ActiveAgnostic"));

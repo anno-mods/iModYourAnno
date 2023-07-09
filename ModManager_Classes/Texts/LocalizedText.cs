@@ -57,6 +57,8 @@ namespace Imya.Models
             {
                 case ApplicationLanguage.English: if (English is String) Text = English; return;
                 case ApplicationLanguage.German: if (German is String) Text = German; return;
+                case ApplicationLanguage.Russian: if (Russian is String) Text = Russian; return;
+                case ApplicationLanguage.Polish: if (Polish is String) Text = Polish; return;
             }
             Text = String.Empty;
         }

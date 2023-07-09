@@ -24,6 +24,6 @@ namespace Imya.Texts
         void ChangeLanguage(ApplicationLanguage lang);
         void UpdateTexts();
         void LoadLanguageFile(String Sourcefile);
-        LocalizedText CreateLocalizedText(Localized localized);
+        LocalizedText CreateLocalizedText(Localized? localized, string? defaultText);
     }
 }

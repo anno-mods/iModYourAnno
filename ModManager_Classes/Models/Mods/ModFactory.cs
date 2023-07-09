@@ -37,7 +37,7 @@ namespace Imya.Models.Mods
             bool hasModinfo = ModinfoLoader.TryLoadFromFile(Path.Combine(modFolderPath, "modinfo.json"), out var modinfo);
 
             var localizedModinfo = hasModinfo ?
-                _localizedModinfoFactory.GetLocalizedModinfo(modinfo!)
+                _localizedModinfoFactory.GetLocalizedModinfo(modinfo!, folderName)
                 : _localizedModinfoFactory.GetDummyModinfo(folderName);
 
             var mod = new Mod(

@@ -21,26 +21,25 @@ namespace Imya.Models.ModMetadata
             _textManager = textManager;
         }
 
-        public LocalizedModinfo GetLocalizedModinfo(Modinfo m)
+        public LocalizedModinfo GetLocalizedModinfo(Modinfo m, string folderName)
         {
-            var localized = new LocalizedModinfo()
+            var localized = new LocalizedModinfo
             {
-                Category = m.Category is not null ? _textManager.CreateLocalizedText(m.Category) : new SimpleText(""),
-                ModName = m.ModName is not null ? _textManager.CreateLocalizedText(m.ModName) : new SimpleText(""),
-                Description = m?.Description is not null ? _textManager.CreateLocalizedText(m.Description) : null,
-                KnownIssues = m?.KnownIssues is not null ? m.KnownIssues?.Where(x => x is not null).Select(x => _textManager.CreateLocalizedText(x)).ToArray() : null
+                Category = _textManager.CreateLocalizedText(m.Category, ""),
+                ModName = _textManager.CreateLocalizedText(m.ModName, folderName),
+                Description = _textManager.CreateLocalizedText(m.Description, null),
+                KnownIssues = m.KnownIssues?.Select(x => _textManager.CreateLocalizedText(x, null)).OfType<IText>().ToArray(),
+                Version = m.Version,
+                ModID = m.ModID,
+                IncompatibleIds = m.IncompatibleIds,
+                DeprecateIds = m.DeprecateIds,
+                ModDependencies = m.ModDependencies,
+                DLCDependencies = m.DLCDependencies,
+                CreatorName = m.CreatorName,
+                CreatorContact = m.CreatorContact,
+                Image = m.Image,
+                LoadAfterIds = m.LoadAfterIds
             };
-
-            localized.Version = m?.Version;
-            localized.ModID = m?.ModID;
-            localized.IncompatibleIds = m?.IncompatibleIds;
-            localized.DeprecateIds = m?.DeprecateIds;
-            localized.ModDependencies = m?.ModDependencies;
-            localized.DLCDependencies = m?.DLCDependencies;
-            localized.CreatorName = m?.CreatorName;
-            localized.CreatorContact = m?.CreatorContact;
-            localized.Image = m?.Image;
-            localized.LoadAfterIds = m?.LoadAfterIds;
 
             return localized;
         }
