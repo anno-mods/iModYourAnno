@@ -102,21 +102,24 @@ namespace Imya.Texts
 
         }
 
-        public LocalizedText CreateLocalizedText(Localized localized)
+        public LocalizedText CreateLocalizedText(Localized? localized, string? defaultText)
         {
-            var newText = new LocalizedText();
+            string? english = localized?.English ?? defaultText;
 
-            if (localized.Chinese is String) newText.Chinese = localized.Chinese;
-            if (localized.English is String) newText.English = localized.English;
-            if (localized.French is String) newText.French = localized.French;
-            if (localized.German is String) newText.German = localized.German;
-            if (localized.Italian is String) newText.Italian = localized.Italian;
-            if (localized.Japanese is String) newText.Japanese = localized.Japanese;
-            if (localized.Korean is String) newText.Korean = localized.Korean;
-            if (localized.Polish is String) newText.Polish = localized.Polish;
-            if (localized.Russian is String) newText.Russian = localized.Russian;
-            if (localized.Spanish is String) newText.Spanish = localized.Spanish;
-            if (localized.Taiwanese is String) newText.Taiwanese = localized.Taiwanese;
+            var newText = new LocalizedText
+            {
+                Chinese = localized?.Chinese ?? english,
+                English = english,
+                French = localized?.French ?? english,
+                German = localized?.German ?? english,
+                Italian = localized?.Italian ?? english,
+                Japanese = localized?.Japanese ?? english,
+                Korean = localized?.Korean ?? english,
+                Polish = localized?.Polish ?? english,
+                Russian = localized?.Russian ?? english,
+                Spanish = localized?.Spanish ?? english,
+                Taiwanese = localized?.Taiwanese ?? english
+            };
 
             newText.Update(ApplicationLanguage);
             AddAnonymousText(newText);
