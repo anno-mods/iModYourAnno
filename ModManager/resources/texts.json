@@ -415,6 +415,19 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_LANG_POLISH": {
+    "Chinese": null,
+    "English": "Polish",
+    "French": null,
+    "German": "Polnisch",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "Polski",
+    "Russian": "польский",
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "DLC_SUNKENTREASURES": {
     "Chinese": null,
     "English": "Sunken Treasures",
