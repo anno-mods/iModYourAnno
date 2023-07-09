@@ -8,7 +8,8 @@
             Height="210" Width="350"
             ResizeMode="NoResize"
             WindowStartupLocation="CenterScreen"
-             d:DesignHeight="200" d:DesignWidth="375">
+             d:DesignHeight="200" d:DesignWidth="375"
+        SizeToContent="Height">
     <Grid Background="{DynamicResource BackgroundColorBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

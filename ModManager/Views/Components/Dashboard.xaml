@@ -266,7 +266,9 @@
                     <TextBlock Text="{Binding TextManager[DASHBOARD_LOGIN].Text, UpdateSourceTrigger=PropertyChanged}"
                                Grid.Column="1"
                                VerticalAlignment="Center"
-                               Style="{StaticResource IMYA_TEXT}">
+                               Style="{StaticResource IMYA_TEXT}"
+                               TextWrapping="Wrap"
+                               MaxWidth="110">
 
                     </TextBlock>
 
