@@ -225,9 +225,17 @@ namespace Imya.UI.Components
 
             if (description.StartsWith("file::"))
             {
-                 string descAsPath = Path.Combine(Mod.FullModPath, description.Substring(6));
-                 if(File.Exists(descAsPath))
-                     MarkdownDescription = File.ReadAllText(descAsPath);
+                string descAsPath = Path.Combine(Mod.FullModPath, description.Substring(6));
+                if (File.Exists(descAsPath))
+                {
+                    MarkdownDescription = File.ReadAllText(descAsPath);
+                    // Remove banner image as we have it already
+                    MarkdownDescription = System.Text.RegularExpressions.Regex.Replace(MarkdownDescription, @"!\[[^\]]*\]\(\.\/banner\.(jpg|png)\)", "");
+
+                    // Remove all images
+                    // TODO we should support this eventually?
+                    MarkdownDescription = System.Text.RegularExpressions.Regex.Replace(MarkdownDescription, @"!\[[^\]]*\]\([^\)]+\)", "");
+                }
             }
             else if (description.StartsWith("# "))
                 MarkdownDescription = description;
