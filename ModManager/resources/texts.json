@@ -8,7 +8,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Настройки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -21,7 +21,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Создатель метаданных",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -34,7 +34,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Твики модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -47,7 +47,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Модлоадер",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -60,7 +60,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Библиотека",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -73,7 +73,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Загрузки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -86,7 +86,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выйти",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -99,7 +99,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Войти через Гитхаб",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -112,7 +112,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Вы действительно хотите выйти из аккаунта?",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -125,7 +125,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Ошибка: установка уже запущена",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -138,7 +138,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "У вас есть несохранённые изменения. Сохранить?",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -151,7 +151,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Сохранить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -164,7 +164,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Отменить изменения",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -177,7 +177,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Времена года»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -190,7 +190,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Промышленная зона»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -203,7 +203,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор «Старый город»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -216,7 +216,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка мода",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -229,7 +229,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установленная игра",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -242,7 +242,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Активация модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -255,7 +255,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Запустить Anno 1800",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -268,7 +268,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Панель инструментов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -281,7 +281,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Активировать",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -294,7 +294,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Отключить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -307,7 +307,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Удалить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -320,7 +320,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Загрузить профиль",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -333,7 +333,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Сохоанить профиль",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -346,7 +346,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Описание не предоставлено.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -359,7 +359,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Версия не указана.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -372,7 +372,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Нет категории",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -385,7 +385,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Английский",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -398,7 +398,33 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Немецкий",
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_LANG_RUSSIAN": {
+    "Chinese": null,
+    "English": "Russian",
+    "French": null,
+    "German": "Russisch",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": null,
+    "Russian": "Русский",
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_LANG_POLISH": {
+    "Chinese": null,
+    "English": "Polish",
+    "French": null,
+    "German": "Polnisch",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "Polski",
+    "Russian": "польский",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -411,7 +437,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Затонувшее сокровище",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -424,7 +450,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Ботаника",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -437,7 +463,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Во льдах",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -450,7 +476,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Величие Власти",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -463,7 +489,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Новый урожай",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -476,7 +502,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Земля львов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -489,7 +515,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Доки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -502,7 +528,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Сезон туризма",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -515,7 +541,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Новые высоты",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -528,7 +554,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Праздник»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -541,7 +567,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Парк развлечений»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -554,7 +580,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Огни города»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -567,7 +593,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор «Ливреи для транспорта»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -580,7 +606,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор «Пешеходная зона»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -593,7 +619,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор «Шумный город»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -606,7 +632,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Анархист",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -619,7 +645,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Ростки перемен",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -632,7 +658,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Воздушная империя",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -645,7 +671,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Расцвет нового мира",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -658,7 +684,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Фиеста»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -671,7 +697,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Набор: «Сад дракона»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -684,7 +710,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Версия {0} от {1}",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -697,7 +723,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "ID мода (Разр.): {0}",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -710,7 +736,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Описание",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -723,7 +749,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Известные проблемы",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -736,7 +762,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод изменяет или добавляет контент DLC",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -749,7 +775,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": " от ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -762,7 +788,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Директория: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -775,7 +801,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Размер: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -788,7 +814,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": " МБ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -801,7 +827,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Введите для поиска ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -814,7 +840,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Язык: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -827,7 +853,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Показать консоль: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -840,7 +866,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Путь к игре: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -853,7 +879,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Режим создателя модов: ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -866,7 +892,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Проявление",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -879,7 +905,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Новое ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -892,7 +918,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Сохранить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -905,7 +931,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Загрузить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -918,7 +944,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Не найдено настраиваемых файлов.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -931,7 +957,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Темный/Голубой",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -944,7 +970,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Темный/Зелёный",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -957,7 +983,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Светлый",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -970,7 +996,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Темный/Фиолетовый",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -983,7 +1009,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Имя каталога мода:",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -996,7 +1022,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Модлоадер",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1009,7 +1035,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1022,7 +1048,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "не установлен",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1035,7 +1061,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "установлен",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1048,7 +1074,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "установка...",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1061,7 +1087,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Автоматические обновления Модлоадера",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1074,7 +1100,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Настройте автообновление модов при установке, если это возможно",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1087,7 +1113,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выбрать из Zip-архива...",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1100,7 +1126,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выбрать из Github...",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1113,7 +1139,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Нет категории",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1126,7 +1152,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Устаревшие файлы будут удалены при обновлении.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1139,7 +1165,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Профиль с таким именем уже существует.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1152,7 +1178,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выберите...",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1165,7 +1191,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Недопустимое имя профиля.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1178,7 +1204,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Принять",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1191,7 +1217,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Отмена",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1204,7 +1230,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выберите профиль для загрузки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1217,20 +1243,20 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Сохранить профиль",
     "Spanish": null,
     "Taiwanese": null
   },
   "ACTIVATION_HEADER_FORMATTED": {
     "Chinese": null,
-    "English": "Active Mods: {0} ({1} MB), Installed: {2} ({3} MB)",
+    "English": " Mods: Active{0} ({1} MB), Installed: {2} ({3} MB)",
     "French": null,
     "German": "Aktivierte Mods: {0} ({1} MB), Installiert: {2} ({3} MB)",
     "Italian": null,
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Моды: Активно {0} ({1} МБ), Установлено: {2} ({3} МБ)",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1243,7 +1269,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Разрешить старым версиям перезаписывать новые",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1256,7 +1282,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Инициализация установки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1269,7 +1295,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Распаковка файлов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1282,7 +1308,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Скачивание...",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1296,7 +1322,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1309,7 +1335,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка модлоадера",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1322,7 +1348,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Перемещение модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1335,7 +1361,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка модов с Github",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1348,7 +1374,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1361,7 +1387,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод требует другой отсутствующий мод, который не установлен и не активирован, но от которого зависит нормальная работа основного мода. \n\nОтсутствующие зависимости:\n - {0}",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1374,7 +1400,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "У вас нет следующего загружаемого контента, от которого зависит этот мод:\n- {0} \n\nЭто может повлиять на вашу игру.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1387,7 +1413,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "мод был обновлен при последней установке.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1400,7 +1426,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Вы будете отправлены на Github. Войдите в учётную запись через свой веб-браузер. Пожалуйста, введите свой код аутентификации там. Никому не сообщайте свой код!",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1413,7 +1439,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод имеет одну или несколько проблем совместимости с другими установленными модами. Чтобы решить эту проблему, деактивируйте этот мод или все моды, вызывающие проблему совместимости. \n\nПроблемы совместимости:\n - {0}",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1426,7 +1452,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Циклическая зависимость в порядке загрузки с: {0}. Это может вызвать проблемы в игре!",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1439,7 +1465,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Этот мод устарел.\nОн был заменён '{0}'.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1452,7 +1478,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод был признан нерабочим во время установки. Это может быть связано с дублированием идентификатора мода или поврежденной файловой структуры. Желательно удалить мод и установить его заново. Если это по-прежнему вызовет проблемы, свяжитесь с автором мода.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1465,7 +1491,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод был добавлен в предыдущей установке",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1478,7 +1504,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод был изменен и преднастроен в Mod Tweaker.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1491,7 +1517,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "У мода не найден файл modinfo.json. Поэтому отсутствуют метаданные о совместимости, зависимостях, описании и известных проблемах.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1504,7 +1530,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Неправильная установка. Мод находится в подпапке. Пожалуйста, установите в саму папку модов.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1517,7 +1543,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Указывает, что мод был обновлен при недавней установке.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1530,7 +1556,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Указывает, что мод был добавлен в недавней установке.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1543,7 +1569,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод был признан нерабочим во время установки. Это может быть связано с дублированием идентификатора мода или поврежденной файловой структурой. Желательно удалить мод и установить его заново. Если это по-прежнему вызовет проблемы, свяжитесь с автором мода.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1556,7 +1582,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод был изменен и преднастроен в Mod Tweaker.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1569,7 +1595,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "У мода не найден файл modinfo.json. Поэтому отсутствуют метаданные о совместимости, зависимостях, описании и известных проблемах.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1582,7 +1608,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "ФФФФФФФФФФ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1595,7 +1621,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Мод имеет одну или несколько проблем совместимости с другими установленными модами. Чтобы решить эту проблему, деактивируйте этот мод или все моды, вызывающие проблему совместимости.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1608,7 +1634,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "У вас есть неразрешённые зависимости и/или несовместимости модов. ВНИМАНИЕ: Это может привести к критическим ошибкам в игре!!! \n\n Всё равно продолжить?",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1621,7 +1647,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "ВКЛ",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1634,7 +1660,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "выкл",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1647,7 +1673,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "показать",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1660,7 +1686,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Добавить в «Загрузки»",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1673,7 +1699,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Посмотреть на Гитхабе",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1686,7 +1712,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Уже скачали мод?",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1699,7 +1725,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Выберите Архив для установки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1712,7 +1738,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "В ожидании ({0})",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1725,7 +1751,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Запущено ({0})",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1738,7 +1764,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Установка и скачивание",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1751,7 +1777,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Неограничено",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1764,7 +1790,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Ограничение",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1777,7 +1803,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Скорость скачивания",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1790,7 +1816,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Порядок сортировки модов",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1803,7 +1829,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Активные > Категория > Имя",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1816,7 +1842,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Категория > Имя",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1829,7 +1855,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "По имени папки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1842,7 +1868,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "По порядку загрузки",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1855,7 +1881,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "В настоящее время установки не выполняются",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1868,7 +1894,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Удалить из очереди",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1881,7 +1907,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Пауза/Возобновить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1894,7 +1920,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Вы превысили ограничение в час (это установлено GitHub). Чтобы снова получить доступ, вы можете авторизоваться.",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1907,7 +1933,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Похоже, у вас установлен устаревший загрузчик модов сообщества, который больше не нужен после 17-го обновления игры. Вы хотите его удалить?",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1920,7 +1946,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Да, удалить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1933,7 +1959,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Оставить",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1946,7 +1972,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Свернуть все встроенные моды",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1959,7 +1985,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Развернуть все встроенные моды",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1972,7 +1998,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "Встроенные моды",
     "Spanish": null,
     "Taiwanese": null
   },
@@ -1985,7 +2011,7 @@
     "Japanese": null,
     "Korean": null,
     "Polish": null,
-    "Russian": null,
+    "Russian": "скрыть",
     "Spanish": null,
     "Taiwanese": null
   }
