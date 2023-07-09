@@ -1000,6 +1000,32 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "THEME_BLUEYELLOW": {
+    "Chinese": null,
+    "English": "Cobalt/Yellow",
+    "French": null,
+    "German": "Kobalt/Gelb",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "kobaltowy/żółty",
+    "Russian": "кобальт/желтый",
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "THEME_BLUECYAN": {
+    "Chinese": null,
+    "English": "Cobalt/Cyan",
+    "French": null,
+    "German": "Kobalt/Cyan",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "kobaltowy/Czarny",
+    "Russian": "кобальт/циан",
+    "Spanish": null,
+    "Taiwanese": null
+  },
   "DEV_SETTING_MODDIRECTORYNAME": {
     "Chinese": null,
     "English": "Mod Directory Name:",
@@ -2010,7 +2036,7 @@
     "Italian": null,
     "Japanese": null,
     "Korean": null,
-    "Polish": "ukryj",  
+    "Polish": "ukryj",
     "Russian": "скрыть",
     "Spanish": null,
     "Taiwanese": null
