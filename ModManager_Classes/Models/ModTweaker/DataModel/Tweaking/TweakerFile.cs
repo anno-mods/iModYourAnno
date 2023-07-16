@@ -25,6 +25,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
         public static readonly string ENUM_ENTRY = "Value";
         public static readonly string ALT_TOGGLE_VAL = "AltValue";
         public static readonly string INVERTED = "Invert";
+        public static readonly string INITSTATE = "InitState";
 
         public static readonly string PATH = "Path";
         public static readonly string TYPE = "Type";

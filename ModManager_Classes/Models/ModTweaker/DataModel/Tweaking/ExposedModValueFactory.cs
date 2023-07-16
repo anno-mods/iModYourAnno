@@ -114,6 +114,9 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                     Expose.TryGetAttribute(TweakerConstants.INVERTED, out var invert);
                     bool IsInverted = invert?.Equals("True") ?? false;
 
+                    Expose.TryGetAttribute(TweakerConstants.INITSTATE, out var initState);
+                    bool isInitializedTrue = initState?.Equals("True") ?? false;
+
                     var val = new ExposedToggleModValue()
                     {
                         Path = Path!,
@@ -127,6 +130,7 @@ namespace Imya.Models.ModTweaker.DataModel.Tweaking
                         IsInverted = IsInverted,
                         ExposedModValueType = ExposedModValueType.SkipToggle
                     };
+                    val.IsTrue = isInitializedTrue; 
                     return val;
                 }
                 return new ExposedModValue()
