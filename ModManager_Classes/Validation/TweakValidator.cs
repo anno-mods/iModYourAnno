@@ -39,7 +39,7 @@ namespace Imya.Validation
             if (changedAction == NotifyCollectionChangedAction.Reset
                 || changedAction == NotifyCollectionChangedAction.Add)
             {
-                foreach (var mod in changed)
+                foreach (var mod in all)
                 {
                     UpdateWithTweak(mod);
                 }
@@ -50,8 +50,9 @@ namespace Imya.Validation
         private void UpdateWithTweak(Mod mod)
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
+            
             if (!_tweakRepository.IsStored(mod.FolderName))
-                return;
+               return;
 
             // TODO double access is unprotected
             // TODO all validation should be offloaded to async, not tweaks individually
