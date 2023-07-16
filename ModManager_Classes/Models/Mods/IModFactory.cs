@@ -8,6 +8,6 @@ namespace Imya.Models.Mods
 {
     public interface IModFactory
     {
-        Mod? GetFromFolder(string modFolderPath);
+        Mod? GetFromFolder(string modFolderPath, bool loadImages = false);
     }
 }

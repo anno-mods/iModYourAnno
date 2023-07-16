@@ -160,28 +160,13 @@ namespace Imya.Models.Mods
 
         private async Task<List<Mod>> LoadModsAsync(IEnumerable<string> folders, bool invokeEvents = true)
         {
-            var mods = folders.SelectNoNull(x => _modFactory.GetFromFolder(x)).ToList();
+            var mods = folders.SelectNoNull(x => _modFactory.GetFromFolder(x, loadImages: true)).ToList();
             if (Normalize)
             {
                 foreach (var mod in mods)
                     await mod.NormalizeAsync();
             }
-            if (LoadImages)
-            {
-                foreach (var mod in mods)
-                {
-                    // TODO async and move into class Mod
-                    var imagepath = Path.Combine(mod.FullModPath, "banner.jpg");
-                    if (File.Exists(imagepath))
-                        mod.InitImageAsFilepath(Path.Combine(imagepath));
-                    else
-                    {
-                        imagepath = Path.Combine(mod.FullModPath, "banner.png");
-                        if (File.Exists(imagepath))
-                            mod.InitImageAsFilepath(Path.Combine(imagepath));
-                    }
-                }
-            }
+
             if (invokeEvents)
             {
                 CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, mods));
