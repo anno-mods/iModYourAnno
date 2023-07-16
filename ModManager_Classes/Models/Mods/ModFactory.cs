@@ -14,8 +14,8 @@ namespace Imya.Models.Mods
     public class ModFactory : IModFactory
     {
         private readonly IMissingModinfoAttributeFactory _missingModinfoAttributeFactory;
-        private readonly LocalizedModinfoFactory _localizedModinfoFactory; 
-
+        private readonly LocalizedModinfoFactory _localizedModinfoFactory;
+        
         public ModFactory(
             IMissingModinfoAttributeFactory missingModinfoAttributeFactory,
             LocalizedModinfoFactory localizedModinfoFactory)
@@ -24,7 +24,7 @@ namespace Imya.Models.Mods
             _localizedModinfoFactory = localizedModinfoFactory;
         }
 
-        public Mod? GetFromFolder(string modFolderPath)
+        public Mod? GetFromFolder(string modFolderPath, bool loadImages = false)
         { 
             var basePath = Path.GetDirectoryName(modFolderPath); 
             if (basePath is null || !Directory.Exists(modFolderPath)) 
@@ -50,6 +50,20 @@ namespace Imya.Models.Mods
                 mod.Attributes.AddAttribute(_missingModinfoAttributeFactory.Get());
 
             string[] modinfos = Directory.GetFiles(Path.Combine(basePath, folder), "modinfo.json", SearchOption.AllDirectories);
+
+            if (loadImages)
+            {
+                var imagepath = Path.Combine(mod.FullModPath, "banner.jpg");
+                if (File.Exists(imagepath))
+                    mod.InitImageAsFilepath(Path.Combine(imagepath));
+                else
+                {
+                    imagepath = Path.Combine(mod.FullModPath, "banner.png");
+                    if (File.Exists(imagepath))
+                        mod.InitImageAsFilepath(Path.Combine(imagepath));
+                }
+            }
+
             if (modinfos.Length > 1)
             {
                 foreach (var submodinfo in modinfos)
@@ -59,13 +73,14 @@ namespace Imya.Models.Mods
                         continue;
                     }
 
-                    Mod? submod = GetFromFolder(Path.GetDirectoryName(submodinfo) ?? "");
+                    Mod? submod = GetFromFolder(Path.GetDirectoryName(submodinfo) ?? "", loadImages: true);
                     if (submod is not null)
                     {
                         mod.SubMods.Add(submod);
                     }
                 }
             }
+
 
             return mod; 
         }

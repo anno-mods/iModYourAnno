@@ -169,7 +169,7 @@ namespace Imya.UI
             gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
             var factory = AppHost.Services.GetRequiredService<IModCollectionFactory>();
-            var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true, loadImages: true);
+            var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true);
             var imyaSetup = AppHost.Services.GetRequiredService<IImyaSetupService>();
             imyaSetup.GlobalModCollection = collection;
 
