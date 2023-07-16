@@ -374,14 +374,15 @@
                     <StackPanel Orientation="Vertical"
                                 HorizontalAlignment="Center">
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="DLC Ownership"
+                                   Text="{Binding TextManager[SETTINGS_DLCOWNERSHIP].Text, UpdateSourceTrigger=PropertyChanged}"
                                    FontWeight="Bold"
                                    Margin="0,3"
                                    HorizontalAlignment="Center" />
                         <TextBlock Style="{StaticResource IMYA_TEXT}"
-                                   Text="Enable the DLCs you own and iMYA will inform you about missing Requirements."
+                                   Text="{Binding TextManager[SETTINGS_DLCDESCRIPTION].Text, UpdateSourceTrigger=PropertyChanged}"
                                    Margin="0,3"
                                    FontWeight="Light"
+                                   TextWrapping="Wrap"
                                    HorizontalAlignment="Center" />
                     </StackPanel>
                     <ScrollViewer VerticalScrollBarVisibility="Visible"
@@ -408,6 +409,7 @@
                                                    Style="{StaticResource IMYA_TEXT}"
                                                    Grid.Column="1"
                                                    Margin="5,0,0,0"
+                                                   TextWrapping="Wrap"
                                                    VerticalAlignment="Center" />
                                         <!-- Todo make a better width computation -->
                                         <CheckBox Style="{StaticResource IMYA_TOGGLESWITCH}"

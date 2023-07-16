@@ -2040,5 +2040,31 @@
     "Russian": "скрыть",
     "Spanish": null,
     "Taiwanese": null
+  },
+  "SETTINGS_DLCOWNERSHIP": {
+    "Chinese": null,
+    "English": "DLC Ownership",
+    "French": null,
+    "German": "DLC im Besitz",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "Własność DLC",
+    "Russian": "Владение DLC",
+    "Spanish": null,
+    "Taiwanese": null
+  },
+  "SETTINGS_DLCDESCRIPTION": {
+    "Chinese": null,
+    "English": "Enable the DLCs you own and iMYA will inform you about missing Requirements.",
+    "French": null,
+    "German": "Trage hier ein, welche DLC's Du besitzt, und iMYA informiert über fehlende DLC's.",
+    "Italian": null,
+    "Japanese": null,
+    "Korean": null,
+    "Polish": "Włącz DLC, które posiadasz, a iMYA poinformuje Cię o brakujących Wymaganiach.",
+    "Russian": "Включите DLC, которыми вы владеете, и iMYA сообщит вам об отсутствующих требованиях.",
+    "Spanish": null,
+    "Taiwanese": null
   }
 }
