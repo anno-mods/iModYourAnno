@@ -27,7 +27,6 @@ namespace Imya.Models.Mods
         {
             var collection = new ModCollection(
                 _serviceProvider.GetRequiredService<IGameSetupService>(),
-                _serviceProvider.GetRequiredService<ModCollectionHooks>(),
                 _serviceProvider.GetRequiredService<IModFactory>(),
                 _serviceProvider.GetRequiredService<IModStatusAttributeFactory>(),
                 _serviceProvider.GetRequiredService<IModAccessIssueAttributeFactory>(),
@@ -38,6 +37,7 @@ namespace Imya.Models.Mods
                 LoadImages = loadImages,
                 AutofixSubfolder = autofixSubfolder
             };
+
             return collection;
         }
     }

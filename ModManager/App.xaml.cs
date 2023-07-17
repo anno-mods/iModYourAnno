@@ -177,16 +177,18 @@ namespace Imya.UI
             var textManager = AppHost.Services.GetRequiredService<ITextManager>();
             textManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
             //check if this can be moved to OnStartup
-            var globalMods = AppHost.Services.GetRequiredService<IImyaSetupService>().GlobalModCollection;
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModContentValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModCompatibilityValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<CyclicDependencyValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModDependencyValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<ModReplacementValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
-            globalMods.Hooks.AddHook(AppHost.Services.GetRequiredService<DlcOwnershipValidator>());
-            globalMods.Hooks.HookTo(AppHost.Services.GetRequiredService<IAppSettings>());
+            var globalMods = imyaSetup.GlobalModCollection;
+            var hooks = AppHost.Services.GetRequiredService<ModCollectionHooks>();
+            hooks.HookTo(globalMods);
+            hooks.AddHook(AppHost.Services.GetRequiredService<ModContentValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<ModCompatibilityValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<CyclicDependencyValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<ModDependencyValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<ModReplacementValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<RemovedModValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
+            hooks.AddHook(AppHost.Services.GetRequiredService<DlcOwnershipValidator>());
+            hooks.HookTo(AppHost.Services.GetRequiredService<IAppSettings>());
         }
 
         protected override async void OnStartup(StartupEventArgs e)

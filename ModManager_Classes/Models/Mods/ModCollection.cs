@@ -61,8 +61,6 @@ namespace Imya.Models.Mods
         private IModAccessIssueAttributeFactory _modAccessIssueAttributeFactory;
         private IRemovedFolderAttributeFactory _removedFolderAttributeFactory;
 
-        public ModCollectionHooks Hooks { get; }
-
         /// <summary>
         /// This constructor is internal. 
         /// To create a ModCollection, use <see cref="ModCollectionFactory"/>
@@ -73,7 +71,6 @@ namespace Imya.Models.Mods
         /// <param name="autofixSubfolder">find data/ in subfolder and move up</param>
         internal ModCollection(
             IGameSetupService gameSetupService, 
-            ModCollectionHooks hooks, 
             IModFactory modFactory,
             IModStatusAttributeFactory modStatusAttributeFactory,
             IModAccessIssueAttributeFactory modAccessIssueAttributeFactory,
@@ -89,9 +86,6 @@ namespace Imya.Models.Mods
             Normalize = false;
             LoadImages = false;
             AutofixSubfolder = false;
-
-            Hooks = hooks;
-            Hooks.HookTo(this);
         }
 
         /// <summary>
@@ -244,7 +238,6 @@ namespace Imya.Models.Mods
             if (!allowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
             {
                 Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
-                return;
             }
 
             // do it!
