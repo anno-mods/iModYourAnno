@@ -163,10 +163,13 @@ namespace Imya.UI
                 })
                 .Build();
 
+            var textManager = AppHost.Services.GetRequiredService<ITextManager>();
+            textManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
 
             var gameSetup = AppHost.Services.GetRequiredService<IGameSetupService>();
-            gameSetup.SetGamePath(Settings.Default.GameRootPath, true);
-            gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
+            var settings = AppHost.Services.GetRequiredService<IAppSettings>();
+            settings.GamePath = Settings.Default.GameRootPath;
+            settings.ModDirectoryName = Settings.Default.ModDirectoryName; 
 
             var factory = AppHost.Services.GetRequiredService<IModCollectionFactory>();
             var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true);
@@ -174,8 +177,6 @@ namespace Imya.UI
             imyaSetup.GlobalModCollection = collection;
 
             //subscribe the global mod collection to the gamesetup
-            var textManager = AppHost.Services.GetRequiredService<ITextManager>();
-            textManager.LoadLanguageFile(Settings.Default.LanguageFilePath);
             //check if this can be moved to OnStartup
             var globalMods = imyaSetup.GlobalModCollection;
             var hooks = AppHost.Services.GetRequiredService<ModCollectionHooks>();
