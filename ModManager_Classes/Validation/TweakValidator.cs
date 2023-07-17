@@ -39,7 +39,7 @@ namespace Imya.Validation
             if (changedAction == NotifyCollectionChangedAction.Reset
                 || changedAction == NotifyCollectionChangedAction.Add)
             {
-                foreach (var mod in all)
+                foreach (var mod in changed)
                 {
                     UpdateWithTweak(mod);
                 }
