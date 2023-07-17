@@ -51,8 +51,8 @@ namespace Imya.Validation
         {
             mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
             
-            if (!_tweakRepository.IsStored(mod.FolderName))
-               return;
+            //if (!_tweakRepository.IsStored(mod.FolderName))
+               //return;
 
             // TODO double access is unprotected
             // TODO all validation should be offloaded to async, not tweaks individually
