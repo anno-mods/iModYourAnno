@@ -33,10 +33,11 @@ namespace Imya.Models.Installation
         public ZipInstallationBuilder(
             IGameSetupService gameSetupService,
             IImyaSetupService imyaSetupService, 
-            ITextManager _textManager)
+            ITextManager textManager)
         {
             _gameSetupService = gameSetupService;
             _imyaSetupService = imyaSetupService;
+            _textManager = textManager;
         }
 
         public ZipInstallationBuilder WithSource(String source_path) 
