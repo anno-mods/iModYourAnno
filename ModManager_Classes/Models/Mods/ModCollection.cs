@@ -238,6 +238,7 @@ namespace Imya.Models.Mods
             if (!allowOldToOverwrite && !sourceMod.IsUpdateOf(targetMod))
             {
                 Console.WriteLine($"Skip update of {sourceMod.FolderName}. Source version: {sourceMod.Modinfo.Version}, target version: {targetMod?.Modinfo.Version}");
+                return;
             }
 
             // do it!
