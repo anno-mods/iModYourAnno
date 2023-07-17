@@ -105,7 +105,7 @@ namespace Imya.UI.Views
         private async void OkayButtonClick(object sender, RoutedEventArgs e)
         {
             SelectedRepo = RepoSelection.SelectedItem as GithubRepoInfo;
-            if (SelectedRepo is null || InstallationView.Instance is null)
+            if (SelectedRepo is null)
                 return;
 
             try
