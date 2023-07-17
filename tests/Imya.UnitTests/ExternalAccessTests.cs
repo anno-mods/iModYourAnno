@@ -60,7 +60,9 @@ namespace Imya.UnitTests
             Directory.CreateDirectory(folder);
             var mods = _collectionFactory.Get($@"{test}\mods");
             await mods.LoadModsAsync();
-            mods.Hooks.AddHook(serviceProvider.GetRequiredService<RemovedModValidator>());
+            var hooks = new ModCollectionHooks();
+            hooks.HookTo(mods);
+            hooks.AddHook(serviceProvider.GetRequiredService<RemovedModValidator>());
 
             // check
             Assert.Single(mods);
@@ -111,7 +113,9 @@ namespace Imya.UnitTests
             modA.IsRemoved = true;
 
             // trigger validation by deleting mod3
-            mods.Hooks.AddHook(serviceProvider.GetRequiredService<ModDependencyValidator>());
+            var hooks = new ModCollectionHooks();
+            hooks.HookTo(mods);
+            hooks.AddHook(serviceProvider.GetRequiredService<ModDependencyValidator>());
             await mods.DeleteAsync(mods.Mods.Where(x => x.ModID == "[a] mod C").ToArray());
 
             Assert.Equal(2, mods.Count);
