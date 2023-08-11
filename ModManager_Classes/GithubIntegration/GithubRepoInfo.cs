@@ -15,6 +15,10 @@ namespace Imya.GithubIntegration
         public String Owner { get; init; }
         public String ReleaseID { get; init; }
 
+        public string? CreatorName { get; init; }
+        public string? ModName { get; init; }
+        public string? Readme { get; init; }
+
         public GithubRepoInfo(string name, string owner, string releaseid)
         {
             Name = name;

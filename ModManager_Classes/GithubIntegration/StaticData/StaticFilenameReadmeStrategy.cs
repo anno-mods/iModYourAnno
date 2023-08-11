@@ -39,7 +39,7 @@ namespace Imya.GithubIntegration.StaticData
 
         private async Task<String> ReadmeFunc(GithubRepoInfo repoInfo)
         {
-            var readme = await _client.Repository.Content.GetAllContents(repoInfo.Owner, repoInfo.Name, _desiredFilename);
+            var readme = await _client.Repository.Content.GetAllContents(repoInfo.Owner, repoInfo.Name, repoInfo.Readme ?? _desiredFilename);
             var content = readme.FirstOrDefault();
             if (content is null) return String.Empty;
             return content!.Content;
