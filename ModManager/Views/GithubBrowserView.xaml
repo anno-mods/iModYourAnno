@@ -95,31 +95,17 @@
                 <DataTemplate>
                     <Grid Margin="8">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Owner}"
-                                       Style="{StaticResource IMYA_TEXT}"
-                                       FontWeight="Bold"></TextBlock>
-                            <TextBlock Text="{Binding Name}"
-                                       Style="{StaticResource IMYA_TEXT}"
-                                       Padding="5,0"></TextBlock>
-                            
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    VerticalAlignment="Center"
-                                    Grid.Column="2">
-                            <Rectangle Width="2"
-                                       Fill="{DynamicResource ComponentColorBrush_Inactive}"
-                                       Margin="10,0,10,0" />
-                            <TextBlock Text="{Binding ReleaseID}"
-                                       Style="{StaticResource IMYA_TEXT}"
-                                       HorizontalAlignment="Left"
-                                       FontWeight="ExtraLight"></TextBlock>
-                        </StackPanel>
-
+                        <TextBlock Text="{Binding DisplayName}"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   FontWeight="Bold" />
+                        <TextBlock Text="{Binding DisplayCreator}"
+                                   HorizontalAlignment="Right"
+                                   Style="{StaticResource IMYA_TEXT}"
+                                   Padding="5,0"
+                                   Grid.Column="1" />
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
