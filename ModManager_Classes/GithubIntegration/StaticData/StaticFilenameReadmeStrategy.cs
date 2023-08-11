@@ -1,7 +1,6 @@
 ﻿using Imya.Models.Cache;
-using Imya.Utils;
-using Microsoft.Extensions.Caching.Memory;
 using Octokit;
+using System.Text.RegularExpressions;
 
 namespace Imya.GithubIntegration.StaticData
 {
@@ -42,7 +41,15 @@ namespace Imya.GithubIntegration.StaticData
             var readme = await _client.Repository.Content.GetAllContents(repoInfo.Owner, repoInfo.Name, repoInfo.Readme ?? _desiredFilename);
             var content = readme.FirstOrDefault();
             if (content is null) return String.Empty;
-            return content!.Content;
+
+            // make image urls absolute
+            var text = content.Content;
+            var folderUrl = new Uri(content.DownloadUrl);
+            text = Regex.Replace(text, @"\!\[([^\]]*)\]\(([^\)]+)\)", m =>
+            {
+                return $@"![{m.Groups[1].Value}]({new Uri(folderUrl, m.Groups[2].Value)})";
+            });
+            return text;
         }
     }
 }

@@ -239,16 +239,23 @@ namespace Imya.UI.Views
         }
 
         #region hacky_image_size_correction
-        private async void DescriptionFlowViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void DescriptionFlowViewer_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //rerender the flow document cuz images 
-            await Application.Current.Dispatcher.BeginInvoke(
-                () =>
-                {
-                    if (DescriptionFlowViewer.Document is null)
-                        return;
-                    DescriptionFlowViewer.Document.PageWidth = DescriptionFlowViewer.Document.PageWidth;
-                });
+            if (sender is FlowDocumentScrollViewer viewer)
+            {
+                double width = viewer.ActualWidth;
+                //rerender the flow document cuz images 
+                Application.Current.Dispatcher.Invoke(
+                    () =>
+                    {
+                        if (DescriptionFlowViewer.Document is null)
+                            return;
+
+                        DescriptionFlowViewer.Document.PageWidth = width;
+                        // image width is set in style, abuse MinPageWidth to inform about the 30px padding
+                        DescriptionFlowViewer.Document.MinPageWidth = width - 30;
+                    });
+            }
         }
         #endregion
 
