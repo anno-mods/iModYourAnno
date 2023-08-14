@@ -15,10 +15,13 @@ namespace Imya.GithubIntegration.JsonData
         {
             public struct RepoIndexEntry
             {
-                public string? name;
+                //public string? name; // unused and not defined
                 public string? repo;
                 public string? owner;
                 public string? id;
+                public string? creatorName;
+                public string? modName;
+                public string? readme;
 
                 // optional
                 public string? download;
@@ -63,7 +66,12 @@ namespace Imya.GithubIntegration.JsonData
 
             // TODO static is hardcoded now, but shouldn't as soon as we support the others
             var packages = index.packages.Where(x => x.repo is not null && x.owner is not null && x.download is not null);
-            repositories = packages.Select(x => new GithubRepoInfo(x.repo!, x.owner!, x.download!));
+            repositories = packages.Select(x => new GithubRepoInfo(x.repo!, x.owner!, x.download!)
+            {
+                CreatorName = x.creatorName,
+                ModName = x.modName,
+                Readme = x.readme,
+            });
             return true;
         }
 

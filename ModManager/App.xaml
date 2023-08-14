@@ -41,6 +41,8 @@
                 <Setter Property="Foreground"
                         Value="{DynamicResource TextColorBrush}">
                 </Setter>
+                <Setter Property="PagePadding"
+                        Value="15" />
             </Style>
 
             <Style x:Key="H1Style"
@@ -95,7 +97,7 @@
                         Value="UniformToFill">
                 </Setter>
                 <Setter Property="MaxWidth"
-                        Value="{Binding ElementName=DescriptionFlowViewer, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"></Setter>
+                        Value="{Binding ElementName=DescriptionFlowViewer, Path=Document.MinPageWidth, UpdateSourceTrigger=PropertyChanged}" />
                 <Style.Triggers>
                     <Trigger Property="Tag"
                              Value="imageright">
