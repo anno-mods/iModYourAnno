@@ -1,6 +1,6 @@
 {
   "DASHBOARD_SETTINGS": {
-    "Chinese": null,
+    "Chinese": "设置",
     "English": "Settings",
     "French": null,
     "German": "Einstellungen",
@@ -13,7 +13,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_METADATA": {
-    "Chinese": null,
+    "Chinese": "数据创建者",
     "English": "Metadata Creator",
     "French": null,
     "German": "Metadaten-Erstellung",
@@ -26,7 +26,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_MOD_TWEAKING": {
-    "Chinese": null,
+    "Chinese": "调整",
     "English": "Tweaking",
     "French": null,
     "German": "Mods verändern",
@@ -39,7 +39,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_MODLOADER": {
-    "Chinese": null,
+    "Chinese": "",
     "English": "Modloader",
     "French": null,
     "German": "Modloader",
@@ -52,7 +52,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_MODBROWSER": {
-    "Chinese": null,
+    "Chinese": "Mod库",
     "English": "Library",
     "French": null,
     "German": "Bibliothek",
@@ -65,7 +65,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_DOWNLOAD": {
-    "Chinese": null,
+    "Chinese": "下载",
     "English": "Downloads",
     "French": null,
     "German": "Downloads",
@@ -78,7 +78,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_LOGOUT": {
-    "Chinese": null,
+    "Chinese": "退出登录",
     "English": "Logout",
     "French": null,
     "German": "Ausloggen",
@@ -91,7 +91,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_LOGIN": {
-    "Chinese": null,
+    "Chinese": "登录 Github",
     "English": "Login with Github",
     "French": null,
     "German": "Mit Github einloggen",
@@ -104,7 +104,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_LOGOUTCONFIRMATION": {
-    "Chinese": null,
+    "Chinese": "你确定要退出登录吗？",
     "English": "Are you sure you want to log out?",
     "French": null,
     "German": "Bist Du Sicher, dass Du dich ausloggen möchtest?",
@@ -117,7 +117,7 @@
     "Taiwanese": null
   },
   "POPUP_INSTALLATION_ALREADY_RUNNING": {
-    "Chinese": null,
+    "Chinese": "警告：已在运行安装",
     "English": "Error: Installation is already running",
     "French": null,
     "German": "Fehler: Installation wird bereits ausgeführt",
@@ -130,7 +130,7 @@
     "Taiwanese": null
   },
   "TWEAK_UNSAVED_CHANGES": {
-    "Chinese": null,
+    "Chinese": "您有未保存的更改，现在保存？",
     "English": "You have unsaved changes. Save now?",
     "French": null,
     "German": "Du hast ungespeicherte Änderungen. Jetzt speichern?",
@@ -143,7 +143,7 @@
     "Taiwanese": null
   },
   "TWEAK_SAVE": {
-    "Chinese": null,
+    "Chinese": "保存",
     "English": "Save",
     "French": null,
     "German": "Speichern",
@@ -156,7 +156,7 @@
     "Taiwanese": null
   },
   "TWEAK_DISCARD": {
-    "Chinese": null,
+    "Chinese": "取消修改",
     "English": "Discard Changes",
     "French": null,
     "German": "Änderungen verwerfen",
@@ -169,7 +169,7 @@
     "Taiwanese": null
   },
   "DLC_SEASONALDECORATIONS": {
-    "Chinese": null,
+    "Chinese": "季节装饰包",
     "English": "Seasonal Pack",
     "French": null,
     "German": "Jahreszeiten-Paket",
@@ -182,7 +182,7 @@
     "Taiwanese": null
   },
   "DLC_INDUSTRYORNAMENTS": {
-    "Chinese": null,
+    "Chinese": "工业装饰包",
     "English": "Industrial Pack",
     "French": null,
     "German": "Industrie-Paket",
@@ -195,7 +195,7 @@
     "Taiwanese": null
   },
   "DLC_OLDTOWN": {
-    "Chinese": null,
+    "Chinese": "老城装饰包",
     "English": "Old Town Pack",
     "French": null,
     "German": "Old-Town Paket",
@@ -208,7 +208,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_MOD_INSTALLATION": {
-    "Chinese": null,
+    "Chinese": "安装Mod",
     "English": "Mod Installation",
     "French": null,
     "German": "Mods installieren",
@@ -221,7 +221,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_GAME_SETUP": {
-    "Chinese": null,
+    "Chinese": "游戏设置",
     "English": "Game Setup",
     "French": null,
     "German": "Spielverzeichnis-Setup",
@@ -234,7 +234,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_MOD_ACTIVATION": {
-    "Chinese": null,
+    "Chinese": "我的Mod",
     "English": "Mod Activation",
     "French": null,
     "German": "Mods aktivieren",
@@ -247,7 +247,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_PLAY": {
-    "Chinese": null,
+    "Chinese": "启动 纪元1800",
     "English": "Start Anno 1800",
     "French": null,
     "German": "Anno 1800 starten",
@@ -260,7 +260,7 @@
     "Taiwanese": null
   },
   "DASHBOARD_DASHBOARD": {
-    "Chinese": null,
+    "Chinese": "控制面板",
     "English": "Dashboard",
     "French": null,
     "German": "Startseite",
@@ -273,7 +273,7 @@
     "Taiwanese": null
   },
   "MODLIST_ACTIVATE": {
-    "Chinese": null,
+    "Chinese": "启用",
     "English": "Activate",
     "French": null,
     "German": "Aktivieren",
@@ -286,7 +286,7 @@
     "Taiwanese": null
   },
   "MODLIST_DEACTIVATE": {
-    "Chinese": null,
+    "Chinese": "停用",
     "English": "Deactivate",
     "French": null,
     "German": "Deaktivieren",
@@ -299,7 +299,7 @@
     "Taiwanese": null
   },
   "MODLIST_DELETE": {
-    "Chinese": null,
+    "Chinese": "删除",
     "English": "Delete",
     "French": null,
     "German": "Löschen",
@@ -312,7 +312,7 @@
     "Taiwanese": null
   },
   "MODLIST_LOAD_PROFILE": {
-    "Chinese": null,
+    "Chinese": "加载配置文件",
     "English": "Load Profile",
     "French": null,
     "German": "Profil laden",
@@ -325,7 +325,7 @@
     "Taiwanese": null
   },
   "MODLIST_SAVE_PROFILE": {
-    "Chinese": null,
+    "Chinese": "保存配置文件",
     "English": "Save Profile",
     "French": null,
     "German": "Profil speichern",
@@ -338,7 +338,7 @@
     "Taiwanese": null
   },
   "MODDISPLAY_NO_DESCRIPTION": {
-    "Chinese": null,
+    "Chinese": "未提供说明。",
     "English": "No description provided.",
     "French": null,
     "German": "Keine Beschreibung vorhanden.",
@@ -351,7 +351,7 @@
     "Taiwanese": null
   },
   "MODDISPLAY_NO_VERSION": {
-    "Chinese": null,
+    "Chinese": "未提供版本。",
     "English": "No version provided.",
     "French": null,
     "German": "Keine Versionsinfo vorhanden.",
@@ -364,7 +364,7 @@
     "Taiwanese": null
   },
   "MODDISPLAY_NO_CATEGORY": {
-    "Chinese": null,
+    "Chinese": "无类别",
     "English": "No Category",
     "French": null,
     "German": "Ohne Kategorie",
@@ -377,7 +377,7 @@
     "Taiwanese": null
   },
   "SETTINGS_LANG_ENGLISH": {
-    "Chinese": null,
+    "Chinese": "英语",
     "English": "English",
     "French": null,
     "German": "Englisch",
@@ -390,7 +390,7 @@
     "Taiwanese": null
   },
   "SETTINGS_LANG_GERMAN": {
-    "Chinese": null,
+    "Chinese": "德语",
     "English": "German",
     "French": null,
     "German": "Deutsch",
@@ -403,7 +403,7 @@
     "Taiwanese": null
   },
   "SETTINGS_LANG_RUSSIAN": {
-    "Chinese": null,
+    "Chinese": "俄语",
     "English": "Russian",
     "French": null,
     "German": "Russisch",
@@ -416,7 +416,7 @@
     "Taiwanese": null
   },
   "SETTINGS_LANG_POLISH": {
-    "Chinese": null,
+    "Chinese": "波兰语",
     "English": "Polish",
     "French": null,
     "German": "Polnisch",
@@ -428,8 +428,21 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_LANG_CHINESE": {
+    "Chinese": "中文",
+    "English": "Chinese",
+    "French": "Chinois",
+    "German": "Chinesisch",
+    "Italian": "Cinese",
+    "Japanese": "中国语",
+    "Korean": "중국인",
+    "Polish": "Chiński",
+    "Russian": "Китайцы",
+    "Spanish": "Chinos",
+    "Taiwanese": null
+  },
   "DLC_SUNKENTREASURES": {
-    "Chinese": null,
+    "Chinese": "沉没的宝藏",
     "English": "Sunken Treasures",
     "French": null,
     "German": "Gesunkene Schätze",
@@ -442,7 +455,7 @@
     "Taiwanese": null
   },
   "DLC_BOTANICA": {
-    "Chinese": null,
+    "Chinese": "植物园",
     "English": "Botanica",
     "French": null,
     "German": "Botanika",
@@ -455,7 +468,7 @@
     "Taiwanese": null
   },
   "DLC_PASSAGE": {
-    "Chinese": null,
+    "Chinese": "航道",
     "English": "The Passage",
     "French": null,
     "German": "Die Passage",
@@ -468,7 +481,7 @@
     "Taiwanese": null
   },
   "DLC_SEATOFPOWER": {
-    "Chinese": null,
+    "Chinese": "权力之座",
     "English": "Seat of Power",
     "French": null,
     "German": "Paläste der Macht",
@@ -481,7 +494,7 @@
     "Taiwanese": null
   },
   "DLC_BRIGHTHARVEST": {
-    "Chinese": null,
+    "Chinese": "丰收之光",
     "English": "Bright Harvest",
     "French": null,
     "German": "Reiche Ernte",
@@ -494,7 +507,7 @@
     "Taiwanese": null
   },
   "DLC_LANDOFLIONS": {
-    "Chinese": null,
+    "Chinese": "狮子大地",
     "English": "Land of Lions",
     "French": null,
     "German": "Land der Löwen",
@@ -507,7 +520,7 @@
     "Taiwanese": null
   },
   "DLC_DOCKLANDS": {
-    "Chinese": null,
+    "Chinese": "贸易港区",
     "English": "Docklands",
     "French": null,
     "German": "Speicherstadt",
@@ -520,7 +533,7 @@
     "Taiwanese": null
   },
   "DLC_TOURISTSEASON": {
-    "Chinese": null,
+    "Chinese": "旅游旺季",
     "English": "Tourist Season",
     "French": null,
     "German": "Reisezeit",
@@ -533,7 +546,7 @@
     "Taiwanese": null
   },
   "DLC_HIGHLIFE": {
-    "Chinese": null,
+    "Chinese": "上流生活",
     "English": "The High Life",
     "French": null,
     "German": "Dächer der Stadt",
@@ -546,7 +559,7 @@
     "Taiwanese": null
   },
   "DLC_CHRISTMAS": {
-    "Chinese": null,
+    "Chinese": "假期组合包",
     "English": "Holiday Pack",
     "French": null,
     "German": "Weihnachtspaket",
@@ -559,7 +572,7 @@
     "Taiwanese": null
   },
   "DLC_AMUSEMENTPARK": {
-    "Chinese": null,
+    "Chinese": "游乐园组合包",
     "English": "Amusements Park",
     "French": null,
     "German": "Vergnügungspark",
@@ -572,7 +585,7 @@
     "Taiwanese": null
   },
   "DLC_CITYLIFE": {
-    "Chinese": null,
+    "Chinese": "城市灯火组合包",
     "English": "City Life",
     "French": null,
     "German": "Lichter der Stadt",
@@ -585,7 +598,7 @@
     "Taiwanese": null
   },
   "DLC_VEHICLESKINS": {
-    "Chinese": null,
+    "Chinese": "载具皮肤组合包",
     "English": "Vehicle Liveries Pack",
     "French": null,
     "German": "Fahrzeugskins",
@@ -598,7 +611,7 @@
     "Taiwanese": null
   },
   "DLC_PEDESTRIANZONE": {
-    "Chinese": null,
+    "Chinese": "步行区组合包",
     "English": "Pedestrian Zone",
     "French": null,
     "German": "Fußgängerzone",
@@ -611,7 +624,7 @@
     "Taiwanese": null
   },
   "DLC_VIBRANTCITY": {
-    "Chinese": null,
+    "Chinese": "活力城市组合包",
     "English": "Vibrant Cities",
     "French": null,
     "German": "Bunter Anstrich",
@@ -624,7 +637,7 @@
     "Taiwanese": null
   },
   "DLC_ANARCHIST": {
-    "Chinese": null,
+    "Chinese": "无政府主义者",
     "English": "The Anarchist",
     "French": null,
     "German": "Der Anarchist",
@@ -637,7 +650,7 @@
     "Taiwanese": null
   },
   "DLC_SEEDSOFUSELESS": {
-    "Chinese": null,
+    "Chinese": "变革之种",
     "English": "Seeds of Change",
     "French": null,
     "German": "Keim der Hoffnung",
@@ -650,7 +663,7 @@
     "Taiwanese": null
   },
   "DLC_AIRSHIPS": {
-    "Chinese": null,
+    "Chinese": "帝国领空",
     "English": "Empire of the Skies",
     "French": null,
     "German": "Reich der Lüfte",
@@ -663,7 +676,7 @@
     "Taiwanese": null
   },
   "DLC_NEWWORLDRISING": {
-    "Chinese": null,
+    "Chinese": "新兴世界",
     "English": "New World Rising",
     "French": null,
     "German": "Aufstieg der neuen Welt",
@@ -676,7 +689,7 @@
     "Taiwanese": null
   },
   "DLC_FIESTA": {
-    "Chinese": null,
+    "Chinese": "嘉年华组合包",
     "English": "Fiesta Pack",
     "French": null,
     "German": "Fiesta-Paket",
@@ -689,7 +702,7 @@
     "Taiwanese": null
   },
   "DLC_DRAGONGARDEN": {
-    "Chinese": null,
+    "Chinese": "江南庙会组合包",
     "English": "Dragon Garden Pack",
     "French": null,
     "German": "Drachengarten-Paket",
@@ -702,7 +715,7 @@
     "Taiwanese": null
   },
   "HEADER_VERSION": {
-    "Chinese": null,
+    "Chinese": "版本 {0} 至 {1}",
     "English": "Version {0} by {1}",
     "French": null,
     "German": "Version {0} von {1}",
@@ -715,7 +728,7 @@
     "Taiwanese": null
   },
   "HEADER_MODID": {
-    "Chinese": null,
+    "Chinese": "mod编号 (Dev): {0}",
     "English": "Mod ID (Dev): {0}",
     "French": null,
     "German": "Mod ID (Dev): {0}",
@@ -728,7 +741,7 @@
     "Taiwanese": null
   },
   "HEADER_DESCRIPTION": {
-    "Chinese": null,
+    "Chinese": "说明",
     "English": "Description",
     "French": null,
     "German": "Inhalt",
@@ -741,7 +754,7 @@
     "Taiwanese": null
   },
   "HEADER_KNOWNISSUES": {
-    "Chinese": null,
+    "Chinese": "已知问题",
     "English": "Known Issues",
     "French": null,
     "German": "Bekannte Probleme",
@@ -754,7 +767,7 @@
     "Taiwanese": null
   },
   "HEADER_DLCDEPENDENCY": {
-    "Chinese": null,
+    "Chinese": "Mod基于或修改DLC内容",
     "English": "Mod changes or adds to DLC content",
     "French": null,
     "German": "Mod beruht auf oder verändert DLC-Inhalte",
@@ -767,7 +780,7 @@
     "Taiwanese": null
   },
   "HEADER_CREATOR": {
-    "Chinese": null,
+    "Chinese": " 至 ",
     "English": " by ",
     "French": null,
     "German": " von ",
@@ -780,7 +793,7 @@
     "Taiwanese": null
   },
   "HEADER_FOLDER": {
-    "Chinese": null,
+    "Chinese": "目录: ",
     "English": "Folder: ",
     "French": null,
     "German": "Verzeichnis: ",
@@ -793,7 +806,7 @@
     "Taiwanese": null
   },
   "HEADER_FOLDER_SIZE": {
-    "Chinese": null,
+    "Chinese": "大小: ",
     "English": "Size: ",
     "French": null,
     "German": "Größe: ",
@@ -806,7 +819,7 @@
     "Taiwanese": null
   },
   "HEADER_FOLDER_SIZE_MB": {
-    "Chinese": null,
+    "Chinese": " MB",
     "English": " MB",
     "French": null,
     "German": " MB",
@@ -819,7 +832,7 @@
     "Taiwanese": null
   },
   "MODLIST_SEARCHBAR": {
-    "Chinese": null,
+    "Chinese": "请输入搜索内容 ",
     "English": "Type to Search ",
     "French": null,
     "German": "Suchbegriffe eingeben ",
@@ -832,7 +845,7 @@
     "Taiwanese": null
   },
   "SETTINGS_LANGUAGE": {
-    "Chinese": null,
+    "Chinese": "语言: ",
     "English": "Language: ",
     "French": null,
     "German": "Sprache: ",
@@ -845,7 +858,7 @@
     "Taiwanese": null
   },
   "SETTINGS_SHOWCONSOLE": {
-    "Chinese": null,
+    "Chinese": "显示控制台: ",
     "English": "Show Console: ",
     "French": null,
     "German": "Konsole anzeigen: ",
@@ -858,7 +871,7 @@
     "Taiwanese": null
   },
   "SETTINGS_GAMEPATH": {
-    "Chinese": null,
+    "Chinese": "游戏安装路径:",
     "English": "Game Path:",
     "French": null,
     "German": "Spielpfad: ",
@@ -871,7 +884,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DEVMODE": {
-    "Chinese": null,
+    "Chinese": "mod创建者模式: ",
     "English": "Mod Creator Mode: ",
     "French": null,
     "German": "Moderstellermodus: ",
@@ -884,7 +897,7 @@
     "Taiwanese": null
   },
   "SETTINGS_THEME": {
-    "Chinese": null,
+    "Chinese": "主题",
     "English": "Appearance",
     "French": null,
     "German": "Aussehen",
@@ -897,7 +910,7 @@
     "Taiwanese": null
   },
   "MODINFO_NEW": {
-    "Chinese": null,
+    "Chinese": "新 ",
     "English": "New ",
     "French": null,
     "German": "Neu",
@@ -910,7 +923,7 @@
     "Taiwanese": null
   },
   "MODINFO_SAVE": {
-    "Chinese": null,
+    "Chinese": "保存",
     "English": "Save",
     "French": null,
     "German": "Speichern",
@@ -923,7 +936,7 @@
     "Taiwanese": null
   },
   "MODINFO_LOAD": {
-    "Chinese": null,
+    "Chinese": "加载",
     "English": "Load",
     "French": null,
     "German": "Laden",
@@ -936,7 +949,7 @@
     "Taiwanese": null
   },
   "TWEAKER_NO_FILES": {
-    "Chinese": null,
+    "Chinese": "未找到可以修改的配置项。",
     "English": "No tweakable files found.",
     "French": null,
     "German": "Keine veränderbaren Dateien gefunden.",
@@ -949,7 +962,7 @@
     "Taiwanese": null
   },
   "THEME_CYAN": {
-    "Chinese": null,
+    "Chinese": "深色/青色",
     "English": "Dark/Cyan",
     "French": null,
     "German": "Dunkel/Cyan",
@@ -962,7 +975,7 @@
     "Taiwanese": null
   },
   "THEME_GREEN": {
-    "Chinese": null,
+    "Chinese": "深色/绿色",
     "English": "Dark/Green",
     "French": null,
     "German": "Dunkel/Grün",
@@ -975,7 +988,7 @@
     "Taiwanese": null
   },
   "THEME_LIGHT": {
-    "Chinese": null,
+    "Chinese": "光",
     "English": "Light",
     "French": null,
     "German": "Hell",
@@ -988,7 +1001,7 @@
     "Taiwanese": null
   },
   "THEME_DARKVIOLET": {
-    "Chinese": null,
+    "Chinese": "深色/紫色",
     "English": "Dark/Violet",
     "French": null,
     "German": "Dunkel/Violett",
@@ -1001,7 +1014,7 @@
     "Taiwanese": null
   },
   "THEME_BLUEYELLOW": {
-    "Chinese": null,
+    "Chinese": "钴色/黄色",
     "English": "Cobalt/Yellow",
     "French": null,
     "German": "Kobalt/Gelb",
@@ -1014,7 +1027,7 @@
     "Taiwanese": null
   },
   "THEME_BLUECYAN": {
-    "Chinese": null,
+    "Chinese": "钴色/青色",
     "English": "Cobalt/Cyan",
     "French": null,
     "German": "Kobalt/Cyan",
@@ -1027,7 +1040,7 @@
     "Taiwanese": null
   },
   "DEV_SETTING_MODDIRECTORYNAME": {
-    "Chinese": null,
+    "Chinese": "mod目录名称:",
     "English": "Mod Directory Name:",
     "French": null,
     "German": "Modordner:",
@@ -1040,7 +1053,7 @@
     "Taiwanese": null
   },
   "SETTINGS_MODLOADER": {
-    "Chinese": null,
+    "Chinese": "mod加载: ",
     "English": "Modloader: ",
     "French": null,
     "German": "Modloader: ",
@@ -1053,7 +1066,7 @@
     "Taiwanese": null
   },
   "SETTINGS_INSTALL_MODLOADER": {
-    "Chinese": null,
+    "Chinese": "安装",
     "English": "Install",
     "French": null,
     "German": "Installieren",
@@ -1066,7 +1079,7 @@
     "Taiwanese": null
   },
   "MODLOADER_NOT_INSTALLED": {
-    "Chinese": null,
+    "Chinese": "未安装",
     "English": "not installed",
     "French": null,
     "German": "nicht installiert",
@@ -1079,7 +1092,7 @@
     "Taiwanese": null
   },
   "MODLOADER_INSTALLED": {
-    "Chinese": null,
+    "Chinese": "已安装",
     "English": "installed",
     "French": null,
     "German": "installiert",
@@ -1092,7 +1105,7 @@
     "Taiwanese": null
   },
   "MODLOADER_INSTALLING": {
-    "Chinese": null,
+    "Chinese": "安装中...",
     "English": "installing...",
     "French": null,
     "German": "installiere...",
@@ -1105,7 +1118,7 @@
     "Taiwanese": null
   },
   "MODLOADER_AUTOUPDATES": {
-    "Chinese": null,
+    "Chinese": "自动更新模组加载器",
     "English": "Automatic Modloader Updates",
     "French": null,
     "German": "Automatische Modloader-Updates",
@@ -1118,7 +1131,7 @@
     "Taiwanese": null
   },
   "MODS_AUTOUPDATES": {
-    "Chinese": null,
+    "Chinese": "如果可以的话，在安装时为MOD设置自动更新",
     "English": "Configure autoupdates for mods upon install if possible",
     "French": null,
     "German": "Automatische Updates für Mods bei der Installation einrichten, sofern möglich",
@@ -1131,7 +1144,7 @@
     "Taiwanese": null
   },
   "MODS_INSTALLATION_ZIP": {
-    "Chinese": null,
+    "Chinese": "从压缩文件中选择...",
     "English": "Select from Zip Archive...",
     "French": null,
     "German": "Zip-Archiv auswählen...",
@@ -1144,7 +1157,7 @@
     "Taiwanese": null
   },
   "MODS_INSTALLATION_GIT": {
-    "Chinese": null,
+    "Chinese": "从Github中选择...",
     "English": "Select from Github...",
     "French": null,
     "German": "Von Github auswählen...",
@@ -1157,7 +1170,7 @@
     "Taiwanese": null
   },
   "MODLIST_NOCATEGORY": {
-    "Chinese": null,
+    "Chinese": "无类别",
     "English": "No Category",
     "French": null,
     "German": "Ohne Kategorie",
@@ -1170,7 +1183,7 @@
     "Taiwanese": null
   },
   "INSTALL_CLEANMOVE_NOTE": {
-    "Chinese": null,
+    "Chinese": "更新时将删除过期的文件。",
     "English": "Outdated files will be deleted when updating.",
     "French": null,
     "German": "Veraltete Dateien werden beim Updaten von Mods gelöscht.",
@@ -1183,7 +1196,7 @@
     "Taiwanese": null
   },
   "PROFILESAVE_ALREADYEXISTS": {
-    "Chinese": null,
+    "Chinese": "该名称的配置文件已存在。",
     "English": "A profile of that name already exists.",
     "French": null,
     "German": "Ein Profil mit diesem Namen existiert bereits.",
@@ -1196,7 +1209,7 @@
     "Taiwanese": null
   },
   "INSTALL_FROM_ZIP": {
-    "Chinese": null,
+    "Chinese": "选择...",
     "English": "Select...",
     "French": null,
     "German": "Auswählen...",
@@ -1209,7 +1222,7 @@
     "Taiwanese": null
   },
   "PROFILESAVE_INVALID": {
-    "Chinese": null,
+    "Chinese": "配置文件名称无效。",
     "English": "The profile name is invalid.",
     "French": null,
     "German": "Der Name des Profils ist ungültig.",
@@ -1222,7 +1235,7 @@
     "Taiwanese": null
   },
   "DIALOG_OKAY": {
-    "Chinese": null,
+    "Chinese": "同意",
     "English": "Accept",
     "French": null,
     "German": "Annehmen",
@@ -1235,7 +1248,7 @@
     "Taiwanese": null
   },
   "DIALOG_CANCEL": {
-    "Chinese": null,
+    "Chinese": "取消",
     "English": "Cancel",
     "French": null,
     "German": "Abbrechen",
@@ -1248,7 +1261,7 @@
     "Taiwanese": null
   },
   "PROFILE_LOAD": {
-    "Chinese": null,
+    "Chinese": "选择要加载的配置文件",
     "English": "Select Profile to load",
     "French": null,
     "German": "Profil zum laden auswählen",
@@ -1261,7 +1274,7 @@
     "Taiwanese": null
   },
   "PROFILE_SAVE": {
-    "Chinese": null,
+    "Chinese": "保存配置",
     "English": "Save Profile",
     "French": null,
     "German": "Profil speichern",
@@ -1274,7 +1287,7 @@
     "Taiwanese": null
   },
   "ACTIVATION_HEADER_FORMATTED": {
-    "Chinese": null,
+    "Chinese": " 启用的Mod: {0} ({1} MB), 已安装: {2} ({3} MB)",
     "English": " Mods Active: {0} ({1} MB), Installed: {2} ({3} MB)",
     "French": null,
     "German": "Aktivierte Mods: {0} ({1} MB), Installiert: {2} ({3} MB)",
@@ -1287,7 +1300,7 @@
     "Taiwanese": null
   },
   "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
-    "Chinese": null,
+    "Chinese": "允许旧版本覆盖新版本",
     "English": "Allow old versions to overwrite new",
     "French": null,
     "German": "Alte Versionen können Neue überschreiben",
@@ -1300,7 +1313,7 @@
     "Taiwanese": null
   },
   "ZIP_NOTSTARTED": {
-    "Chinese": null,
+    "Chinese": "正在初始化安装",
     "English": "Initializing Install",
     "French": null,
     "German": "Installation initialisieren",
@@ -1313,7 +1326,7 @@
     "Taiwanese": null
   },
   "ZIP_UNPACKING": {
-    "Chinese": null,
+    "Chinese": "正在解压缩文件",
     "English": "Unpacking Files",
     "French": null,
     "German": "Dateien entpacken",
@@ -1326,7 +1339,7 @@
     "Taiwanese": null
   },
   "INSTALL_DOWNLOAD": {
-    "Chinese": null,
+    "Chinese": "正在下载...",
     "English": "Downloading...",
     "French": null,
     "German": "Wird heruntergeladen...",
@@ -1340,7 +1353,7 @@
   },
 
   "INSTALLATION_HEADER_MOD": {
-    "Chinese": null,
+    "Chinese": "正在安装Mods",
     "English": "Installing Mods",
     "French": null,
     "German": "Mods werden installiert",
@@ -1353,7 +1366,7 @@
     "Taiwanese": null
   },
   "INSTALLATION_HEADER_LOADER": {
-    "Chinese": null,
+    "Chinese": "安装MOD加载器",
     "English": "Installing Modloader",
     "French": null,
     "German": "Modloader wird installiert",
@@ -1366,7 +1379,7 @@
     "Taiwanese": null
   },
   "ZIP_MOVING": {
-    "Chinese": null,
+    "Chinese": "移除Mods",
     "English": "Moving Mods",
     "French": null,
     "German": "Mods verschieben",
@@ -1379,7 +1392,7 @@
     "Taiwanese": null
   },
   "INSTALLATION_HEADER_MOD_GIT": {
-    "Chinese": null,
+    "Chinese": "从Github安装Mods",
     "English": "Installing Mods from Github",
     "French": null,
     "German": "Mods werden von Github installiert",
@@ -1392,7 +1405,7 @@
     "Taiwanese": null
   },
   "ZIP_INSTALLER_TITLE": {
-    "Chinese": null,
+    "Chinese": "安装Mods",
     "English": "Install Mods",
     "French": null,
     "German": "Mods installieren",
@@ -1405,7 +1418,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_MISSINGDEPENDENCY": {
-    "Chinese": null,
+    "Chinese": "该mod缺少另一个mod，它没有安装或激活，但它依赖它来完美工作. \n\n缺少的依赖:\n - {0}",
     "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly. \n\nMissing Dependencies:\n - {0}",
     "French": null,
     "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird. \n\nFehlende Abhängigkeiten:\n - {0}",
@@ -1418,7 +1431,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_MISSINGDLC": {
-    "Chinese": null,
+    "Chinese": "你没有这个mod所依赖的DLC:\n- {0} \n\n这可能会影响你的游戏体验.",
     "English": "You don't own the following DLC that this mod is dependant on:\n- {0} \n\nThis could impact your ingame experience.",
     "French": null,
     "German": "Folgende von der Mod vorausgesetzte DLC sind nicht im Besitz:\n- {0} \n\nDies könnte Dein Spielerlebnis beeinflussen.",
@@ -1431,7 +1444,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATUS_UPDATE": {
-    "Chinese": null,
+    "Chinese": "Mod在最近的一次安装中进行了更新.",
     "English": "the mod was updated in a recent installation.",
     "French": null,
     "German": "Die Mod wurde in einer der letzten Installationen aktualisiert.",
@@ -1444,7 +1457,7 @@
     "Taiwanese": null
   },
   "USERCODE_POPUP_MESSAGE": {
-    "Chinese": null,
+    "Chinese": "请在浏览器中输入您的身份验证码并登录Github。请勿泄漏验证码!",
     "English": "You are being sent to Github Login in your Webbrowser. Please enter your authentication code there. Don't share your code with anyone!",
     "French": null,
     "German": "Du wirst im Browser zum Github-Login weitergeleitet. Bitte gib dort deinen Authentifizierungscode an. Teile diesen Code mit niemandem!",
@@ -1457,7 +1470,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_COMPABILITYERROR": {
-    "Chinese": null,
+    "Chinese": "该mod与其他已安装的mod存在一个或多个兼容性问题。若要解决此问题，请停用此mod或导致兼容性问题的所有mod。\n\n兼容性错误:\n - {0}",
     "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.\n\nCompability Errors:\n - {0}",
     "French": null,
     "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen.\n\nKompabilitätsprobleme:\n - {0}",
@@ -1470,7 +1483,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_CYCLIC_DEPENDENCY": {
-    "Chinese": null,
+    "Chinese": "加载顺序中的循环依赖项: {0}. 这可能会给游戏运行带来问题!",
     "English": "Cyclic dependency in loading order with: {0}. This may cause issues ingame!",
     "French": null,
     "German": "Zyklische Abhängigkeit in der Ladeordnung: {0}. Dies könnte im Spiel Probleme verursachen!",
@@ -1483,7 +1496,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_REPLACEDBY": {
-    "Chinese": null,
+    "Chinese": "这个mod已过时.\n它已被替换为 '{0}'.",
     "English": "This mod is old.\nIt has been replaced by '{0}'.",
     "French": null,
     "German": "Diese Mod ist alt.\nSie wurde durch '{0}' ersetzt.",
@@ -1496,7 +1509,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATUS_OBSOLETE": {
-    "Chinese": null,
+    "Chinese": "Mod在安装过程中被确认为损坏。这可能是由于Mod ID重复或文件结构损坏造成的。建议删除mod并重新安装。如果这仍然会造成问题，请联系mod作者.",
     "English": "The Mod has been recognized as broken during an installation. This can be due to Mod ID duplications or broken Filestructure. It is advisable to delete the mod and reinstall it. If this still causes problems, contact the mod author.",
     "French": null,
     "German": "Die Mod wurde während einer zurückliegenden Installation als beschädigt erkannt. Dies kann wegen Duplikation der ModID oder einer beschädigten Dateistruktur der Fall sein. Es ist ratsam, die Mod in diesem Fall neu zu installieren. Wenn das Problem bestehen bleibt, sollte der Modautor kontaktiert werden",
@@ -1509,7 +1522,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATUS_NEW": {
-    "Chinese": null,
+    "Chinese": "该mod是在最近的一次安装中添加的。",
     "English": "The mod was added in a recent installation.",
     "French": null,
     "German": "Die Mod wurde in einer der letzten Installationen hinzugefügt.",
@@ -1522,7 +1535,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_TWEAKED": {
-    "Chinese": null,
+    "Chinese": "该mod可进行参数修改。",
     "English": "The mod has been tweaked in the Mod Tweaker.",
     "French": null,
     "German": "Die Mod wurde über das ModTweaker System verändert.",
@@ -1535,7 +1548,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_NOMODINFO": {
-    "Chinese": null,
+    "Chinese": "该mod没有提供modinfo.json文件。无法获取关于兼容性、依赖性、描述和已知问题的元数据信息。",
     "English": "The mod does not provide modinfo.json. There is no metadata information on Compability, Dependencies, no Description and Known Issues.",
     "French": null,
     "German": "Die Mod stellt keine modinfo.json bereit. Damit gibt es keinerlei Informationen über Kompabilität, Abhängigkeiten, Beschreibungen oder bekannte Probleme.",
@@ -1548,7 +1561,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_MODCONTENTSUBFOLDER": {
-    "Chinese": null,
+    "Chinese": "安装错误。mod在一个子文件夹中。请将它们直接安装到mod文件夹中。",
     "English": "Wrong installation. The mod is in a subfolder. Please install them directly into the mod folder.",
     "French": null,
     "German": "Falsche Installation. Die Mod befindet sich in einem Unterverzeichnis. Installiere die Mod direkt im Modsverzeichnis.",
@@ -1561,7 +1574,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_UPDATEDMOD": {
-    "Chinese": null,
+    "Chinese": "该mod已在最近的安装中更新。",
     "English": "Indicates that the mod was updated in a recent installation.",
     "French": null,
     "German": "Zeigt an, dass die Mod in einer der letzten Installationen aktualisiert wurde.",
@@ -1574,7 +1587,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_NEWMOD": {
-    "Chinese": null,
+    "Chinese": "该mod是在最近的安装中添加的。",
     "English": "Indicates that the mod was added in a recent installation.",
     "French": null,
     "German": "Zeigt an, dass die Mod in einer der letzten Installationen hinzugefügt wurde.",
@@ -1587,7 +1600,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_OBSOLETEMOD": {
-    "Chinese": null,
+    "Chinese": "Mod在安装过程中被确认为损坏，这可能是由于Mod ID重复或文件结构损坏造成的，建议删除mod并重新安装。如果这仍然会造成问题，请联系mod作者。",
     "English": "The Mod has been recognized as broken during an installation. This can be due to Mod ID duplications or broken Filestructure. It is advisable to delete the mod and reinstall it. If this still causes problems, contact the mod author.",
     "French": null,
     "German": "Die Mod wurde während einer zurückliegenden Installation als beschädigt erkannt. Dies kann wegen Duplikation der ModID oder einer beschädigten Dateistruktur der Fall sein. Es ist ratsam, die Mod in diesem Fall neu zu installieren. Wenn das Problem bestehen bleibt, sollte der Modautor kontaktiert werden",
@@ -1600,7 +1613,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_TWEAKEDMOD": {
-    "Chinese": null,
+    "Chinese": "该Mod可进行参数项修改。",
     "English": "The mod has been tweaked in the Mod Tweaker.",
     "French": null,
     "German": "Die Mod wurde über das ModTweaker System verändert.",
@@ -1613,7 +1626,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_NOMODINFO": {
-    "Chinese": null,
+    "Chinese": "该mod没有提供modinfo.json文件。无法获取关于兼容性、依赖性、描述和已知问题的元数据信息。",
     "English": "The mod does not provide modinfo.json. There is no metadata information on Compability, Dependencies, no Description and Known Issues.",
     "French": null,
     "German": "Die Mod stellt keine modinfo.json bereit. Damit gibt es keinerlei Informationen über Kompabilität, Abhängigkeiten, Beschreibungen oder bekannte Probleme.",
@@ -1626,7 +1639,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_COMPABILITY": {
-    "Chinese": null,
+    "Chinese": "该mod没有提供modinfo.json文件。无法获取关于兼容性、依赖性、描述和已知问题的元数据信息。",
     "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.",
     "French": null,
     "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen",
@@ -1639,7 +1652,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_STATICHELP_DEPENDENCY": {
-    "Chinese": null,
+    "Chinese": "该mod缺少另一个mod，它没有安装或激活，但它依赖它来完美工作。",
     "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly.",
     "French": null,
     "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird.",
@@ -1652,7 +1665,7 @@
     "Taiwanese": null
   },
   "ATTRIBUTE_GAMESTART_WARNING": {
-    "Chinese": null,
+    "Chinese": "您有未解析的依赖项和/或Mod无效。警告: 这可能会导致内部出现严重错误！！！ \n\n 是否继续启动?",
     "English": "You have unresolved Dependencies and/or Mod Incompabilities. WARNING: This might lead to critical errors ingame!!! \n\n Start Anyway?",
     "French": null,
     "German": "Der Modordner hat fehlende Abhängigkeiten und/oder miteinander inkompatible Mods. ACHTUNG: Das kann ingame zu schwerwiegenden Fehlern führen!!! \n\n Trotzdem starten?",
@@ -1665,7 +1678,7 @@
     "Taiwanese": null
   },
   "CONTROLS_TOGGLE_DEFAULT_ONTEXT": {
-    "Chinese": null,
+    "Chinese": "开",
     "English": "on",
     "French": null,
     "German": "an",
@@ -1678,7 +1691,7 @@
     "Taiwanese": null
   },
   "CONTROLS_TOGGLE_DEFAULT_OFFTEXT": {
-    "Chinese": null,
+    "Chinese": "关",
     "English": "off",
     "French": null,
     "German": "aus",
@@ -1691,7 +1704,7 @@
     "Taiwanese": null
   },
   "CONTROLS_TOGGLE_SHOW": {
-    "Chinese": null,
+    "Chinese": "显示",
     "English": "show",
     "French": null,
     "German": "anzeigen",
@@ -1704,7 +1717,7 @@
     "Taiwanese": null
   },
   "GITBROWSER_ADDTOQUEUE": {
-    "Chinese": null,
+    "Chinese": "添加到下载",
     "English": "Add to Downloads",
     "French": null,
     "German": "Herunterladen",
@@ -1717,7 +1730,7 @@
     "Taiwanese": null
   },
   "GITBROWSER_VIEWONGITHUB": {
-    "Chinese": null,
+    "Chinese": "在Github上查看",
     "English": "View on Github",
     "French": null,
     "German": "Auf Github ansehen",
@@ -1730,7 +1743,7 @@
     "Taiwanese": null
   },
   "GITBROWSER_ZIPHINT": {
-    "Chinese": null,
+    "Chinese": "要安装本地Mod？",
     "English": "Already downloaded a mod?",
     "French": null,
     "German": "Du hast bereits eine Mod heruntergeladen?",
@@ -1743,7 +1756,7 @@
     "Taiwanese": null
   },
   "GITBROWSER_SELECTZIP": {
-    "Chinese": null,
+    "Chinese": "选择要安装的Mod",
     "English": "Select Archive to install",
     "French": null,
     "German": "Archiv auswählen",
@@ -1756,7 +1769,7 @@
     "Taiwanese": null
   },
   "DOWNLOADS_PENDING_INSTALLCOUNT": {
-    "Chinese": null,
+    "Chinese": "等待 ({0})",
     "English": "Pending ({0})",
     "French": null,
     "German": "Noch ausstehend ({0})",
@@ -1769,7 +1782,7 @@
     "Taiwanese": null
   },
   "DOWNLOADS_RUNNING_INSTALLCOUNT": {
-    "Chinese": null,
+    "Chinese": "运行 ({0})",
     "English": "Running ({0})",
     "French": null,
     "German": "Laufende Installationen ({0})",
@@ -1782,7 +1795,7 @@
     "Taiwanese": null
   },
   "SETTINGS_INST_DL_SECTION": {
-    "Chinese": null,
+    "Chinese": "安装和下载",
     "English": "Installation and Download",
     "French": null,
     "German": "Installationen und Downloads",
@@ -1795,7 +1808,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DL_RATE_UNLIMITED": {
-    "Chinese": null,
+    "Chinese": "无限",
     "English": "Unlimited",
     "French": null,
     "German": "Unbegrenzt",
@@ -1808,7 +1821,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DL_RATE_LIMITED": {
-    "Chinese": null,
+    "Chinese": "关闭",
     "English": "Limited",
     "French": null,
     "German": "Gedrosselt",
@@ -1821,7 +1834,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DL_RATE": {
-    "Chinese": null,
+    "Chinese": "下载速度",
     "English": "Download Speed",
     "French": null,
     "German": "Download-Geschwindigkeit",
@@ -1834,7 +1847,7 @@
     "Taiwanese": null
   },
   "SETTINGS_SORTING": {
-    "Chinese": null,
+    "Chinese": "Mod排序顺序",
     "English": "Mod Sort Order",
     "French": null,
     "German": "Sortierung",
@@ -1847,7 +1860,7 @@
     "Taiwanese": null
   },
   "SORTING_DEFAULT": {
-    "Chinese": null,
+    "Chinese": "启动 > 类别 > 名称",
     "English": "Active > Category > Name",
     "French": null,
     "German": "Aktiviert > Kategorie > Name",
@@ -1860,7 +1873,7 @@
     "Taiwanese": null
   },
   "SORTING_ACTIVE_AGNOSTIC": {
-    "Chinese": null,
+    "Chinese": "类别 > 名称",
     "English": "Category > Name",
     "French": null,
     "German": " Kategorie > Name",
@@ -1873,7 +1886,7 @@
     "Taiwanese": null
   },
   "SORTING_BYFOLDER": {
-    "Chinese": null,
+    "Chinese": "按文件夹名称",
     "English": "By Folder Name",
     "French": null,
     "German": "Nach Ordnername",
@@ -1886,7 +1899,7 @@
     "Taiwanese": null
   },
   "SORTING_LOADORDER": {
-    "Chinese": null,
+    "Chinese": "按安装顺序",
     "English": "By Load Order",
     "French": null,
     "German": "Nach Ladereihenfolge",
@@ -1899,7 +1912,7 @@
     "Taiwanese": null
   },
   "INSTALLATION_NOINSTALLS": {
-    "Chinese": null,
+    "Chinese": "当前没有任何安装正在运行。",
     "English": "No installs are running currently.",
     "French": null,
     "German": "Hier wird gerade nichts installiert.",
@@ -1912,7 +1925,7 @@
     "Taiwanese": null
   },
   "INSTALLATION_DELETEPENDING": {
-    "Chinese": null,
+    "Chinese": "从列表中删除",
     "English": "Remove from queue",
     "French": null,
     "German": "Aus der Warteschlange entfernen",
@@ -1925,7 +1938,7 @@
     "Taiwanese": null
   },
   "INSTALLATION_PAUSEPENDING": {
-    "Chinese": null,
+    "Chinese": "暂停/继续",
     "English": "Pause/Resume",
     "French": null,
     "German": "Pausieren/Fortsetzen",
@@ -1938,7 +1951,7 @@
     "Taiwanese": null
   },
   "API_RATELIMIT_REACHED": {
-    "Chinese": null,
+    "Chinese": "您已经超过了每小时的下载限制（GitHub不可能做到这一点）。要再次登录获得访问权限。",
     "English": "You have exceeded your rate limit per hour (This is imposed by GitHub). To get access again, you can login.",
     "French": null,
     "German": "Du hast das Anfragenlimit pro Stunde erreicht (Dies ist leider so von Github vorgegeben). Um wieder Zugriff zu bekommen, kannst Du dich allerdings einloggen.",
@@ -1951,7 +1964,7 @@
     "Taiwanese": null
   },
   "STARTUP_REMOVECOMMUNITYMODLOADER": {
-    "Chinese": null,
+    "Chinese": "你似乎有一个旧的社区modloader，自游戏更新17以来就不再需要了。是否要删除它？",
     "English": "You seem to have an old community modloader, which is no longer needed since Game Update 17. Do you want to remove it?",
     "French": null,
     "German": "Wie es scheint, ist der alte Community-Modloader noch installiert. Dieser wird seit Game Update 17 nicht mehr benötigt. Soll dieser entfernt werden?",
@@ -1964,7 +1977,7 @@
     "Taiwanese": null
   },
   "STARTUP_REMOVECOMMUNITYMODLOADER_YES": {
-    "Chinese": null,
+    "Chinese": "是，删除它",
     "English": "Yes, remove it",
     "French": null,
     "German": "Ja, entfernen",
@@ -1977,7 +1990,7 @@
     "Taiwanese": null
   },
   "STARTUP_REMOVECOMMUNITYMODLOADER_NO": {
-    "Chinese": null,
+    "Chinese": "保持",
     "English": "Keep",
     "French": null,
     "German": "Beibehalten",
@@ -1990,7 +2003,7 @@
     "Taiwanese": null
   },
   "MODLIST_COLLAPSEALL": {
-    "Chinese": null,
+    "Chinese": "折叠所有的mod",
     "English": "Collapse all embedded Mods",
     "French": null,
     "German": "Eingebettete Mods ausblenden",
@@ -2003,7 +2016,7 @@
     "Taiwanese": null
   },
   "MODLIST_EXPANDALL": {
-    "Chinese": null,
+    "Chinese": "展开所有的mod",
     "English": "Expand all embedded Mods",
     "French": null,
     "German": "Eingebettete Mods anzeigen",
@@ -2016,7 +2029,7 @@
     "Taiwanese": null
   },
   "MODLIST_SUBMODS": {
-    "Chinese": null,
+    "Chinese": "嵌入的mod",
     "English": "Embedded Mods",
     "French": null,
     "German": "Eingebettete Mods",
@@ -2029,7 +2042,7 @@
     "Taiwanese": null
   },
   "CONTROLS_TOGGLE_HIDE": {
-    "Chinese": null,
+    "Chinese": "隐藏",
     "English": "hide",
     "French": null,
     "German": "ausblenden",
@@ -2042,7 +2055,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DLCOWNERSHIP": {
-    "Chinese": null,
+    "Chinese": "DLC所有权",
     "English": "DLC Ownership",
     "French": null,
     "German": "DLC im Besitz",
@@ -2055,7 +2068,7 @@
     "Taiwanese": null
   },
   "SETTINGS_DLCDESCRIPTION": {
-    "Chinese": null,
+    "Chinese": "启用您拥有的DLC，iMYA将通知您缺少的需求。",
     "English": "Enable the DLCs you own and iMYA will inform you about missing Requirements.",
     "French": null,
     "German": "Trage hier ein, welche DLC's Du besitzt, und iMYA informiert über fehlende DLC's.",
