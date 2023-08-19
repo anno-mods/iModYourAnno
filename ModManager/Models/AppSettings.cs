@@ -200,6 +200,7 @@ namespace Imya.UI.Models
             Themes.Add(new ThemeSetting(TextManager["THEME_BLUEYELLOW"], "Styles/Themes/BlueYellow.xaml", "BlueYellow", Colors.Yellow));
             Themes.Add(new ThemeSetting(TextManager["THEME_BLUECYAN"], "Styles/Themes/BlueCyan.xaml", "BlueCyan", Colors.DarkCyan));
 
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_CHINESE"], ApplicationLanguage.Chinese));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_RUSSIAN"], ApplicationLanguage.Russian));
