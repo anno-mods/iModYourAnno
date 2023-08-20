@@ -15,7 +15,8 @@
             <RowDefinition Height="80" />
             <RowDefinition />
             <RowDefinition Height="15" />
-            <RowDefinition Height="55"/>
+            <RowDefinition Height="55" />
+            <RowDefinition Height="55" />
             <RowDefinition Height="12" />
         </Grid.RowDefinitions>
         <Grid.Resources>
@@ -214,7 +215,7 @@
                     </Grid.ColumnDefinitions>
                     <!-- User Login Image -->
                     <Border BorderBrush="{DynamicResource AccentColorBrush}"
-                            CornerRadius="5"
+                            CornerRadius="10"
                             BorderThickness="2"
                             Margin="3,5">
                         <Border.Background>
@@ -286,6 +287,36 @@
                         </Grid>
                     </Button>
                 </Grid>
+            </Grid>
+        </Border>
+        <Border Grid.Row="5"
+                Margin="5,2,5,3"
+                CornerRadius="3"
+                Background="{DynamicResource ComponentColorBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="45" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="45" />
+                </Grid.ColumnDefinitions>
+                <Border BorderBrush="{DynamicResource AccentColorBrush}"
+                        CornerRadius="10"
+                        BorderThickness="2"
+                        Margin="3,5">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{Binding ModioUser.Avatar.Thumb100x100, UpdateSourceTrigger=PropertyChanged}"
+                                    Stretch="UniformToFill" />
+                    </Border.Background>
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0"
+                                          BlurRadius="4" />
+                    </Border.Effect>
+                </Border>
+                <TextBlock Style="{StaticResource IMYA_TEXT}"
+                           Text="{Binding ModioUser.Username, UpdateSourceTrigger=PropertyChanged}"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Margin="5"></TextBlock>                
             </Grid>
         </Border>
     </Grid>
