@@ -1,5 +1,4 @@
-﻿using Imya.Enums;
-using Imya.Models;
+﻿using Imya.Models;
 using Imya.Texts;
 using Imya.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +8,8 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Markup;
+
+using Anno.EasyMod.Metadata;
 
 namespace Imya.UI.ValueConverters
 {

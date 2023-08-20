@@ -3,7 +3,6 @@ using Imya.GithubIntegration.Download;
 using Imya.GithubIntegration.JsonData;
 using Imya.Models.Installation;
 using Imya.Models.Installation.Interfaces;
-using Imya.Models.Mods;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Models;

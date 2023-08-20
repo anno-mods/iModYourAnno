@@ -132,9 +132,9 @@
                             <TextBlock Name="ModCategoryName"
                                        Style="{StaticResource IMYA_TEXT}"
                                        TextWrapping="WrapWithOverflow">
-                                <Run Text="{Binding Category.Text, Mode=OneWay}"
+                                <Run Text="{Binding Modinfo.Category, Mode=OneWay}"
                                      FontWeight="ExtraBold" />
-                                <Run Text="{Binding Name.Text, Mode=OneWay}" />
+                                <Run Text="{Binding Name, Mode=OneWay}" />
                             </TextBlock>
                         </Grid>
                         <ItemsControl ItemsSource="{Binding Attributes}"
@@ -190,12 +190,12 @@
                                                                      Height="22"
                                                                      VerticalAlignment="Center">
                                             </materialDesign:PackIcon>
-                                            <TextBlock Text="{Binding Category.Text, UpdateSourceTrigger=PropertyChanged}"
+                                            <TextBlock Text="{Binding Modinfo.Category, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource IMYA_TEXT}"
                                                        FontWeight="DemiBold"
                                                        Margin="10,0,0,0"
                                                        VerticalAlignment="Center"></TextBlock>
-                                            <TextBlock Text="{Binding Name.Text, UpdateSourceTrigger=PropertyChanged}"
+                                            <TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                                        Style="{StaticResource IMYA_TEXT}"
                                                        FontWeight="ExtraLight"
                                                        VerticalAlignment="Center"

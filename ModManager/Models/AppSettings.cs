@@ -1,4 +1,4 @@
-﻿using Imya.Enums;
+﻿using Anno.EasyMod.Metadata;
 using Imya.Models;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;

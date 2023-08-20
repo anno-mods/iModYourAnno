@@ -1,4 +1,5 @@
-﻿using Imya.Models;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Texts;
 using Imya.Utils;
@@ -25,7 +26,7 @@ namespace Imya.UI.Components
 
     public class AttributeText 
     {
-        public IAttribute Attribute { get; init; }
+        public IModAttribute Attribute { get; init; }
         public IText Text { get; init; }
     }
 

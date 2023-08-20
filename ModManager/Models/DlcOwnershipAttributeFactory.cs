@@ -1,4 +1,5 @@
-﻿using Imya.Enums;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Metadata;
 using Imya.Texts;
 using Imya.UI.ValueConverters;
 using System;
@@ -23,13 +24,13 @@ namespace Imya.Models.Attributes.Factories
             _textConverter = textConverter;
         }
 
-        public IAttribute Get(IEnumerable<DlcId> missing)
+        public IModAttribute Get(IEnumerable<DlcId> missing)
         {
             var textTemplate = _textManager.GetText("ATTRIBUTE_MISSINGDLC");
             var texts = missing.Select(x => (_textConverter.Convert(x, typeof(IText), null, CultureInfo.CurrentCulture) as IText)?.Text );
             return new GenericAttribute()
             {
-                AttributeType = AttributeType.DlcNotOwned,
+                AttributeType = AttributeTypes.DlcNotOwned,
                 Description = new SimpleText(String.Format(textTemplate.Text, String.Join(",\n- ", texts)))
             };
         }

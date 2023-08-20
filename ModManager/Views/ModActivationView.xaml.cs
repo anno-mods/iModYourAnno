@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
@@ -22,7 +22,7 @@ namespace Imya.UI.Views
     public partial class ModActivationView : UserControl, INotifyPropertyChanged
     {
         public ITextManager TextManager { get; init; }
-        public ModCollection? Mods { get; private set; }
+        public IModCollection? Mods { get; private set; }
         public IGameSetupService GameSetupManager { get; }
 
         public ModList ModList { get; init; }
@@ -128,7 +128,7 @@ namespace Imya.UI.Views
 
             if (dialogResult is true && Dialog.SelectedProfile is not null)
             {
-                await Mods.LoadProfileAsync(Dialog.SelectedProfile);
+                //await Mods.LoadProfileAsync(Dialog.SelectedProfile);
             }
         }
 
@@ -146,8 +146,8 @@ namespace Imya.UI.Views
             _profilesService.SaveProfile(profile, dialog.ProfileFilename);
         }
 
-        Mod? _previousSelection = null;
-        private void OnUpdateSelection(Mod? m)
+        IMod? _previousSelection = null;
+        private void OnUpdateSelection(IMod? m)
         {
             if (_previousSelection == m)
                 return;

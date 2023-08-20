@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -11,13 +11,13 @@ namespace Imya.UI.Models
     /// Make mod collection bindable from UI thread.
     /// Direct properties have PropertyChanged notifications.
     /// </summary>
-    public class BindableModCollection : BindableCollection<Mod, BindableMod, ModCollection>
+    public class BindableModCollection : BindableCollection<IMod, BindableMod, IModCollection>
     {
         public int ActiveMods => Model.ActiveMods;
         public int ActiveSizeInMBs => Model.ActiveSizeInMBs;
         public int InstalledSizeInMBs => Model.InstalledSizeInMBs;
 
-        public BindableModCollection(ModCollection collection, DispatcherObject context) : base(collection, context, (x, c) => new BindableMod(x, c))
+        public BindableModCollection(IModCollection collection, DispatcherObject context) : base(collection, context, (x, c) => new BindableMod(x, c))
         {
             Order = CompareByActiveCategoryName.Default;
         }

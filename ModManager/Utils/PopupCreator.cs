@@ -1,5 +1,4 @@
-﻿using Imya.Enums;
-using Imya.GithubIntegration.Download;
+﻿using Imya.GithubIntegration.Download;
 using Imya.Models;
 using Imya.Services;
 using Imya.Services.Interfaces;
@@ -9,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Anno.EasyMod.Metadata;
 
 namespace Imya.UI.Utils
 {

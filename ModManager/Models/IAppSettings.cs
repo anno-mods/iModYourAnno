@@ -1,6 +1,6 @@
-﻿using Imya.Enums;
+﻿using Anno.EasyMod.Mods;
+using Anno.EasyMod.Metadata;
 using Imya.Models;
-using Imya.Models.Mods;
 using Imya.Models.NotifyPropertyChanged;
 using Imya.Models.Options;
 using Imya.Utils;
@@ -53,11 +53,11 @@ namespace Imya.UI.Models
 
     public struct SortSetting
     {
-        public IComparer<Mod> Comparer { get; init; }
+        public IComparer<IMod> Comparer { get; init; }
         public IText SortingName { get; init; }
         public string ID { get; init; }
 
-        public SortSetting(IComparer<Mod> comparer, IText sortingname, string id)
+        public SortSetting(IComparer<IMod> comparer, IText sortingname, string id)
         {
             Comparer = comparer;
             SortingName = sortingname;

@@ -13,12 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Imya.Enums;
-using Imya.Models.ModMetadata;
 using Imya.Texts;
 using Imya.UI.Popup;
 using Imya.UI.Utils;
 using Imya.Utils;
+using Anno.EasyMod.Metadata;
 
 namespace Imya.UI.Views
 {
@@ -83,15 +82,12 @@ namespace Imya.UI.Views
 
         public void Load(String Filename)
         {
-            if (ModinfoLoader.TryLoadFromFile(Filename, out var _modinfo))
-            {
-                ModinfoFactory = new ModinfoFactory(_modinfo!);
-            }
+            throw new NotImplementedException(); 
         }
 
         public void Save(String Filename)
         {
-            ModinfoLoader.TrySaveToFile(Filename, ModinfoFactory.GetResult());
+            throw new NotImplementedException();
         }
 
         #region INotifyPropertyChangedMembers
