@@ -15,4 +15,10 @@
     <PackageReference Include="Octokit" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Anno.EasyMod">
+      <HintPath>lib\Anno.EasyMod.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
