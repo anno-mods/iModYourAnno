@@ -1,6 +1,6 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -20,24 +20,24 @@ namespace Imya.Validation
             _attributeFactory = attributeFactory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
-            foreach (Mod x in all)
-                x.Attributes.RemoveAttributesByType(AttributeType.CyclicDependency);
-            foreach (Mod x in changed)
+            foreach (IMod x in all)
+                x.Attributes.RemoveByType(AttributeTypes.CyclicDependency);
+            foreach (IMod x in changed)
             {
                 var cyclics = CyclicDependencies(x, all);
                 if (cyclics.Count() > 0)
                 {
-                    x.Attributes.AddAttribute(_attributeFactory.Get(cyclics));   
+                    x.Attributes.Add(_attributeFactory.Get(cyclics));   
                 }
             }
         }
 
-        private IEnumerable<Mod> CyclicDependencies(Mod x, IReadOnlyCollection<Mod> others)
+        private IEnumerable<IMod> CyclicDependencies(IMod x, IReadOnlyCollection<IMod> others)
         {
             if (!x.IsActive)
-                return Enumerable.Empty<Mod>();
+                return Enumerable.Empty<IMod>();
 
             return others.Where(y =>
                 y.IsActive && (y.Modinfo?.LoadAfterIds?.Contains(x.ModID) ?? false)

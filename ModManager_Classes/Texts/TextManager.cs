@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.ModMetadata.ModinfoModel;
+﻿using Anno.EasyMod.Metadata;
+using Imya.Models;
 using Newtonsoft.Json;
 
 // TODO move all text/language related code under Imya.Text or Imya.Language

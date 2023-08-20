@@ -1,4 +1,5 @@
-﻿using Imya.Models.Attributes.Interfaces;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
 using Imya.Utils;
 
@@ -15,12 +16,12 @@ namespace Imya.Models.Attributes.Factories
 
             TweakedAttribute = new GenericAttribute()
             {
-                AttributeType = AttributeType.TweakedMod,
+                AttributeType = AttributeTypes.TweakedMod,
                 Description = _textManager.GetText("ATTRIBUTE_TWEAKED")
             };
         }
 
-        public IAttribute Get()
+        public IModAttribute Get()
         {
             return TweakedAttribute;
         }

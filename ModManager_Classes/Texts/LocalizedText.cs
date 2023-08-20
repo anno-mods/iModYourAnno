@@ -1,5 +1,4 @@
-﻿using Imya.Models.ModMetadata;
-using Imya.Utils;
+﻿using Imya.Utils;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using Imya.Enums;

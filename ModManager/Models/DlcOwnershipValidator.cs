@@ -1,8 +1,8 @@
-﻿using Imya.Enums;
+﻿using Anno.EasyMod.Mods;
+using Anno.EasyMod.Metadata;
 using Imya.Models;
 using Imya.Models.Attributes;
 using Imya.Models.Attributes.Factories;
-using Imya.Models.Mods;
 using Imya.Validation;
 using System;
 using System.Collections.Generic;
@@ -24,30 +24,30 @@ namespace Imya.UI.Models
             _factory = factory; 
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
-            foreach (Mod m in all)
+            foreach (IMod m in all)
             {
                 ValidateSingle(m);
             }
         }
 
-        private void ValidateSingle(Mod m)
+        private void ValidateSingle(IMod m)
         {
-            m.Attributes.RemoveAttributesByType(AttributeType.DlcNotOwned);
-            if (!m.HasDlcDependencies)
+            m.Attributes.RemoveByType(AttributeTypes.DlcNotOwned);
+            if (m.Modinfo.DLCDependencies is null)
                 return;
 
             var potentialDlc = m.Modinfo
                 .DLCDependencies?
-                .Where(x => x.Dependant != Enums.DlcRequirement.atLeastOneRequired && x.DLC is not null && x.Dependant is not null);
+                .Where(x => x.Dependant != DlcRequirement.atLeastOneRequired && x.DLC is not null && x.Dependant is not null);
             var globallyMissing = _appSettings
                 .AllDLCs
                 .Where(x => !x.IsEnabled)
                 .Select(x => x.DlcId)
                 .ToList();
             var missing = potentialDlc?
-                .Where(x => globallyMissing.Contains((Enums.DlcId)x.DLC!))
+                .Where(x => globallyMissing.Contains((DlcId)x.DLC!))
                 .Select(x => (DlcId)x.DLC!) 
                 ?? Enumerable.Empty<DlcId>();
 

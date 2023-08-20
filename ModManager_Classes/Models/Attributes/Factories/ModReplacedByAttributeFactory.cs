@@ -1,5 +1,6 @@
-﻿using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Imya.Models.Attributes.Factories
             _textManager = textManager;
         }
 
-        public IAttribute Get(Mod replacedBy)
+        public IModAttribute Get(IMod replacedBy)
         {
             return new ModReplacedByIssue(replacedBy)
             {

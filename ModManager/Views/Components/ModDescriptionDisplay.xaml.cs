@@ -5,10 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using Imya.Enums;
+using Anno.EasyMod.Mods;
+using Anno.EasyMod.Metadata;
 using Imya.Models;
-using Imya.Models.ModMetadata;
-using Imya.Models.Mods;
 using Imya.Texts;
 using Imya.Utils;
 
@@ -22,19 +21,19 @@ namespace Imya.UI.Components
     public partial class ModDescriptionDisplay : UserControl, INotifyPropertyChanged
     {
         #region Mod properties
-        public Mod? Mod
+        public IMod? Mod
         {
             get => _mod;
             private set => SetProperty(ref _mod, value);
         }
-        private Mod? _mod;
+        private IMod? _mod;
 
-        public Mod? ParentMod
+        public IMod? ParentMod
         {
             get => _parentMod;
             private set => SetProperty(ref _parentMod, value);
         }
-        private Mod? _parentMod;
+        private IMod? _parentMod;
 
         // Needs retrigger of OnPropertyChanged on language change
         public DlcId[] DlcIds
@@ -127,6 +126,13 @@ namespace Imya.UI.Components
         }
         private String? _markdownDescription;
 
+        public Uri? ImagePath 
+        {
+            get => _imagePath;
+            set => SetProperty(ref _imagePath, value);
+        }
+        private Uri? _imagePath; 
+
         public ITextManager TextManager { get; init; }
 
         public double WindowWidth { get; private set; }
@@ -150,28 +156,32 @@ namespace Imya.UI.Components
             TextManager.LanguageChanged += OnLanguageChanged;
         }
 
-        private void SetDescription(Mod? mod)
+        private void SetDescription(IMod? mod)
         {
             // TODO is it really necessary to trigger all invidiual fields?
-            ShowKnownIssues = mod?.HasKnownIssues ?? false;
-            ShowDescription = mod?.HasDescription ?? false;
+            ShowKnownIssues = mod?.Modinfo.KnownIssues is not null;
+            ShowDescription = mod?.Modinfo.Description is not null;
             ShowExtraInfo = mod is not null;
-            ShowVersion = (mod?.HasVersion ?? false) || (mod?.HasCreator ?? false);
-            ShowDlcDeps = mod?.HasDlcDependencies ?? false;
-            ShowModID = Properties.Settings.Default.ModCreatorMode && (mod?.HasModID ?? false);
+            ShowVersion = (mod?.Version is not null) || (mod?.Modinfo.CreatorName is not null);
+            ShowDlcDeps = mod?.Modinfo.DLCDependencies is not null;
+            ShowModID = Properties.Settings.Default.ModCreatorMode;
 
             DlcIds = Mod?.Modinfo.DLCDependencies?.Where(x => x?.DLC != null).Select(x => (DlcId)x.DLC!).OrderBy(x => x).ToArray() ?? Array.Empty<DlcId>();
 
             // the default behavior for images is different:
             // If the mod does not have an image, it will show a placeholder. 
             // Only hide the image in case there is no displayed mod.
-            ShowImage = mod is not null;
+
+            ImagePath = mod is not null
+                ? mod.Image
+                : null;
+            ShowImage = true;
 
             AdjustDocumentWidth();
             UpdateDescription();
         }
 
-        public void SetDisplayedMod(Mod? mod)
+        public void SetDisplayedMod(IMod? mod)
         {
             Mod = mod;
             ParentMod = mod;
@@ -220,7 +230,7 @@ namespace Imya.UI.Components
             UseMarkdownDescription = false;
             MarkdownDescription = null;
 
-            if (Mod is null || !Mod.HasDescription || Mod.Modinfo.Description?.Text is not String description)
+            if (Mod is null || Mod.Modinfo.Description?.ToString() is not String description)
                 return;
 
             if (description.StartsWith("file::"))

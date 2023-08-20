@@ -1,4 +1,5 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Factories;
 using System;
 using System.Globalization;
@@ -10,23 +11,23 @@ namespace Imya.UI.ValueConverters
 {
     static class AttributeIcons
     {
-        public static (string, SolidColorBrush) AttributeToIcon(AttributeType type, ModStatus? status)
+        public static (string, SolidColorBrush) AttributeToIcon(string type, ModStatus? status)
         {
             return type switch
             {
-                AttributeType.ModStatus when status == ModStatus.Updated => ("Update", FindResourceBrush("HighlightColorBrush")),
-                AttributeType.ModStatus when status == ModStatus.New => ("Download", FindResourceBrush("HighlightColorBrush")),
-                AttributeType.ModStatus when status == ModStatus.Obsolete => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.ModCompabilityIssue => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.ModReplacedByIssue => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.UnresolvedDependencyIssue => ("FileTree", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.TweakedMod => ("Tools", FindResourceBrush("InformationColorBrush")),
-                AttributeType.MissingModinfo => ("HelpBox", FindResourceBrush("InformationColorBrush")),
-                AttributeType.ModContentInSubfolder => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.IssueModRemoved => ("TrashCanOutline", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.IssueModAccess => ("FolderAlertOutline", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.CyclicDependency => ("CircleArrows", FindResourceBrush("ErrorColorBrush")),
-                AttributeType.DlcNotOwned => ("Ubisoft", FindResourceBrush("InformationColorBrush")),
+                AttributeTypes.ModStatus when status == ModStatus.Updated => ("Update", FindResourceBrush("HighlightColorBrush")),
+                AttributeTypes.ModStatus when status == ModStatus.New => ("Download", FindResourceBrush("HighlightColorBrush")),
+                AttributeTypes.ModStatus when status == ModStatus.Obsolete => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.ModCompabilityIssue => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.ModReplacedByIssue => ("RemoveCircleOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.UnresolvedDependencyIssue => ("FileTree", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.TweakedMod => ("Tools", FindResourceBrush("InformationColorBrush")),
+                AttributeTypes.MissingModinfo => ("HelpBox", FindResourceBrush("InformationColorBrush")),
+                AttributeTypes.ModContentInSubfolder => ("AlertBox", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.IssueModRemoved => ("TrashCanOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.IssueModAccess => ("FolderAlertOutline", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.CyclicDependency => ("CircleArrows", FindResourceBrush("ErrorColorBrush")),
+                AttributeTypes.DlcNotOwned => ("Ubisoft", FindResourceBrush("InformationColorBrush")),
                 _ => ("InformationOutline", FindResourceBrush("TextColorBrush")),
             };
         }
@@ -39,12 +40,12 @@ namespace Imya.UI.ValueConverters
         private static readonly SolidColorBrush Fallback = new(Colors.Black);
     }
 
-    [ValueConversion(typeof(IAttribute), typeof(SolidColorBrush))]
+    [ValueConversion(typeof(IModAttribute), typeof(SolidColorBrush))]
     public class AttributeColorConverter : IValueConverter
     {
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
-            if (value is not IAttribute attrib) 
+            if (value is not IModAttribute attrib) 
                 return string.Empty;
 
             return AttributeIcons.AttributeToIcon(attrib.AttributeType, (attrib as ModStatusAttribute)?.Status).Item2;
@@ -56,12 +57,12 @@ namespace Imya.UI.ValueConverters
         }
     }
 
-    [ValueConversion(typeof(IAttribute), typeof(string))]
+    [ValueConversion(typeof(IModAttribute), typeof(string))]
     public class AttributeIconConverter : IValueConverter
     {
         public object Convert(object value, Type TargetType, object parameter, CultureInfo Culture)
         {
-            if (value is not IAttribute attrib) return
+            if (value is not IModAttribute attrib) return
                 string.Empty;
 
             return AttributeIcons.AttributeToIcon(attrib.AttributeType, (attrib as ModStatusAttribute)?.Status).Item1;

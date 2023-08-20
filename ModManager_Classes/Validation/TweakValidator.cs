@@ -1,6 +1,6 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
 using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.IO;
 using System;
@@ -33,7 +33,7 @@ namespace Imya.Validation
             _tweakedAttributeFactory = tweakedAttributeFactory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
 
             if (changedAction == NotifyCollectionChangedAction.Reset
@@ -47,9 +47,9 @@ namespace Imya.Validation
                 
         }
 
-        private void UpdateWithTweak(Mod mod)
+        private void UpdateWithTweak(IMod mod)
         {
-            mod.Attributes.RemoveAttributesByType(AttributeType.TweakedMod);
+            mod.Attributes.RemoveByType(AttributeTypes.TweakedMod);
             
             //if (!_tweakRepository.IsStored(mod.FolderName))
                //return;
@@ -61,7 +61,7 @@ namespace Imya.Validation
                 var tweaks = _tweaksLoader.Load(mod);
                 if (tweaks is not null && !tweaks.IsEmpty)
                 {
-                    mod.Attributes.AddAttribute(_tweakedAttributeFactory.Get());
+                    mod.Attributes.Add(_tweakedAttributeFactory.Get());
                     _tweaksave_sem.Wait();
                     _tweaksExporter.Save(tweaks);
                     _tweaksave_sem.Release();

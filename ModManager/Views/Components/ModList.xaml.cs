@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models;
 using Imya.Services.Interfaces;
 using Imya.Texts;
 using Imya.UI.Extensions;
@@ -23,8 +23,8 @@ namespace Imya.UI.Components
         /// <summary>
         /// Either the only or the first mod in the current selection
         /// </summary>
-        public Mod? CurrentlySelectedMod { get; private set; } = null;
-        public IEnumerable<Mod>? CurrentlySelectedMods { get; private set; } = null;
+        public IMod? CurrentlySelectedMod { get; private set; } = null;
+        public IEnumerable<IMod>? CurrentlySelectedMods { get; private set; } = null;
 
         public BindableModCollection Mods { get; init; }
 
@@ -88,7 +88,7 @@ namespace Imya.UI.Components
 
         public async void DeleteSelection()
         {
-            await Mods.Model.DeleteAsync(ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray());
+            await Mods.Model.RemoveAsync(ListBox_ModList.SelectedItems.OfType<BindableMod>().Select(x => x.Model).ToArray());
             OnSelectionChanged();
         }
 
@@ -105,11 +105,11 @@ namespace Imya.UI.Components
         private void OnSearchRequest(object sender, TextChangedEventArgs e)
         {
             string filterText = SearchTextBox.Text;
-            Mods.Filter = string.IsNullOrWhiteSpace(filterText) ? null : x => x.HasKeywords(filterText);
+            Mods.Filter = string.IsNullOrWhiteSpace(filterText) ? null : x => x.Name.Contains(filterText);
         }
 
         public event ModListSelectionChangedHandler? ModList_SelectionChanged;
-        public delegate void ModListSelectionChangedHandler(Mod? mod);
+        public delegate void ModListSelectionChangedHandler(IMod? mod);
 
         #region INotifyPropertyChangedMembers
         public event PropertyChangedEventHandler? PropertyChanged = delegate { };

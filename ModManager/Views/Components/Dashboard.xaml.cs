@@ -17,7 +17,8 @@ using Imya.Models.GameLauncher;
 using Imya.Services;
 using Imya.Services.Interfaces;
 using Imya.Texts;
-using Imya.Models.Mods;
+using Anno.EasyMod.Mods;
+using System.Threading.Tasks;
 
 namespace Imya.UI.Components
 {
@@ -37,7 +38,8 @@ namespace Imya.UI.Components
         public IAuthenticator Authenticator { get; }
         private ITweakService _tweakService;
         private IGameLauncherFactory _launcherFactory;
-        private ModCollection _globalMods;
+        private IModCollection _globalMods;
+        private Modio.Client? _modioClient;
 
         private PopupCreator _popupCreator;
 
@@ -50,7 +52,18 @@ namespace Imya.UI.Components
         }
         private bool _canStartGame;
 
-        public Dashboard(
+        public Modio.Models.User? ModioUser
+        {
+            get => _modioUser;
+            private set
+            {
+                _modioUser = value;
+                OnPropertyChanged(nameof(ModioUser));
+            }
+        }
+        private Modio.Models.User? _modioUser;
+
+    public Dashboard(
             IAuthenticator authenticator,
             ITweakService tweakService,
             IAppSettings appSettings,
@@ -60,7 +73,8 @@ namespace Imya.UI.Components
             ITextManager textManager,
             PopupCreator popupCreator,
             IAuthenticationController authController,
-            IImyaSetupService imyaSetupService)
+            IImyaSetupService imyaSetupService,
+            Modio.Client? modioClient = null)
         {
             Authenticator = authenticator;
             AppSettings = appSettings;
@@ -79,6 +93,15 @@ namespace Imya.UI.Components
 
             MainViewController.ViewChanged += UpdateSelection;
             CanStartGame = CheckCanStartGame();
+
+            _modioClient = modioClient;
+            if(_modioClient is not null)
+            {
+                Task.Run(async () => {
+                    var user = await _modioClient.User.GetCurrentUser();
+                    ModioUser = user;
+                });
+            }
         }
 
         private bool CheckCanStartGame()
@@ -102,8 +125,8 @@ namespace Imya.UI.Components
 
         public void StartGameClick(object sender, RoutedEventArgs e)
         {
-            var withUnresolved = _globalMods.WithAttribute(AttributeType.UnresolvedDependencyIssue);
-            var withIncompatibleIssue = _globalMods.WithAttribute(AttributeType.ModCompabilityIssue);
+            var withUnresolved = _globalMods.Where(x => x.Attributes.HasAttributeOfType(AttributeTypes.UnresolvedDependencyIssue));
+            var withIncompatibleIssue = _globalMods.Where(x => x.Attributes.HasAttributeOfType(AttributeTypes.ModCompabilityIssue));
 
             if (withUnresolved?.Count() > 0 || withIncompatibleIssue?.Count() > 0)
             {

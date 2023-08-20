@@ -1,5 +1,4 @@
-﻿using Imya.Enums;
-using Imya.Models;
+﻿using Imya.Models;
 using Imya.Utils;
 using System;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Linq;
 using Imya.Services;
+using Anno.EasyMod.Metadata;
 
 namespace Imya.UI.Popup
 {

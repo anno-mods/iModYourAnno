@@ -1,6 +1,6 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
 using Imya.Texts;
 using System;
 using System.Collections.Generic;
@@ -20,22 +20,22 @@ namespace Imya.Validation
             _attributeFactory = attributeFactory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in changed)
                 ValidateSingle(mod);
         }
 
 
-        private void ValidateSingle(Mod mod)
+        private void ValidateSingle(IMod mod)
         {
             if (!mod.IsRemoved)
             {
-                mod.Attributes.RemoveAttributesByType(AttributeType.IssueModRemoved);
+                mod.Attributes.RemoveByType(AttributeTypes.IssueModRemoved);
                 return;
             }
             mod.Attributes.Clear();
-            mod.Attributes.AddAttribute(_attributeFactory.Get());
+            mod.Attributes.Add(_attributeFactory.Get());
         }
     }
 }

@@ -64,7 +64,11 @@
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
     <PackageReference Include="MaterialDesignThemes" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Modio" Version="1.0.0" />
     <PackageReference Include="Pfim" Version="0.11.2" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Serilog.Sinks.RichTextBox.Wpf" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +76,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Anno.EasyMod">
+      <HintPath>..\ModManager_Classes\lib\Anno.EasyMod.dll</HintPath>
+    </Reference>
     <Reference Include="AnnoRDA">
       <HintPath>lib\AnnoRDA.dll</HintPath>
     </Reference>
@@ -123,6 +130,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Styles\InvisScrollViewer.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Styles\RichTextBoxStyle.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
     </Page>
     <Page Update="Views\GithubBrowserView.xaml">

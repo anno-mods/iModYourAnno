@@ -1,7 +1,9 @@
-﻿namespace Imya.Models.Attributes.Interfaces
+﻿using Anno.EasyMod.Attributes;
+
+namespace Imya.Models.Attributes.Interfaces
 {
     public interface IRemovedFolderAttributeFactory
     {
-        IAttribute Get();
+        IModAttribute Get();
     }
 }

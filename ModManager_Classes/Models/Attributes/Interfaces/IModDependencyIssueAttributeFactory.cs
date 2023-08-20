@@ -1,9 +1,9 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
 
 namespace Imya.Models.Attributes.Interfaces
 {
     public interface IModDependencyIssueAttributeFactory
     {
-        IAttribute Get(IEnumerable<String> context);
+        IModAttribute Get(IEnumerable<String> context);
     }
 }

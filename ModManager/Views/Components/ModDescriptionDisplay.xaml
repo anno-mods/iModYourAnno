@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-            <converters:ImyaImageSourceConverter x:Key="ImageConverter" />
+            <converters:FallbackImageConverter x:Key="FallbackImage" />
             <converters:StringFormatConverter x:Key="Format" />
             <converters:ExtendedBoolToVisibilityConverter x:Key="NegateBoolToVis" TrueValue="Hidden" FalseValue="Visible"/>
 
@@ -44,11 +44,11 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Center">
 
-                <TextBlock Text="{Binding Mod.Category.Text, UpdateSourceTrigger=PropertyChanged}"
+                <TextBlock Text="{Binding Mod.Modinfo.Category.Text, UpdateSourceTrigger=PropertyChanged}"
                            Margin="0,0,5,0"
                            Style="{StaticResource IMYA_TEXT}"
                            FontWeight="ExtraBold"/>
-                <TextBlock Text="{Binding Mod.Name.Text, UpdateSourceTrigger=PropertyChanged}"
+                <TextBlock Text="{Binding Mod.Name, UpdateSourceTrigger=PropertyChanged}"
                            Style="{StaticResource IMYA_TEXT}" />
             </StackPanel>
         </Border>
@@ -66,7 +66,7 @@
                         BorderBrush="{DynamicResource InteractiveComponentColorBrush_Light}"
                         Visibility="{Binding ShowImage, Converter={StaticResource BoolToVis}}"
                         Width="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}">
-                    <Image Source="{Binding Mod.Image, Converter={StaticResource ImageConverter}}"
+                    <Image Source="{Binding ImagePath, Converter={StaticResource FallbackImage}}"
                            Stretch="UniformToFill"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
@@ -158,7 +158,7 @@
                                    MaxWidth="{Binding DescriptionTextWidth, UpdateSourceTrigger=PropertyChanged}"
                                    TextWrapping="Wrap"
                                    HorizontalAlignment="Left"
-                                   Text="{Binding Mod.Modinfo.Description.Text, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding Mod.Modinfo.Description, UpdateSourceTrigger=PropertyChanged}"
                                    Visibility="{Binding UseMarkdownDescription, Converter={StaticResource NegateBoolToVis}, UpdateSourceTrigger=PropertyChanged}"
                                    Margin="2,8,2,8" />
                         <FlowDocumentScrollViewer Visibility="{Binding UseMarkdownDescription, Converter={StaticResource BoolToVis}, UpdateSourceTrigger=PropertyChanged}"
@@ -192,7 +192,7 @@
                                     <TextBlock Style="{StaticResource IMYA_TEXT}"
                                                TextWrapping="Wrap"
                                                Margin="0,3,0,0"
-                                               Text="{Binding Text}"
+                                               Text="{Binding}"
                                                MaxWidth="{Binding DataContext.KnownIssueTextWidth, ElementName=BaseGrid}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -320,9 +320,9 @@
 
                                     <Grid.ToolTip>
                                         <StackPanel Orientation="Horizontal" Margin ="4">
-                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Category.Text}"
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Modinfo.Category.Text}"
                                                        FontWeight="Bold"></TextBlock>
-                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Name.Text}"
+                                            <TextBlock Style="{StaticResource IMYA_TEXT}" Text="{Binding Name}"
                                                        Margin="5,0,0,0"></TextBlock>
 
                                         </StackPanel>

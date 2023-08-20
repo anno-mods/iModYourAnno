@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Anno.EasyMod.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Imya.Models.Attributes
 {
-    public class GenericAttribute : IAttribute
+    public class GenericAttribute : IModAttribute
     {
-        public AttributeType AttributeType { get; init; }
+        public string AttributeType { get; init; }
         public IText Description { get; init; }
 
-        bool IAttribute.MultipleAllowed => false;
+        bool IModAttribute.MultipleAllowed => false;
     }
 }

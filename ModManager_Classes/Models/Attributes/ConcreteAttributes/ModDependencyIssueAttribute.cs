@@ -1,18 +1,13 @@
-﻿using Imya.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Anno.EasyMod.Attributes;
 
 namespace Imya.Models.Attributes
 {
-    public class ModDependencyIssueAttribute : IAttribute
+    public class ModDependencyIssueAttribute : IModAttribute
     {
-        public AttributeType AttributeType { get; init; } = AttributeType.UnresolvedDependencyIssue;
+        public string AttributeType { get; init; } = AttributeTypes.UnresolvedDependencyIssue;
         public IText Description { get; init; }
 
-        bool IAttribute.MultipleAllowed => true;
+        bool IModAttribute.MultipleAllowed => true;
 
         public IEnumerable<String> UnresolvedDependencies { get; init; }
 

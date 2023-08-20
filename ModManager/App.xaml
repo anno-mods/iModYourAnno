@@ -25,10 +25,8 @@
                 <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ToolTipStyle.xaml" />
                 <ResourceDictionary Source="Styles/SliderStyle.xaml" />
-                
+                <ResourceDictionary Source="Styles/RichTextBoxStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-
 
             <Style TargetType="FlowDocument"
                    x:Key="DocumentStyle">

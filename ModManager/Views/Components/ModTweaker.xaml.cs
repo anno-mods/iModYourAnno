@@ -16,7 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Imya.Models.Mods;
+using Anno.EasyMod.Mods;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
 using Imya.Services;
 using Imya.Services.Interfaces;
@@ -38,7 +38,7 @@ namespace Imya.UI.Components
         public IGameSetupService GameSetup { get; init; }
         private readonly PopupCreator _popupCreator; 
 
-        public Mod? CurrentMod
+        public IMod? CurrentMod
         {
             get => _currentMod;
             set
@@ -47,7 +47,7 @@ namespace Imya.UI.Components
                 OnPropertyChanged(nameof(CurrentMod));
             }
         }
-        private Mod? _currentMod;
+        private IMod? _currentMod;
 
         public ModTweaker(
             ITextManager textManager,
@@ -75,7 +75,7 @@ namespace Imya.UI.Components
             }
         }
 
-        public void UpdateCurrentDisplay(Mod mod)
+        public void UpdateCurrentDisplay(IMod mod)
         {
             CurrentMod = mod;
             if (IsVisible)
@@ -89,7 +89,7 @@ namespace Imya.UI.Components
             TweakManager.Save();
         }
 
-        private void LoadTweaks(Mod mod)
+        private void LoadTweaks(IMod mod)
         {
             if (TweakManager.HasUnsavedChanges)
             {
@@ -125,7 +125,7 @@ namespace Imya.UI.Components
 
         private void ResetButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (CurrentMod is Mod) 
+            if (CurrentMod is IMod) 
                 Reload();
         }
 

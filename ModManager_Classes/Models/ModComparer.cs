@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Imya.Models.Mods;
+using Anno.EasyMod.Mods;
 
 namespace Imya.Models
 {
-    public class CompareByActiveCategoryName : IComparer<Mod>
+    public class CompareByActiveCategoryName : IComparer<IMod>
     {
         public readonly static CompareByActiveCategoryName Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             if (y is null && x is null) return 0;
             if (x is null) return -1;
@@ -25,11 +25,11 @@ namespace Imya.Models
         }
     }
 
-    public class CompareByActive : IComparer<Mod>
+    public class CompareByActive : IComparer<IMod>
     {
         public readonly static CompareByActive Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             if (y is null && x is null) return 0;
             if (x is null) return -1;
@@ -39,20 +39,20 @@ namespace Imya.Models
         }
     }
 
-    public class CompareByCategoryName : IComparer<Mod>
+    public class CompareByCategoryName : IComparer<IMod>
     {
         public readonly static CompareByCategoryName Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             if (y is null && x is null) return 0;
             if (x is null) return -1;
             if (y is null) return 1;
 
-            int category = string.Compare(x.Modinfo?.Category.Text, y.Modinfo?.Category.Text);
+            int category = string.Compare(x.Modinfo?.Category?.ToString(), y.Modinfo?.Category?.ToString());
             if (category != 0)
                 return category;
-            int name = string.Compare(x.Modinfo?.ModName.Text, y.Modinfo?.ModName.Text);
+            int name = string.Compare(x.Modinfo?.ModName?.ToString(), y.Modinfo?.ModName?.ToString());
             if (name != 0)
                 return name;
 
@@ -60,11 +60,11 @@ namespace Imya.Models
         }
     }
 
-    public class CompareByFolder : IComparer<Mod>
+    public class CompareByFolder : IComparer<IMod>
     {
         public readonly static CompareByFolder Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             if (y is null && x is null) return 0;
             if (x is null) return -1;
@@ -74,11 +74,11 @@ namespace Imya.Models
         }
     }
 
-    public class ComparebyLoadOrder : IComparer<Mod>
+    public class ComparebyLoadOrder : IComparer<IMod>
     {
         public readonly static ComparebyLoadOrder Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             //ignore inactive
             var byActive = CompareByActive.Default.Compare(x, y);
@@ -107,7 +107,8 @@ namespace Imya.Models
         }
 
         private enum Category { LoadAfterNoWildcard, NoLoadAfter, Wildcard }
-        private Category GetCategory(Mod x)
+
+        private Category GetCategory(IMod x)
         {
             if (x.Modinfo.LoadAfterIds is null)
                 return Category.NoLoadAfter;
@@ -116,18 +117,18 @@ namespace Imya.Models
             else return Category.LoadAfterNoWildcard;
         }
 
-        private bool IsWildcardDependant(Mod x)
+        private bool IsWildcardDependant(IMod x)
         {
             return x.Modinfo?.LoadAfterIds?.Contains("*") ?? false;
         }
 
     }
 
-    public class CompareByLoadAfterID : IComparer<Mod>
+    public class CompareByLoadAfterID : IComparer<IMod>
     {
         public readonly static CompareByLoadAfterID Default = new();
 
-        public int Compare(Mod? x, Mod? y)
+        public int Compare(IMod? x, IMod? y)
         {
             if (y is null && x is null) return 0;
             if (x is null) return -1;

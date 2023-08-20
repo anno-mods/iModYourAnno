@@ -1,38 +1,37 @@
-﻿using System.Windows;
-using Imya.UI.Properties;
-using Imya.UI.Utils;
-using System.Threading.Tasks;
-using Imya.Validation;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Imya.Services.Interfaces;
-using Imya.Services;
-using Imya.Models.Cache;
+﻿using Anno.EasyMod.DI;
+using Anno.EasyMod.Utils;
+using Anno.Utils;
 using Imya.GithubIntegration;
-using System;
-using Imya.Utils;
-using Imya.Texts;
-using Imya.UI.Views;
+using Imya.GithubIntegration.RepositoryInformation;
 using Imya.GithubIntegration.StaticData;
-using Imya.UI.Models;
-using Imya.Models.Options;
-using Imya.Models.GameLauncher;
-using Imya.Models.Installation.Interfaces;
-using Imya.Models.Installation;
-using Imya.Models.Mods;
-using System.Windows.Forms;
-using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Attributes.Factories;
+using Imya.Models.Attributes.Interfaces;
+using Imya.Models.Cache;
+using Imya.Models.GameLauncher;
+using Imya.Models.Installation;
+using Imya.Models.Installation.Interfaces;
 using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.IO;
+using Imya.Models.Options;
+using Imya.Services;
+using Imya.Services.Interfaces;
+using Imya.Texts;
 using Imya.UI.Components;
-using Imya.Models.ModMetadata;
-using Octokit;
-using Imya.GithubIntegration.JsonData;
-using Imya.GithubIntegration.RepositoryInformation;
+using Imya.UI.Models;
+using Imya.UI.Properties;
+using Imya.UI.Utils;
 using Imya.UI.ValueConverters;
-using Anno.Utils;
-using Newtonsoft.Json.Linq;
+using Imya.UI.Views;
+using Imya.Utils;
+using Imya.Validation;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Octokit;
+using Serilog;
+using Serilog.Sinks.RichTextBox.Themes;
+using System;
+using System.Windows;
 
 namespace Imya.UI
 {
@@ -49,6 +48,8 @@ namespace Imya.UI
                 .ConfigureServices((hostContext, services) =>
                 {
                     //services
+                    services.ConfigureEasyMod();
+                    //services.ConfigureModio(new Modio.Client(new Modio.Credentials("apiKey", "oauthtoken")));
                     services.AddSingleton<ITextManager, TextManager>();
                     services.AddSingleton<IGameSetupService, GameSetupService>();
                     var gameSetup = services.BuildServiceProvider().GetRequiredService<IGameSetupService>();
@@ -56,7 +57,7 @@ namespace Imya.UI
                     gameSetup.SetModDirectoryName(Settings.Default.ModDirectoryName);
 
                     services.AddSingleton<IImyaSetupService, ImyaSetupService>();
-                    services.AddSingleton<IGameFilesService, GameFileService>(); 
+                    services.AddSingleton<IGameFilesService, GameFileService>();
                     services.AddTransient<ICyclicDependencyAttributeFactory, CyclicDependencyAttributeFactory>();
                     services.AddTransient<IMissingModinfoAttributeFactory, MissingModinfoAttributeFactory>();
                     services.AddTransient<IModCompabilityAttributeFactory, ModCompabilityAttributeFactory>();
@@ -67,11 +68,7 @@ namespace Imya.UI
                     services.AddTransient<ITweakedAttributeFactory, TweakedAttributeFactory>();
                     services.AddTransient<IContentInSubfolderAttributeFactory, ContentInSubfolderAttributeFactory>();
                     services.AddTransient<IModAccessIssueAttributeFactory, ModAccessIssueAttributeFactory>();
-                    
 
-                    services.AddSingleton<LocalizedModinfoFactory>();
-                    services.AddSingleton<IModFactory, ModFactory>();
-                    services.AddSingleton<IModCollectionFactory, ModCollectionFactory>();
                     services.AddTransient<ModTweaksStorageModelLoader>();
                     services.AddSingleton<ITweakRepository, TweakRepository>();
                     services.AddSingleton<ModTweaksLoader>();
@@ -145,7 +142,6 @@ namespace Imya.UI
                     services.AddTransient<ModList>();
                     services.AddTransient<ModTweaker>();
                     services.AddTransient<Dashboard>();
-                    services.AddTransient<ConsoleLog>();
                     services.AddTransient<ModDescriptionDisplay>();
                     services.AddSingleton<ModActivationView>();
                     services.AddSingleton<GithubBrowserView>();
@@ -157,10 +153,28 @@ namespace Imya.UI
                     services.AddSingleton<MainWindow>();
                     services.AddSingleton<IMainViewController, MainViewController>();
                     services.AddSingleton<IAuthenticationController, AuthenticationController>();
-
+                    services.AddSingleton<System.Windows.Controls.RichTextBox>(sp => {
+                        return new System.Windows.Controls.RichTextBox();
+                    });
+                    services.AddSingleton<RedirectOutput>();
 
                     services.AddSingleton<SelfUpdater>();
                 })
+                .ConfigureLogging(builder => 
+                {
+                    builder.ClearProviders();
+                    builder.AddSerilog();
+                    builder.SetMinimumLevel(LogLevel.Trace);
+                })
+                .UseSerilog((hostingContext, services, loggerConfiguration)
+                    => loggerConfiguration
+                        .Enrich.FromLogContext()
+                        .WriteTo.RichTextBox(
+                                services.GetService<System.Windows.Controls.RichTextBox>(), 
+                                theme: RichTextBoxConsoleTheme.None,
+                                outputTemplate: "[{Timestamp:HH:mm:ss}] {Message:lj}{NewLine}{Exception}"
+                            )
+                        )
                 .Build();
 
             var textManager = AppHost.Services.GetRequiredService<ITextManager>();
@@ -170,17 +184,24 @@ namespace Imya.UI
             var settings = AppHost.Services.GetRequiredService<IAppSettings>();
             settings.GamePath = Settings.Default.GameRootPath;
             settings.ModDirectoryName = Settings.Default.ModDirectoryName; 
+        }
 
-            var factory = AppHost.Services.GetRequiredService<IModCollectionFactory>();
-            var collection = factory.Get(gameSetup.GetModDirectory(), normalize: true);
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            var gameSetup = AppHost.Services.GetRequiredService<IGameSetupService>();
             var imyaSetup = AppHost.Services.GetRequiredService<IImyaSetupService>();
+            var hooks = AppHost.Services.GetRequiredService<ModCollectionHooks>();
+
+            var collection = await AppHost.Services
+                .GetRequiredService<CollectionBuilder>()
+                .AddFromLocalSource(gameSetup.GetModDirectory())
+                //.AddModio()
+                .BuildAsync();
             imyaSetup.GlobalModCollection = collection;
 
             //subscribe the global mod collection to the gamesetup
             //check if this can be moved to OnStartup
-            var globalMods = imyaSetup.GlobalModCollection;
-            var hooks = AppHost.Services.GetRequiredService<ModCollectionHooks>();
-            hooks.HookTo(globalMods);
+            hooks.HookTo(imyaSetup.GlobalModCollection);
             hooks.AddHook(AppHost.Services.GetRequiredService<ModContentValidator>());
             hooks.AddHook(AppHost.Services.GetRequiredService<ModCompatibilityValidator>());
             hooks.AddHook(AppHost.Services.GetRequiredService<CyclicDependencyValidator>());
@@ -190,12 +211,6 @@ namespace Imya.UI
             hooks.AddHook(AppHost.Services.GetRequiredService<TweakValidator>());
             hooks.AddHook(AppHost.Services.GetRequiredService<DlcOwnershipValidator>());
             hooks.HookTo(AppHost.Services.GetRequiredService<IAppSettings>());
-        }
-
-        protected override async void OnStartup(StartupEventArgs e)
-        {
-            var globalMods = AppHost.Services.GetRequiredService<IImyaSetupService>().GlobalModCollection;
-            await globalMods.LoadModsAsync();
 
             var appSettings = AppHost.Services.GetRequiredService<IAppSettings>();
             appSettings.Initialize();
@@ -216,9 +231,14 @@ namespace Imya.UI
             Resources.Add("DlcIconConverter", AppHost.Services.GetRequiredService<DlcIconConverter>());
 
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+            AppHost.Services.GetRequiredService<System.Windows.Controls.RichTextBox>()
+                .Style = (Style)FindResource("IMYA_RICHTEXTBOX");
+            var redirectedOut = AppHost.Services.GetRequiredService<RedirectOutput>();
+            Console.SetOut(redirectedOut);
             startupForm.Show();
 
             base.OnStartup(e);
+
         }
 
         protected override async void OnExit(ExitEventArgs e)

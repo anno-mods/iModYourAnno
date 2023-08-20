@@ -1,5 +1,5 @@
-﻿using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
 using System;
 using System.Collections.Generic;
@@ -17,12 +17,12 @@ namespace Imya.Models.Attributes.Factories
             _textManager = textManager;
         }
 
-        public IAttribute Get(IEnumerable<string> context)
+        public IModAttribute Get(IEnumerable<string> context)
         {
             String text = _textManager.GetText("ATTRIBUTE_MISSINGDEPENDENCY")?.Text ?? "";
             return new ModDependencyIssueAttribute()
             {
-                AttributeType = AttributeType.UnresolvedDependencyIssue,
+                AttributeType = AttributeTypes.UnresolvedDependencyIssue,
                 Description = new SimpleText(string.Format(text, string.Join("\n - ", context))),
                 UnresolvedDependencies = context
             };
