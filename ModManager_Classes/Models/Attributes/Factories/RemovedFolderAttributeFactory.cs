@@ -1,4 +1,5 @@
-﻿using Imya.Models.Attributes.Interfaces;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
 using Imya.Utils;
 
@@ -14,13 +15,13 @@ namespace Imya.Models.Attributes.Factories
 
             RemovedFolderAttribute = new GenericAttribute()
             {
-                AttributeType = AttributeType.IssueModRemoved,
+                AttributeType = AttributeTypes.IssueModRemoved,
                 //Description = TextManager.Instance.GetText("ATTRIBUTE_TWEAKED")
                 Description = new SimpleText("This mod has been removed by another program")
             };
         }
 
-        public IAttribute Get()
+        public IModAttribute Get()
         {
             return RemovedFolderAttribute;
         }

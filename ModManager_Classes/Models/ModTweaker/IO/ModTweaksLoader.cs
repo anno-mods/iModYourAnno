@@ -1,25 +1,37 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
 using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
+using Microsoft.Extensions.Logging;
 
 namespace Imya.Models.ModTweaker.IO
 {
     public class ModTweaksLoader
     {
         private readonly ITweakRepository _tweakRepository;
+        private readonly ILogger<ModTweaksLoader> _logger;
 
-        public ModTweaksLoader(ITweakRepository tweakRepository) 
+        public ModTweaksLoader(ITweakRepository tweakRepository,
+            ILogger<ModTweaksLoader> logger) 
         {
             _tweakRepository = tweakRepository;
+            _logger = logger;
         }
 
-        public ModTweaks? Load(Mod mod)
+        public ModTweaks? Load(IMod mod)
         {
+            string[]? files = Array.Empty<string>();
+            try
+            {
+                var test = mod?.GetFiles();
+                files = mod?.EnumerateFiles("*.xml")?
+                                .Where(x => !x.EndsWith("imyatweak.include.xml"))
+                                .Select(x => Path.GetRelativePath(mod.FullModPath, x))
+                                .ToArray();
 
-            var files = mod.GetFilesWithExtension("xml")
-                            .Where(x => !x.EndsWith("imyatweak.include.xml"))
-                            .Select(x => Path.GetRelativePath(mod.FullModPath, x))
-                            .ToArray();
+            } catch (Exception ex)
+            {
+                _logger.LogError("Error during File enumeration!", ex);
+            }
 
             var list = new List<TweakerFile>();
             foreach (string file in files)

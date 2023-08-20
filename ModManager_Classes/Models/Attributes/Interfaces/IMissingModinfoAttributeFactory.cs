@@ -1,7 +1,9 @@
-﻿namespace Imya.Models.Attributes.Interfaces
+﻿using Anno.EasyMod.Attributes;
+
+namespace Imya.Models.Attributes.Interfaces
 {
     public interface IMissingModinfoAttributeFactory
     {
-        IAttribute Get();
+        IModAttribute Get();
     }
 }

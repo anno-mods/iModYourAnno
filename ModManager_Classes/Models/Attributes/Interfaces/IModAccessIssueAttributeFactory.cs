@@ -1,8 +1,10 @@
-﻿namespace Imya.Models.Attributes.Interfaces
+﻿using Anno.EasyMod.Attributes;
+
+namespace Imya.Models.Attributes.Interfaces
 {
     public interface IModAccessIssueAttributeFactory
     {
-        IAttribute Get();
-        IAttribute GetNoDelete();
+        IModAttribute Get();
+        IModAttribute GetNoDelete();
     }
 }

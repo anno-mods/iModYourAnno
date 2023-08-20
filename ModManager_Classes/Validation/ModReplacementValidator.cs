@@ -1,13 +1,13 @@
 ﻿using Imya.Models.Attributes.Interfaces;
 using Imya.Models.Attributes;
-using Imya.Models.Mods;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Imya.Models.ModMetadata.ModinfoModel;
 using System.Collections.Specialized;
+using Anno.EasyMod.Mods;
+using Anno.EasyMod.Metadata;
 
 namespace Imya.Validation
 {
@@ -20,26 +20,26 @@ namespace Imya.Validation
             _modReplacedByAttributeFactory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in all)
                 ValidateSingle(mod, all);
         }
 
-        private void ValidateSingle(Mod mod, IReadOnlyCollection<Mod> collection)
+        private void ValidateSingle(IMod mod, IReadOnlyCollection<IMod> collection)
         {
-            mod.Attributes.RemoveAttributesByType(AttributeType.ModReplacedByIssue);
+            mod.Attributes.RemoveByType(AttributeTypes.ModReplacedByIssue);
             // skip dependency check if inactive or standalone
             if (!mod.IsActiveAndValid || collection is null)
                 return;
 
-            Mod? newReplacementMod = HasBeenDeprecated(mod.Modinfo, collection) ?? IsNewestOfID(mod, collection);
+            IMod? newReplacementMod = HasBeenDeprecated(mod.Modinfo, collection) ?? IsNewestOfID(mod, collection);
             if (newReplacementMod is not null && newReplacementMod != mod)
-                mod.Attributes.AddAttribute(_modReplacedByAttributeFactory.Get(newReplacementMod));
+                mod.Attributes.Add(_modReplacedByAttributeFactory.Get(newReplacementMod));
         }
 
 
-        private static Mod? HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+        private static IMod? HasBeenDeprecated(Modinfo modinfo, IReadOnlyCollection<IMod> collection)
         {
             if (collection is null || modinfo.ModID is null)
                 return null;
@@ -47,7 +47,7 @@ namespace Imya.Validation
             return collection.FirstOrDefault(x => x.Modinfo?.DeprecateIds?.Contains(modinfo.ModID) ?? false);
         }
 
-        private static Mod? IsNewestOfID(Mod mod, IReadOnlyCollection<Mod> collection)
+        private static IMod? IsNewestOfID(IMod mod, IReadOnlyCollection<IMod> collection)
         {
             if (collection is null || mod.Modinfo.ModID is null)
                 return null;

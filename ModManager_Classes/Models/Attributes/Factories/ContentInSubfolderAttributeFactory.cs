@@ -1,10 +1,6 @@
-﻿using Imya.Models.Attributes.Interfaces;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Imya.Models.Attributes.Factories
 {
@@ -19,11 +15,11 @@ namespace Imya.Models.Attributes.Factories
 
             Subfolder = new GenericAttribute()
             {
-                AttributeType = AttributeType.ModContentInSubfolder,
+                AttributeType = AttributeTypes.ModContentInSubfolder,
                 Description = _textManager.GetText("ATTRIBUTE_MODCONTENTSUBFOLDER")
             };
         }
 
-        public IAttribute Get() => Subfolder;
+        public IModAttribute Get() => Subfolder;
     }
 }

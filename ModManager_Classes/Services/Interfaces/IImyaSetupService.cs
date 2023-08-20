@@ -1,9 +1,4 @@
-﻿using Imya.Models.Mods;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Anno.EasyMod.Mods;
 
 namespace Imya.Services.Interfaces
 {
@@ -15,7 +10,7 @@ namespace Imya.Services.Interfaces
         public String TweakDirectoryPath { get; }
         public String UnpackDirectoryPath { get; }
 
-        public ModCollection GlobalModCollection { get; set; }
+        public IModCollection GlobalModCollection { get; set; }
 
         void Init();
     }

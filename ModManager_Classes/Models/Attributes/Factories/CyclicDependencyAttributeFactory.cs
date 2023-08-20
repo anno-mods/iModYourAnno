@@ -1,5 +1,6 @@
-﻿using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
 using Imya.Utils;
 using System;
@@ -18,14 +19,14 @@ namespace Imya.Models.Attributes.Factories
             _textManager = textManager;
         }
 
-        public IAttribute Get(IEnumerable<Mod> context)
+        public IModAttribute Get(IEnumerable<IMod> context)
         {
             return new GenericModContextAttribute()
             {
-                AttributeType = AttributeType.CyclicDependency,
+                AttributeType = AttributeTypes.CyclicDependency,
                 Description = new SimpleText(
                    string.Format(_textManager.GetText("ATTRIBUTE_CYCLIC_DEPENDENCY").Text,
-                                string.Join(',', context.Select(x => $"[{x.Category}] {x.Name}")))),
+                                string.Join(',', context.Select(x => $"[{x.Modinfo.Category}] {x.Name}")))),
                 Context = context
             };
         }

@@ -1,5 +1,5 @@
-﻿using Imya.Models.Attributes;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models.Attributes;
 using Imya.Models.ModTweaker;
 using Imya.Models.ModTweaker.DataModel.Storage;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
@@ -13,14 +13,14 @@ namespace Imya.Validation
     public class ModCollectionHooks
     {
         private List<IModValidator> validators = new();
-        private ModCollection _mods; 
+        private IModCollection _mods; 
 
         public ModCollectionHooks()
         {
             
         }
 
-        public void HookTo(ModCollection mods)
+        public void HookTo(IModCollection mods)
         {
             mods.CollectionChanged += ValidateOnChange;
             _mods = mods; 
@@ -38,10 +38,10 @@ namespace Imya.Validation
 
         private void ValidateOnChange(object? sender, NotifyCollectionChangedEventArgs e)
         {
-            if (sender is not ModCollection collection)
+            if (sender is not IModCollection collection)
                 return;
 
-            IEnumerable<Mod> changed = e.NewItems?.OfType<Mod>() ?? collection.Mods;
+            IEnumerable<IMod> changed = e.NewItems?.OfType<IMod>() ?? collection.Mods;
             foreach (var validator in validators)
                 validator.Validate(changed, collection.Mods, e.Action);
         }
@@ -50,7 +50,7 @@ namespace Imya.Validation
         {
             foreach (var validator in validators)
             {
-                validator.Validate(Enumerable.Empty<Mod>(), _mods.Mods, NotifyCollectionChangedAction.Move);
+                validator.Validate(Enumerable.Empty<IMod>(), _mods.Mods, NotifyCollectionChangedAction.Move);
             }
         }
 

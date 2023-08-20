@@ -1,6 +1,6 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Interfaces;
-using Imya.Models.Mods;
 using Imya.Utils;
 using System.Collections.Specialized;
 
@@ -18,17 +18,16 @@ namespace Imya.Validation
             _factory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in changed)
                 ValidateSingle(mod);
         }
 
-        private void ValidateSingle(Mod mod)
+        private void ValidateSingle(IMod mod)
         {
             if (mod.IsRemoved || !Directory.Exists(mod.FullModPath))
             {
-                mod.IsRemoved = true;
                 return;
             }
 
@@ -40,7 +39,7 @@ namespace Imya.Validation
             if (foundFolders.Length > 0)
             {
                 // there's a data/ somewhere deeper, probably a mistake then
-                mod.Attributes.AddAttribute(_factory.Get());
+                mod.Attributes.Add(_factory.Get());
             }
         }
     }

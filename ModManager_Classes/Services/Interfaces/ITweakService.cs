@@ -1,4 +1,4 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
 using System;
 using System.Collections.Generic;
@@ -18,6 +18,6 @@ namespace Imya.Services.Interfaces
         void Save();
         Task SaveAsync();
         void Unload();
-        void Load(Mod mod, bool ClearCurrentWhileLoading = true);
+        void Load(IMod mod, bool ClearCurrentWhileLoading = true);
     }
 }

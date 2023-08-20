@@ -1,4 +1,4 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
 using Imya.Models.ModTweaker.DataModel.Tweaking;
 using Imya.Models.ModTweaker.IO;
 using Imya.Models.NotifyPropertyChanged;
@@ -87,7 +87,7 @@ namespace Imya.Services
             IsSaving = false;
         }
 
-        public void Load(Mod mod, bool ClearCurrentWhileLoading = true)
+        public void Load(IMod mod, bool ClearCurrentWhileLoading = true)
         {
             IsLoading = true;
             HasUnsavedChanges = false;

@@ -1,5 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.Mods;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Imya.Services.Interfaces
     public interface IProfilesService
     {
         IEnumerable<String> GetSavedKeys();
-        ModActivationProfile CreateFromModCollection(ModCollection collection);
+        ModActivationProfile CreateFromModCollection(IModCollection collection);
         ModActivationProfile? LoadProfile(String key);
         void DeleteActivationProfile(String key);
         void SaveProfile(ModActivationProfile profile, String key);

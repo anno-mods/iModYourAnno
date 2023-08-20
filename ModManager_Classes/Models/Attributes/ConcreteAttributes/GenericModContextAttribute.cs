@@ -1,19 +1,20 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
 using Imya.Utils;
 
 namespace Imya.Models.Attributes
 {
-    public class GenericModContextAttribute : IAttribute
+    public class GenericModContextAttribute : IModAttribute
     {
-        public AttributeType AttributeType { get; init; }
+        public string AttributeType { get; init; }
         public IText Description { get; init; }
-        public IEnumerable<Mod> Context { get; init; }
+        public IEnumerable<IMod> Context { get; init; }
 
-        bool IAttribute.MultipleAllowed => true;
+        bool IModAttribute.MultipleAllowed => true;
 
         public GenericModContextAttribute()
         { 
-            Context = Enumerable.Empty<Mod>();
+            Context = Enumerable.Empty<IMod>();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
 
 namespace Imya.Models.Attributes.Interfaces
 {
     public interface IModReplacedByAttributeFactory
     {
-        IAttribute Get(Mod replacedBy);
+        IModAttribute Get(IMod replacedBy);
     }
 }

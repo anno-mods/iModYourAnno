@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Imya.Models.Attributes
 {
+#if false
     public class AttributeCollection : ObservableCollection<IAttribute>
     {
         private object _lock = new Object();
@@ -20,12 +21,12 @@ namespace Imya.Models.Attributes
             }
         }
 
-        public IAttribute? GetByType(AttributeType type)
+        public IAttribute? GetByType(AttributeTypes type)
         {
             return this.FirstOrDefault(x => x.AttributeType == type);
         }
 
-        public bool HasAttribute(AttributeType type)
+        public bool HasAttribute(AttributeTypes type)
         {
             return this.Any(x => x?.AttributeType == type);
         }
@@ -35,11 +36,12 @@ namespace Imya.Models.Attributes
             Remove(attrib);
         }
 
-        public void RemoveAttributesByType(AttributeType type)
+        public void RemoveAttributesByType(AttributeTypes type)
         {
             var items = this.Where(x => x.AttributeType == type).ToArray();
             foreach (var item in items)
                 Remove(item);
         }
     }
+#endif
 }

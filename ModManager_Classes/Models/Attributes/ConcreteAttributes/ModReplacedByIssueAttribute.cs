@@ -1,18 +1,19 @@
-﻿using Imya.Models.Mods;
-using Imya.Utils;
+﻿
+using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
 
 namespace Imya.Models.Attributes
 {
-    public class ModReplacedByIssue : IAttribute
+    public class ModReplacedByIssue : IModAttribute
     {
-        public AttributeType AttributeType { get; } = AttributeType.ModReplacedByIssue;
+        public string AttributeType { get; } = AttributeTypes.ModReplacedByIssue;
         public IText Description { get; init; }
 
-        bool IAttribute.MultipleAllowed => true;
+        bool IModAttribute.MultipleAllowed => true;
 
-        readonly Mod _replacedBy; 
+        readonly IMod _replacedBy; 
 
-        public ModReplacedByIssue(Mod replacedBy)
+        public ModReplacedByIssue(IMod replacedBy)
         {
             _replacedBy = replacedBy;
         }

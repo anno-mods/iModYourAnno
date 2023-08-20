@@ -1,7 +1,8 @@
-﻿namespace Imya.Models.Attributes.Interfaces
+﻿using Anno.EasyMod.Attributes;
+namespace Imya.Models.Attributes.Interfaces
 {
     public interface IContentInSubfolderAttributeFactory
     {
-        IAttribute Get();
+        IModAttribute Get();
     }
 }

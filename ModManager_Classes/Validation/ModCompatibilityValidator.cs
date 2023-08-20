@@ -1,7 +1,7 @@
-﻿using Imya.Models.Attributes;
+﻿using Anno.EasyMod.Mods;
+using Anno.EasyMod.Metadata;
+using Imya.Models.Attributes;
 using Imya.Models.Attributes.Interfaces;
-using Imya.Models.ModMetadata.ModinfoModel;
-using Imya.Models.Mods;
 using System.Collections.Immutable;
 using System.Collections.Specialized;
 
@@ -16,15 +16,15 @@ namespace Imya.Validation
             _compabilityAttributeFactory = factory;
         }
 
-        public void Validate(IEnumerable<Mod> changed, IReadOnlyCollection<Mod> all, NotifyCollectionChangedAction changedAction)
+        public void Validate(IEnumerable<IMod> changed, IReadOnlyCollection<IMod> all, NotifyCollectionChangedAction changedAction)
         {
             foreach (var mod in all)
                 ValidateSingle(mod, all);
         }
 
-        private void ValidateSingle(Mod mod, IReadOnlyCollection<Mod> collection)
+        private void ValidateSingle(IMod mod, IReadOnlyCollection<IMod> collection)
         {
-            mod.Attributes.RemoveAttributesByType(AttributeType.ModCompabilityIssue);
+            mod.Attributes.RemoveByType(AttributeTypes.ModCompabilityIssue);
 
             // skip dependency check if inactive or standalone
             if (!mod.IsActiveAndValid || collection is null)
@@ -32,11 +32,11 @@ namespace Imya.Validation
 
             var incompatibles = GetIncompatibleMods(mod.Modinfo, collection);
             if (incompatibles.Any())
-                mod.Attributes.AddAttribute(_compabilityAttributeFactory.Get(incompatibles));
+                mod.Attributes.Add(_compabilityAttributeFactory.Get(incompatibles));
         }
 
 
-        private static IEnumerable<Mod> GetIncompatibleMods(Modinfo modinfo, IReadOnlyCollection<Mod> collection)
+        private static IEnumerable<IMod> GetIncompatibleMods(Modinfo modinfo, IReadOnlyCollection<IMod> collection)
         {
             if (collection is null || modinfo.IncompatibleIds is null || modinfo.ModID is null) 
                 yield break;

@@ -1,12 +1,11 @@
-﻿using Imya.Enums;
-using Imya.Models.ModMetadata.ModinfoModel;
-using Imya.Models.NotifyPropertyChanged;
+﻿using Anno.EasyMod.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Imya.Models.NotifyPropertyChanged;
 
 namespace Imya.Utils
 {

@@ -1,6 +1,5 @@
-﻿using Imya.Models;
-using Imya.Models.ModMetadata;
-using Imya.Models.ModMetadata.ModinfoModel;
+﻿using Anno.EasyMod.Metadata;
+using Imya.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

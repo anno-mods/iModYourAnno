@@ -1,6 +1,6 @@
-﻿using Imya.Models;
+﻿using Anno.EasyMod.Mods;
+using Imya.Models;
 using Imya.Models.Attributes.Factories;
-using Imya.Models.Mods;
 using Imya.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -33,7 +33,7 @@ namespace Imya.Services
             return filepaths.Select(x => Path.GetFileNameWithoutExtension(x)).ToArray();
         }
 
-        public ModActivationProfile CreateFromModCollection(ModCollection collection)
+        public ModActivationProfile CreateFromModCollection(IModCollection collection)
         {
             var foldernames = collection.Mods
                 .Where(x => x.IsActive)

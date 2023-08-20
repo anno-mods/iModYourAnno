@@ -1,9 +1,10 @@
-﻿using Imya.Models.Mods;
+﻿using Anno.EasyMod.Attributes;
+using Anno.EasyMod.Mods;
 
 namespace Imya.Models.Attributes.Interfaces
 {
     public interface IModCompabilityAttributeFactory
     {
-        IAttribute Get(IEnumerable<Mod> context);
+        IModAttribute Get(IEnumerable<IMod> context);
     }
 }

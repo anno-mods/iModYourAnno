@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using Imya.Services.Interfaces;
 using Imya.Utils;
 using Imya.Models.Installation.Interfaces;
-using Imya.Models.Mods;
+using Anno.EasyMod.Mods.LocalMods;
 
 namespace Imya.Services
 {
@@ -102,11 +102,11 @@ namespace Imya.Services
         private float max_progress = 1;
         #endregion
 
-        private readonly IModCollectionFactory _modCollectionFactory;
+        private readonly ILocalModCollectionFactory _modCollectionFactory;
         private readonly IImyaSetupService _imyaSetupService;
 
         public InstallationService(
-            IModCollectionFactory factory,
+            ILocalModCollectionFactory factory,
             IImyaSetupService imyaSetupService)
         {
             _modCollectionFactory = factory;
@@ -268,13 +268,12 @@ namespace Imya.Services
             if (unpackable.CancellationToken.IsCancellationRequested)
                 return;
             unpackable.Status = InstallationStatus.MovingFiles;
-            var newCollection = _modCollectionFactory.Get(unpackable.UnpackTargetPath, autofixSubfolder : true);
-            await newCollection.LoadModsAsync();
+            var newCollection = await _modCollectionFactory.GetAsync(unpackable.UnpackTargetPath);
             //async waiting
             await Task.Run(() => _moveIntoSem.WaitOne(), unpackable.CancellationToken);
             if (!unpackable.CancellationToken.IsCancellationRequested)
             {
-                await _imyaSetupService.GlobalModCollection.MoveIntoAsync(newCollection);
+                await _imyaSetupService.GlobalModCollection.AddAsync(newCollection.Mods);
             }
             _moveIntoSem.Release();
             Unpacks.Remove(unpackable);

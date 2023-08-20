@@ -1,6 +1,6 @@
-﻿using Imya.Models.Attributes.Interfaces;
+﻿using Anno.EasyMod.Attributes;
+using Imya.Models.Attributes.Interfaces;
 using Imya.Texts;
-using Imya.Utils;
 
 namespace Imya.Models.Attributes.Factories
 {
@@ -15,7 +15,7 @@ namespace Imya.Models.Attributes.Factories
         GenericAttribute ModAccessIssueAttribute =
            new GenericAttribute()
            {
-               AttributeType = AttributeType.IssueModAccess,
+               AttributeType = AttributeTypes.IssueModAccess,
                //Description = TextManager.Instance.GetText("ATTRIBUTE_NOMODINFO")
                Description = new SimpleText("Access to the Folder is denied. Please close all programs accessing this folder and retry.")
            };
@@ -23,17 +23,17 @@ namespace Imya.Models.Attributes.Factories
         GenericAttribute ModAccessIssue_NoDeleteAttribute =
            new GenericAttribute()
            {
-               AttributeType = AttributeType.IssueModAccess,
+               AttributeType = AttributeTypes.IssueModAccess,
                //Description = TextManager.Instance.GetText("ATTRIBUTE_NOMODINFO")
                Description = new SimpleText("Could not delete this mod.")
            };
 
-        public IAttribute Get()
+        public IModAttribute Get()
         {
             return ModAccessIssueAttribute;
         }
 
-        public IAttribute GetNoDelete()
+        public IModAttribute GetNoDelete()
         {
             return ModAccessIssue_NoDeleteAttribute;
         }
