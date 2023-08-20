@@ -303,7 +303,7 @@ namespace Imya.Services
         private void CleanUpUnpackable(IUnpackable unpackable)
         {
             if (Directory.Exists(unpackable.UnpackTargetPath))
-                Directory.Delete(unpackable.UnpackTargetPath);
+                Directory.Delete(unpackable.UnpackTargetPath, true);
         }
 
         private void CleanUpDownloadable(IDownloadable downloadable)
