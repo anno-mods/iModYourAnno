@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="IMYA_RICHTEXTBOX"
+           TargetType="RichTextBox">
+        <Setter Property="Foreground"
+                Value="{DynamicResource TextColorBrush}" />
+        <Setter Property="Background"
+                Value="{DynamicResource TextBoxBackgroundBrush}" />
+        <Setter Property="IsReadOnly"
+                Value="True" />
+        <Setter Property="FontFamily"
+                Value="Consolas" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RichTextBox">
+                    <Border x:Name="PART_ContentHost" Margin="1" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

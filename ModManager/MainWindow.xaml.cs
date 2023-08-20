@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using Anno.Utils;
 using Imya.Services;
 using Imya.Services.Interfaces;
@@ -29,14 +30,14 @@ namespace Imya.UI
         private PopupCreator _popupCreator;
 
         public Dashboard Dashboard { get; set; }
-        public ConsoleLog ConsoleLogTextBox { get; set; }
+        public RichTextBox ConsoleLogTextBox { get; set; }
 
         public MainWindow(
             IAuthenticator authenticator,
             IMainViewController mainViewController,
             IGameSetupService gameSetupService,
             Dashboard dashboard,
-            ConsoleLog consoleLog,
+            RichTextBox TextBox,
             PopupCreator popupCreator,
             SelfUpdater selfUpdater)
         {
@@ -44,7 +45,7 @@ namespace Imya.UI
             _gameSetupService = gameSetupService;
             _popupCreator = popupCreator;
             Dashboard = dashboard;
-            ConsoleLogTextBox = consoleLog; 
+            ConsoleLogTextBox = TextBox; 
 
             MainViewController = mainViewController;
 
@@ -55,6 +56,8 @@ namespace Imya.UI
             DataContext = this;
             MinHeight = Settings.Default.MinWindowHeight;
             MinWidth = Settings.Default.MinWindowWidth;
+
+            
 
             var productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion ?? "?";
             Title = $"iModYourAnno - Anno 1800 Mod Manager {productVersion}";
@@ -76,13 +79,12 @@ namespace Imya.UI
             }
 
             // initialize self-updater
-            if(!Settings.DevMode)
+            if (!Settings.DevMode)
                 selfUpdater.CheckForUpdate("anno-mods", "iModYourAnno");
         }
 
         public void SetUpEmbeddedConsole()
         {
-            Console.SetOut(new EmbeddedConsole(ConsoleLogTextBox.Console, this));
         }
     }
 }
