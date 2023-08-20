@@ -161,6 +161,21 @@ namespace Imya.UI
 
                     services.AddSingleton<SelfUpdater>();
                 })
+                .ConfigureLogging(builder => 
+                {
+                    builder.ClearProviders();
+                    builder.AddSerilog();
+                    builder.SetMinimumLevel(LogLevel.Trace);
+                })
+                .UseSerilog((hostingContext, services, loggerConfiguration)
+                    => loggerConfiguration
+                        .Enrich.FromLogContext()
+                        .WriteTo.RichTextBox(
+                                services.GetService<System.Windows.Controls.RichTextBox>(), 
+                                theme: RichTextBoxConsoleTheme.None,
+                                outputTemplate: "[{Timestamp:HH:mm:ss}] {Message:lj}{NewLine}{Exception}"
+                            )
+                        )
                 .Build();
 
             var textManager = AppHost.Services.GetRequiredService<ITextManager>();
