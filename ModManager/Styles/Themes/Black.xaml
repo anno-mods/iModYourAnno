@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="ComponentColorBrush">#090909</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush_Light">#222222</SolidColorBrush>
+
+    <!-- TODO rename into ButtonBackgroundBrush -->
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush">#171717</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Light">#202020</SolidColorBrush>
+    <SolidColorBrush x:Key="InteractiveComponentColorBrush_Dark">#101010</SolidColorBrush>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush">#404040</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ComponentColorBrush_Pressed">DarkGray</SolidColorBrush>
+    <SolidColorBrush x:Key="ComponentColorBrush_Inactive">#656565</SolidColorBrush>
+
+    <SolidColorBrush x:Key="AccentColorBrush">White</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorBrush_Dark">#444444</SolidColorBrush>
+    <SolidColorBrush x:Key="AccentColorContrastBrush">Gray</SolidColorBrush>
+
+    <SolidColorBrush x:Key="BackgroundColorBrush">Black</SolidColorBrush>
+    <SolidColorBrush x:Key="TextColorBrush">#dbd6c8</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ModActiveColorBrush">LightGray</SolidColorBrush>
+    <SolidColorBrush x:Key="ModInactiveColorBrush">Gray</SolidColorBrush>
+
+    <SolidColorBrush x:Key="ErrorColorBrush">Red</SolidColorBrush>
+    <SolidColorBrush x:Key="InformationColorBrush">LightGreen</SolidColorBrush>
+    <SolidColorBrush x:Key="HighlightColorBrush">LightBlue</SolidColorBrush>
+</ResourceDictionary>
