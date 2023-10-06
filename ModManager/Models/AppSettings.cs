@@ -202,6 +202,7 @@ namespace Imya.UI.Models
 
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_ENGLISH"], ApplicationLanguage.English));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_GERMAN"], ApplicationLanguage.German));
+            Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_FRENCH"], ApplicationLanguage.French));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_RUSSIAN"], ApplicationLanguage.Russian));
             Languages.Add(new LanguageSetting(TextManager["SETTINGS_LANG_POLISH"], ApplicationLanguage.Polish));
 
