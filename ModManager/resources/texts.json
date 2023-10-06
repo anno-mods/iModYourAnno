@@ -2,7 +2,7 @@
   "DASHBOARD_SETTINGS": {
     "Chinese": null,
     "English": "Settings",
-    "French": null,
+    "French": "Paramètres",
     "German": "Einstellungen",
     "Italian": null,
     "Japanese": null,
@@ -15,7 +15,7 @@
   "DASHBOARD_METADATA": {
     "Chinese": null,
     "English": "Metadata Creator",
-    "French": null,
+    "French": "Créateur de metadonnées",
     "German": "Metadaten-Erstellung",
     "Italian": null,
     "Japanese": null,
@@ -28,7 +28,7 @@
   "DASHBOARD_MOD_TWEAKING": {
     "Chinese": null,
     "English": "Tweaking",
-    "French": null,
+    "French": "Ajustement",
     "German": "Mods verändern",
     "Italian": null,
     "Japanese": null,
@@ -41,7 +41,7 @@
   "DASHBOARD_MODLOADER": {
     "Chinese": null,
     "English": "Modloader",
-    "French": null,
+    "French": "Modloader",
     "German": "Modloader",
     "Italian": null,
     "Japanese": null,
@@ -54,7 +54,7 @@
   "DASHBOARD_MODBROWSER": {
     "Chinese": null,
     "English": "Library",
-    "French": null,
+    "French": "Bibliothèque",
     "German": "Bibliothek",
     "Italian": null,
     "Japanese": null,
@@ -67,7 +67,7 @@
   "DASHBOARD_DOWNLOAD": {
     "Chinese": null,
     "English": "Downloads",
-    "French": null,
+    "French": "Téléchargements",
     "German": "Downloads",
     "Italian": null,
     "Japanese": null,
@@ -80,7 +80,7 @@
   "DASHBOARD_LOGOUT": {
     "Chinese": null,
     "English": "Logout",
-    "French": null,
+    "French": "Déconnexion",
     "German": "Ausloggen",
     "Italian": null,
     "Japanese": null,
@@ -93,7 +93,7 @@
   "DASHBOARD_LOGIN": {
     "Chinese": null,
     "English": "Login with Github",
-    "French": null,
+    "French": "Connecter avec Github",
     "German": "Mit Github einloggen",
     "Italian": null,
     "Japanese": null,
@@ -106,7 +106,7 @@
   "DASHBOARD_LOGOUTCONFIRMATION": {
     "Chinese": null,
     "English": "Are you sure you want to log out?",
-    "French": null,
+    "French": "Êtes vous sûr de vouloir vous déconnecter?",
     "German": "Bist Du Sicher, dass Du dich ausloggen möchtest?",
     "Italian": null,
     "Japanese": null,
@@ -119,7 +119,7 @@
   "POPUP_INSTALLATION_ALREADY_RUNNING": {
     "Chinese": null,
     "English": "Error: Installation is already running",
-    "French": null,
+    "French": "Erreur: L'installation est déjà active",
     "German": "Fehler: Installation wird bereits ausgeführt",
     "Italian": null,
     "Japanese": null,
@@ -132,7 +132,7 @@
   "TWEAK_UNSAVED_CHANGES": {
     "Chinese": null,
     "English": "You have unsaved changes. Save now?",
-    "French": null,
+    "French": "Vous avez des modifications non sauvegardées. Sauvergarder maintenant?",
     "German": "Du hast ungespeicherte Änderungen. Jetzt speichern?",
     "Italian": null,
     "Japanese": null,
@@ -145,7 +145,7 @@
   "TWEAK_SAVE": {
     "Chinese": null,
     "English": "Save",
-    "French": null,
+    "French": "Sauvegarder",
     "German": "Speichern",
     "Italian": null,
     "Japanese": null,
@@ -158,7 +158,7 @@
   "TWEAK_DISCARD": {
     "Chinese": null,
     "English": "Discard Changes",
-    "French": null,
+    "French": "Annuler les modifications",
     "German": "Änderungen verwerfen",
     "Italian": null,
     "Japanese": null,
@@ -171,7 +171,7 @@
   "DLC_SEASONALDECORATIONS": {
     "Chinese": null,
     "English": "Seasonal Pack",
-    "French": null,
+    "French": "Pack saisonnier",
     "German": "Jahreszeiten-Paket",
     "Italian": null,
     "Japanese": null,
@@ -184,7 +184,7 @@
   "DLC_INDUSTRYORNAMENTS": {
     "Chinese": null,
     "English": "Industrial Pack",
-    "French": null,
+    "French": "Pack industriel",
     "German": "Industrie-Paket",
     "Italian": null,
     "Japanese": null,
@@ -197,7 +197,7 @@
   "DLC_OLDTOWN": {
     "Chinese": null,
     "English": "Old Town Pack",
-    "French": null,
+    "French": "Pack Vieille Ville",
     "German": "Old-Town Paket",
     "Italian": null,
     "Japanese": null,
@@ -210,7 +210,7 @@
   "DASHBOARD_MOD_INSTALLATION": {
     "Chinese": null,
     "English": "Mod Installation",
-    "French": null,
+    "French": "Installation des mods",
     "German": "Mods installieren",
     "Italian": null,
     "Japanese": null,
@@ -223,7 +223,7 @@
   "DASHBOARD_GAME_SETUP": {
     "Chinese": null,
     "English": "Game Setup",
-    "French": null,
+    "French": "Paramètrage du jeu",
     "German": "Spielverzeichnis-Setup",
     "Italian": null,
     "Japanese": null,
@@ -236,7 +236,7 @@
   "DASHBOARD_MOD_ACTIVATION": {
     "Chinese": null,
     "English": "Mod Activation",
-    "French": null,
+    "French": "Activation des mods",
     "German": "Mods aktivieren",
     "Italian": null,
     "Japanese": null,
@@ -249,7 +249,7 @@
   "DASHBOARD_PLAY": {
     "Chinese": null,
     "English": "Start Anno 1800",
-    "French": null,
+    "French": "Lancer Anno 1800",
     "German": "Anno 1800 starten",
     "Italian": null,
     "Japanese": null,
@@ -262,7 +262,7 @@
   "DASHBOARD_DASHBOARD": {
     "Chinese": null,
     "English": "Dashboard",
-    "French": null,
+    "French": "Tableau de bord",
     "German": "Startseite",
     "Italian": null,
     "Japanese": null,
@@ -275,7 +275,7 @@
   "MODLIST_ACTIVATE": {
     "Chinese": null,
     "English": "Activate",
-    "French": null,
+    "French": "Activer",
     "German": "Aktivieren",
     "Italian": null,
     "Japanese": null,
@@ -288,7 +288,7 @@
   "MODLIST_DEACTIVATE": {
     "Chinese": null,
     "English": "Deactivate",
-    "French": null,
+    "French": "Désactiver",
     "German": "Deaktivieren",
     "Italian": null,
     "Japanese": null,
@@ -301,7 +301,7 @@
   "MODLIST_DELETE": {
     "Chinese": null,
     "English": "Delete",
-    "French": null,
+    "French": "Supprimer",
     "German": "Löschen",
     "Italian": null,
     "Japanese": null,
@@ -314,7 +314,7 @@
   "MODLIST_LOAD_PROFILE": {
     "Chinese": null,
     "English": "Load Profile",
-    "French": null,
+    "French": "Charger le profil",
     "German": "Profil laden",
     "Italian": null,
     "Japanese": null,
@@ -327,7 +327,7 @@
   "MODLIST_SAVE_PROFILE": {
     "Chinese": null,
     "English": "Save Profile",
-    "French": null,
+    "French": "Sauvegarder le profil",
     "German": "Profil speichern",
     "Italian": null,
     "Japanese": null,
@@ -340,7 +340,7 @@
   "MODDISPLAY_NO_DESCRIPTION": {
     "Chinese": null,
     "English": "No description provided.",
-    "French": null,
+    "French": "Aucune description fournie.",
     "German": "Keine Beschreibung vorhanden.",
     "Italian": null,
     "Japanese": null,
@@ -353,7 +353,7 @@
   "MODDISPLAY_NO_VERSION": {
     "Chinese": null,
     "English": "No version provided.",
-    "French": null,
+    "French": "Aucune version fournie.",
     "German": "Keine Versionsinfo vorhanden.",
     "Italian": null,
     "Japanese": null,
@@ -366,7 +366,7 @@
   "MODDISPLAY_NO_CATEGORY": {
     "Chinese": null,
     "English": "No Category",
-    "French": null,
+    "French": "Pas de catégorie",
     "German": "Ohne Kategorie",
     "Italian": null,
     "Japanese": null,
@@ -379,7 +379,7 @@
   "SETTINGS_LANG_ENGLISH": {
     "Chinese": null,
     "English": "English",
-    "French": null,
+    "French": "Anglais",
     "German": "Englisch",
     "Italian": null,
     "Japanese": null,
@@ -389,10 +389,23 @@
     "Spanish": null,
     "Taiwanese": null
   },
+  "SETTINGS_LANG_FRENCH": {
+    "Chinese": "法语",
+    "English": "French",
+    "French": "Français",
+    "German": "Französich",
+    "Italian": "Francese",
+    "Japanese": "フランス語",
+    "Korean": "프랑스어",
+    "Polish": "Francuski",
+    "Russian": "Французский",
+    "Spanish": "Francés",
+    "Taiwanese": null
+  },
   "SETTINGS_LANG_GERMAN": {
     "Chinese": null,
     "English": "German",
-    "French": null,
+    "French": "Allemand",
     "German": "Deutsch",
     "Italian": null,
     "Japanese": null,
@@ -405,7 +418,7 @@
   "SETTINGS_LANG_RUSSIAN": {
     "Chinese": null,
     "English": "Russian",
-    "French": null,
+    "French": "Russe",
     "German": "Russisch",
     "Italian": null,
     "Japanese": null,
@@ -418,7 +431,7 @@
   "SETTINGS_LANG_POLISH": {
     "Chinese": null,
     "English": "Polish",
-    "French": null,
+    "French": "Polonais",
     "German": "Polnisch",
     "Italian": null,
     "Japanese": null,
@@ -431,7 +444,7 @@
   "DLC_SUNKENTREASURES": {
     "Chinese": null,
     "English": "Sunken Treasures",
-    "French": null,
+    "French": "Trésor Englouti",
     "German": "Gesunkene Schätze",
     "Italian": null,
     "Japanese": null,
@@ -444,7 +457,7 @@
   "DLC_BOTANICA": {
     "Chinese": null,
     "English": "Botanica",
-    "French": null,
+    "French": "Botanique",
     "German": "Botanika",
     "Italian": null,
     "Japanese": null,
@@ -457,7 +470,7 @@
   "DLC_PASSAGE": {
     "Chinese": null,
     "English": "The Passage",
-    "French": null,
+    "French": "Le Passage",
     "German": "Die Passage",
     "Italian": null,
     "Japanese": null,
@@ -470,7 +483,7 @@
   "DLC_SEATOFPOWER": {
     "Chinese": null,
     "English": "Seat of Power",
-    "French": null,
+    "French": "Le Capitole",
     "German": "Paläste der Macht",
     "Italian": null,
     "Japanese": null,
@@ -483,7 +496,7 @@
   "DLC_BRIGHTHARVEST": {
     "Chinese": null,
     "English": "Bright Harvest",
-    "French": null,
+    "French": "Révolution Agricole",
     "German": "Reiche Ernte",
     "Italian": null,
     "Japanese": null,
@@ -496,7 +509,7 @@
   "DLC_LANDOFLIONS": {
     "Chinese": null,
     "English": "Land of Lions",
-    "French": null,
+    "French": "Terre des Lions",
     "German": "Land der Löwen",
     "Italian": null,
     "Japanese": null,
@@ -509,7 +522,7 @@
   "DLC_DOCKLANDS": {
     "Chinese": null,
     "English": "Docklands",
-    "French": null,
+    "French": "Port d'attache",
     "German": "Speicherstadt",
     "Italian": null,
     "Japanese": null,
@@ -522,7 +535,7 @@
   "DLC_TOURISTSEASON": {
     "Chinese": null,
     "English": "Tourist Season",
-    "French": null,
+    "French": "Saison Touristique",
     "German": "Reisezeit",
     "Italian": null,
     "Japanese": null,
@@ -535,7 +548,7 @@
   "DLC_HIGHLIFE": {
     "Chinese": null,
     "English": "The High Life",
-    "French": null,
+    "French": "Vers Les Sommets",
     "German": "Dächer der Stadt",
     "Italian": null,
     "Japanese": null,
@@ -548,7 +561,7 @@
   "DLC_CHRISTMAS": {
     "Chinese": null,
     "English": "Holiday Pack",
-    "French": null,
+    "French": "Pack de Noël",
     "German": "Weihnachtspaket",
     "Italian": null,
     "Japanese": null,
@@ -561,7 +574,7 @@
   "DLC_AMUSEMENTPARK": {
     "Chinese": null,
     "English": "Amusements Park",
-    "French": null,
+    "French": "Pack d'Attractions",
     "German": "Vergnügungspark",
     "Italian": null,
     "Japanese": null,
@@ -574,7 +587,7 @@
   "DLC_CITYLIFE": {
     "Chinese": null,
     "English": "City Life",
-    "French": null,
+    "French": "Ville de Lumières",
     "German": "Lichter der Stadt",
     "Italian": null,
     "Japanese": null,
@@ -587,7 +600,7 @@
   "DLC_VEHICLESKINS": {
     "Chinese": null,
     "English": "Vehicle Liveries Pack",
-    "French": null,
+    "French": "Pack Livrées de Véhicules",
     "German": "Fahrzeugskins",
     "Italian": null,
     "Japanese": null,
@@ -600,7 +613,7 @@
   "DLC_PEDESTRIANZONE": {
     "Chinese": null,
     "English": "Pedestrian Zone",
-    "French": null,
+    "French": "Pack Zone Piétonne",
     "German": "Fußgängerzone",
     "Italian": null,
     "Japanese": null,
@@ -613,7 +626,7 @@
   "DLC_VIBRANTCITY": {
     "Chinese": null,
     "English": "Vibrant Cities",
-    "French": null,
+    "French": "Villes Dynamiques",
     "German": "Bunter Anstrich",
     "Italian": null,
     "Japanese": null,
@@ -626,7 +639,7 @@
   "DLC_ANARCHIST": {
     "Chinese": null,
     "English": "The Anarchist",
-    "French": null,
+    "French": "L'anarchiste",
     "German": "Der Anarchist",
     "Italian": null,
     "Japanese": null,
@@ -639,7 +652,7 @@
   "DLC_SEEDSOFUSELESS": {
     "Chinese": null,
     "English": "Seeds of Change",
-    "French": null,
+    "French": "Graine du Changement",
     "German": "Keim der Hoffnung",
     "Italian": null,
     "Japanese": null,
@@ -652,7 +665,7 @@
   "DLC_AIRSHIPS": {
     "Chinese": null,
     "English": "Empire of the Skies",
-    "French": null,
+    "French": "Empire des Cieux",
     "German": "Reich der Lüfte",
     "Italian": null,
     "Japanese": null,
@@ -665,7 +678,7 @@
   "DLC_NEWWORLDRISING": {
     "Chinese": null,
     "English": "New World Rising",
-    "French": null,
+    "French": "De Nouveaux Horizons",
     "German": "Aufstieg der neuen Welt",
     "Italian": null,
     "Japanese": null,
@@ -678,7 +691,7 @@
   "DLC_FIESTA": {
     "Chinese": null,
     "English": "Fiesta Pack",
-    "French": null,
+    "French": "Fiesta Pack",
     "German": "Fiesta-Paket",
     "Italian": null,
     "Japanese": null,
@@ -691,7 +704,7 @@
   "DLC_DRAGONGARDEN": {
     "Chinese": null,
     "English": "Dragon Garden Pack",
-    "French": null,
+    "French": "Dragon Garden Pack",
     "German": "Drachengarten-Paket",
     "Italian": null,
     "Japanese": null,
@@ -704,7 +717,7 @@
   "HEADER_VERSION": {
     "Chinese": null,
     "English": "Version {0} by {1}",
-    "French": null,
+    "French": "Version {0} par {1}",
     "German": "Version {0} von {1}",
     "Italian": null,
     "Japanese": null,
@@ -717,7 +730,7 @@
   "HEADER_MODID": {
     "Chinese": null,
     "English": "Mod ID (Dev): {0}",
-    "French": null,
+    "French": "Mod ID (Dev): {0}",
     "German": "Mod ID (Dev): {0}",
     "Italian": null,
     "Japanese": null,
@@ -730,7 +743,7 @@
   "HEADER_DESCRIPTION": {
     "Chinese": null,
     "English": "Description",
-    "French": null,
+    "French": "Description",
     "German": "Inhalt",
     "Italian": null,
     "Japanese": null,
@@ -743,7 +756,7 @@
   "HEADER_KNOWNISSUES": {
     "Chinese": null,
     "English": "Known Issues",
-    "French": null,
+    "French": "Problèmes connus",
     "German": "Bekannte Probleme",
     "Italian": null,
     "Japanese": null,
@@ -756,7 +769,7 @@
   "HEADER_DLCDEPENDENCY": {
     "Chinese": null,
     "English": "Mod changes or adds to DLC content",
-    "French": null,
+    "French": "Le mod modifie ou ajoute du contenu au DLC",
     "German": "Mod beruht auf oder verändert DLC-Inhalte",
     "Italian": null,
     "Japanese": null,
@@ -769,7 +782,7 @@
   "HEADER_CREATOR": {
     "Chinese": null,
     "English": " by ",
-    "French": null,
+    "French": " par ",
     "German": " von ",
     "Italian": null,
     "Japanese": null,
@@ -782,7 +795,7 @@
   "HEADER_FOLDER": {
     "Chinese": null,
     "English": "Folder: ",
-    "French": null,
+    "French": "Dossier: ",
     "German": "Verzeichnis: ",
     "Italian": null,
     "Japanese": null,
@@ -795,7 +808,7 @@
   "HEADER_FOLDER_SIZE": {
     "Chinese": null,
     "English": "Size: ",
-    "French": null,
+    "French": "Taille: ",
     "German": "Größe: ",
     "Italian": null,
     "Japanese": null,
@@ -808,7 +821,7 @@
   "HEADER_FOLDER_SIZE_MB": {
     "Chinese": null,
     "English": " MB",
-    "French": null,
+    "French": " MB",
     "German": " MB",
     "Italian": null,
     "Japanese": null,
@@ -821,7 +834,7 @@
   "MODLIST_SEARCHBAR": {
     "Chinese": null,
     "English": "Type to Search ",
-    "French": null,
+    "French": "Tapez pour rechercher ",
     "German": "Suchbegriffe eingeben ",
     "Italian": null,
     "Japanese": null,
@@ -834,7 +847,7 @@
   "SETTINGS_LANGUAGE": {
     "Chinese": null,
     "English": "Language: ",
-    "French": null,
+    "French": "Langage: ",
     "German": "Sprache: ",
     "Italian": null,
     "Japanese": null,
@@ -847,7 +860,7 @@
   "SETTINGS_SHOWCONSOLE": {
     "Chinese": null,
     "English": "Show Console: ",
-    "French": null,
+    "French": "Afficher la console: ",
     "German": "Konsole anzeigen: ",
     "Italian": null,
     "Japanese": null,
@@ -860,7 +873,7 @@
   "SETTINGS_GAMEPATH": {
     "Chinese": null,
     "English": "Game Path:",
-    "French": null,
+    "French": "Chemin du jeu: ",
     "German": "Spielpfad: ",
     "Italian": null,
     "Japanese": null,
@@ -873,7 +886,7 @@
   "SETTINGS_DEVMODE": {
     "Chinese": null,
     "English": "Mod Creator Mode: ",
-    "French": null,
+    "French": "Mode créateur de mods: ",
     "German": "Moderstellermodus: ",
     "Italian": null,
     "Japanese": null,
@@ -886,7 +899,7 @@
   "SETTINGS_THEME": {
     "Chinese": null,
     "English": "Appearance",
-    "French": null,
+    "French": "Apparence",
     "German": "Aussehen",
     "Italian": null,
     "Japanese": null,
@@ -899,7 +912,7 @@
   "MODINFO_NEW": {
     "Chinese": null,
     "English": "New ",
-    "French": null,
+    "French": "Nouveau ",
     "German": "Neu",
     "Italian": null,
     "Japanese": null,
@@ -912,7 +925,7 @@
   "MODINFO_SAVE": {
     "Chinese": null,
     "English": "Save",
-    "French": null,
+    "French": "Sauvegarder",
     "German": "Speichern",
     "Italian": null,
     "Japanese": null,
@@ -925,7 +938,7 @@
   "MODINFO_LOAD": {
     "Chinese": null,
     "English": "Load",
-    "French": null,
+    "French": "Charger",
     "German": "Laden",
     "Italian": null,
     "Japanese": null,
@@ -938,7 +951,7 @@
   "TWEAKER_NO_FILES": {
     "Chinese": null,
     "English": "No tweakable files found.",
-    "French": null,
+    "French": "Aucun fichier modifiable n'a été trouvé.",
     "German": "Keine veränderbaren Dateien gefunden.",
     "Italian": null,
     "Japanese": null,
@@ -951,7 +964,7 @@
   "THEME_CYAN": {
     "Chinese": null,
     "English": "Dark/Cyan",
-    "French": null,
+    "French": "Sombre/Cyan",
     "German": "Dunkel/Cyan",
     "Italian": null,
     "Japanese": null,
@@ -964,7 +977,7 @@
   "THEME_GREEN": {
     "Chinese": null,
     "English": "Dark/Green",
-    "French": null,
+    "French": "Sombre/Vert",
     "German": "Dunkel/Grün",
     "Italian": null,
     "Japanese": null,
@@ -977,7 +990,7 @@
   "THEME_LIGHT": {
     "Chinese": null,
     "English": "Light",
-    "French": null,
+    "French": "Clair",
     "German": "Hell",
     "Italian": null,
     "Japanese": null,
@@ -990,7 +1003,7 @@
   "THEME_DARKVIOLET": {
     "Chinese": null,
     "English": "Dark/Violet",
-    "French": null,
+    "French": "Sombre/Violet",
     "German": "Dunkel/Violett",
     "Italian": null,
     "Japanese": null,
@@ -1003,7 +1016,7 @@
   "THEME_BLUEYELLOW": {
     "Chinese": null,
     "English": "Cobalt/Yellow",
-    "French": null,
+    "French": "Cobalt/Jaune",
     "German": "Kobalt/Gelb",
     "Italian": null,
     "Japanese": null,
@@ -1016,7 +1029,7 @@
   "THEME_BLUECYAN": {
     "Chinese": null,
     "English": "Cobalt/Cyan",
-    "French": null,
+    "French": "Cobalt/Cyan",
     "German": "Kobalt/Cyan",
     "Italian": null,
     "Japanese": null,
@@ -1029,7 +1042,7 @@
   "DEV_SETTING_MODDIRECTORYNAME": {
     "Chinese": null,
     "English": "Mod Directory Name:",
-    "French": null,
+    "French": "Nom du répertoire de mod :",
     "German": "Modordner:",
     "Italian": null,
     "Japanese": null,
@@ -1042,7 +1055,7 @@
   "SETTINGS_MODLOADER": {
     "Chinese": null,
     "English": "Modloader: ",
-    "French": null,
+    "French": "Modloader: ",
     "German": "Modloader: ",
     "Italian": null,
     "Japanese": null,
@@ -1055,7 +1068,7 @@
   "SETTINGS_INSTALL_MODLOADER": {
     "Chinese": null,
     "English": "Install",
-    "French": null,
+    "French": "Installer",
     "German": "Installieren",
     "Italian": null,
     "Japanese": null,
@@ -1068,7 +1081,7 @@
   "MODLOADER_NOT_INSTALLED": {
     "Chinese": null,
     "English": "not installed",
-    "French": null,
+    "French": "Non installé",
     "German": "nicht installiert",
     "Italian": null,
     "Japanese": null,
@@ -1081,7 +1094,7 @@
   "MODLOADER_INSTALLED": {
     "Chinese": null,
     "English": "installed",
-    "French": null,
+    "French": "installé",
     "German": "installiert",
     "Italian": null,
     "Japanese": null,
@@ -1094,7 +1107,7 @@
   "MODLOADER_INSTALLING": {
     "Chinese": null,
     "English": "installing...",
-    "French": null,
+    "French": "Installation...",
     "German": "installiere...",
     "Italian": null,
     "Japanese": null,
@@ -1107,7 +1120,7 @@
   "MODLOADER_AUTOUPDATES": {
     "Chinese": null,
     "English": "Automatic Modloader Updates",
-    "French": null,
+    "French": "Mises à jour automatiques du Modloader",
     "German": "Automatische Modloader-Updates",
     "Italian": null,
     "Japanese": null,
@@ -1120,7 +1133,7 @@
   "MODS_AUTOUPDATES": {
     "Chinese": null,
     "English": "Configure autoupdates for mods upon install if possible",
-    "French": null,
+    "French": "Configurer les mises à jour automatiques des mods lors de l'installation si possible",
     "German": "Automatische Updates für Mods bei der Installation einrichten, sofern möglich",
     "Italian": null,
     "Japanese": null,
@@ -1133,7 +1146,7 @@
   "MODS_INSTALLATION_ZIP": {
     "Chinese": null,
     "English": "Select from Zip Archive...",
-    "French": null,
+    "French": "Sélectionner une archive Zip...",
     "German": "Zip-Archiv auswählen...",
     "Italian": null,
     "Japanese": null,
@@ -1146,7 +1159,7 @@
   "MODS_INSTALLATION_GIT": {
     "Chinese": null,
     "English": "Select from Github...",
-    "French": null,
+    "French": "Sélectionner depuis Github...",
     "German": "Von Github auswählen...",
     "Italian": null,
     "Japanese": null,
@@ -1159,7 +1172,7 @@
   "MODLIST_NOCATEGORY": {
     "Chinese": null,
     "English": "No Category",
-    "French": null,
+    "French": "Pas de catégorie",
     "German": "Ohne Kategorie",
     "Italian": null,
     "Japanese": null,
@@ -1172,7 +1185,7 @@
   "INSTALL_CLEANMOVE_NOTE": {
     "Chinese": null,
     "English": "Outdated files will be deleted when updating.",
-    "French": null,
+    "French": "Les fichiers périmés seront supprimés lors de la mise à jour.",
     "German": "Veraltete Dateien werden beim Updaten von Mods gelöscht.",
     "Italian": null,
     "Japanese": null,
@@ -1185,7 +1198,7 @@
   "PROFILESAVE_ALREADYEXISTS": {
     "Chinese": null,
     "English": "A profile of that name already exists.",
-    "French": null,
+    "French": "Un profil de ce nom existe déjà.",
     "German": "Ein Profil mit diesem Namen existiert bereits.",
     "Italian": null,
     "Japanese": null,
@@ -1198,7 +1211,7 @@
   "INSTALL_FROM_ZIP": {
     "Chinese": null,
     "English": "Select...",
-    "French": null,
+    "French": "Selectionner...",
     "German": "Auswählen...",
     "Italian": null,
     "Japanese": null,
@@ -1211,7 +1224,7 @@
   "PROFILESAVE_INVALID": {
     "Chinese": null,
     "English": "The profile name is invalid.",
-    "French": null,
+    "French": "Le nom du profil n'est pas valide.",
     "German": "Der Name des Profils ist ungültig.",
     "Italian": null,
     "Japanese": null,
@@ -1224,7 +1237,7 @@
   "DIALOG_OKAY": {
     "Chinese": null,
     "English": "Accept",
-    "French": null,
+    "French": "Accepter",
     "German": "Annehmen",
     "Italian": null,
     "Japanese": null,
@@ -1237,7 +1250,7 @@
   "DIALOG_CANCEL": {
     "Chinese": null,
     "English": "Cancel",
-    "French": null,
+    "French": "Annuler",
     "German": "Abbrechen",
     "Italian": null,
     "Japanese": null,
@@ -1250,7 +1263,7 @@
   "PROFILE_LOAD": {
     "Chinese": null,
     "English": "Select Profile to load",
-    "French": null,
+    "French": "Sélectionner le profil à charger",
     "German": "Profil zum laden auswählen",
     "Italian": null,
     "Japanese": null,
@@ -1263,7 +1276,7 @@
   "PROFILE_SAVE": {
     "Chinese": null,
     "English": "Save Profile",
-    "French": null,
+    "French": "Sauvegarder le profil",
     "German": "Profil speichern",
     "Italian": null,
     "Japanese": null,
@@ -1276,7 +1289,7 @@
   "ACTIVATION_HEADER_FORMATTED": {
     "Chinese": null,
     "English": " Mods Active: {0} ({1} MB), Installed: {2} ({3} MB)",
-    "French": null,
+    "French": "Mods Actifs: {0} ({1} MB), Installés: {2} ({3} MB)",
     "German": "Aktivierte Mods: {0} ({1} MB), Installiert: {2} ({3} MB)",
     "Italian": null,
     "Japanese": null,
@@ -1289,7 +1302,7 @@
   "INSTALL_ALLOW_OLD_TO_OVERWRITE": {
     "Chinese": null,
     "English": "Allow old versions to overwrite new",
-    "French": null,
+    "French": "Autoriser l'écrasement des anciennes versions",
     "German": "Alte Versionen können Neue überschreiben",
     "Italian": null,
     "Japanese": null,
@@ -1302,7 +1315,7 @@
   "ZIP_NOTSTARTED": {
     "Chinese": null,
     "English": "Initializing Install",
-    "French": null,
+    "French": "Initialisation de l'installation",
     "German": "Installation initialisieren",
     "Italian": null,
     "Japanese": null,
@@ -1315,7 +1328,7 @@
   "ZIP_UNPACKING": {
     "Chinese": null,
     "English": "Unpacking Files",
-    "French": null,
+    "French": "Décompression des fichiers",
     "German": "Dateien entpacken",
     "Italian": null,
     "Japanese": null,
@@ -1328,7 +1341,7 @@
   "INSTALL_DOWNLOAD": {
     "Chinese": null,
     "English": "Downloading...",
-    "French": null,
+    "French": "Téléchargement...",
     "German": "Wird heruntergeladen...",
     "Italian": null,
     "Japanese": null,
@@ -1342,7 +1355,7 @@
   "INSTALLATION_HEADER_MOD": {
     "Chinese": null,
     "English": "Installing Mods",
-    "French": null,
+    "French": "Installation des mods",
     "German": "Mods werden installiert",
     "Italian": null,
     "Japanese": null,
@@ -1355,7 +1368,7 @@
   "INSTALLATION_HEADER_LOADER": {
     "Chinese": null,
     "English": "Installing Modloader",
-    "French": null,
+    "French": "Installation du Modloader",
     "German": "Modloader wird installiert",
     "Italian": null,
     "Japanese": null,
@@ -1368,7 +1381,7 @@
   "ZIP_MOVING": {
     "Chinese": null,
     "English": "Moving Mods",
-    "French": null,
+    "French": "Déplacement des mods",
     "German": "Mods verschieben",
     "Italian": null,
     "Japanese": null,
@@ -1381,7 +1394,7 @@
   "INSTALLATION_HEADER_MOD_GIT": {
     "Chinese": null,
     "English": "Installing Mods from Github",
-    "French": null,
+    "French": "Installation des mods depuis Github",
     "German": "Mods werden von Github installiert",
     "Italian": null,
     "Japanese": null,
@@ -1394,7 +1407,7 @@
   "ZIP_INSTALLER_TITLE": {
     "Chinese": null,
     "English": "Install Mods",
-    "French": null,
+    "French": "Installer des mods" ,
     "German": "Mods installieren",
     "Italian": null,
     "Japanese": null,
@@ -1407,7 +1420,7 @@
   "ATTRIBUTE_MISSINGDEPENDENCY": {
     "Chinese": null,
     "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly. \n\nMissing Dependencies:\n - {0}",
-    "French": null,
+    "French": "Il manque au mod un autre mod, qui n'est pas installé ou activé, mais dont il dépend pour fonctionner parfaitement. \n\nDépendances manquantes:\n- {0}",
     "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird. \n\nFehlende Abhängigkeiten:\n - {0}",
     "Italian": null,
     "Japanese": null,
@@ -1420,7 +1433,7 @@
   "ATTRIBUTE_MISSINGDLC": {
     "Chinese": null,
     "English": "You don't own the following DLC that this mod is dependant on:\n- {0} \n\nThis could impact your ingame experience.",
-    "French": null,
+    "French": "Vous ne possédez pas les DLC suivants dont ce mod dépend :\n- {0} \n\nCela pourrait avoir un impact sur votre expérience de jeu.",
     "German": "Folgende von der Mod vorausgesetzte DLC sind nicht im Besitz:\n- {0} \n\nDies könnte Dein Spielerlebnis beeinflussen.",
     "Italian": null,
     "Japanese": null,
@@ -1433,7 +1446,7 @@
   "ATTRIBUTE_STATUS_UPDATE": {
     "Chinese": null,
     "English": "the mod was updated in a recent installation.",
-    "French": null,
+    "French": "Le mod a été mis à jour lors d'une installation récente.",
     "German": "Die Mod wurde in einer der letzten Installationen aktualisiert.",
     "Italian": null,
     "Japanese": null,
@@ -1446,7 +1459,7 @@
   "USERCODE_POPUP_MESSAGE": {
     "Chinese": null,
     "English": "You are being sent to Github Login in your Webbrowser. Please enter your authentication code there. Don't share your code with anyone!",
-    "French": null,
+    "French": "Vous allez être redirigé sur une page de connexion Github depuis votre navigateur web. Veuillez y saisir votre code d'authentification. Ne partagez pas votre code avec qui que ce soit !",
     "German": "Du wirst im Browser zum Github-Login weitergeleitet. Bitte gib dort deinen Authentifizierungscode an. Teile diesen Code mit niemandem!",
     "Italian": null,
     "Japanese": null,
@@ -1459,7 +1472,7 @@
   "ATTRIBUTE_COMPABILITYERROR": {
     "Chinese": null,
     "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.\n\nCompability Errors:\n - {0}",
-    "French": null,
+    "French": "Le mod a un ou plusieurs problèmes de compatibilité avec d'autres mods installés. Pour résoudre ce problème, désactivez ce mod ou tous les mods qui causent le problème de compatibilité. Erreurs de compatibilité:\n\n - {0}",
     "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen.\n\nKompabilitätsprobleme:\n - {0}",
     "Italian": null,
     "Japanese": null,
@@ -1472,7 +1485,7 @@
   "ATTRIBUTE_CYCLIC_DEPENDENCY": {
     "Chinese": null,
     "English": "Cyclic dependency in loading order with: {0}. This may cause issues ingame!",
-    "French": null,
+    "French": "Dépendance cyclique dans l'ordre de chargement avec : {0}. Cela peut causer des problèmes dans le jeu !",
     "German": "Zyklische Abhängigkeit in der Ladeordnung: {0}. Dies könnte im Spiel Probleme verursachen!",
     "Italian": null,
     "Japanese": null,
@@ -1485,7 +1498,7 @@
   "ATTRIBUTE_REPLACEDBY": {
     "Chinese": null,
     "English": "This mod is old.\nIt has been replaced by '{0}'.",
-    "French": null,
+    "French": "Ce mod est ancien.\nIl a été remplacé par '{0}'.",
     "German": "Diese Mod ist alt.\nSie wurde durch '{0}' ersetzt.",
     "Italian": null,
     "Japanese": null,
@@ -1498,7 +1511,7 @@
   "ATTRIBUTE_STATUS_OBSOLETE": {
     "Chinese": null,
     "English": "The Mod has been recognized as broken during an installation. This can be due to Mod ID duplications or broken Filestructure. It is advisable to delete the mod and reinstall it. If this still causes problems, contact the mod author.",
-    "French": null,
+    "French": "Le mod a été reconnu comme cassé lors d'une installation. Cela peut être dû à des duplications de Mod ID ou à une structure de fichier cassée. Il est conseillé de supprimer le mod et de le réinstaller. Si le problème persiste, contactez l'auteur du mod.",
     "German": "Die Mod wurde während einer zurückliegenden Installation als beschädigt erkannt. Dies kann wegen Duplikation der ModID oder einer beschädigten Dateistruktur der Fall sein. Es ist ratsam, die Mod in diesem Fall neu zu installieren. Wenn das Problem bestehen bleibt, sollte der Modautor kontaktiert werden",
     "Italian": null,
     "Japanese": null,
@@ -1511,7 +1524,7 @@
   "ATTRIBUTE_STATUS_NEW": {
     "Chinese": null,
     "English": "The mod was added in a recent installation.",
-    "French": null,
+    "French": "Le mod a été ajouté lors d'une installation récente.",
     "German": "Die Mod wurde in einer der letzten Installationen hinzugefügt.",
     "Italian": null,
     "Japanese": null,
@@ -1524,7 +1537,7 @@
   "ATTRIBUTE_TWEAKED": {
     "Chinese": null,
     "English": "The mod has been tweaked in the Mod Tweaker.",
-    "French": null,
+    "French": "Le mod a été modifié dans le Mod Tweaker.",
     "German": "Die Mod wurde über das ModTweaker System verändert.",
     "Italian": null,
     "Japanese": null,
@@ -1537,7 +1550,7 @@
   "ATTRIBUTE_NOMODINFO": {
     "Chinese": null,
     "English": "The mod does not provide modinfo.json. There is no metadata information on Compability, Dependencies, no Description and Known Issues.",
-    "French": null,
+    "French": "Le mod ne fournit pas de modinfo.json. Il n'y a pas de métadonnées sur la compatibilité, les dépendances, la description et les problèmes connus.",
     "German": "Die Mod stellt keine modinfo.json bereit. Damit gibt es keinerlei Informationen über Kompabilität, Abhängigkeiten, Beschreibungen oder bekannte Probleme.",
     "Italian": null,
     "Japanese": null,
@@ -1550,7 +1563,7 @@
   "ATTRIBUTE_MODCONTENTSUBFOLDER": {
     "Chinese": null,
     "English": "Wrong installation. The mod is in a subfolder. Please install them directly into the mod folder.",
-    "French": null,
+    "French": "Mauvaise installation. Le mod se trouve dans un sous-dossier. Veuillez les installer directement dans le dossier du mod.",
     "German": "Falsche Installation. Die Mod befindet sich in einem Unterverzeichnis. Installiere die Mod direkt im Modsverzeichnis.",
     "Italian": null,
     "Japanese": null,
@@ -1563,7 +1576,7 @@
   "ATTRIBUTE_STATICHELP_UPDATEDMOD": {
     "Chinese": null,
     "English": "Indicates that the mod was updated in a recent installation.",
-    "French": null,
+    "French": "Indique que le mod a été mis à jour lors d'une installation récente.",
     "German": "Zeigt an, dass die Mod in einer der letzten Installationen aktualisiert wurde.",
     "Italian": null,
     "Japanese": null,
@@ -1576,7 +1589,7 @@
   "ATTRIBUTE_STATICHELP_NEWMOD": {
     "Chinese": null,
     "English": "Indicates that the mod was added in a recent installation.",
-    "French": null,
+    "French": "Indique que le mod a été ajouté lors d'une installation récente.",
     "German": "Zeigt an, dass die Mod in einer der letzten Installationen hinzugefügt wurde.",
     "Italian": null,
     "Japanese": null,
@@ -1589,7 +1602,7 @@
   "ATTRIBUTE_STATICHELP_OBSOLETEMOD": {
     "Chinese": null,
     "English": "The Mod has been recognized as broken during an installation. This can be due to Mod ID duplications or broken Filestructure. It is advisable to delete the mod and reinstall it. If this still causes problems, contact the mod author.",
-    "French": null,
+    "French": "Le mod a été reconnu comme cassé lors d'une installation. Cela peut être dû à des duplications de Mod ID ou à une structure de fichier cassée. Il est conseillé de supprimer le mod et de le réinstaller. Si le problème persiste, contactez l'auteur du mod.",
     "German": "Die Mod wurde während einer zurückliegenden Installation als beschädigt erkannt. Dies kann wegen Duplikation der ModID oder einer beschädigten Dateistruktur der Fall sein. Es ist ratsam, die Mod in diesem Fall neu zu installieren. Wenn das Problem bestehen bleibt, sollte der Modautor kontaktiert werden",
     "Italian": null,
     "Japanese": null,
@@ -1602,7 +1615,7 @@
   "ATTRIBUTE_STATICHELP_TWEAKEDMOD": {
     "Chinese": null,
     "English": "The mod has been tweaked in the Mod Tweaker.",
-    "French": null,
+    "French": "Le mod a été modifié dans le Mod Tweaker.",
     "German": "Die Mod wurde über das ModTweaker System verändert.",
     "Italian": null,
     "Japanese": null,
@@ -1615,7 +1628,7 @@
   "ATTRIBUTE_STATICHELP_NOMODINFO": {
     "Chinese": null,
     "English": "The mod does not provide modinfo.json. There is no metadata information on Compability, Dependencies, no Description and Known Issues.",
-    "French": null,
+    "French": "Le mod ne fournit pas de modinfo.json. Il n'y a pas de métadonnées sur la compatibilité, les dépendances, la description et les problèmes connus.",
     "German": "Die Mod stellt keine modinfo.json bereit. Damit gibt es keinerlei Informationen über Kompabilität, Abhängigkeiten, Beschreibungen oder bekannte Probleme.",
     "Italian": null,
     "Japanese": null,
@@ -1628,7 +1641,7 @@
   "ATTRIBUTE_STATICHELP_COMPABILITY": {
     "Chinese": null,
     "English": "The mod has one or more Compability issues with other installed mods. To resolve, deactivate this mod, or all mods that are causing the compability issue.",
-    "French": null,
+    "French": "Le mod a un ou plusieurs problèmes de compatibilité avec d'autres mods installés. Pour résoudre ce problème, désactivez ce mod, ou tous les mods qui causent le problème de compatibilité.",
     "German": "Die Mod hat ein oder mehr Kompabilitätsprobleme mit anderen installierten Mods. Um dies zu lösen, deaktiviere diese Mod, oder alle Mods, die die Kompabilitätsprobleme auslösen",
     "Italian": null,
     "Japanese": null,
@@ -1641,7 +1654,7 @@
   "ATTRIBUTE_STATICHELP_DEPENDENCY": {
     "Chinese": null,
     "English": "The mod is missing another mod, which isn't installed or activated, but which it is dependant on to work flawlessly.",
-    "French": null,
+    "French": "Il manque au mod un autre mod, qui n'est pas installé ou activé, mais dont il dépend pour fonctionner parfaitement.",
     "German": "Der Mod fehlt ein anderer Mod, welcher nicht installiert oder aktiviert ist, zur fehlerfreien Ausführung aber benötigt wird.",
     "Italian": null,
     "Japanese": null,
@@ -1654,7 +1667,7 @@
   "ATTRIBUTE_GAMESTART_WARNING": {
     "Chinese": null,
     "English": "You have unresolved Dependencies and/or Mod Incompabilities. WARNING: This might lead to critical errors ingame!!! \n\n Start Anyway?",
-    "French": null,
+    "French": "Vous avez des dépendances non résolues et/ou des incompatibilités de mods. AVERTISSEMENT : Cela peut conduire à des erreurs critiques dans le jeu !!! \n\nCommencer quand même ?",
     "German": "Der Modordner hat fehlende Abhängigkeiten und/oder miteinander inkompatible Mods. ACHTUNG: Das kann ingame zu schwerwiegenden Fehlern führen!!! \n\n Trotzdem starten?",
     "Italian": null,
     "Japanese": null,
@@ -1667,7 +1680,7 @@
   "CONTROLS_TOGGLE_DEFAULT_ONTEXT": {
     "Chinese": null,
     "English": "on",
-    "French": null,
+    "French": "on",
     "German": "an",
     "Italian": null,
     "Japanese": null,
@@ -1680,7 +1693,7 @@
   "CONTROLS_TOGGLE_DEFAULT_OFFTEXT": {
     "Chinese": null,
     "English": "off",
-    "French": null,
+    "French": "off",
     "German": "aus",
     "Italian": null,
     "Japanese": null,
@@ -1693,7 +1706,7 @@
   "CONTROLS_TOGGLE_SHOW": {
     "Chinese": null,
     "English": "show",
-    "French": null,
+    "French": "Afficher",
     "German": "anzeigen",
     "Italian": null,
     "Japanese": null,
@@ -1706,7 +1719,7 @@
   "GITBROWSER_ADDTOQUEUE": {
     "Chinese": null,
     "English": "Add to Downloads",
-    "French": null,
+    "French": "Ajouter aux téléchargements",
     "German": "Herunterladen",
     "Italian": null,
     "Japanese": null,
@@ -1719,7 +1732,7 @@
   "GITBROWSER_VIEWONGITHUB": {
     "Chinese": null,
     "English": "View on Github",
-    "French": null,
+    "French": "Voir sur Github",
     "German": "Auf Github ansehen",
     "Italian": null,
     "Japanese": null,
@@ -1732,7 +1745,7 @@
   "GITBROWSER_ZIPHINT": {
     "Chinese": null,
     "English": "Already downloaded a mod?",
-    "French": null,
+    "French": "Vous avez déjà téléchargé un mod?",
     "German": "Du hast bereits eine Mod heruntergeladen?",
     "Italian": null,
     "Japanese": null,
@@ -1745,7 +1758,7 @@
   "GITBROWSER_SELECTZIP": {
     "Chinese": null,
     "English": "Select Archive to install",
-    "French": null,
+    "French": "Sélectionner l'archive à installer",
     "German": "Archiv auswählen",
     "Italian": null,
     "Japanese": null,
@@ -1758,7 +1771,7 @@
   "DOWNLOADS_PENDING_INSTALLCOUNT": {
     "Chinese": null,
     "English": "Pending ({0})",
-    "French": null,
+    "French": "En attente ({0})",
     "German": "Noch ausstehend ({0})",
     "Italian": null,
     "Japanese": null,
@@ -1771,7 +1784,7 @@
   "DOWNLOADS_RUNNING_INSTALLCOUNT": {
     "Chinese": null,
     "English": "Running ({0})",
-    "French": null,
+    "French": "En cours {{0}}",
     "German": "Laufende Installationen ({0})",
     "Italian": null,
     "Japanese": null,
@@ -1784,7 +1797,7 @@
   "SETTINGS_INST_DL_SECTION": {
     "Chinese": null,
     "English": "Installation and Download",
-    "French": null,
+    "French": "Installation et téléchargement",
     "German": "Installationen und Downloads",
     "Italian": null,
     "Japanese": null,
@@ -1797,7 +1810,7 @@
   "SETTINGS_DL_RATE_UNLIMITED": {
     "Chinese": null,
     "English": "Unlimited",
-    "French": null,
+    "French": "Illimité",
     "German": "Unbegrenzt",
     "Italian": null,
     "Japanese": null,
@@ -1810,7 +1823,7 @@
   "SETTINGS_DL_RATE_LIMITED": {
     "Chinese": null,
     "English": "Limited",
-    "French": null,
+    "French": "Limité",
     "German": "Gedrosselt",
     "Italian": null,
     "Japanese": null,
@@ -1823,7 +1836,7 @@
   "SETTINGS_DL_RATE": {
     "Chinese": null,
     "English": "Download Speed",
-    "French": null,
+    "French": "Vitesse de téléchargement",
     "German": "Download-Geschwindigkeit",
     "Italian": null,
     "Japanese": null,
@@ -1836,7 +1849,7 @@
   "SETTINGS_SORTING": {
     "Chinese": null,
     "English": "Mod Sort Order",
-    "French": null,
+    "French": "Ordre de tri des mods",
     "German": "Sortierung",
     "Italian": null,
     "Japanese": null,
@@ -1849,7 +1862,7 @@
   "SORTING_DEFAULT": {
     "Chinese": null,
     "English": "Active > Category > Name",
-    "French": null,
+    "French": "Actif > Catégories > Nom",
     "German": "Aktiviert > Kategorie > Name",
     "Italian": null,
     "Japanese": null,
@@ -1862,7 +1875,7 @@
   "SORTING_ACTIVE_AGNOSTIC": {
     "Chinese": null,
     "English": "Category > Name",
-    "French": null,
+    "French": "Catégories > Nom",
     "German": " Kategorie > Name",
     "Italian": null,
     "Japanese": null,
@@ -1875,7 +1888,7 @@
   "SORTING_BYFOLDER": {
     "Chinese": null,
     "English": "By Folder Name",
-    "French": null,
+    "French": "Par nom de dossier",
     "German": "Nach Ordnername",
     "Italian": null,
     "Japanese": null,
@@ -1888,7 +1901,7 @@
   "SORTING_LOADORDER": {
     "Chinese": null,
     "English": "By Load Order",
-    "French": null,
+    "French": "Par ordre de chargement",
     "German": "Nach Ladereihenfolge",
     "Italian": null,
     "Japanese": null,
@@ -1901,7 +1914,7 @@
   "INSTALLATION_NOINSTALLS": {
     "Chinese": null,
     "English": "No installs are running currently.",
-    "French": null,
+    "French": "Aucune installation n'est en cours actuellement.",
     "German": "Hier wird gerade nichts installiert.",
     "Italian": null,
     "Japanese": null,
@@ -1914,7 +1927,7 @@
   "INSTALLATION_DELETEPENDING": {
     "Chinese": null,
     "English": "Remove from queue",
-    "French": null,
+    "French": "Retirer de la file d'attente",
     "German": "Aus der Warteschlange entfernen",
     "Italian": null,
     "Japanese": null,
@@ -1927,7 +1940,7 @@
   "INSTALLATION_PAUSEPENDING": {
     "Chinese": null,
     "English": "Pause/Resume",
-    "French": null,
+    "French": "Pause/Reprendre",
     "German": "Pausieren/Fortsetzen",
     "Italian": null,
     "Japanese": null,
@@ -1940,7 +1953,7 @@
   "API_RATELIMIT_REACHED": {
     "Chinese": null,
     "English": "You have exceeded your rate limit per hour (This is imposed by GitHub). To get access again, you can login.",
-    "French": null,
+    "French": "Vous avez dépassé votre limite horaire (imposée par GitHub). Pour obtenir à nouveau l'accès, vous pouvez vous connecter.",
     "German": "Du hast das Anfragenlimit pro Stunde erreicht (Dies ist leider so von Github vorgegeben). Um wieder Zugriff zu bekommen, kannst Du dich allerdings einloggen.",
     "Italian": null,
     "Japanese": null,
@@ -1953,7 +1966,7 @@
   "STARTUP_REMOVECOMMUNITYMODLOADER": {
     "Chinese": null,
     "English": "You seem to have an old community modloader, which is no longer needed since Game Update 17. Do you want to remove it?",
-    "French": null,
+    "French": "Vous semblez avoir un ancien modloader communautaire, qui n'est plus nécessaire depuis la mise à jour 17 du jeu. Voulez-vous le supprimer ?",
     "German": "Wie es scheint, ist der alte Community-Modloader noch installiert. Dieser wird seit Game Update 17 nicht mehr benötigt. Soll dieser entfernt werden?",
     "Italian": null,
     "Japanese": null,
@@ -1966,7 +1979,7 @@
   "STARTUP_REMOVECOMMUNITYMODLOADER_YES": {
     "Chinese": null,
     "English": "Yes, remove it",
-    "French": null,
+    "French": "Oui, le retirer",
     "German": "Ja, entfernen",
     "Italian": null,
     "Japanese": null,
@@ -1979,7 +1992,7 @@
   "STARTUP_REMOVECOMMUNITYMODLOADER_NO": {
     "Chinese": null,
     "English": "Keep",
-    "French": null,
+    "French": "Conserver",
     "German": "Beibehalten",
     "Italian": null,
     "Japanese": null,
@@ -1992,7 +2005,7 @@
   "MODLIST_COLLAPSEALL": {
     "Chinese": null,
     "English": "Collapse all embedded Mods",
-    "French": null,
+    "French": "Replier tous les mods intégrés",
     "German": "Eingebettete Mods ausblenden",
     "Italian": null,
     "Japanese": null,
@@ -2005,7 +2018,7 @@
   "MODLIST_EXPANDALL": {
     "Chinese": null,
     "English": "Expand all embedded Mods",
-    "French": null,
+    "French": "Déplier tous les mods intégrés",
     "German": "Eingebettete Mods anzeigen",
     "Italian": null,
     "Japanese": null,
@@ -2018,7 +2031,7 @@
   "MODLIST_SUBMODS": {
     "Chinese": null,
     "English": "Embedded Mods",
-    "French": null,
+    "French": "Mods intégrés",
     "German": "Eingebettete Mods",
     "Italian": null,
     "Japanese": null,
@@ -2031,7 +2044,7 @@
   "CONTROLS_TOGGLE_HIDE": {
     "Chinese": null,
     "English": "hide",
-    "French": null,
+    "French": "Cacher",
     "German": "ausblenden",
     "Italian": null,
     "Japanese": null,
@@ -2044,7 +2057,7 @@
   "SETTINGS_DLCOWNERSHIP": {
     "Chinese": null,
     "English": "DLC Ownership",
-    "French": null,
+    "French": "Propriété du DLC",
     "German": "DLC im Besitz",
     "Italian": null,
     "Japanese": null,
@@ -2057,7 +2070,7 @@
   "SETTINGS_DLCDESCRIPTION": {
     "Chinese": null,
     "English": "Enable the DLCs you own and iMYA will inform you about missing Requirements.",
-    "French": null,
+    "French": "Activez les DLC que vous possédez et iMYA vous informera des exigences manquantes.",
     "German": "Trage hier ein, welche DLC's Du besitzt, und iMYA informiert über fehlende DLC's.",
     "Italian": null,
     "Japanese": null,
